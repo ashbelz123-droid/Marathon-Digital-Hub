@@ -1,84 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Create Account - Marathon Digital Hub</title>
+
+<title>Register - Marathon Digital Hub</title>
 
 <link rel="stylesheet" href="assets/css/style.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="assets/js/supabase.js"></script>
-<script src="assets/js/auth.js" defer></script>
+
 </head>
 
 <body>
 
-<div class="bg-animation"></div>
+<div class="welcome-container">
 
-<div class="auth-container">
-
-<div class="logo-circle">
-M
+<div class="logo">
+MDH
 </div>
 
-<h2>Create Account</h2>
+<h1 class="title">
+Create Account
+</h1>
 
-<form id="registerForm">
+<p class="subtitle">
+Join Marathon Digital Hub
+</p>
 
+<form id="registerForm" style="width:100%;max-width:400px;">
+
+<div class="input-group">
 <input
 type="text"
 id="fullname"
 placeholder="Full Name"
 required
 >
+</div>
 
-<input
-type="email"
-id="email"
-placeholder="Email Address"
-required
->
-
+<div class="input-group">
 <input
 type="tel"
 id="phone"
 placeholder="Phone Number"
 required
 >
+</div>
 
+<div class="input-group">
+<input
+type="email"
+id="email"
+placeholder="Email Address"
+required
+>
+</div>
+
+<div class="input-group">
 <input
 type="password"
 id="password"
 placeholder="Password"
 required
 >
+</div>
 
+<div class="input-group">
 <input
 type="password"
 id="confirmPassword"
 placeholder="Confirm Password"
 required
 >
+</div>
 
+<div class="input-group">
 <input
 type="text"
 id="referral"
 placeholder="Referral Code (Optional)"
 >
+</div>
 
-<button type="submit">
-Create Account
+<button type="submit" class="btn">
+Register
 </button>
 
 </form>
 
-<p>
+<p style="margin-top:20px;">
 Already have an account?
-<a href="login.html">Login</a>
+
+<a href="login.html" style="color:#00e5ff;">
+Login
+</a>
+
 </p>
 
 </div>
+
+<script>
+
+document
+.getElementById("registerForm")
+.addEventListener("submit", registerUser);
+
+async function registerUser(e){
+
+e.preventDefault();
+
+const fullname =
+document.getElementById("fullname").value;
+
+const phone =
+document.getElementById("phone").value;
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+const confirmPassword =
+document.getElementById("confirmPassword").value;
+
+if(password !== confirmPassword){
+
+alert("Passwords do not match");
+
+return;
+
+}
+
+const { data, error } =
+await supabaseClient.auth.signUp({
+
+email,
+password
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+alert("Account created successfully");
+
+window.location.href = "login.html";
+
+}
+
+</script>
 
 </body>
 </html>
