@@ -3,84 +3,114 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marathon Digital Hub</title>
 
-<title>Dashboard</title>
+<link rel="stylesheet" href="css/style.css">
 
-<link rel="stylesheet" href="assets/css/style.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/supabase.js"></script>
 
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
 
-<div class="page">
+<div class="background-animation"></div>
 
-<div class="top-logo">
-🚀 Marathon Digital Hub
+<header class="top-header">
+<div class="logo-circle">MDH</div>
+<h2>Marathon Digital Hub</h2>
+</header>
+
+<section class="balance-card">
+
+<h3>Wallet Balance</h3>
+
+<h1 id="walletBalance">
+UGX 0
+</h1>
+
+<div class="balance-buttons">
+
+<button>
+<i class="fas fa-arrow-down"></i>
+Deposit
+</button>
+
+<button>
+<i class="fas fa-arrow-up"></i>
+Withdraw
+</button>
+
+<button>
+<i class="fas fa-user-plus"></i>
+Invite
+</button>
+
 </div>
 
-<div class="grid">
+</section>
 
-<div class="card">
-<h3>Deposit Details</h3>
-<h2>UGX 0</h2>
-</div>
+<section class="dashboard-grid">
 
-<div class="card">
-<h3>Withdraw Details</h3>
-<h2>UGX 0</h2>
-</div>
-
-<div class="card">
+<div class="grid-box">
 <h3>Total Holdings</h3>
-<h2>UGX 0</h2>
+<p>UGX 0</p>
 </div>
 
-<div class="card">
+<div class="grid-box">
 <h3>Today's Earnings</h3>
-<h2>UGX 0</h2>
+<p>UGX 0</p>
 </div>
 
-<div class="card">
-<h3>Invites</h3>
-<h2>0</h2>
+<div class="grid-box">
+<h3>My Team</h3>
+<p>0 Members</p>
 </div>
 
-<div class="card">
+<div class="grid-box">
 <h3>Team Income</h3>
-<h2>UGX 0</h2>
+<p>UGX 0</p>
 </div>
 
+<div class="grid-box">
+<h3>Invites</h3>
+<p>0</p>
 </div>
 
+<div class="grid-box">
+<h3>Active Machines</h3>
+<p>0</p>
 </div>
 
-<div class="bottom-nav">
+</section>
 
-<a href="dashboard.html" class="nav-item active">
-🏠
-<br>
-Home
+<nav class="bottom-nav">
+
+<a href="dashboard.html" class="active">
+<i class="fas fa-home"></i>
+<span>Home</span>
 </a>
 
-<a href="machines.html" class="nav-item">
-⚙️
-<br>
-Machines
+<a href="machines.html">
+<i class="fas fa-microchip"></i>
+<span>Machines</span>
 </a>
 
-<a href="holdings.html" class="nav-item">
-💰
-<br>
-Holdings
+<a href="holdings.html">
+<i class="fas fa-wallet"></i>
+<span>Holdings</span>
 </a>
 
-<a href="profile.html" class="nav-item">
-👤
-<br>
-Me
+<a href="profile.html">
+<i class="fas fa-user"></i>
+<span>Me</span>
 </a>
 
-</div>
+</nav>
+
+<script src="js/dashboard.js"></script>
 
 </body>
   </html>
