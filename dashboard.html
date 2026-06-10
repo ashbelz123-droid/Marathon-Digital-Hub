@@ -1,50 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marathon Digital Hub</title>
-
-<link rel="stylesheet" href="css/style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-<script src="js/supabase.js"></script>
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
-
 <body>
 
-<div class="background-animation"></div>
+<div class="cyber-bg"></div>
 
-<header class="top-header">
-<div class="logo-circle">MDH</div>
+<header class="dashboard-header">
+
+<div class="brand">
+
+<div class="brand-logo">
+MDH
+</div>
+
+<div>
 <h2>Marathon Digital Hub</h2>
+<p>Digital Asset Platform</p>
+</div>
+
+</div>
+
+<div class="notification">
+🔔
+</div>
+
 </header>
 
-<section class="balance-card">
+<section class="hero-card">
 
-<h3>Wallet Balance</h3>
+<p>Available Balance</p>
 
 <h1 id="walletBalance">
-UGX 0
+UGX 0.00
 </h1>
 
-<div class="balance-buttons">
+<div class="hero-actions">
 
-<button>
-<i class="fas fa-arrow-down"></i>
+<button class="action-btn">
 Deposit
 </button>
 
-<button>
-<i class="fas fa-arrow-up"></i>
+<button class="action-btn">
 Withdraw
 </button>
 
-<button>
-<i class="fas fa-user-plus"></i>
+<button class="action-btn">
 Invite
 </button>
 
@@ -52,65 +49,106 @@ Invite
 
 </section>
 
-<section class="dashboard-grid">
+<section class="stats-grid">
 
-<div class="grid-box">
+<div class="stat-card">
+<span>💰</span>
 <h3>Total Holdings</h3>
 <p>UGX 0</p>
 </div>
 
-<div class="grid-box">
+<div class="stat-card">
+<span>📈</span>
 <h3>Today's Earnings</h3>
 <p>UGX 0</p>
 </div>
 
-<div class="grid-box">
+<div class="stat-card">
+<span>👥</span>
 <h3>My Team</h3>
-<p>0 Members</p>
+<p>0</p>
 </div>
 
-<div class="grid-box">
-<h3>Team Income</h3>
-<p>UGX 0</p>
-</div>
-
-<div class="grid-box">
+<div class="stat-card">
+<span>🎁</span>
 <h3>Invites</h3>
 <p>0</p>
 </div>
 
-<div class="grid-box">
-<h3>Active Machines</h3>
-<p>0</p>
+</section>
+
+<section class="announcement">
+
+<h3>📢 Announcement</h3>
+
+<div class="announcement-slider">
+
+Welcome to Marathon Digital Hub.
+
+</div>
+
+</section>
+
+<section class="featured-machine">
+
+<h3>🔥 Featured Machine</h3>
+
+<div class="machine-preview">
+
+<h2>B1 Starter Miner</h2>
+
+<p>
+Price: UGX 100,000
+</p>
+
+<p>
+Daily Income: UGX 7,000
+</p>
+
+<button>
+View Machines
+</button>
+
+</div>
+
+</section>
+
+<section class="activity">
+
+<h3>Recent Activity</h3>
+
+<div class="activity-item">
+No activity yet
 </div>
 
 </section>
 
 <nav class="bottom-nav">
 
-<a href="dashboard.html" class="active">
-<i class="fas fa-home"></i>
-<span>Home</span>
+<a class="active">
+🏠
+<br>
+Home
 </a>
 
 <a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
+⚙️
+<br>
+Machines
 </a>
 
 <a href="holdings.html">
-<i class="fas fa-wallet"></i>
-<span>Holdings</span>
+💎
+<br>
+Holdings
 </a>
 
 <a href="profile.html">
-<i class="fas fa-user"></i>
-<span>Me</span>
+👤
+<br>
+Me
 </a>
 
 </nav>
 
-<script src="js/dashboard.js"></script>
-
 </body>
-  </html>
