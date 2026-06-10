@@ -1,6 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Marathon Digital Hub Dashboard</title>
+
+<link rel="stylesheet" href="assets/css/style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/supabase.js"></script>
+
+</head>
 <body>
 
 <div class="cyber-bg"></div>
+
+<div class="dashboard">
 
 <header class="dashboard-header">
 
@@ -17,33 +33,25 @@ MDH
 
 </div>
 
-<div class="notification">
+<div class="notify">
 🔔
 </div>
 
 </header>
 
-<section class="hero-card">
+<section class="wallet-card">
 
 <p>Available Balance</p>
 
-<h1 id="walletBalance">
-UGX 0.00
-</h1>
+<h1>UGX 0.00</h1>
 
-<div class="hero-actions">
+<div class="wallet-actions">
 
-<button class="action-btn">
-Deposit
-</button>
+<button>Deposit</button>
 
-<button class="action-btn">
-Withdraw
-</button>
+<button>Withdraw</button>
 
-<button class="action-btn">
-Invite
-</button>
+<button>Invite</button>
 
 </div>
 
@@ -51,61 +59,58 @@ Invite
 
 <section class="stats-grid">
 
-<div class="stat-card">
-<span>💰</span>
+<div class="stat-box">
+<div class="icon">💰</div>
 <h3>Total Holdings</h3>
 <p>UGX 0</p>
 </div>
 
-<div class="stat-card">
-<span>📈</span>
+<div class="stat-box">
+<div class="icon">📈</div>
 <h3>Today's Earnings</h3>
 <p>UGX 0</p>
 </div>
 
-<div class="stat-card">
-<span>👥</span>
+<div class="stat-box">
+<div class="icon">👥</div>
 <h3>My Team</h3>
-<p>0</p>
+<p>0 Members</p>
 </div>
 
-<div class="stat-card">
-<span>🎁</span>
+<div class="stat-box">
+<div class="icon">🎁</div>
 <h3>Invites</h3>
 <p>0</p>
 </div>
 
 </section>
 
-<section class="announcement">
+<section class="section-card">
 
 <h3>📢 Announcement</h3>
 
-<div class="announcement-slider">
-
+<p>
 Welcome to Marathon Digital Hub.
-
-</div>
+Start building your digital asset portfolio today.
+</p>
 
 </section>
 
-<section class="featured-machine">
+<section class="section-card">
 
 <h3>🔥 Featured Machine</h3>
 
-<div class="machine-preview">
+<div class="machine-card">
 
 <h2>B1 Starter Miner</h2>
 
-<p>
-Price: UGX 100,000
-</p>
+<p>Price: UGX 100,000</p>
 
-<p>
-Daily Income: UGX 7,000
-</p>
+<p>Daily Income: UGX 7,000</p>
 
-<button>
+<p>Duration: 30 Days</p>
+
+<button class="machine-btn">
 View Machines
 </button>
 
@@ -113,19 +118,19 @@ View Machines
 
 </section>
 
-<section class="activity">
+<section class="section-card">
 
-<h3>Recent Activity</h3>
+<h3>📜 Recent Activity</h3>
 
-<div class="activity-item">
-No activity yet
-</div>
+<p>No activity available.</p>
 
 </section>
 
+</div>
+
 <nav class="bottom-nav">
 
-<a class="active">
+<a href="dashboard.html" class="active">
 🏠
 <br>
 Home
@@ -152,3 +157,4 @@ Me
 </nav>
 
 </body>
+</html>
