@@ -1,31 +1,6 @@
-async function loadUser() {
+console.log("Dashboard Loaded");
 
-const {
-data:{user}
-} = await supabaseClient.auth.getUser();
-
-if(!user){
-window.location.href="login.html";
-return;
-}
-
-console.log(user.email);
-
-}
-
-loadUser();async function loadUser() {
-
-const {
-data:{user}
-} = await supabaseClient.auth.getUser();
-
-if(!user){
-window.location.href="login.html";
-return;
-}
-
-console.log(user.email);
-
-}
-
-loadUser();
+setInterval(() => {
+document.querySelector(".logo").style.boxShadow =
+`0 0 ${20 + Math.random()*30}px #00bfff`;
+},1000);
