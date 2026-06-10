@@ -3,114 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marathon Digital Hub</title>
+<title>Marathon Digital Hub Dashboard</title>
 
 <link rel="stylesheet" href="css/dashboard.css">
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-</head>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
+</head>
 <body>
 
-<div class="bg-animation"></div>
+<div class="particles"></div>
 
-<header class="topbar">
+<!-- HEADER -->
 
-<div class="logo-box">
-<div class="logo">MDH</div>
+<header class="header">
+
+<div class="profile">
+
+<div class="avatar">
+MDH
+</div>
 
 <div>
-<h2>Marathon Digital Hub</h2>
-<p>Welcome Back</p>
-</div>
+<h2 id="username">Welcome</h2>
+<p>Marathon Digital Hub</p>
 </div>
 
-<div class="bell">
+</div>
+
+<div class="notification">
+
 <i class="fas fa-bell"></i>
+
 <span>3</span>
+
 </div>
 
 </header>
 
-<section class="hero">
+<!-- HERO SLIDER -->
 
-<div class="hero-card">
+<section class="slider">
 
-<h1>Digital Investment Hub</h1>
+<div class="slide active">
 
-<p>
-Smart. Secure. Connected.
-</p>
+<img src="assets/banner1.jpg">
 
-<button>
-Explore Machines
-</button>
+<div class="overlay">
+<h2>Digital Wealth Platform</h2>
+<p>Secure • Fast • Smart</p>
+</div>
 
 </div>
 
 </section>
 
-<section class="stats">
+<!-- WALLET CARD -->
 
-<div class="card">
-<h3>Wallet</h3>
-<h2>UGX 0</h2>
+<section class="wallet-card">
+
+<div class="wallet-top">
+
+<h3>Total Wallet Balance</h3>
+
+<h1 id="walletBalance">
+UGX 0
+</h1>
+
 </div>
 
-<div class="card">
-<h3>Today's Earnings</h3>
-<h2>UGX 0</h2>
-</div>
+<div class="wallet-buttons">
 
-<div class="card">
-<h3>Total Team</h3>
-<h2>0</h2>
-</div>
-
-<div class="card">
-<h3>Total Income</h3>
-<h2>UGX 0</h2>
-</div>
-
-</section>
-
-<section class="news">
-
-<div class="news-header">
-Latest Announcements
-</div>
-
-<div class="news-body">
-<marquee>
-🚀 Welcome to Marathon Digital Hub 🚀
-</marquee>
-</div>
-
-</section>
-
-<section class="actions">
-
-<button>
-<i class="fas fa-wallet"></i>
+<button class="depositBtn">
 Deposit
 </button>
 
-<button>
-<i class="fas fa-money-bill-wave"></i>
+<button class="withdrawBtn">
 Withdraw
 </button>
 
-<button>
-<i class="fas fa-users"></i>
-Invite
-</button>
-
-<button>
-<i class="fab fa-whatsapp"></i>
-Support
-</button>
+</div>
 
 </section>
+
+<!-- STATISTICS -->
+
+<section class="stats">
+
+<div class="stat-box">
+<h4>Deposits</h4>
+<h2>UGX 0</h2>
+</div>
+
+<div class="stat-box">
+<h4>Withdrawals</h4>
+<h2>UGX 0</h2>
+</div>
+
+<div class="stat-box">
+<h4>Today's Earnings</h4>
+<h2>UGX 0</h2>
+</div>
+
+<div class="stat-box">
+<h4>Total Holdings</h4>
+<h2>0</h2>
+</div>
+
+<div class="stat-box">
+<h4>Invites</h4>
+<h2>0</h2>
+</div>
+
+<div class="stat-box">
+<h4>Team Income</h4>
+<h2>UGX 0</h2>
+</div>
+
+</section>
+
+<!-- QUICK ACTIONS -->
+
+<section class="actions">
+
+<div class="action-card">
+<i class="fas fa-wallet"></i>
+<span>Deposit</span>
+</div>
+
+<div class="action-card">
+<i class="fas fa-money-bill-wave"></i>
+<span>Withdraw</span>
+</div>
+
+<div class="action-card">
+<i class="fas fa-users"></i>
+<span>Team</span>
+</div>
+
+<div class="action-card">
+<i class="fas fa-gift"></i>
+<span>Rewards</span>
+</div>
+
+</section>
+
+<!-- FEATURED MACHINES -->
+
+<section class="featured">
+
+<div class="section-title">
+Popular Machines
+</div>
+
+<div class="machine-card">
+
+<div>
+<h3>VIP 1</h3>
+<p>Price: UGX 18,000</p>
+<p>Return: UGX 40,000</p>
+</div>
+
+<button>
+View
+</button>
+
+</div>
+
+<div class="machine-card">
+
+<div>
+<h3>B1 Machine</h3>
+<p>Price: UGX 30,000</p>
+<p>Return: UGX 50,000</p>
+</div>
+
+<button>
+View
+</button>
+
+</div>
+
+</section>
+
+<!-- NEWS -->
+
+<section class="news">
+
+<div class="section-title">
+Announcements
+</div>
+
+<div class="ticker">
+
+<div class="ticker-content">
+
+🚀 Welcome To Marathon Digital Hub
+•
+🎉 New VIP Packages Added
+•
+🔥 Invite Friends & Earn Rewards
+•
+💰 Withdrawals Processed Daily
+
+</div>
+
+</div>
+
+</section>
+
+<!-- RECENT ACTIVITY -->
+
+<section class="activity">
+
+<div class="section-title">
+Recent Activity
+</div>
+
+<div class="activity-box">
+No transactions yet
+</div>
+
+</section>
+
+<!-- WHATSAPP -->
+
+<a href="https://wa.me/256700000000"
+class="whatsapp">
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+<!-- BOTTOM NAV -->
 
 <nav class="bottom-nav">
 
