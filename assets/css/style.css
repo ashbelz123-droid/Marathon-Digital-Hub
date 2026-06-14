@@ -2,272 +2,185 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
-}
-
-:root{
---bg:#07111f;
---card:#0e1c2f;
---primary:#00bfff;
---secondary:#00e5ff;
---text:#ffffff;
---muted:#8ea4c1;
+font-family:Arial, sans-serif;
 }
 
 body{
-background:linear-gradient(
-180deg,
-#04111d,
-#07192d,
-#081423
-);
-color:var(--text);
-min-height:100vh;
-overflow-x:hidden;
-position:relative;
-}
-
-/* Animated Background */
-
-body::before{
-content:"";
-position:fixed;
-top:-200px;
-left:-200px;
-width:500px;
-height:500px;
-background:rgba(0,191,255,.15);
-filter:blur(120px);
-border-radius:50%;
-animation:float1 10s infinite alternate;
-z-index:-2;
-}
-
-body::after{
-content:"";
-position:fixed;
-right:-200px;
-bottom:-200px;
-width:500px;
-height:500px;
-background:rgba(0,229,255,.15);
-filter:blur(120px);
-border-radius:50%;
-animation:float2 10s infinite alternate;
-z-index:-2;
-}
-
-@keyframes float1{
-from{
-transform:translateY(0);
-}
-to{
-transform:translateY(100px);
-}
-}
-
-@keyframes float2{
-from{
-transform:translateY(0);
-}
-to{
-transform:translateY(-100px);
-}
-}
-
-/* Welcome Screen */
-
-.welcome-container{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-padding:25px;
-text-align:center;
-}
-
-.logo{
-width:120px;
-height:120px;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:40px;
-font-weight:bold;
-background:rgba(255,255,255,.05);
-border:2px solid rgba(0,191,255,.3);
-box-shadow:
-0 0 20px rgba(0,191,255,.4),
-0 0 40px rgba(0,191,255,.3);
-margin-bottom:20px;
-}
-
-.title{
-font-size:34px;
-font-weight:700;
-margin-bottom:10px;
-}
-
-.subtitle{
-color:var(--muted);
-margin-bottom:40px;
-}
-
-.btn{
-display:block;
-width:100%;
-max-width:300px;
-padding:15px;
-margin:10px 0;
-border:none;
-border-radius:15px;
-background:linear-gradient(
-90deg,
-#00bfff,
-#00e5ff
-);
+background:#050a16;
 color:white;
-font-size:16px;
-font-weight:600;
-text-decoration:none;
-cursor:pointer;
+overflow-x:hidden;
 }
 
-.btn-outline{
-background:transparent;
-border:1px solid #00bfff;
+/* NETWORK CANVAS */
+#network{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+opacity:0.7;
 }
 
-/* Dashboard */
-
-.page{
-padding:20px;
-padding-bottom:100px;
-}
-
-.top-logo{
-text-align:center;
-font-size:24px;
-font-weight:700;
-margin-bottom:20px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.card{
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(15px);
-border:1px solid rgba(255,255,255,.08);
-border-radius:18px;
-padding:20px;
-min-height:120px;
-}
-
-.card h3{
-font-size:14px;
-color:var(--muted);
-margin-bottom:10px;
-}
-
-.card h2{
-font-size:22px;
-}
-
-/* Machine Cards */
-
-.machine-card{
-background:rgba(255,255,255,.05);
-border-radius:20px;
-padding:20px;
-margin-bottom:20px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.machine-title{
-font-size:22px;
-font-weight:700;
-margin-bottom:10px;
-}
-
-.machine-info{
+/* HEADER */
+.topbar{
 display:flex;
 justify-content:space-between;
+align-items:center;
+padding:18px;
+}
+
+.user{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.avatar{
+width:50px;
+height:50px;
+border-radius:50%;
+background:linear-gradient(135deg,#00c3ff,#0055ff);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+box-shadow:0 0 20px #00c3ff;
+}
+
+.bell{
+position:relative;
+font-size:20px;
+}
+
+.bell span{
+position:absolute;
+top:-6px;
+right:-6px;
+background:red;
+width:16px;
+height:16px;
+border-radius:50%;
+font-size:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+/* WALLET */
+.wallet{
+margin:15px;
+padding:20px;
+border-radius:20px;
+background:rgba(255,255,255,0.06);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 0 20px rgba(0,195,255,0.2);
+}
+
+.wallet h1{
+font-size:32px;
+color:#00e5ff;
+margin-top:10px;
+}
+
+.wallet-btns{
+display:flex;
+gap:10px;
 margin-top:15px;
 }
 
-.buy-btn{
-width:100%;
-margin-top:20px;
-padding:14px;
+.wallet-btns button{
+flex:1;
+padding:12px;
 border:none;
 border-radius:12px;
-background:#00bfff;
+background:linear-gradient(135deg,#00c3ff,#0055ff);
 color:white;
-font-weight:600;
+font-weight:bold;
+box-shadow:0 0 10px rgba(0,195,255,0.4);
 }
 
-/* Bottom Navigation */
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:15px;
+}
 
-.bottom-nav{
+.card{
+padding:15px;
+border-radius:15px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.08);
+box-shadow:0 0 15px rgba(0,195,255,0.1);
+}
+
+/* FEATURE */
+.feature{
+padding:15px;
+}
+
+.machine{
+padding:15px;
+border-radius:15px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+box-shadow:0 0 15px rgba(0,195,255,0.1);
+}
+
+.machine button{
+margin-top:10px;
+width:100%;
+padding:10px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,#00c3ff,#0055ff);
+color:white;
+font-weight:bold;
+}
+
+/* TICKER */
+.ticker{
+margin:15px;
+padding:10px;
+border-radius:10px;
+background:rgba(0,195,255,0.08);
+overflow:hidden;
+}
+
+.move{
+display:inline-block;
+white-space:nowrap;
+animation:move 15s linear infinite;
+}
+
+@keyframes move{
+from{transform:translateX(100%);}
+to{transform:translateX(-100%);}
+}
+
+/* NAV */
+.nav{
 position:fixed;
-bottom:15px;
-left:15px;
-right:15px;
-height:70px;
-background:rgba(14,28,47,.95);
-backdrop-filter:blur(20px);
-border-radius:20px;
+bottom:0;
+width:100%;
 display:flex;
 justify-content:space-around;
-align-items:center;
-box-shadow:0 0 20px rgba(0,191,255,.15);
+padding:12px;
+background:rgba(10,15,30,0.95);
+border-top:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
 }
 
-.nav-item{
-color:#9eb4d0;
+.nav a{
+color:#aaa;
+font-size:18px;
 text-decoration:none;
-font-size:14px;
-text-align:center;
 }
 
-.nav-item.active{
+.nav .active{
 color:#00e5ff;
 }
-
-/* Forms */
-
-.form-container{
-padding:25px;
-}
-
-.input-group{
-margin-bottom:15px;
-}
-
-input{
-width:100%;
-padding:15px;
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.1);
-border-radius:12px;
-color:white;
-outline:none;
-}
-
-input::placeholder{
-color:#9eb4d0;
-}
-
-@media(max-width:480px){
-
-.grid{
-grid-template-columns:1fr;
-}
-
-  }
