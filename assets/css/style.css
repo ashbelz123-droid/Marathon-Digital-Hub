@@ -352,3 +352,7 @@ font-size:20px;
 .nav .active{
 color:#00e5ff;
                 }
+
+body{
+border:5px solid red !important;
+  }
