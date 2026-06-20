@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -13,7 +12,6 @@
 <script src="assets/js/supabase.js"></script>
 
 </head>
-
 <body>
 
 <div class="welcome-container">
@@ -27,28 +25,24 @@ Welcome Back
 </h1>
 
 <p class="subtitle">
-Login to your account
+Login To Your Account
 </p>
 
-<form id="loginForm" style="width:100%;max-width:400px;">
+<form id="loginForm" class="auth-form">
 
-<div class="input-group">
 <input
 type="email"
 id="email"
 placeholder="Email Address"
 required
 >
-</div>
 
-<div class="input-group">
 <input
 type="password"
 id="password"
 placeholder="Password"
 required
 >
-</div>
 
 <button type="submit" class="btn">
 Login
@@ -56,13 +50,12 @@ Login
 
 </form>
 
-<p style="margin-top:20px;">
+<p class="auth-link">
 Don't have an account?
 
-<a href="register.html" style="color:#00e5ff;">
+<a href="register.html">
 Register
 </a>
-
 </p>
 
 </div>
@@ -94,12 +87,11 @@ password
 if(error){
 
 alert(error.message);
-
 return;
 
 }
 
-window.location.href="dashboard.html";
+window.location.href = "dashboard.html";
 
 }
 
