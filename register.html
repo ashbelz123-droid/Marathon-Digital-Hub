@@ -1,36 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Register - Marathon Digital Hub</title>
-
-<link rel="stylesheet" href="assets/css/style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase.js"></script>
-
-</head>
-
 <body>
 
-<div class="welcome-container">
+<canvas id="network"></canvas>
 
-<div class="logo">
+<div class="auth-container">
+
+<div class="auth-card">
+
+<div class="logo" style="margin:0 auto 20px;">
 MDH
 </div>
 
-<h1 class="title">
-Create Account
-</h1>
+<h2>Create Account</h2>
 
-<p class="subtitle">
+<p style="text-align:center;margin-bottom:20px;color:#b7c9e2;">
 Join Marathon Digital Hub
 </p>
 
-<form id="registerForm" style="width:100%;max-width:400px;">
+<form id="registerForm">
 
 <div class="input-group">
 <input
@@ -85,25 +71,26 @@ placeholder="Referral Code (Optional)"
 >
 </div>
 
-<button type="submit" class="btn">
-Register
+<button type="submit" class="auth-btn">
+Create Account
 </button>
 
 </form>
 
-<p style="margin-top:20px;">
+<p style="text-align:center;margin-top:20px;">
 Already have an account?
-
 <a href="login.html" style="color:#00e5ff;">
 Login
 </a>
-
 </p>
 
 </div>
 
-<script>
+</div>
 
+<script src="assets/js/network.js"></script>
+
+<script>
 document
 .getElementById("registerForm")
 .addEventListener("submit", registerUser);
@@ -128,36 +115,24 @@ const confirmPassword =
 document.getElementById("confirmPassword").value;
 
 if(password !== confirmPassword){
-
 alert("Passwords do not match");
-
 return;
-
 }
 
 const { data, error } =
 await supabaseClient.auth.signUp({
-
 email,
 password
-
 });
 
 if(error){
-
 alert(error.message);
-
 return;
-
 }
 
 alert("Account created successfully");
-
 window.location.href = "login.html";
-
 }
-
 </script>
 
 </body>
-</html>
