@@ -1,107 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MDH Dashboard</title>
+<title>Deposit - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-
-<canvas id="network"></canvas>
-
-<!-- HEADER -->
 <header class="topbar">
-<div class="user">
-<div class="avatar">MDH</div>
-<div>
-<h3>Marathon Digital Hub</h3>
-<small>Welcome Back</small>
+<div class="logo-area">
+<h1>Deposit</h1>
 </div>
-</div>
-
-<div class="bell">🔔</div>
-</header>
-
-<!-- HERO IMAGE AREA -->
-<section class="hero">
-<h1>Hut 8 Reports Q Results</h1>
-<p>Smart Mining & Investment Platform</p>
-<button class="hero-btn">Explore Machines</button>
-</section>
-
-<!-- STATS GRID -->
-<section class="grid">
-
-<div class="card">
-<h3>Deposit</h3>
-<h2>UGX 0</h2>
-</div>
-
-<div class="card">
-<h3>Withdraw</h3>
-<h2>UGX 0</h2>
-</div>
-
-<div class="card">
-<h3>Holdings</h3>
-<h2>UGX 0</h2>
-</div>
-
-<div class="card">
-<h3>Today</h3>
-<h2>UGX 0</h2>
-</div>
-
-<div class="card">
-<h3>Invite</h3>
-<h2>0</h2>
-</div>
-
-<div class="card">
-<h3>Team</h3>
-<h2>0</h2>
-</div>
-
-<div class="card" style="grid-column:span 2;">
-<h3>Team Income</h3>
-<h2>UGX 0</h2>
-</div>
-
-</section>
-
-<!-- MESSAGE SECTION -->
-<section class="feature">
-
-<h2>Messages</h2>
-
-<div class="machine">🚀 New Mining Packages Available</div>
-<div class="machine">💰 Instant Withdrawals Enabled</div>
-<div class="machine">🔥 Earn Daily Passive Income</div>
-
-</section>
-
-<!-- QUICK NAV TICKER -->
-<div class="ticker">
-<div class="move">
-🚀 MDH Platform • 💰 Earn Daily • ⚡ Fast Withdrawals • 👥 Invite Friends • 📊 Grow Income
-</div>
-</div>
-
-<!-- BOTTOM NAV -->
-<nav class="nav">
-
-<a class="active">🏠</a>
-<a>⚙</a>
-<a>💰</a>
-<a>👥</a>
-<a>👤</a>
-
-</nav>
-
-<script src="assets/js/network.js"></script>
-
-</body>
-  </html>
+</header><div class="card" style="margin:15px;"><h2>Make Deposit</h2><br><input type="number" placeholder="Enter Amount"><select>
+<option>MTN Mobile Money</option>
+<option>Airtel Money</option>
+<option>Crypto USDT</option>
+</select><button class="btn" style="width:100%;">
+Submit Deposit
+</button></div><div class="card" style="margin:15px;">
+<h2>Deposit History</h2>
+<br>
+<p>No deposits found.</p>
+</div><nav class="nav"><a href="dashboard.html">
+<i class="fas fa-home"></i>
+<span>Home</span>
+</a><a href="machines.html">
+<i class="fas fa-microchip"></i>
+<span>Machines</span>
+</a><a href="wallet.html" class="active">
+<i class="fas fa-wallet"></i>
+<span>Wallet</span>
+</a><a href="team.html">
+<i class="fas fa-users"></i>
+<span>Team</span>
+</a><a href="profile.html">
+<i class="fas fa-user"></i>
+<span>My</span>
+</a></nav></body>
+</html>
