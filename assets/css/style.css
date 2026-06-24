@@ -1,103 +1,229 @@
-body{
+/* RESET */
+*{
 margin:0;
-font-family:Arial;
+padding:0;
+box-sizing:border-box;
+font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body{
 background:#050814;
 color:white;
+overflow-x:hidden;
 }
 
-/* HOME */
-.welcome{
-text-align:center;
-padding:80px 20px;
-}
-
-.logo{
-font-size:40px;
-font-weight:bold;
-color:#00d4ff;
-}
-
-.btns a{
-display:inline-block;
-margin:10px;
-padding:12px 25px;
-background:#00d4ff;
-color:black;
-text-decoration:none;
-border-radius:10px;
-}
-
-/* FORMS */
-.form-box{
-max-width:350px;
-margin:80px auto;
-padding:20px;
-background:#0b1220;
-border-radius:15px;
-}
-
-input{
+/* BACKGROUND NETWORK CANVAS */
+#network{
+position:fixed;
+top:0;
+left:0;
 width:100%;
-padding:12px;
-margin:10px 0;
-border:none;
-border-radius:8px;
+height:100%;
+z-index:-2;
 }
 
-button{
+/* DARK OVERLAY */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
 width:100%;
-padding:12px;
-background:#00d4ff;
-border:none;
-border-radius:8px;
+height:100%;
+background:radial-gradient(circle at top,#0b1a3a,#050814);
+z-index:-3;
 }
 
-/* DASHBOARD */
+/* HEADER */
 .topbar{
 display:flex;
 justify-content:space-between;
-padding:15px;
+align-items:center;
+padding:15px 18px;
 }
 
-.stats{
+.user{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.avatar{
+width:45px;
+height:45px;
+border-radius:50%;
+background:linear-gradient(135deg,#00c3ff,#0066ff);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+box-shadow:0 0 20px #00c3ff;
+}
+
+.bell{
+position:relative;
+font-size:20px;
+}
+
+.bell span{
+position:absolute;
+top:-6px;
+right:-6px;
+background:red;
+width:16px;
+height:16px;
+border-radius:50%;
+font-size:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+/* HERO */
+.hero{
+margin:15px;
+padding:25px;
+text-align:center;
+background:rgba(255,255,255,0.05);
+border-radius:20px;
+border:1px solid rgba(0,195,255,0.2);
+backdrop-filter:blur(12px);
+}
+
+.hero h1{
+font-size:26px;
+margin-bottom:10px;
+}
+
+.hero p{
+color:#b7c9e2;
+margin-bottom:20px;
+}
+
+.hero-btn{
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#00c3ff,#0066ff);
+color:white;
+font-weight:bold;
+}
+
+/* WALLET */
+.wallet{
+margin:15px;
+padding:18px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(10px);
+}
+
+.wallet h1{
+color:#00e5ff;
+margin-top:8px;
+}
+
+.wallet-btns{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.wallet-btns button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:12px;
+background:linear-gradient(135deg,#00c3ff,#0066ff);
+color:white;
+font-weight:bold;
+}
+
+/* GRID CARDS */
+.grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:10px;
+gap:12px;
 padding:15px;
 }
 
 .card{
-background:#111a2e;
 padding:15px;
-border-radius:10px;
+border-radius:15px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.08);
 text-align:center;
+transition:0.3s;
 }
 
-.messages{
+.card:hover{
+transform:translateY(-5px);
+}
+
+/* FEATURE SECTIONS */
+.feature{
 padding:15px;
 }
 
-.msg{
-padding:10px;
-margin:5px 0;
-background:#111a2e;
-border-radius:8px;
-}
-
-/* MACHINES */
 .machine{
-background:#111a2e;
 padding:15px;
-margin:10px;
+border-radius:15px;
+background:rgba(255,255,255,0.05);
+border:1px solid rgba(255,255,255,0.1);
+margin-bottom:12px;
+}
+
+.machine button{
+margin-top:10px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:linear-gradient(135deg,#00c3ff,#0066ff);
+color:white;
+font-weight:bold;
+}
+
+/* TICKER */
+.ticker{
+margin:15px;
+padding:10px;
+overflow:hidden;
+background:rgba(0,195,255,0.08);
 border-radius:10px;
 }
 
-.bottom-nav{
+.move{
+white-space:nowrap;
+display:inline-block;
+animation:move 15s linear infinite;
+}
+
+@keyframes move{
+from{transform:translateX(100%);}
+to{transform:translateX(-100%);}
+}
+
+/* NAV */
+.nav{
 position:fixed;
 bottom:0;
 width:100%;
 display:flex;
 justify-content:space-around;
-background:#0b1220;
-padding:10px;
+padding:12px;
+background:rgba(10,15,30,0.95);
+border-top:1px solid rgba(255,255,255,0.1);
+backdrop-filter:blur(15px);
+}
+
+.nav a{
+color:#aaa;
+font-size:18px;
+text-decoration:none;
+}
+
+.nav .active{
+color:#00e5ff;
   }
