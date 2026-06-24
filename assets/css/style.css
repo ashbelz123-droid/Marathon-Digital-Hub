@@ -227,3 +227,145 @@ text-decoration:none;
 .nav .active{
 color:#00e5ff;
   }
+
+/* PROFILE PAGE */
+
+.profile-topbar{
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.welcome-text p{
+    color:#4fc3ff;
+    font-size:14px;
+}
+
+.welcome-text h2{
+    color:white;
+    font-size:18px;
+}
+
+.welcome-text span{
+    color:#00c8ff;
+    margin-left:10px;
+}
+
+.vip-box{
+    padding:5px 15px;
+    border:1px solid #00c8ff;
+    border-radius:10px;
+    color:#00c8ff;
+}
+
+.profile-img img{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+    border:2px solid #00c8ff;
+}
+
+/* WALLET BOX */
+.wallet-box{
+    margin:15px;
+    padding:15px;
+    border-radius:15px;
+    background:#0f172a;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border:1px solid #1e293b;
+}
+
+.divider{
+    width:1px;
+    height:40px;
+    background:#1e293b;
+}
+
+/* MENU GRID */
+.menu-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    padding:15px;
+}
+
+.menu-item{
+    background:#0f172a;
+    padding:15px 5px;
+    border-radius:12px;
+    text-align:center;
+    border:1px solid #1e293b;
+    color:white;
+    font-size:12px;
+}
+
+.menu-item i{
+    font-size:18px;
+    margin-bottom:5px;
+    color:#00c8ff;
+}
+
+/* SALARY */
+.salary-box{
+    margin:15px;
+    padding:15px;
+    background:#0f172a;
+    border-radius:15px;
+    border:1px solid #1e293b;
+}
+
+.salary{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}
+
+.salary p{
+    color:#aaa;
+}
+
+.salary h2{
+    color:#00c8ff;
+}
+
+.salary-btn{
+    width:100%;
+    padding:12px;
+    background:linear-gradient(90deg,#00c8ff,#1664ff);
+    border:none;
+    border-radius:12px;
+    color:white;
+    font-weight:bold;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    background:#0b1220;
+    padding:10px 0;
+    border-top:1px solid #1e293b;
+}
+
+.bottom-nav a{
+    color:#888;
+    text-align:center;
+    font-size:12px;
+    text-decoration:none;
+}
+
+.bottom-nav i{
+    display:block;
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+.bottom-nav .active{
+    color:#00c8ff;
+}
