@@ -1,64 +1,53 @@
 <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dashboard - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></head>
-<body><canvas id="network"></canvas>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Dashboard - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
 <header class="topbar"><div class="user">
 <div class="avatar">MDH</div><div>
-<h3>Welcome Back</h3>
+<h2>Welcome Back</h2>
 <p>Marathon Digital Hub</p>
 </div>
-</div><div class="bell">
-<i class="fas fa-bell"></i>
-</div></header><section class="wallet-card"><h3>Wallet Balance</h3><div class="wallet-balance">
-UGX 0
-</div><div style="display:flex;gap:10px;margin-top:20px;"><a href="deposit.html" class="btn">
-Deposit
-</a><a href="withdraw.html" class="btn">
-Withdraw
-</a></div></section><section class="grid"><div class="card">
+</div><i class="fas fa-bell"></i>
+
+</header><section class="wallet-card"><h2>Wallet Balance</h2><h1>UGX 0</h1><div class="wallet-actions"><button>Deposit</button>
+
+<button>Withdraw</button>
+
+</div></section><section class="stats-grid"><div class="stat-box">
 <h3>Total Deposits</h3>
 <p>UGX 0</p>
-</div><div class="card">
+</div><div class="stat-box">
 <h3>Total Withdrawals</h3>
 <p>UGX 0</p>
-</div><div class="card">
+</div><div class="stat-box">
 <h3>Today's Earnings</h3>
 <p>UGX 0</p>
-</div><div class="card">
+</div><div class="stat-box">
 <h3>Team Members</h3>
 <p>0</p>
-</div></section><section style="padding:20px;"><h2 style="margin-bottom:15px;">
-Announcements
-</h2><div class="news-card">
+</div></section><section class="announcements"><h2>Announcements</h2><div class="notice">
 🚀 New VIP packages available
-</div><div class="news-card">
-💰 Fast withdrawal processing
-</div><div class="news-card">
-🔥 Invite friends and earn bonuses
-</div></section><section class="grid"><div class="card">
-<i class="fas fa-wallet"></i>
-<h3>Deposit</h3>
-</div><div class="card">
-<i class="fas fa-money-bill-wave"></i>
-<h3>Withdraw</h3>
-</div><div class="card">
-<i class="fas fa-users"></i>
-<h3>Team</h3>
-</div><div class="card">
-<i class="fas fa-headset"></i>
-<h3>Support</h3>
+</div><div class="notice">
+💰 Instant withdrawals enabled
+</div><div class="notice">
+🎁 Invite friends and earn bonuses
 </div></section><nav class="nav"><a href="dashboard.html" class="active">
-Home
+<i class="fas fa-home"></i>
+<span>Home</span>
 </a><a href="machines.html">
-Machines
+<i class="fas fa-microchip"></i>
+<span>Machines</span>
 </a><a href="wallet.html">
-Wallet
+<i class="fas fa-wallet"></i>
+<span>Wallet</span>
 </a><a href="team.html">
-Team
+<i class="fas fa-users"></i>
+<span>Team</span>
 </a><a href="profile.html">
-My
-</a></nav><script src="assets/js/network.js"></script></body>
-                                                 </html>
+<i class="fas fa-user"></i>
+<span>My</span>
+</a></nav></body>
+</html>
