@@ -1,146 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Withdraw Funds - Marathon Digital Hub</title>
-
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-</head>
-<body>
-
-<canvas id="network"></canvas>
+<title>Withdraw - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
 <header class="topbar">
-
-<div class="user">
-
-<div class="avatar">
-UGX
+<div class="logo-area">
+<h1>Withdraw</h1>
 </div>
-
-<div>
-<h3>Withdraw Funds</h3>
-<p>Manual Mobile Money Withdrawals</p>
-</div>
-
-</div>
-
-</header>
-
-<section class="wallet">
-
-<h2>Available Balance</h2>
-
-<h1>UGX 0</h1>
-
-</section>
-
-<section class="feature">
-
-<h2>Withdrawal Request</h2>
-
-<div class="machine">
-
-<form>
-
-<div class="input-group">
-<input
-type="number"
-placeholder="Withdrawal Amount"
-required
->
-</div>
-
-<div class="input-group">
-<input
-type="text"
-placeholder="Mobile Money Name"
-required
->
-</div>
-
-<div class="input-group">
-<input
-type="tel"
-placeholder="Mobile Money Number"
-required
->
-</div>
-
-<div class="input-group">
-<select style="width:100%;padding:15px;border:none;border-radius:12px;background:#111827;color:white;">
+</header><div class="card" style="margin:15px;"><h2>Request Withdrawal</h2><br><input type="number" placeholder="Enter Amount"><select>
 <option>MTN Mobile Money</option>
 <option>Airtel Money</option>
-</select>
-</div>
-
-<button type="submit">
+<option>Bank Transfer</option>
+</select><input type="text" placeholder="Account / Phone Number"><button class="btn" style="width:100%;">
 Submit Withdrawal
-</button>
-
-</form>
-
-</div>
-
-</section>
-
-<section class="feature">
-
-<h2>Withdrawal Process</h2>
-
-<div class="machine">
-📝 Submit your withdrawal request.
-</div>
-
-<div class="machine">
-👨‍💼 Admin reviews and approves manually.
-</div>
-
-<div class="machine">
-💰 Funds sent to your Mobile Money account.
-</div>
-
-</section>
-
-<section class="feature">
-
-<h2>Recent Withdrawals</h2>
-
-<div class="machine">
-No withdrawals yet.
-</div>
-
-</section>
-
-<nav class="nav">
-
-<a href="dashboard.html">
+</button></div><div class="card" style="margin:15px;"><h2>Withdrawal History</h2><br><p>No withdrawals found.</p></div><nav class="nav"><a href="dashboard.html">
 <i class="fas fa-home"></i>
 <span>Home</span>
-</a>
-
-<a href="machines.html">
+</a><a href="machines.html">
 <i class="fas fa-microchip"></i>
 <span>Machines</span>
-</a>
-
-<a href="holdings.html">
-<i class="fas fa-briefcase"></i>
-<span>Holdings</span>
-</a>
-
-<a href="profile.html">
+</a><a href="wallet.html" class="active">
+<i class="fas fa-wallet"></i>
+<span>Wallet</span>
+</a><a href="team.html">
+<i class="fas fa-users"></i>
+<span>Team</span>
+</a><a href="profile.html">
 <i class="fas fa-user"></i>
-<span>Me</span>
-</a>
-
-</nav>
-
-<script src="assets/js/network.js"></script>
-
-</body>
-  </html>
+<span>My</span>
+</a></nav></body>
+</html>
