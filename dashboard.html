@@ -3,184 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Dashboard - Marathon Digital Hub</title>
+<title>Dashboard - MDH</title>
 
 <link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
 </head>
+
 <body>
 
 <canvas id="network"></canvas>
 
 <header class="topbar">
-
-<div class="user">
-
-<div class="avatar">
-MDH
-</div>
-
-<div>
-<h3>Welcome Back</h3>
-<p>Marathon Digital Hub</p>
-</div>
-
-</div>
-
-<div class="bell">
-<i class="fas fa-bell"></i>
-<span>3</span>
-</div>
-
+<div class="logo">MDH</div>
+<div class="bell">🔔</div>
 </header>
 
-<section class="wallet">
+<section class="stats">
 
-<h2>Total Balance</h2>
+<div class="card">Deposit<br><b>UGX 0</b></div>
+<div class="card">Withdraw<br><b>UGX 0</b></div>
+<div class="card">Holdings<br><b>UGX 0</b></div>
+<div class="card">Today<br><b>UGX 0</b></div>
 
-<h1>UGX 0</h1>
-
-<div class="wallet-btns">
-
-<button onclick="location.href='deposit.html'">
-Deposit
-</button>
-
-<button onclick="location.href='withdraw.html'">
-Withdraw
-</button>
-
-</div>
+<div class="card">Invite<br><b>0</b></div>
+<div class="card">Team<br><b>0</b></div>
 
 </section>
 
-<section class="grid">
+<section class="messages">
 
-<div class="card">
-<i class="fas fa-wallet fa-2x"></i>
-<h3>Deposit</h3>
-<p>Fund Account</p>
-</div>
+<h2>Messages</h2>
 
-<div class="card">
-<i class="fas fa-money-bill-wave fa-2x"></i>
-<h3>Withdraw</h3>
-<p>Cash Out</p>
-</div>
-
-<div class="card">
-<i class="fas fa-users fa-2x"></i>
-<h3>My Team</h3>
-<p>0 Members</p>
-</div>
-
-<div class="card">
-<i class="fas fa-gift fa-2x"></i>
-<h3>Rewards</h3>
-<p>Bonuses</p>
-</div>
+<div class="msg">New Mining Packages</div>
+<div class="msg">Instant Withdrawals Enabled</div>
+<div class="msg">Earn Daily Income</div>
 
 </section>
 
-<section class="feature">
-
-<h2>AI Mining Machines</h2>
-
-<div class="machine">
-
-<h3>AI Starter</h3>
-
-<p>Investment: UGX 100,000</p>
-
-<p>Daily Income: UGX 7,000</p>
-
-<p>Duration: 30 Days</p>
-
-<button>
-Buy Machine
-</button>
-
-</div>
-
-<div class="machine">
-
-<h3>AI Pro</h3>
-
-<p>Investment: UGX 500,000</p>
-
-<p>Daily Income: UGX 35,000</p>
-
-<p>Duration: 30 Days</p>
-
-<button>
-Buy Machine
-</button>
-
-</div>
-
-<div class="machine">
-
-<h3>AI Premium</h3>
-
-<p>Investment: UGX 1,000,000</p>
-
-<p>Daily Income: UGX 75,000</p>
-
-<p>Duration: 30 Days</p>
-
-<button>
-Buy Machine
-</button>
-
-</div>
-
-</section>
-
-<section class="feature">
-
-<h2>Announcements</h2>
-
-<div class="machine">
-🚀 New Investment Packages Available
-</div>
-
-<div class="machine">
-💰 Daily Earnings Active
-</div>
-
-<div class="machine">
-👥 Invite Friends & Earn Commission
-</div>
-
-</section>
-
-<nav class="nav">
-
-<a href="dashboard.html" class="active">
-<i class="fas fa-home"></i>
-<span>Home</span>
-</a>
-
-<a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
-</a>
-
-<a href="holdings.html">
-<i class="fas fa-briefcase"></i>
-<span>Holdings</span>
-</a>
-
-<a href="profile.html">
-<i class="fas fa-user"></i>
-<span>Me</span>
-</a>
-
+<nav class="bottom-nav">
+<a href="dashboard.html">Home</a>
+<a href="machines.html">Machines</a>
+<a href="#">Wallet</a>
+<a href="#">Team</a>
+<a href="#">Profile</a>
 </nav>
 
 <script src="assets/js/network.js"></script>
-
 </body>
-  </html>
+</html>
