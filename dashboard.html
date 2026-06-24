@@ -1,52 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard - MDH</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Dashboard - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></head>
+<body><canvas id="network"></canvas>
 
-<link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-
-<canvas id="network"></canvas>
-
-<header class="topbar">
-<div class="logo">MDH</div>
-<div class="bell">🔔</div>
-</header>
-
-<section class="stats">
-
-<div class="card">Deposit<br><b>UGX 0</b></div>
-<div class="card">Withdraw<br><b>UGX 0</b></div>
-<div class="card">Holdings<br><b>UGX 0</b></div>
-<div class="card">Today<br><b>UGX 0</b></div>
-
-<div class="card">Invite<br><b>0</b></div>
-<div class="card">Team<br><b>0</b></div>
-
-</section>
-
-<section class="messages">
-
-<h2>Messages</h2>
-
-<div class="msg">New Mining Packages</div>
-<div class="msg">Instant Withdrawals Enabled</div>
-<div class="msg">Earn Daily Income</div>
-
-</section>
-
-<nav class="bottom-nav">
-<a href="dashboard.html">Home</a>
-<a href="machines.html">Machines</a>
-<a href="#">Wallet</a>
-<a href="#">Team</a>
-<a href="#">Profile</a>
-</nav>
-
-<script src="assets/js/network.js"></script>
-</body>
-</html>
+<header class="topbar"><div class="user">
+<div class="avatar">MDH</div><div>
+<h3>Welcome Back</h3>
+<p>Marathon Digital Hub</p>
+</div>
+</div><div class="bell">
+<i class="fas fa-bell"></i>
+</div></header><section class="wallet-card"><h3>Wallet Balance</h3><div class="wallet-balance">
+UGX 0
+</div><div style="display:flex;gap:10px;margin-top:20px;"><a href="deposit.html" class="btn">
+Deposit
+</a><a href="withdraw.html" class="btn">
+Withdraw
+</a></div></section><section class="grid"><div class="card">
+<h3>Total Deposits</h3>
+<p>UGX 0</p>
+</div><div class="card">
+<h3>Total Withdrawals</h3>
+<p>UGX 0</p>
+</div><div class="card">
+<h3>Today's Earnings</h3>
+<p>UGX 0</p>
+</div><div class="card">
+<h3>Team Members</h3>
+<p>0</p>
+</div></section><section style="padding:20px;"><h2 style="margin-bottom:15px;">
+Announcements
+</h2><div class="news-card">
+🚀 New VIP packages available
+</div><div class="news-card">
+💰 Fast withdrawal processing
+</div><div class="news-card">
+🔥 Invite friends and earn bonuses
+</div></section><section class="grid"><div class="card">
+<i class="fas fa-wallet"></i>
+<h3>Deposit</h3>
+</div><div class="card">
+<i class="fas fa-money-bill-wave"></i>
+<h3>Withdraw</h3>
+</div><div class="card">
+<i class="fas fa-users"></i>
+<h3>Team</h3>
+</div><div class="card">
+<i class="fas fa-headset"></i>
+<h3>Support</h3>
+</div></section><nav class="nav"><a href="dashboard.html" class="active">
+Home
+</a><a href="machines.html">
+Machines
+</a><a href="wallet.html">
+Wallet
+</a><a href="team.html">
+Team
+</a><a href="profile.html">
+My
+</a></nav><script src="assets/js/network.js"></script></body>
+                                                 </html>
