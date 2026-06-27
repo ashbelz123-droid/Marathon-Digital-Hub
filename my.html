@@ -1,146 +1,317 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>My Account - MDH</title>
 
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Account</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.profile-card{
+margin:15px;
+padding:20px;
+background:#03122c;
+border:2px solid #00c8ff;
+border-radius:20px;
+text-align:center;
+box-shadow:0 0 15px rgba(0,200,255,.2);
+}
+
+.avatar{
+width:90px;
+height:90px;
+border-radius:50%;
+margin:auto;
+background:#00c8ff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:40px;
+font-weight:bold;
+color:#000814;
+}
+
+.profile-card h2{
+margin-top:15px;
+color:#00c8ff;
+}
+
+.profile-card p{
+margin-top:8px;
+}
+
+.balance-card{
+margin:15px;
+padding:20px;
+background:#03122c;
+border-radius:18px;
+border:2px solid rgba(0,200,255,.3);
+text-align:center;
+}
+
+.balance-card h3{
+color:#00c8ff;
+margin-bottom:10px;
+}
+
+.balance-card h1{
+color:#00ff88;
+font-size:36px;
+}
+
+.menu-container{
+padding:10px;
+}
+
+.menu-item{
+background:#03122c;
+padding:18px;
+margin-bottom:12px;
+border-radius:15px;
+border:1px solid rgba(0,200,255,.2);
+font-size:18px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<!-- BACKGROUND -->
-<canvas id="network"></canvas>
+<div class="header">
 
-<!-- HEADER -->
-<header class="topbar profile-topbar">
+<h1>My Account</h1>
 
-<div class="welcome-text">
-<p>Welcome to Future AI hub</p>
-<h2>0746015661 <span>Bash</span></h2>
 </div>
 
-<div class="vip-box">
-VIP - 3
+<div class="profile-card">
+
+<div class="avatar">
+U
 </div>
 
-<div class="profile-img">
-<img src="https://i.pravatar.cc/100" alt="profile">
+<h2>Username</h2>
+
+<p>ID: MDH10001</p>
+
 </div>
 
-</header>
+<div class="balance-card">
 
-<!-- WALLET SECTION -->
-<section class="wallet-box">
+<h3>Wallet Balance</h3>
 
-<div class="wallet">
-<p>Wallet</p>
-<h2>0.00</h2>
+<h1>UGX 0</h1>
+
 </div>
 
-<div class="divider"></div>
-
-<div class="balance">
-<p>Balance</p>
-<h2>8,100.00</h2>
-</div>
-
-</section>
-
-<!-- MENU GRID -->
-<section class="menu-grid">
+<div class="menu-container">
+  <!-- REFERRAL CENTER -->
 
 <div class="menu-item">
-<i class="fa-solid fa-wallet"></i>
-<p>Deposit</p>
+
+<strong>Referral Code</strong>
+
+<br><br>
+
+MDH-10001
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-hand-holding-dollar"></i>
-<p>Withdraw</p>
+
+<strong>Total Team Members</strong>
+
+<br><br>
+
+0 Members
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-file-invoice"></i>
-<p>Bill</p>
+
+<strong>Referral Earnings</strong>
+
+<br><br>
+
+UGX 0
+
+</div>
+
+<!-- RECORDS -->
+
+<div class="menu-item">
+
+📥 Deposit Records
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-user-plus"></i>
-<p>Invite</p>
+
+📤 Withdrawal Records
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-users"></i>
-<p>My team</p>
+
+⚙️ Machine Purchase Records
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-star"></i>
-<p>VIP Task</p>
+
+📈 Income History
+
+</div>
+
+<!-- SUPPORT -->
+
+<div class="menu-item">
+
+💬 Customer Support
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-gift"></i>
-<p>Reward</p>
+
+📢 Announcements
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-ticket"></i>
-<p>Raffle</p>
+
+🔐 Security Center
+
+</div>
+<!-- SETTINGS -->
+
+<div class="menu-item">
+
+⚙️ Settings
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-download"></i>
-<p>Download</p>
+
+🔑 Change Password
+
 </div>
 
 <div class="menu-item">
-<i class="fa-solid fa-headset"></i>
-<p>Manager</p>
+
+ℹ️ About Marathon Digital Hub
+
 </div>
 
-<div class="menu-item">
-<i class="fa-solid fa-gear"></i>
-<p>Settings</p>
-</div>
+<!-- LOGOUT -->
 
-</section>
+<div style="padding:15px;">
 
-<!-- SALARY -->
-<section class="salary-box">
+<button
+onclick="logout()"
+style="
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:#ff3b30;
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+">
 
-<div class="salary">
-<p>Last month's salary</p>
-<h2>23,000.00</h2>
-</div>
+Logout
 
-<div class="salary">
-<p>This month's salary</p>
-<h2>71,500.00</h2>
-</div>
-
-<button class="salary-btn">
-Get last month's salary
 </button>
 
-</section>
+</div>
 
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav">
+</div>
 
-<a href="index.html"><i class="fa fa-home"></i><span>Home</span></a>
-<a href="machines.html"><i class="fa fa-cubes"></i><span>Raffle</span></a>
-<a href="#"><i class="fa fa-comments"></i><span>Chats</span></a>
-<a href="#"><i class="fa fa-microchip"></i><span>AI</span></a>
-<a href="#"><i class="fa fa-bitcoin"></i><span>Income</span></a>
-<a class="active" href="my.html"><i class="fa fa-user"></i><span>My</span></a>
+<!-- BOTTOM NAVIGATION -->
 
-</nav>
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
 
-<script src="assets/js/network.js"></script>
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
+</a>
+
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
+</a>
+
+<a href="deposit.html"
+style="color:white;text-decoration:none;text-align:center;">
+💰<br>Deposit
+</a>
+
+<a href="income.html"
+style="color:white;text-decoration:none;text-align:center;">
+📈<br>Income
+</a>
+
+<a href="my.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
+
+</div>
+
+<script>
+
+function logout(){
+
+if(confirm("Are you sure you want to logout?")){
+
+window.location.href = "login.html";
+
+}
+
+}
+
+</script>
 
 </body>
-                                  </html>
+</html>
