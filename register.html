@@ -16,63 +16,36 @@
 
 <div class="form-box">
 
-<div class="logo">
-MDH
-</div>
+<div class="logo">MDH</div>
 
 <h1 class="title">Create Account</h1>
 
-<p class="subtitle">
-Join Marathon Digital Hub
-</p>
+<p class="subtitle">Join Marathon Digital Hub</p>
 
 <form id="registerForm">
 
 <div class="input-group">
-<input
-type="text"
-id="fullname"
-placeholder="Full Name"
-required>
+<input type="text" placeholder="Full Name" required>
 </div>
 
 <div class="input-group">
-<input
-type="tel"
-id="phone"
-placeholder="Phone Number"
-required>
+<input type="tel" placeholder="Phone Number" required>
 </div>
 
 <div class="input-group">
-<input
-type="email"
-id="email"
-placeholder="Email Address"
-required>
+<input type="email" placeholder="Email Address" required>
 </div>
 
 <div class="input-group">
-<input
-type="password"
-id="password"
-placeholder="Password"
-required>
+<input type="password" placeholder="Password" required>
 </div>
 
 <div class="input-group">
-<input
-type="password"
-id="confirmPassword"
-placeholder="Confirm Password"
-required>
+<input type="password" placeholder="Confirm Password" required>
 </div>
 
 <div class="input-group">
-<input
-type="text"
-id="referral"
-placeholder="Referral Code (Optional)">
+<input type="text" placeholder="Referral Code (Optional)">
 </div>
 
 <button type="submit" class="btn">
@@ -93,17 +66,13 @@ Login
 </div>
 
 <script>
-document.getElementById("registerForm")
-.addEventListener("submit", function(e){
-
+document.getElementById("registerForm").addEventListener("submit",function(e){
 e.preventDefault();
-
-window.location.href = "dashboard.html";
-
+window.location.href="dashboard.html";
 });
 </script>
 
 <script src="js/network.js"></script>
 
 </body>
-  </html>
+</html>
