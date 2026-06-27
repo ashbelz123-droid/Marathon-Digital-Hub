@@ -391,3 +391,131 @@ font-weight:bold;
 padding:15px;
 color:var(--primary);
   }
+
+/* DASHBOARD CARD LINKS */
+.dashboard-grid a{
+text-decoration:none;
+color:white;
+}
+
+/* MARQUEE */
+marquee{
+margin:0 15px;
+padding:10px;
+background:rgba(9,20,45,.9);
+border:1px solid rgba(0,200,255,.25);
+border-radius:12px;
+color:#00c8ff;
+}
+
+/* TABLES */
+.table-container{
+margin:15px;
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+background:rgba(9,20,45,.9);
+border-radius:20px;
+overflow:hidden;
+}
+
+th,td{
+padding:12px;
+text-align:left;
+border-bottom:1px solid rgba(0,200,255,.15);
+}
+
+th{
+color:#00c8ff;
+}
+
+/* REFERRAL BOX */
+.referral-box{
+margin:15px;
+padding:20px;
+background:rgba(9,20,45,.9);
+border-radius:20px;
+border:1px solid rgba(0,200,255,.25);
+}
+
+.referral-link{
+word-break:break-all;
+font-size:14px;
+color:#d7e9ff;
+}
+
+/* STATUS COLORS */
+.status-active{
+color:#00ff88;
+font-weight:bold;
+}
+
+.status-pending{
+color:#ffcc00;
+font-weight:bold;
+}
+
+.status-completed{
+color:#00c8ff;
+font-weight:bold;
+}
+
+.status-rejected{
+color:#ff4d4d;
+font-weight:bold;
+}
+
+/* SETTINGS */
+.settings-list{
+padding:15px;
+}
+
+.settings-list .menu-item{
+cursor:pointer;
+}
+
+/* BUTTON HOVER */
+.btn:hover,
+.buy-btn:hover{
+transform:translateY(-2px);
+transition:.3s;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{
+width:6px;
+}
+
+::-webkit-scrollbar-thumb{
+background:#00c8ff;
+border-radius:20px;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+.banner{
+height:260px;
+}
+
+.banner-text h2{
+font-size:24px;
+}
+
+.machine-card{
+flex-direction:column;
+}
+
+.machine-card img{
+width:100%;
+height:220px;
+}
+
+.dashboard-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+  }
