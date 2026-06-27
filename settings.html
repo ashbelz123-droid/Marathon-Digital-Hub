@@ -1,46 +1,245 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Settings - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
-<header class="topbar">
-<div class="logo-area">
+<title>Settings</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.card{
+margin:15px;
+padding:20px;
+background:#03122c;
+border-radius:18px;
+border:2px solid rgba(0,200,255,.3);
+}
+
+.card h2{
+color:#00c8ff;
+margin-bottom:15px;
+}
+
+.input-group{
+margin-bottom:15px;
+}
+
+.input-group input{
+width:100%;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#081a38;
+color:white;
+font-size:16px;
+}
+
+.save-btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#00c8ff,#0066ff);
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
 <h1>Settings</h1>
+
 </div>
-</header><div class="card" style="margin:15px;">
-<p><i class="fas fa-user"></i> Edit Profile</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-lock"></i> Change Password</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-bell"></i> Notification Settings</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-wallet"></i> Payment Methods</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-shield-alt"></i> Security Center</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-language"></i> Language</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-circle-info"></i> About Marathon Digital Hub</p>
-</div><div style="padding:15px;">
-<button class="btn" style="width:100%;background:red;">
-Logout
+
+<div class="card">
+
+<h2>Profile Information</h2>
+
+<div class="input-group">
+<input type="text" placeholder="Username">
+</div>
+
+<div class="input-group">
+<input type="email" placeholder="Email Address">
+</div>
+
+<div class="input-group">
+<input type="tel" placeholder="Phone Number">
+</div>
+
+<button class="save-btn">
+Save Profile
 </button>
-</div><nav class="nav"><a href="dashboard.html">
-<i class="fas fa-home"></i>
-<span>Home</span>
-</a><a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
-</a><a href="wallet.html">
-<i class="fas fa-wallet"></i>
-<span>Wallet</span>
-</a><a href="team.html">
-<i class="fas fa-users"></i>
-<span>Team</span>
-</a><a href="profile.html" class="active">
-<i class="fas fa-user"></i>
-<span>My</span>
-</a></nav></body>
-  </html>
+
+</div>
+<!-- CHANGE PASSWORD -->
+
+<div class="card">
+
+<h2>Change Password</h2>
+
+<div class="input-group">
+<input type="password" placeholder="Current Password">
+</div>
+
+<div class="input-group">
+<input type="password" placeholder="New Password">
+</div>
+
+<div class="input-group">
+<input type="password" placeholder="Confirm New Password">
+</div>
+
+<button class="save-btn">
+Update Password
+</button>
+
+</div>
+
+<!-- SECURITY SETTINGS -->
+
+<div class="card">
+
+<h2>Security</h2>
+
+<p>✅ Login Protection Enabled</p>
+
+<p>✅ Account Verification Active</p>
+
+<p>✅ Withdrawal Security Active</p>
+
+</div>
+
+<!-- NOTIFICATIONS -->
+
+<div class="card">
+
+<h2>Notifications</h2>
+
+<p>📢 Deposit Alerts</p>
+
+<p>📈 Income Alerts</p>
+
+<p>💸 Withdrawal Alerts</p>
+
+<p>👥 Referral Alerts</p>
+
+</div>
+
+<!-- LOGOUT -->
+
+<div class="card">
+
+<button
+onclick="logout()"
+style="
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#ff3b30;
+color:white;
+font-size:18px;
+font-weight:bold;
+">
+
+Logout
+
+</button>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
+
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
+</a>
+
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
+</a>
+
+<a href="wallet.html"
+style="color:white;text-decoration:none;text-align:center;">
+👛<br>Wallet
+</a>
+
+<a href="settings.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+⚙️<br>Settings
+</a>
+
+<a href="my.html"
+style="color:white;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
+
+</div>
+
+<script>
+
+function logout(){
+
+if(confirm("Are you sure you want to logout?")){
+
+window.location.href="login.html";
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
