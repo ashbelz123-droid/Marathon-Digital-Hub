@@ -1,0 +1,234 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transactions</title><style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.container{
+padding:15px;
+}
+
+.transaction-card{
+background:#03122c;
+border:2px solid rgba(0,200,255,.3);
+border-radius:18px;
+padding:15px;
+margin-bottom:15px;
+}
+
+.transaction-card h3{
+color:#00c8ff;
+margin-bottom:10px;
+}
+
+.transaction-card p{
+margin:6px 0;
+}
+
+.status-success{
+color:#00ff88;
+font-weight:bold;
+}
+
+.status-pending{
+color:#ffcc00;
+font-weight:bold;
+}
+
+</style></head><body><div class="header"><h1>Transactions</h1></div><div class="container">
+  <!-- DEPOSIT RECORD -->
+
+<div class="transaction-card">
+
+<h3>Deposit</h3>
+
+<p>Amount: UGX 100,000</p>
+
+<p>Date: 28 June 2026</p>
+
+<p class="status-success">
+Completed
+</p>
+
+</div>
+
+<!-- WITHDRAWAL RECORD -->
+
+<div class="transaction-card">
+
+<h3>Withdrawal</h3>
+
+<p>Amount: UGX 50,000</p>
+
+<p>Date: 27 June 2026</p>
+
+<p class="status-pending">
+Pending
+</p>
+
+</div>
+
+<!-- MACHINE PURCHASE -->
+
+<div class="transaction-card">
+
+<h3>Machine Purchase</h3>
+
+<p>Machine: VIP 5</p>
+
+<p>Amount: UGX 240,000</p>
+
+<p>Date: 26 June 2026</p>
+
+<p class="status-success">
+Activated
+</p>
+
+</div>
+
+<!-- INCOME RECORD -->
+
+<div class="transaction-card">
+
+<h3>Daily Income</h3>
+
+<p>Machine: VIP 5</p>
+
+<p>Income: UGX 26,400</p>
+
+<p>Date: Today</p>
+
+<p class="status-success">
+Credited
+</p>
+
+</div>
+
+<!-- REFERRAL BONUS -->
+
+<div class="transaction-card">
+
+<h3>Referral Bonus</h3>
+
+<p>Amount: UGX 5,000</p>
+
+<p>Date: Today</p>
+
+<p class="status-success">
+Received
+</p>
+
+</div>
+<!-- SUMMARY CARDS -->
+
+<div class="transaction-card">
+
+<h3>Total Deposits</h3>
+
+<p>UGX 1,250,000</p>
+
+</div>
+
+<div class="transaction-card">
+
+<h3>Total Withdrawals</h3>
+
+<p>UGX 420,000</p>
+
+</div>
+
+<div class="transaction-card">
+
+<h3>Total Machine Purchases</h3>
+
+<p>UGX 890,000</p>
+
+</div>
+
+<div class="transaction-card">
+
+<h3>Total Income Earned</h3>
+
+<p>UGX 691,850</p>
+
+</div>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
+
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
+</a>
+
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
+</a>
+
+<a href="deposit.html"
+style="color:white;text-decoration:none;text-align:center;">
+💰<br>Deposit
+</a>
+
+<a href="transactions.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+📋<br>Records
+</a>
+
+<a href="my.html"
+style="color:white;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
+
+</div>
+
+<script>
+
+setInterval(() => {
+
+console.log("Refreshing transactions...");
+
+}, 30000);
+
+</script>
+
+</body>
+  </html>
