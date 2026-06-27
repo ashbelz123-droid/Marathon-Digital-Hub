@@ -9,50 +9,54 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
 <style>
+
+.machine-header{
+padding:15px;
+font-size:28px;
+font-weight:bold;
+color:#00c8ff;
+}
+
 .machine-tabs{
 display:flex;
 overflow-x:auto;
-background:#111;
-padding:15px;
-gap:25px;
-position:sticky;
-top:0;
-z-index:100;
+gap:10px;
+padding:10px 15px;
 }
 
 .machine-tabs button{
-background:none;
+padding:10px 20px;
 border:none;
-color:#fff;
-font-size:18px;
-cursor:pointer;
-white-space:nowrap;
+border-radius:10px;
+background:#071529;
+color:white;
+font-weight:bold;
 }
 
 .machine-tabs button.active{
-color:#00c8ff;
-border-bottom:3px solid #00c8ff;
-padding-bottom:8px;
+background:#00c8ff;
+color:black;
 }
 
 .machine-card{
 display:flex;
-background:#041122;
-border:2px solid #00c8ff;
-border-radius:18px;
+gap:15px;
 margin:15px;
-overflow:hidden;
-box-shadow:0 0 15px rgba(0,200,255,.3);
+padding:15px;
+background:#09142d;
+border:1px solid rgba(0,200,255,.4);
+border-radius:20px;
+box-shadow:0 0 15px rgba(0,200,255,.15);
 }
 
 .machine-card img{
 width:140px;
 height:140px;
 object-fit:cover;
+border-radius:15px;
 }
 
 .machine-info{
-padding:15px;
 flex:1;
 }
 
@@ -62,152 +66,191 @@ margin-bottom:10px;
 }
 
 .machine-info p{
-margin:8px 0;
+margin-bottom:6px;
 }
 
 .buy-btn{
 width:100%;
 padding:12px;
-margin-top:10px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 background:linear-gradient(135deg,#00c8ff,#005dff);
 color:white;
 font-weight:bold;
 cursor:pointer;
+margin-top:10px;
 }
-</style>
-</head>
 
+@media(max-width:768px){
+
+.machine-card{
+flex-direction:column;
+}
+
+.machine-card img{
+width:100%;
+height:220px;
+}
+
+}
+
+</style>
+
+</head>
 <body>
+
+<canvas id="network"></canvas>
+
+<div class="machine-header">
+Mining Machines
+</div>
 
 <div class="machine-tabs">
 <button class="active">All</button>
 <button>VIP</button>
-<button>R Series</button>
-<button>D Series</button>
-<button>TS Series</button>
+<button>R</button>
+<button>D</button>
+<button>B</button>
 </div>
 
 <!-- VIP 1 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800" alt="">
+<img src="assets/images/miner1.jpg" alt="Miner">
 <div class="machine-info">
 <h3>VIP 1</h3>
-<p>Lock Period: 20 Days</p>
+<p>Duration: 20 Days</p>
 <p>Investment: UGX 18,000</p>
-<p>Total Return: UGX 40,000</p>
+<p>Total Income: UGX 40,000</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
 <!-- VIP 2 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=800" alt="">
+<img src="assets/images/miner2.jpg" alt="Miner">
 <div class="machine-info">
 <h3>VIP 2</h3>
-<p>Lock Period: 20 Days</p>
+<p>Duration: 20 Days</p>
 <p>Investment: UGX 36,000</p>
-<p>Total Return: UGX 79,200</p>
+<p>Total Income: UGX 79,200</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
 <!-- VIP 3 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800" alt="">
+<img src="assets/images/miner3.jpg" alt="Miner">
 <div class="machine-info">
 <h3>VIP 3</h3>
-<p>Lock Period: 20 Days</p>
+<p>Duration: 20 Days</p>
 <p>Investment: UGX 80,000</p>
-<p>Total Return: UGX 176,000</p>
+<p>Total Income: UGX 176,000</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
-<!-- VIP 4 -->
+<!-- R1 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1621501103258-3e135c8c1fda?w=800" alt="">
+<img src="assets/images/miner4.jpg" alt="Miner">
 <div class="machine-info">
-<h3>VIP 4</h3>
-<p>Lock Period: 20 Days</p>
-<p>Investment: UGX 110,000</p>
-<p>Total Return: UGX 242,000</p>
+<h3>R1</h3>
+<p>Duration: 120 Days</p>
+<p>Investment: UGX 57,000</p>
+<p>Total Income: UGX 1,420,000</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
-<!-- VIP 5 -->
+<!-- R2 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800" alt="">
+<img src="assets/images/miner5.jpg" alt="Miner">
 <div class="machine-info">
-<h3>VIP 5</h3>
-<p>Lock Period: 20 Days</p>
-<p>Investment: UGX 240,000</p>
-<p>Total Return: UGX 528,000</p>
+<h3>R2</h3>
+<p>Duration: 120 Days</p>
+<p>Investment: UGX 68,500</p>
+<p>Total Income: UGX 1,712,500</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
-<!-- VIP 6 -->
+<!-- D1 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=800" alt="">
+<img src="assets/images/miner6.jpg" alt="Miner">
 <div class="machine-info">
-<h3>VIP 6</h3>
-<p>Lock Period: 20 Days</p>
-<p>Investment: UGX 400,000</p>
-<p>Total Return: UGX 880,000</p>
+<h3>D1</h3>
+<p>Duration: 100 Days</p>
+<p>Investment: UGX 120,000</p>
+<p>Total Income: UGX 1,350,000</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
-<!-- VIP 7 -->
+<!-- D2 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800" alt="">
+<img src="assets/images/miner7.jpg" alt="Miner">
 <div class="machine-info">
-<h3>VIP 7</h3>
-<p>Lock Period: 20 Days</p>
-<p>Investment: UGX 650,000</p>
-<p>Total Return: UGX 1,430,000</p>
+<h3>D2</h3>
+<p>Duration: 100 Days</p>
+<p>Investment: UGX 200,000</p>
+<p>Total Income: UGX 2,450,000</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
-<!-- VIP 8 -->
+<!-- B1 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1621501103258-3e135c8c1fda?w=800" alt="">
+<img src="assets/images/miner8.jpg" alt="Miner">
 <div class="machine-info">
-<h3>VIP 8</h3>
-<p>Lock Period: 20 Days</p>
-<p>Investment: UGX 850,000</p>
-<p>Total Return: UGX 1,870,000</p>
+<h3>B1</h3>
+<p>Duration: 20 Days</p>
+<p>Investment: UGX 30,000</p>
+<p>Total Income: UGX 50,000</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
-<!-- VIP 9 -->
+<!-- B2 -->
 <div class="machine-card">
-<img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800" alt="">
+<img src="assets/images/miner9.jpg" alt="Miner">
 <div class="machine-info">
-<h3>VIP 9</h3>
-<p>Lock Period: 20 Days</p>
-<p>Investment: UGX 1,200,000</p>
-<p>Total Return: UGX 2,640,000</p>
+<h3>B2</h3>
+<p>Duration: 20 Days</p>
+<p>Investment: UGX 70,000</p>
+<p>Total Income: UGX 133,000</p>
 <button class="buy-btn">Activate Machine</button>
 </div>
 </div>
 
-<!-- VIP 10 -->
-<div class="machine-card">
-<img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=800" alt="">
-<div class="machine-info">
-<h3>VIP 10</h3>
-<p>Lock Period: 20 Days</p>
-<p>Investment: UGX 1,500,000</p>
-<p>Total Return: UGX 3,300,000</p>
-<button class="buy-btn">Activate Machine</button>
+<div class="nav">
+
+<a href="dashboard.html">
+<i class="fa-solid fa-house"></i>
+<span>Home</span>
+</a>
+
+<a href="machines.html" class="active">
+<i class="fa-solid fa-microchip"></i>
+<span>Machines</span>
+</a>
+
+<a href="deposit.html">
+<i class="fa-solid fa-wallet"></i>
+<span>Deposit</span>
+</a>
+
+<a href="holdings.html">
+<i class="fa-solid fa-chart-line"></i>
+<span>Holdings</span>
+</a>
+
+<a href="my.html">
+<i class="fa-solid fa-user"></i>
+<span>My</span>
+</a>
+
 </div>
-</div>
+
+<script src="js/network.js"></script>
 
 </body>
     </html>
