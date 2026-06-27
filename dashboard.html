@@ -1,59 +1,75 @@
-<!DOCTYPE html><html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
+<!-- DASHBOARD MAIN CONTENT --><header class="topbar">
+    <div class="logo-area">
+        <h1>MDH</h1>
+    </div><a href="notifications.html" class="notification">
+    <i class="fas fa-bell"></i>
+    <span class="badge">7</span>
+</a>
 
-<header class="topbar"><div class="logo-area">
-<h1>MDH</h1>
-</div><a href="notifications.html" class="notification">
-<i class="fas fa-bell"></i>
-<span class="badge">7</span>
-</a></header><section class="banner"><img
-src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?auto=format&fit=crop&w=1200&q=80"
-alt="Mining Banner">
+</header><section class="banner">
+    <img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200" alt="Mining Banner"><div class="banner-text">
+    <h2>Marathon Digital Hub</h2>
+    <p>AI Mining & Investment Platform</p>
+</div>
 
-<div class="banner-text">
-<h2>Marathon Digital Hub</h2>
-<p>AI Mining & Investment Platform</p>
-</div></section><marquee style="padding:10px;color:#00c8ff;">
-Welcome to Marathon Digital Hub • New Mining Packages Available • Referral Rewards Active • Withdrawals Enabled
-</marquee><section class="dashboard-grid"><div class="dash-card">
+</section><marquee>
+🚀 New VIP Packages Available | 💰 Instant Withdrawals Enabled | 🎁 Invite Friends & Earn Bonuses
+</marquee><section class="dashboard-grid"><a href="deposit.html">
+<div class="dash-card">
 <h2>UGX 0</h2>
 <p>Deposit Details</p>
-</div><div class="dash-card">
+</div>
+</a><a href="withdraw.html">
+<div class="dash-card">
 <h2>UGX 0</h2>
 <p>Withdraw Details</p>
-</div><div class="dash-card">
+</div>
+</a><a href="income.html">
+<div class="dash-card">
 <h2>UGX 0</h2>
 <p>AI Income</p>
-</div><div class="dash-card">
+</div>
+</a><a href="income.html">
+<div class="dash-card">
 <h2>UGX 0</h2>
 <p>Today's Earnings</p>
-</div><div class="dash-card">
+</div>
+</a><a href="team.html">
+<div class="dash-card">
 <h2>0</h2>
 <p>Invite Count</p>
-</div><div class="dash-card">
+</div>
+</a><a href="team.html">
+<div class="dash-card">
 <h2>0</h2>
 <p>Team Count</p>
-</div><div class="dash-card">
+</div>
+</a><a href="team-income.html">
+<div class="dash-card">
 <h2>UGX 0</h2>
 <p>Team Income</p>
-</div><div class="dash-card">
+</div>
+</a><a href="profile.html">
+<div class="dash-card">
 <h2>VIP 0</h2>
 <p>Current Level</p>
-</div></section><section class="messages-box"><div class="message-head">
+</div>
+</a></section><section class="messages-box"><div class="message-head">
 <h2>Message</h2>
 <a href="notifications.html">More</a>
-</div><div class="message-item">
+</div><div class="message-item"
+onclick="window.location='machines.html'">
 TS Series
-</div><div class="message-item">
+</div><div class="message-item"
+onclick="window.location='guidelines.html'">
 Member Guidelines
-</div><div class="message-item">
+</div><div class="message-item"
+onclick="window.location='raffle-guide.html'">
 How To Participate In The Raffle
-</div><div class="message-item">
+</div><div class="message-item"
+onclick="window.location='machines.html'">
 New Mining Packages Available
-</div></section><a href="manager.html" class="support-btn">
+</div></section><a href="admin-support.html" class="support-btn">
 <i class="fas fa-user-shield"></i>
 </a><nav class="nav"><a href="dashboard.html" class="active">
 <i class="fas fa-home"></i>
@@ -70,5 +86,18 @@ New Mining Packages Available
 </a><a href="profile.html">
 <i class="fas fa-user"></i>
 <span>My</span>
-</a></nav></body>
-</html>
+</a></nav><script>
+document.addEventListener("DOMContentLoaded", () => {
+
+const loginSound = new Audio(
+"https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"
+);
+
+loginSound.volume = 0.4;
+
+setTimeout(()=>{
+loginSound.play().catch(()=>{});
+},1000);
+
+});
+  </script>
