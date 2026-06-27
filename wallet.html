@@ -1,42 +1,239 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wallet - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
-<header class="topbar">
-<div class="logo-area">
-<h1>Wallet</h1>
+<title>Wallet Center</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.balance-card{
+margin:15px;
+padding:25px;
+background:#03122c;
+border:2px solid #00c8ff;
+border-radius:20px;
+text-align:center;
+box-shadow:0 0 15px rgba(0,200,255,.2);
+}
+
+.balance-card h3{
+color:#00c8ff;
+margin-bottom:10px;
+}
+
+.balance-card h1{
+font-size:40px;
+color:#00ff88;
+}
+
+.action-buttons{
+display:flex;
+gap:10px;
+padding:15px;
+}
+
+.action-buttons a{
+flex:1;
+padding:15px;
+text-align:center;
+text-decoration:none;
+border-radius:12px;
+font-weight:bold;
+color:white;
+}
+
+.deposit-btn{
+background:#00c853;
+}
+
+.withdraw-btn{
+background:#ff6d00;
+}
+
+.card{
+margin:15px;
+padding:20px;
+background:#03122c;
+border-radius:18px;
+border:2px solid rgba(0,200,255,.3);
+}
+
+.card h2{
+color:#00c8ff;
+margin-bottom:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>Wallet Center</h1>
+
 </div>
-</header><div class="card" style="margin:15px;">
-<h2>Available Balance</h2>
-<br>
-<h1 style="color:#00c8ff;">UGX 0</h1>
-</div><div class="dashboard-grid"><div class="dash-card">
-<h2>UGX 0</h2>
-<p>Total Deposits</p>
-</div><div class="dash-card">
-<h2>UGX 0</h2>
-<p>Total Withdrawals</p>
-</div></div><div class="card" style="margin:15px;"><h2>Deposit Funds</h2><br><input type="number" placeholder="Enter Amount"><button class="btn" style="width:100%;">
-Deposit Now
-</button></div><div class="card" style="margin:15px;"><h2>Withdraw Funds</h2><br><input type="number" placeholder="Enter Amount"><button class="btn" style="width:100%;">
-Withdraw Now
-</button></div><nav class="nav"><a href="dashboard.html">
-<i class="fas fa-home"></i>
-<span>Home</span>
-</a><a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
-</a><a href="wallet.html" class="active">
-<i class="fas fa-wallet"></i>
-<span>Wallet</span>
-</a><a href="team.html">
-<i class="fas fa-users"></i>
-<span>Team</span>
-</a><a href="profile.html">
-<i class="fas fa-user"></i>
-<span>My</span>
-</a></nav></body>
+
+<div class="balance-card">
+
+<h3>Available Balance</h3>
+
+<h1>UGX 125,670</h1>
+
+</div>
+
+<div class="action-buttons">
+
+<a href="deposit.html" class="deposit-btn">
+Deposit
+</a>
+
+<a href="withdraw.html" class="withdraw-btn">
+Withdraw
+</a>
+
+</div>
+<!-- DEPOSIT HISTORY -->
+
+<div class="card">
+
+<h2>Recent Deposits</h2>
+
+<p>UGX 100,000 — Completed</p>
+
+<p>UGX 50,000 — Completed</p>
+
+<p>UGX 250,000 — Pending</p>
+
+</div>
+
+<!-- WITHDRAWAL HISTORY -->
+
+<div class="card">
+
+<h2>Recent Withdrawals</h2>
+
+<p>UGX 50,000 — Completed</p>
+
+<p>UGX 25,000 — Completed</p>
+
+<p>UGX 100,000 — Pending</p>
+
+</div>
+
+<!-- WALLET STATISTICS -->
+
+<div class="card">
+
+<h2>Wallet Statistics</h2>
+
+<p>Total Deposits: UGX 1,250,000</p>
+
+<p>Total Withdrawals: UGX 420,000</p>
+
+<p>Total Earnings: UGX 691,850</p>
+
+<p>Current Balance: UGX 125,670</p>
+
+</div>
+
+<!-- RECENT ACTIVITY -->
+
+<div class="card">
+
+<h2>Recent Activity</h2>
+
+<p>VIP 5 Income + UGX 26,400</p>
+
+<p>Referral Bonus + UGX 5,000</p>
+
+<p>Withdrawal Request - UGX 50,000</p>
+
+<p>Deposit Approved + UGX 100,000</p>
+
+</div>
+<!-- BOTTOM NAVIGATION -->
+
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
+
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
+</a>
+
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
+</a>
+
+<a href="wallet.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+👛<br>Wallet
+</a>
+
+<a href="income.html"
+style="color:white;text-decoration:none;text-align:center;">
+📈<br>Income
+</a>
+
+<a href="my.html"
+style="color:white;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
+
+</div>
+
+<script>
+
+setInterval(() => {
+
+console.log("Refreshing wallet data...");
+
+},30000);
+
+</script>
+
+</body>
 </html>
