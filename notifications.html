@@ -1,33 +1,210 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notifications - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
-<header class="topbar">
-<div class="logo-area">
+<title>Notifications</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.notification-card{
+margin:15px;
+padding:18px;
+background:#03122c;
+border-radius:18px;
+border:2px solid rgba(0,200,255,.3);
+}
+
+.notification-card h3{
+color:#00c8ff;
+margin-bottom:10px;
+}
+
+.time{
+color:#00ff88;
+font-size:13px;
+margin-bottom:10px;
+}
+
+.notification-card p{
+line-height:1.6;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
 <h1>Notifications</h1>
+
 </div>
-</header><div class="card" style="margin:15px;">
-<h2>Recent Notifications</h2>
-<br><p>🚀 Welcome to Marathon Digital Hub</p>
-<hr><br><p>💰 Deposits will appear here</p>
-<hr><br><p>🎁 Referral bonuses will appear here</p>
-<hr><br><p>📢 System announcements will appear here</p></div><nav class="nav"><a href="dashboard.html">
-<i class="fas fa-home"></i>
-<span>Home</span>
-</a><a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
-</a><a href="wallet.html">
-<i class="fas fa-wallet"></i>
-<span>Wallet</span>
-</a><a href="team.html">
-<i class="fas fa-users"></i>
-<span>Team</span>
-</a><a href="profile.html">
-<i class="fas fa-user"></i>
-<span>My</span>
-</a></nav></body>
+
+<div class="notification-card">
+
+<div class="time">
+Today - 09:45 AM
+</div>
+
+<h3>Deposit Approved</h3>
+
+<p>
+Your deposit of UGX 100,000 has been approved and added to your wallet balance.
+</p>
+
+</div>
+
+<div class="notification-card">
+
+<div class="time">
+Today - 08:30 AM
+</div>
+
+<h3>Daily Income Received</h3>
+
+<p>
+Your mining machine generated daily income successfully.
+</p>
+
+</div>
+
+<div class="notification-card">
+
+<div class="time">
+Yesterday
+</div>
+
+<h3>Machine Activated</h3>
+
+<p>
+Your VIP 5 mining machine has been activated successfully.
+</p>
+
+</div>
+<div class="notification-card">
+
+<div class="time">
+2 Days Ago
+</div>
+
+<h3>Referral Bonus Received</h3>
+
+<p>
+You received a referral bonus of UGX 5,000 from a team member purchase.
+</p>
+
+</div>
+
+<div class="notification-card">
+
+<div class="time">
+3 Days Ago
+</div>
+
+<h3>Withdrawal Submitted</h3>
+
+<p>
+Your withdrawal request of UGX 50,000 has been submitted and is awaiting approval.
+</p>
+
+</div>
+
+<div class="notification-card">
+
+<div class="time">
+5 Days Ago
+</div>
+
+<h3>System Announcement</h3>
+
+<p>
+New mining machines have been added to the platform. Visit the Machines page to view them.
+</p>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
+
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
+</a>
+
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
+</a>
+
+<a href="wallet.html"
+style="color:white;text-decoration:none;text-align:center;">
+👛<br>Wallet
+</a>
+
+<a href="notifications.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+🔔<br>Alerts
+</a>
+
+<a href="my.html"
+style="color:white;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
+
+</div>
+
+<script>
+
+setInterval(() => {
+
+console.log("Checking notifications...");
+
+},30000);
+
+</script>
+
+</body>
 </html>
