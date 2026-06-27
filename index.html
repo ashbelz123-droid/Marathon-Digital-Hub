@@ -1,58 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marathon Digital Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></head>
+<body><canvas id="network"></canvas>
 
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-</head>
+<div class="welcome-container"><div class="form-box"><div class="logo">
+MDH
+</div><h1 class="title">
+Marathon Digital Hub
+</h1><p class="subtitle">
+AI Mining & Digital Investment Platform
+</p><div class="banner" style="margin:0 0 20px 0;height:220px;"><img
+id="slider"
+src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200"
+alt="Mining">
 
-<body>
+</div><a href="register.html"
+class="btn"
+style="display:block;text-align:center;margin-bottom:15px;">
+Create Account
+</a>
 
-<canvas id="network"></canvas>
+<a href="login.html"
+class="btn"
+style="display:block;text-align:center;">
+Login
+</a>
 
-<div class="welcome-container">
+</div></div><script>
 
-    <div class="form-box">
+const images = [
 
-        <div class="logo">
-            MDH
-        </div>
+"https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200",
 
-        <h1 class="title">
-            Marathon Digital Hub
-        </h1>
+"https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1200",
 
-        <p class="subtitle">
-            Digital Investment & AI Mining Platform
-        </p>
+"https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200",
 
-        <img
-        src="https://images.unsplash.com/photo-1532601224476-15c79f2f7a51?w=1200"
-        alt="Mining"
-        style="
-        width:100%;
-        height:220px;
-        object-fit:cover;
-        border-radius:15px;
-        margin-bottom:20px;
-        ">
+"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200"
 
-        <a href="register.html" class="btn" style="display:block;text-align:center;margin-bottom:15px;">
-            Register
-        </a>
+];
 
-        <a href="login.html" class="btn" style="display:block;text-align:center;">
-            Login
-        </a>
+let current = 0;
 
-    </div>
+setInterval(() => {
 
-</div>
+current++;
 
-<script src="assets/js/network.js"></script>
+if(current >= images.length){
+current = 0;
+}
 
-</body>
+document.getElementById("slider").src =
+images[current];
+
+},3000);
+
+</script><script src="assets/js/network.js"></script></body>
 </html>
