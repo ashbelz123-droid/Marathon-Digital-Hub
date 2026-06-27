@@ -1,63 +1,80 @@
 <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-</head><body><canvas id="network"></canvas>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Login - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
+<body><canvas id="network"></canvas>
 
-<div class="welcome-container"><div class="form-box">
+<div class="welcome-container"><div class="form-box"><div class="logo">
+MDH
+</div><h1 class="title">
+Welcome Back
+</h1><p class="subtitle">
+Login To Your Account
+</p><form id="loginForm"><div class="input-group">
+<input
+type="email"
+id="email"
+placeholder="Email Address"
+required>
+</div><div class="input-group">
+<input
+type="password"
+id="password"
+placeholder="Password"
+required>
+</div><button type="submit" class="btn">
+Login
+</button></form><p style="margin-top:20px;text-align:center;">
+Don't have an account?
+<a href="register.html" style="color:#00c8ff;">
+Register
+</a>
+</p></div></div><script>
 
-    <div class="logo">
-        MDH
-    </div>
+const supabaseUrl =
+'https://wcrrxsrtbelcbycppieg.supabase.co';
 
-    <h1 class="title">
-        Welcome Back
-    </h1>
+const supabaseKey =
+'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjcnJ4c3J0YmVsY2J5Y3BwaWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTM0ODQsImV4cCI6MjA5NjE4OTQ4NH0.yh_xCiEW2T9riiDJgEWBmIU4V0e5azRQ0sITaEhfCo4';
 
-    <p class="subtitle">
-        Login To Your Account
-    </p>
+const supabase =
+window.supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
 
-    <form id="loginForm">
+document
+.getElementById("loginForm")
+.addEventListener("submit",
+async function(e){
 
-        <div class="input-group">
-            <input
-            type="email"
-            id="email"
-            placeholder="Email Address"
-            required>
-        </div>
+e.preventDefault();
 
-        <div class="input-group">
-            <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            required>
-        </div>
+const email =
+document.getElementById("email").value;
 
-        <button type="submit" class="btn">
-            Login
-        </button>
+const password =
+document.getElementById("password").value;
 
-    </form>
+const { data, error } =
+await supabase.auth.signInWithPassword({
 
-    <p style="margin-top:20px;text-align:center;">
-        Don't have an account?
-        <a href="register.html" style="color:#00c8ff;">
-            Register
-        </a>
-    </p>
+email,
+password
 
-</div>
-
-</div><script>
-document.getElementById("loginForm").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    // Temporary redirect
-    window.location.href = "dashboard.html";
 });
+
+if(error){
+
+alert(error.message);
+return;
+
+}
+
+window.location.href =
+"dashboard.html";
+
+});
+
 </script><script src="assets/js/network.js"></script></body>
 </html>
