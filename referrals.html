@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Referral Center</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.card{
+margin:15px;
+padding:20px;
+background:#03122c;
+border:2px solid rgba(0,200,255,.3);
+border-radius:18px;
+}
+
+.card h2{
+color:#00c8ff;
+margin-bottom:15px;
+}
+
+.ref-link{
+background:#081a38;
+padding:15px;
+border-radius:10px;
+word-break:break-all;
+margin-top:10px;
+}
+
+.copy-btn{
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+background:linear-gradient(90deg,#00c8ff,#0066ff);
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>Referral Center</h1>
+
+</div>
+
+<div class="card">
+
+<h2>Your Referral Code</h2>
+
+<h1 style="color:#00ff88;">
+MDH10001
+</h1>
+
+<div class="ref-link">
+
+https://marathondigitalhub.com/register?ref=MDH10001
+
+</div>
+
+<button class="copy-btn" onclick="copyLink()">
+
+Copy Referral Link
+
+</button>
+
+</div>
+<!-- TEAM STATISTICS -->
+
+<div class="card">
+
+<h2>Team Statistics</h2>
+
+<p>Total Team Members: <strong>0</strong></p>
+
+<p>Level 1 Members: <strong>0</strong></p>
+
+<p>Level 2 Members: <strong>0</strong></p>
+
+<p>Level 3 Members: <strong>0</strong></p>
+
+</div>
+
+<!-- REFERRAL EARNINGS -->
+
+<div class="card">
+
+<h2>Referral Earnings</h2>
+
+<p>Total Bonus Earned</p>
+
+<h1 style="color:#00ff88;">
+UGX 0
+</h1>
+
+</div>
+
+<!-- BONUS LEVELS -->
+
+<div class="card">
+
+<h2>Referral Commission</h2>
+
+<p>Level 1 Referral: 10%</p>
+
+<p>Level 2 Referral: 3%</p>
+
+<p>Level 3 Referral: 1%</p>
+
+</div>
+
+<!-- TEAM MEMBERS -->
+
+<div class="card">
+
+<h2>My Team</h2>
+
+<p>No team members yet.</p>
+
+</div>
+<!-- REFERRAL RULES -->
+
+<div class="card">
+
+<h2>Referral Rules</h2>
+
+<p>• Share your referral link with friends.</p>
+
+<p>• Earn commissions when they activate machines.</p>
+
+<p>• Commissions are credited automatically.</p>
+
+<p>• Unlimited referrals allowed.</p>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
+
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
+</a>
+
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
+</a>
+
+<a href="deposit.html"
+style="color:white;text-decoration:none;text-align:center;">
+💰<br>Deposit
+</a>
+
+<a href="referrals.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+👥<br>Team
+</a>
+
+<a href="my.html"
+style="color:white;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
+
+</div>
+
+<script>
+
+function copyLink(){
+
+navigator.clipboard.writeText(
+"https://marathondigitalhub.com/register?ref=MDH10001"
+);
+
+alert("Referral link copied!");
+
+}
+
+</script>
+
+</body>
+</html>
