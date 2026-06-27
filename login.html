@@ -1,38 +1,78 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - Marathon Digital Hub</title>
 
 <link rel="stylesheet" href="css/style.css">
-</head>ñ
-<body><canvas id="network"></canvas>
+</head>
 
-<div class="welcome-container"><div class="form-box"><div class="logo">
+<body>
+
+<canvas id="network"></canvas>
+
+<div class="welcome-container">
+
+<div class="form-box">
+
+<div class="logo">
 MDH
-</div><h1 class="title">
-Welcome Back
-</h1><p class="subtitle">
+</div>
+
+<h1 class="title">Welcome Back</h1>
+
+<p class="subtitle">
 Login To Your Account
-</p><form id="loginForm"><div class="input-group">
+</p>
+
+<form id="loginForm">
+
+<div class="input-group">
 <input
 type="email"
 id="email"
 placeholder="Email Address"
 required>
-</div><div class="input-group">
+</div>
+
+<div class="input-group">
 <input
 type="password"
 id="password"
 placeholder="Password"
 required>
-</div><button type="submit" class="btn">
+</div>
+
+<button type="submit" class="btn">
 Login
-</button></form><p style="margin-top:20px;text-align:center;">
+</button>
+
+</form>
+
+<p style="margin-top:20px;text-align:center;">
 Don't have an account?
 <a href="register.html" style="color:#00c8ff;">
 Register
 </a>
-</p></div></div><script src="js/network.js"></script>
+</p>
+
+</div>
+
+</div>
+
+<script>
+document.getElementById("loginForm")
+.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+window.location.href = "dashboard.html";
+
+});
+</script>
+
+<script src="js/network.js"></script>
+
 </body>
 </html>
