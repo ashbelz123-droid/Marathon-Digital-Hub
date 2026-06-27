@@ -3,112 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mining Machines - Marathon Digital Hub</title>
+<title>Machines - Marathon Digital Hub</title>
 
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-<style>
-
-.series-tabs{
-display:flex;
-overflow-x:auto;
-gap:10px;
-padding:15px;
-}
-
-.series-tabs button{
-min-width:110px;
-padding:12px;
-border:none;
-border-radius:12px;
-background:#071529;
-color:white;
-border:1px solid rgba(0,200,255,.3);
-}
-
-.series-tabs button.active{
-background:#00c8ff;
-color:black;
-font-weight:bold;
-}
-
-.machine-card{
-display:flex;
-gap:15px;
-margin:15px;
-padding:15px;
-border-radius:20px;
-background:#071529;
-border:1px solid rgba(0,200,255,.35);
-}
-
-.machine-card img{
-width:140px;
-height:140px;
-object-fit:cover;
-border-radius:15px;
-}
-
-.machine-info{
-flex:1;
-}
-
-.machine-info h2{
-color:#00c8ff;
-margin-bottom:10px;
-}
-
-.machine-info p{
-margin-bottom:8px;
-color:white;
-}
-
-.buy-btn{
-margin-top:10px;
-width:100%;
-padding:12px;
-border:none;
-border-radius:12px;
-background:linear-gradient(135deg,#00c8ff,#0066ff);
-color:white;
-font-weight:bold;
-}
-
-@media(max-width:768px){
-
-.machine-card{
-flex-direction:column;
-}
-
-.machine-card img{
-width:100%;
-height:220px;
-}
-
-}
-
-</style>
-
 </head>
 
 <body>
 
 <canvas id="network"></canvas>
 
-<h2 class="section-title">
-Mining Machines
-</h2>
+<div class="topbar">
+    <div class="logo-area">
+        <h1>MDH</h1>
+    </div>
 
-<div class="series-tabs">
-
-<button class="active">All</button>
-<button>TS Series</button>
-<button>DS Series</button>
-<button>E Series</button>
-<button>B Series</button>
-
+    <div class="notification">
+        <i class="fa-solid fa-bell"></i>
+        <span class="badge">3</span>
+    </div>
 </div>
+
+<h2 class="section-title">Mining Machines</h2>
 
 <!-- TS 1 -->
 
@@ -117,19 +33,14 @@ Mining Machines
 <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1200" alt="Miner">
 
 <div class="machine-info">
-
-<h2>TS-1</h2>
-
-<p><b>Lock Period:</b> 50 Days</p>
-
-<p><b>Price:</b> UGX 100,000</p>
-
-<p><b>Total Income:</b> UGX 1,600,000</p>
+<h3>TS-1</h3>
+<p>Lock Period: 120 Days</p>
+<p>Price: UGX 20,000</p>
+<p>Total Income: UGX 44,000</p>
 
 <button class="buy-btn">
 Buy Now
 </button>
-
 </div>
 
 </div>
@@ -141,19 +52,14 @@ Buy Now
 <img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200" alt="Miner">
 
 <div class="machine-info">
-
-<h2>TS-2</h2>
-
-<p><b>Lock Period:</b> 50 Days</p>
-
-<p><b>Price:</b> UGX 300,000</p>
-
-<p><b>Total Income:</b> UGX 5,700,000</p>
+<h3>TS-2</h3>
+<p>Lock Period: 124 Days</p>
+<p>Price: UGX 30,000</p>
+<p>Total Income: UGX 72,000</p>
 
 <button class="buy-btn">
 Buy Now
 </button>
-
 </div>
 
 </div>
@@ -165,19 +71,14 @@ Buy Now
 <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200" alt="Miner">
 
 <div class="machine-info">
-
-<h2>TS-3</h2>
-
-<p><b>Lock Period:</b> 50 Days</p>
-
-<p><b>Price:</b> UGX 900,000</p>
-
-<p><b>Total Income:</b> UGX 19,800,000</p>
+<h3>TS-3</h3>
+<p>Lock Period: 100 Days</p>
+<p>Price: UGX 80,000</p>
+<p>Total Income: UGX 176,000</p>
 
 <button class="buy-btn">
 Buy Now
 </button>
-
 </div>
 
 </div>
@@ -189,22 +90,101 @@ Buy Now
 <img src="https://images.unsplash.com/photo-1622630998477-20aa696ecb05?w=1200" alt="Miner">
 
 <div class="machine-info">
-
-<h2>TS-4</h2>
-
-<p><b>Lock Period:</b> 50 Days</p>
-
-<p><b>Price:</b> UGX 3,000,000</p>
-
-<p><b>Total Income:</b> UGX 78,000,000</p>
+<h3>TS-4</h3>
+<p>Lock Period: 110 Days</p>
+<p>Price: UGX 110,000</p>
+<p>Total Income: UGX 242,000</p>
 
 <button class="buy-btn">
 Buy Now
 </button>
-
 </div>
 
 </div>
+
+<!-- TS 5 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200" alt="Miner">
+
+<div class="machine-info">
+<h3>TS-5</h3>
+<p>Lock Period: 110 Days</p>
+<p>Price: UGX 240,000</p>
+<p>Total Income: UGX 528,000</p>
+
+<button class="buy-btn">
+Buy Now
+</button>
+</div>
+
+</div>
+
+<!-- TS 6 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?w=1200" alt="Miner">
+
+<div class="machine-info">
+<h3>TS-6</h3>
+<p>Lock Period: 75 Days</p>
+<p>Price: UGX 400,000</p>
+<p>Total Income: UGX 880,000</p>
+
+<button class="buy-btn">
+Buy Now
+</button>
+</div>
+
+</div>
+
+<!-- TS 7 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?w=1200" alt="Miner">
+
+<div class="machine-info">
+<h3>TS-7</h3>
+<p>Lock Period: 80 Days</p>
+<p>Price: UGX 650,000</p>
+<p>Total Income: UGX 1,430,000</p>
+
+<button class="buy-btn">
+Buy Now
+</button>
+</div>
+
+</div>
+
+<!-- TS 8 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1624996379697-f01d168b1a52?w=1200" alt="Miner">
+
+<div class="machine-info">
+<h3>TS-8</h3>
+<p>Lock Period: 110 Days</p>
+<p>Price: UGX 850,000</p>
+<p>Total Income: UGX 1,870,000</p>
+
+<button class="buy-btn">
+Buy Now
+</button>
+</div>
+
+</div>
+
+<!-- Support -->
+
+<a href="support.html" class="support-btn">
+<i class="fa-solid fa-headset"></i>
+</a>
+
+<!-- Bottom Navigation -->
 
 <div class="nav">
 
@@ -215,10 +195,10 @@ Buy Now
 
 <a href="machines.html" class="active">
 <i class="fa-solid fa-microchip"></i>
-<span>AI</span>
+<span>Machines</span>
 </a>
 
-<a href="wallet.html">
+<a href="deposit.html">
 <i class="fa-solid fa-wallet"></i>
 <span>Wallet</span>
 </a>
