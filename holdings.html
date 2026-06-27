@@ -1,125 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Holdings - Marathon Digital Hub</title>
+<title>My Holdings</title>
 
-<link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.summary-box{
+margin:15px;
+padding:20px;
+background:#03122c;
+border:2px solid #00c8ff;
+border-radius:18px;
+text-align:center;
+}
+
+.summary-box h2{
+font-size:34px;
+color:#00ff88;
+margin-top:10px;
+}
+
+.container{
+padding:10px;
+}
+
+.machine-card{
+background:#03122c;
+border:2px solid rgba(0,200,255,.35);
+border-radius:18px;
+padding:15px;
+margin-bottom:15px;
+}
+
+.machine-card h3{
+color:#00c8ff;
+margin-bottom:10px;
+}
+
+.machine-card p{
+margin:6px 0;
+}
+
+.active{
+display:inline-block;
+margin-top:10px;
+padding:6px 12px;
+background:#00ff88;
+color:black;
+font-weight:bold;
+border-radius:20px;
+}
+
+</style>
 
 </head>
+
 <body>
 
-<canvas id="network"></canvas>
+<div class="header">
 
-<header class="topbar">
-
-<div class="user">
-
-<div class="avatar">
-MY
-</div>
-
-<div>
-<h3>My Holdings</h3>
-<p>Purchased Machines</p>
-</div>
+<h1>My Holdings</h1>
 
 </div>
 
-</header>
+<div class="summary-box">
 
-<section class="wallet">
+<p>Total Active Machines</p>
 
-<h2>Total Active Earnings</h2>
-
-<h1>UGX 0</h1>
-
-</section>
-
-<section class="feature">
-
-<h2>Active Machines</h2>
-
-<div class="machine">
-
-<h3>AI Starter</h3>
-
-<p>Status: Active</p>
-
-<p>Purchase Date: 20/06/2026</p>
-
-<p>Daily Income: UGX 7,000</p>
-
-<p>Days Remaining: 30</p>
-
-<button>
-Claim Earnings
-</button>
+<h2>4</h2>
 
 </div>
 
-<div class="machine">
+<div class="container">
+  <!-- MACHINE 1 -->
 
-<h3>AI Pro</h3>
+<div class="machine-card">
 
-<p>Status: Active</p>
+<h3>VIP 5</h3>
 
-<p>Purchase Date: 20/06/2026</p>
+<p>Investment: UGX 240,000</p>
 
-<p>Daily Income: UGX 35,000</p>
+<p>Daily Income: UGX 26,400</p>
 
-<p>Days Remaining: 30</p>
+<p>Days Remaining: 18</p>
 
-<button>
-Claim Earnings
-</button>
+<p>Total Earned: UGX 52,800</p>
+
+<span class="active">
+ACTIVE
+</span>
 
 </div>
 
-</section>
+<!-- MACHINE 2 -->
 
-<section class="feature">
+<div class="machine-card">
 
-<h2>Earnings History</h2>
+<h3>VIP 7</h3>
 
-<div class="machine">
-UGX 7,000 credited today
+<p>Investment: UGX 650,000</p>
+
+<p>Daily Income: UGX 71,500</p>
+
+<p>Days Remaining: 15</p>
+
+<p>Total Earned: UGX 357,500</p>
+
+<span class="active">
+ACTIVE
+</span>
+
 </div>
 
-<div class="machine">
-UGX 35,000 credited today
+<!-- MACHINE 3 -->
+
+<div class="machine-card">
+
+<h3>R2 Miner</h3>
+
+<p>Investment: UGX 68,500</p>
+
+<p>Daily Income: UGX 14,270</p>
+
+<p>Days Remaining: 105</p>
+
+<p>Total Earned: UGX 214,050</p>
+
+<span class="active">
+ACTIVE
+</span>
+
 </div>
 
-</section>
+<!-- MACHINE 4 -->
 
-<nav class="nav">
+<div class="machine-card">
 
-<a href="dashboard.html">
-<i class="fas fa-home"></i>
-<span>Home</span>
+<h3>D1 Miner</h3>
+
+<p>Investment: UGX 120,000</p>
+
+<p>Daily Income: UGX 13,500</p>
+
+<p>Days Remaining: 95</p>
+
+<p>Total Earned: UGX 67,500</p>
+
+<span class="active">
+ACTIVE
+</span>
+
+</div>
+<!-- EARNINGS SUMMARY -->
+
+<div class="summary-box">
+
+<p>Total Investment</p>
+
+<h2>UGX 1,078,500</h2>
+
+</div>
+
+<div class="summary-box">
+
+<p>Total Earnings</p>
+
+<h2>UGX 691,850</h2>
+
+</div>
+
+<div class="summary-box">
+
+<p>Today's Earnings</p>
+
+<h2>UGX 125,670</h2>
+
+</div>
+
+<div class="summary-box">
+
+<p>Running Machines</p>
+
+<h2>4</h2>
+
+</div>
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
+
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
 </a>
 
-<a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
 </a>
 
-<a href="holdings.html" class="active">
-<i class="fas fa-briefcase"></i>
-<span>Holdings</span>
+<a href="deposit.html"
+style="color:white;text-decoration:none;text-align:center;">
+💰<br>Deposit
 </a>
 
-<a href="profile.html">
-<i class="fas fa-user"></i>
-<span>Me</span>
+<a href="holdings.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+📊<br>Assets
 </a>
 
-</nav>
+<a href="my.html"
+style="color:white;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
 
-<script src="assets/js/network.js"></script>
+</div>
+
+<script>
+
+setInterval(() => {
+
+console.log("Updating holdings...");
+
+}, 30000);
+
+</script>
 
 </body>
-  </html>
+</html>
