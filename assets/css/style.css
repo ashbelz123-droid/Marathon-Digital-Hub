@@ -808,3 +808,103 @@ text-align:center;
     width:100%;
     margin-top:10px;
 }
+
+/* =========================================
+LOGIN / REGISTER IMAGE SLIDER
+========================================= */
+
+.login-slider{
+    width:100%;
+    height:220px;
+    overflow:hidden;
+    border-radius:20px;
+    margin-bottom:20px;
+    border:1px solid rgba(0,200,255,.35);
+    box-shadow:0 0 20px rgba(0,200,255,.15);
+}
+
+.login-slider img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* Better login/register card */
+.form-box{
+    width:100%;
+    max-width:420px;
+    background:rgba(9,20,45,.95);
+    border:1px solid rgba(0,200,255,.35);
+    border-radius:25px;
+    padding:25px;
+    box-shadow:
+        0 0 25px rgba(0,200,255,.2),
+        0 0 50px rgba(0,200,255,.05);
+    backdrop-filter:blur(12px);
+}
+
+.logo{
+    width:90px;
+    height:90px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#00c8ff,#005dff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-size:30px;
+    font-weight:bold;
+    box-shadow:0 0 25px rgba(0,200,255,.4);
+}
+
+.title{
+    text-align:center;
+    font-size:32px;
+    margin-bottom:8px;
+    color:white;
+}
+
+.subtitle{
+    text-align:center;
+    color:#b8c7e0;
+    margin-bottom:20px;
+}
+
+.input-group input{
+    width:100%;
+    padding:15px;
+    background:#071529;
+    border:1px solid rgba(0,200,255,.25);
+    border-radius:12px;
+    color:white;
+    font-size:15px;
+}
+
+.input-group input:focus{
+    border-color:#00c8ff;
+    box-shadow:0 0 10px rgba(0,200,255,.3);
+}
+
+.form-box .btn{
+    width:100%;
+    margin-top:10px;
+}
+
+/* Mobile */
+@media(max-width:768px){
+
+    .login-slider{
+        height:180px;
+    }
+
+    .form-box{
+        padding:20px;
+    }
+
+    .title{
+        font-size:28px;
+    }
+
+}
