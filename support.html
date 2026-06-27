@@ -1,34 +1,193 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Support - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
-<header class="topbar">
-<div class="logo-area">
+<title>Customer Support</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#000814;
+color:white;
+padding-bottom:90px;
+}
+
+.header{
+background:#03122c;
+padding:20px;
+text-align:center;
+border-bottom:2px solid #00c8ff;
+}
+
+.header h1{
+color:#00c8ff;
+font-size:28px;
+}
+
+.card{
+margin:15px;
+padding:20px;
+background:#03122c;
+border:2px solid rgba(0,200,255,.3);
+border-radius:18px;
+}
+
+.card h2{
+color:#00c8ff;
+margin-bottom:15px;
+}
+
+.card p{
+margin:8px 0;
+}
+
+.contact-btn{
+display:block;
+width:100%;
+padding:15px;
+margin-top:15px;
+text-align:center;
+text-decoration:none;
+background:linear-gradient(90deg,#00c8ff,#0066ff);
+color:white;
+border-radius:12px;
+font-weight:bold;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
 <h1>Customer Support</h1>
+
 </div>
-</header><div class="card" style="margin:15px;"><h2>Need Help?</h2><br><p>Contact our support team.</p><br><a href="https://wa.me/256700000000" class="btn">
-WhatsApp Support
-</a><br><a href="mailto:support@mdh.com" class="btn">
-Email Support
-</a></div><div class="card" style="margin:15px;"><h2>Frequently Asked Questions</h2><br><p>• How do I deposit?</p>
-<p>• How do I withdraw?</p>
-<p>• How do referrals work?</p></div><nav class="nav"><a href="dashboard.html">
-<i class="fas fa-home"></i>
-<span>Home</span>
-</a><a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
-</a><a href="wallet.html">
-<i class="fas fa-wallet"></i>
-<span>Wallet</span>
-</a><a href="team.html">
-<i class="fas fa-users"></i>
-<span>Team</span>
-</a><a href="profile.html" class="active">
-<i class="fas fa-user"></i>
-<span>My</span>
-</a></nav></body>
-</html>
+
+<div class="card">
+
+<h2>WhatsApp Support</h2>
+
+<p>Need help with deposits, withdrawals or account issues?</p>
+
+<a href="https://wa.me/256700000000"
+class="contact-btn">
+
+Chat on WhatsApp
+
+</a>
+
+</div>
+
+<div class="card">
+
+<h2>Telegram Support</h2>
+
+<p>Join our official support channel.</p>
+
+<a href="#"
+class="contact-btn">
+
+Open Telegram
+
+</a>
+
+</div>
+<!-- EMAIL SUPPORT -->
+
+<div class="card">
+
+<h2>Email Support</h2>
+
+<p>Contact our support team via email.</p>
+
+<p>support@marathondigitalhub.com</p>
+
+<a href="mailto:support@marathondigitalhub.com"
+class="contact-btn">
+
+Send Email
+
+</a>
+
+</div>
+
+<!-- FAQ -->
+
+<div class="card">
+
+<h2>Frequently Asked Questions</h2>
+
+<p><strong>Q:</strong> How long do deposits take?</p>
+<p><strong>A:</strong> Usually 1–30 minutes after approval.</p>
+
+<br>
+
+<p><strong>Q:</strong> How long do withdrawals take?</p>
+<p><strong>A:</strong> Usually within 24 hours.</p>
+
+<br>
+
+<p><strong>Q:</strong> How do I activate a machine?</p>
+<p><strong>A:</strong> Deposit funds, then purchase a machine from the Machines page.</p>
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<div style="
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:70px;
+background:#010b23;
+display:flex;
+justify-content:space-around;
+align-items:center;
+border-top:1px solid rgba(0,200,255,.2);
+z-index:999;
+">
+
+<a href="dashboard.html"
+style="color:white;text-decoration:none;text-align:center;">
+🏠<br>Home
+</a>
+
+<a href="machines.html"
+style="color:white;text-decoration:none;text-align:center;">
+⚙️<br>Machines
+</a>
+
+<a href="deposit.html"
+style="color:white;text-decoration:none;text-align:center;">
+💰<br>Deposit
+</a>
+
+<a href="support.html"
+style="color:#00c8ff;text-decoration:none;text-align:center;">
+💬<br>Support
+</a>
+
+<a href="my.html"
+style="color:white;text-decoration:none;text-align:center;">
+👤<br>My
+</a>
+
+</div>
+
+</body>
+  </html>
