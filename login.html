@@ -16,32 +16,20 @@
 
 <div class="form-box">
 
-<div class="logo">
-MDH
-</div>
+<div class="logo">MDH</div>
 
 <h1 class="title">Welcome Back</h1>
 
-<p class="subtitle">
-Login To Your Account
-</p>
+<p class="subtitle">Login To Your Account</p>
 
 <form id="loginForm">
 
 <div class="input-group">
-<input
-type="email"
-id="email"
-placeholder="Email Address"
-required>
+<input type="email" id="email" placeholder="Email Address" required>
 </div>
 
 <div class="input-group">
-<input
-type="password"
-id="password"
-placeholder="Password"
-required>
+<input type="password" id="password" placeholder="Password" required>
 </div>
 
 <button type="submit" class="btn">
@@ -62,13 +50,9 @@ Register
 </div>
 
 <script>
-document.getElementById("loginForm")
-.addEventListener("submit", function(e){
-
+document.getElementById("loginForm").addEventListener("submit",function(e){
 e.preventDefault();
-
-window.location.href = "dashboard.html";
-
+window.location.href="dashboard.html";
 });
 </script>
 
