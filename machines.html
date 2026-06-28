@@ -2,12 +2,14 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Mining Packages</title>
 
 <link rel="stylesheet" href="assets/css/style.css">
+
 </head>
 
 <body>
@@ -16,6 +18,16 @@
 
 <div class="header">
 <h1>Mining Packages</h1>
+</div>
+
+<div class="balance-card">
+
+<h3>Wallet Balance</h3>
+
+<h1 id="walletBalance">
+UGX 0
+</h1>
+
 </div>
 
 <div class="card">
@@ -27,244 +39,486 @@
 <div class="machine-grid">
 
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 1</h3>
-<div class="machine-price">UGX 18,000</div>
-<p>Total Return: UGX 40,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 18,000</p>
+
+<p><strong>Total Income:</strong> UGX 40,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(18000,'VIP 1')">
+Activate Machine
+</button>
+
 </div>
+
 </div>
 
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 2</h3>
-<div class="machine-price">UGX 36,000</div>
-<p>Total Return: UGX 79,200</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 36,000</p>
+
+<p><strong>Total Income:</strong> UGX 79,200</p>
+
+<button
+class="btn"
+onclick="buyMachine(36000,'VIP 2')">
+Activate Machine
+</button>
+
 </div>
+
 </div>
 
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 3</h3>
-<div class="machine-price">UGX 80,000</div>
-<p>Total Return: UGX 176,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 80,000</p>
+
+<p><strong>Total Income:</strong> UGX 176,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(80000,'VIP 3')">
+Activate Machine
+</button>
+
 </div>
 
+</div>
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 4</h3>
-<div class="machine-price">UGX 110,000</div>
-<p>Total Return: UGX 242,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 110,000</p>
+
+<p><strong>Total Income:</strong> UGX 242,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(110000,'VIP 4')">
+Activate Machine
+</button>
+
 </div>
+
 </div>
+
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 5</h3>
-<div class="machine-price">UGX 240,000</div>
-<p>Total Return: UGX 528,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 240,000</p>
+
+<p><strong>Total Income:</strong> UGX 528,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(240000,'VIP 5')">
+Activate Machine
+</button>
+
 </div>
+
 </div>
 
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 6</h3>
-<div class="machine-price">UGX 400,000</div>
-<p>Total Return: UGX 880,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 400,000</p>
+
+<p><strong>Total Income:</strong> UGX 880,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(400000,'VIP 6')">
+Activate Machine
+</button>
+
 </div>
+
 </div>
 
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 7</h3>
-<div class="machine-price">UGX 650,000</div>
-<p>Total Return: UGX 1,430,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 650,000</p>
+
+<p><strong>Total Income:</strong> UGX 1,430,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(650000,'VIP 7')">
+Activate Machine
+</button>
+
 </div>
+
 </div>
 
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 8</h3>
-<div class="machine-price">UGX 850,000</div>
-<p>Total Return: UGX 1,870,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 850,000</p>
+
+<p><strong>Total Income:</strong> UGX 1,870,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(850000,'VIP 8')">
+Activate Machine
+</button>
+
 </div>
 
-<div class="machine-card">
+     </div>
+     <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 9</h3>
-<div class="machine-price">UGX 1,200,000</div>
-<p>Total Return: UGX 2,640,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 1,200,000</p>
+
+<p><strong>Total Income:</strong> UGX 2,640,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(1200000,'VIP 9')">
+Activate Machine
+</button>
+
 </div>
+
 </div>
 
 <div class="machine-card">
+
 <div class="machine-info">
+
 <h3>VIP 10</h3>
-<div class="machine-price">UGX 1,500,000</div>
-<p>Total Return: UGX 3,300,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-     </div>
-     </div>
 
-<div class="card">
+<p><strong>Lock:</strong> 20 Days</p>
 
-<h2>B Series Packages</h2>
+<p><strong>Price:</strong> UGX 1,500,000</p>
 
-</div>
+<p><strong>Total Income:</strong> UGX 3,300,000</p>
 
-<div class="machine-grid">
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>B1 Package</h3>
-<div class="machine-price">UGX 2,000,000</div>
-<p>Total Return: UGX 4,400,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>B2 Package</h3>
-<div class="machine-price">UGX 3,000,000</div>
-<p>Total Return: UGX 6,600,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>B3 Package</h3>
-<div class="machine-price">UGX 5,000,000</div>
-<p>Total Return: UGX 11,000,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-     </div>
-     <div class="card">
-
-<h2>D Series Packages</h2>
+<button
+class="btn"
+onclick="buyMachine(1500000,'VIP 10')">
+Activate Machine
+</button>
 
 </div>
 
-<div class="machine-grid">
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>D1 Package</h3>
-<div class="machine-price">UGX 8,000,000</div>
-<p>Total Return: UGX 17,600,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>D2 Package</h3>
-<div class="machine-price">UGX 10,000,000</div>
-<p>Total Return: UGX 22,000,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>D3 Package</h3>
-<div class="machine-price">UGX 15,000,000</div>
-<p>Total Return: UGX 33,000,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>D4 Package</h3>
-<div class="machine-price">UGX 20,000,000</div>
-<p>Total Return: UGX 44,000,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>D5 Package</h3>
-<div class="machine-price">UGX 30,000,000</div>
-<p>Total Return: UGX 66,000,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-<div class="machine-card">
-<div class="machine-info">
-<h3>D6 Package</h3>
-<div class="machine-price">UGX 50,000,000</div>
-<p>Total Return: UGX 110,000,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
-</div>
-
-<div class="machine-card">
-<div class="machine-info">
-<h3>D7 Package</h3>
-<div class="machine-price">UGX 100,000,000</div>
-<p>Total Return: UGX 220,000,000</p>
-<p>Rate: 2.2x</p>
-<button class="btn">Activate</button>
-</div>
 </div>
 
 </div>
 
 <div class="card">
 
-<h2>R Series Packages</h2>
+<h2>B Series</h2>
 
 </div>
 
 <div class="machine-grid">
 
-<div class="machine-card"><div class="machine-info"><h3>R1 Package</h3><div class="machine-price">UGX 120,000,000</div><button class="btn">Activate</button></div></div>
+<div class="machine-card">
 
-<div class="machine-card"><div class="machine-info"><h3>R2 Package</h3><div class="machine-price">UGX 150,000,000</div><button class="btn">Activate</button></div></div>
+<div class="machine-info">
 
-<div class="machine-card"><div class="machine-info"><h3>R3 Package</h3><div class="machine-price">UGX 200,000,000</div><button class="btn">Activate</button></div></div>
+<h3>B1</h3>
 
-<div class="machine-card"><div class="machine-info"><h3>R4 Package</h3><div class="machine-price">UGX 250,000,000</div><button class="btn">Activate</button></div></div>
+<p><strong>Lock:</strong> 20 Days</p>
 
-<div class="machine-card"><div class="machine-info"><h3>R5 Package</h3><div class="machine-price">UGX 300,000,000</div><button class="btn">Activate</button></div></div>
+<p><strong>Price:</strong> UGX 30,000</p>
 
-<div class="machine-card"><div class="machine-info"><h3>R6 Package</h3><div class="machine-price">UGX 400,000,000</div><button class="btn">Activate</button></div></div>
+<p><strong>Total Income:</strong> UGX 50,000</p>
 
-<div class="machine-card"><div class="machine-info"><h3>R7 Package</h3><div class="machine-price">UGX 500,000,000</div><button class="btn">Activate</button></div></div>
+<button
+class="btn"
+onclick="buyMachine(30000,'B1')">
+Activate Machine
+</button>
 
-<div class="machine-card"><div class="machine-info"><h3>R8 Package</h3><div class="machine-price">UGX 1,000,000,000</div><button class="btn">Activate</button></div></div>
+</div>
+
+</div>
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>B2</h3>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 70,000</p>
+
+<p><strong>Total Income:</strong> UGX 133,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(70000,'B2')">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>B3</h3>
+
+<p><strong>Lock:</strong> 20 Days</p>
+
+<p><strong>Price:</strong> UGX 100,000</p>
+
+<p><strong>Total Income:</strong> UGX 200,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(100000,'B3')">
+Activate Machine
+</button>
+
+</div>
+
+     </div>
+     </div>
+
+<div class="card">
+
+<h2>D Series</h2>
+
+</div>
+
+<div class="machine-grid">
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>D1</h3>
+
+<p><strong>Lock:</strong> 100 Days</p>
+
+<p><strong>Price:</strong> UGX 120,000</p>
+
+<p><strong>Total Income:</strong> UGX 1,350,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(120000,'D1')">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>D2</h3>
+
+<p><strong>Lock:</strong> 100 Days</p>
+
+<p><strong>Price:</strong> UGX 200,000</p>
+
+<p><strong>Total Income:</strong> UGX 2,450,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(200000,'D2')">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>D3</h3>
+
+<p><strong>Lock:</strong> 100 Days</p>
+
+<p><strong>Price:</strong> UGX 430,000</p>
+
+<p><strong>Total Income:</strong> UGX 7,417,500</p>
+
+<button
+class="btn"
+onclick="buyMachine(430000,'D3')">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>D4</h3>
+
+<p><strong>Lock:</strong> 100 Days</p>
+
+<p><strong>Price:</strong> UGX 500,000</p>
+
+<p><strong>Total Income:</strong> UGX 10,625,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(500000,'D4')">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>D5</h3>
+
+<p><strong>Lock:</strong> 90 Days</p>
+
+<p><strong>Price:</strong> UGX 950,000</p>
+
+<p><strong>Total Income:</strong> UGX 22,325,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(950000,'D5')">
+Activate Machine
+</button>
+
+</div>
+
+     </div>
+     <div class="machine-card">
+
+<div class="machine-info">
+
+<h3>D6</h3>
+
+<p><strong>Lock:</strong> 90 Days</p>
+
+<p><strong>Price:</strong> UGX 2,000,000</p>
+
+<p><strong>Total Income:</strong> UGX 49,500,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(2000000,'D6')">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<div class="machine-card">
+
+<div class="machine-info">
+
+<h3>D7</h3>
+
+<p><strong>Lock:</strong> 90 Days</p>
+
+<p><strong>Price:</strong> UGX 4,000,000</p>
+
+<p><strong>Total Income:</strong> UGX 99,000,000</p>
+
+<button
+class="btn"
+onclick="buyMachine(4000000,'D7')">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>R Series</h2>
+
+</div>
+
+<div class="machine-grid">
+
+<div class="machine-card"><div class="machine-info"><h3>R1</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 6,000,000</p><button class="btn" onclick="buyMachine(6000000,'R1')">Activate Machine</button></div></div>
+
+<div class="machine-card"><div class="machine-info"><h3>R2</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 8,000,000</p><button class="btn" onclick="buyMachine(8000000,'R2')">Activate Machine</button></div></div>
+
+<div class="machine-card"><div class="machine-info"><h3>R3</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 10,000,000</p><button class="btn" onclick="buyMachine(10000000,'R3')">Activate Machine</button></div></div>
+
+<div class="machine-card"><div class="machine-info"><h3>R4</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 15,000,000</p><button class="btn" onclick="buyMachine(15000000,'R4')">Activate Machine</button></div></div>
+
+<div class="machine-card"><div class="machine-info"><h3>R5</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 20,000,000</p><button class="btn" onclick="buyMachine(20000000,'R5')">Activate Machine</button></div></div>
+
+<div class="machine-card"><div class="machine-info"><h3>R6</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 30,000,000</p><button class="btn" onclick="buyMachine(30000000,'R6')">Activate Machine</button></div></div>
+
+<div class="machine-card"><div class="machine-info"><h3>R7</h3><p><strong>Lock:</strong> 75 Days</p><p><strong>Price:</strong> UGX 50,000,000</p><button class="btn" onclick="buyMachine(50000000,'R7')">Activate Machine</button></div></div>
+
+<div class="machine-card"><div class="machine-info"><h3>R8</h3><p><strong>Lock:</strong> 80 Days</p><p><strong>Price:</strong> UGX 100,000,000</p><button class="btn" onclick="buyMachine(100000000,'R8')">Activate Machine</button></div></div>
 
 </div>
 
@@ -294,8 +548,66 @@
 
 </div>
 
+<script>
+
+let wallet =
+parseFloat(localStorage.getItem("walletBalance")) || 0;
+
+document.getElementById("walletBalance").innerText =
+"UGX " + wallet.toLocaleString();
+
+function buyMachine(price,name){
+
+if(wallet < price){
+
+alert("Insufficient Balance");
+
+return;
+
+}
+
+wallet -= price;
+
+localStorage.setItem(
+"walletBalance",
+wallet
+);
+
+document.getElementById(
+"walletBalance"
+).innerText =
+"UGX " + wallet.toLocaleString();
+
+let machines =
+JSON.parse(
+localStorage.getItem(
+"activeMachines"
+)
+) || [];
+
+machines.push({
+
+name:name,
+price:price,
+date:new Date().toISOString()
+
+});
+
+localStorage.setItem(
+"activeMachines",
+JSON.stringify(machines)
+);
+
+alert(
+name + " Activated Successfully"
+);
+
+}
+
+</script>
+
 <script src="assets/js/app.js"></script>
 <script src="assets/js/network.js"></script>
 
 </body>
-                                    </html>
+                                                                                                                                                                                                                                              </html>
