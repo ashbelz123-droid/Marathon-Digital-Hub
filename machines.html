@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -20,41 +18,64 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#050816;
+background:#020b1f;
 color:white;
 padding-bottom:100px;
 }
 
 .header{
-height:70px;
-display:flex;
-align-items:center;
-justify-content:center;
-background:#000;
+padding:20px;
+text-align:center;
 border-bottom:1px solid rgba(0,200,255,.3);
+background:#000814;
 }
 
 .header h1{
 color:#00c8ff;
+font-size:36px;
+font-weight:bold;
+}
+
+.balance-card{
+margin:15px;
+padding:20px;
+border-radius:20px;
+background:#03142f;
+border:1px solid rgba(0,200,255,.3);
+box-shadow:0 0 15px rgba(0,200,255,.2);
+}
+
+.balance-title{
+font-size:16px;
+opacity:.8;
+}
+
+.balance-value{
+font-size:32px;
+font-weight:bold;
+color:#00c8ff;
+margin-top:10px;
 }
 
 .tabs{
 display:flex;
 overflow-x:auto;
-background:#111;
-padding:10px;
 gap:10px;
+padding:15px;
+}
+
+.tabs::-webkit-scrollbar{
+display:none;
 }
 
 .tab{
 min-width:120px;
-padding:12px;
+padding:14px;
 text-align:center;
-background:#02122b;
-border-radius:12px;
+border-radius:15px;
+background:#03142f;
+border:1px solid rgba(0,200,255,.25);
 cursor:pointer;
-color:white;
-border:1px solid rgba(0,200,255,.2);
 }
 
 .tab.active{
@@ -68,20 +89,24 @@ padding:15px;
 }
 
 .machine-card{
-background:#02122b;
-border:2px solid rgba(0,200,255,.25);
+background:#03142f;
+border:1px solid rgba(0,200,255,.25);
 border-radius:20px;
 padding:20px;
 margin-bottom:15px;
 box-shadow:0 0 15px rgba(0,200,255,.15);
 }
 
-.machine-card h2{
+.machine-name{
+font-size:24px;
+font-weight:bold;
 color:#00c8ff;
-margin-bottom:10px;
+margin-bottom:15px;
 }
 
-.machine-card p{
+.machine-row{
+display:flex;
+justify-content:space-between;
 margin:8px 0;
 }
 
@@ -92,47 +117,56 @@ margin-top:15px;
 border:none;
 border-radius:15px;
 background:#00c8ff;
-font-size:16px;
+color:#000;
 font-weight:bold;
+font-size:16px;
 cursor:pointer;
 }
 
-</style>
+.buy-btn:hover{
+opacity:.9;
+}
 
+</style>
 </head>
 
 <body>
 
 <div class="header">
-
 <h1>Machines Center</h1>
+</div>
+
+<div class="balance-card">
+
+<div class="balance-title">
+Available Balance
+</div>
+
+<div class="balance-value" id="userBalance">
+UGX 0
+</div>
 
 </div>
 
 <div class="tabs">
 
-<div class="tab active"
-onclick="loadSeries('all')">
+<div class="tab active" onclick="filterMachines('all',this)">
 All
 </div>
 
-<div class="tab"
-onclick="loadSeries('vip')">
+<div class="tab" onclick="filterMachines('vip',this)">
 VIP Series
 </div>
 
-<div class="tab"
-onclick="loadSeries('b')">
+<div class="tab" onclick="filterMachines('b',this)">
 B Series
 </div>
 
-<div class="tab"
-onclick="loadSeries('d')">
+<div class="tab" onclick="filterMachines('d',this)">
 D Series
 </div>
 
-<div class="tab"
-onclick="loadSeries('r')">
+<div class="tab" onclick="filterMachines('r',this)">
 R Series
 </div>
 
@@ -157,173 +191,11 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-const machines = [
+const machines = [];
 
-{
-name:"R1",
-series:"r",
-price:57000,
-income:142000,
-days:120
-},
-
-{
-name:"R2",
-series:"r",
-price:68500,
-income:171250,
-days:120
-},
-
-{
-name:"R3",
-series:"r",
-price:150000,
-income:375000,
-days:110
-}
-
-];
-
-   // R SERIES
-
-machines.push(
-
-{
-name:"R4",
-series:"r",
-price:750000,
-income:1875000,
-days:110
-},
-
-{
-name:"R5",
-series:"r",
-price:1000000,
-income:2500000,
-days:110
-},
-
-{
-name:"R6",
-series:"r",
-price:2500000,
-income:42500000,
-days:110
-},
-
-{
-name:"R7",
-series:"r",
-price:3000000,
-income:54000000,
-days:75
-},
-
-{
-name:"R8",
-series:"r",
-price:6000000,
-income:150000000,
-days:80
-}
-
-);
-
-// D SERIES
-
-machines.push(
-
-{
-name:"D1",
-series:"d",
-price:120000,
-income:1350000,
-days:100
-},
-
-{
-name:"D2",
-series:"d",
-price:200000,
-income:2450000,
-days:100
-},
-
-{
-name:"D3",
-series:"d",
-price:430000,
-income:7417500,
-days:100
-},
-
-{
-name:"D4",
-series:"d",
-price:500000,
-income:10625000,
-days:100
-},
-
-{
-name:"D5",
-series:"d",
-price:950000,
-income:22325000,
-days:90
-},
-
-{
-name:"D6",
-series:"d",
-price:2275000,
-income:58012500,
-days:90
-},
-
-{
-name:"D7",
-series:"d",
-price:4950000,
-income:121275000,
-days:90
-}
-
-);
-
-// B SERIES
-
-machines.push(
-
-{
-name:"B1",
-series:"b",
-price:30000,
-income:50000,
-days:20
-},
-
-{
-name:"B2",
-series:"b",
-price:70000,
-income:133000,
-days:20
-},
-
-{
-name:"B3",
-series:"b",
-price:100000,
-income:200000,
-days:20
-}
-
-);
-
+// ======================
 // VIP SERIES
+// ======================
 
 machines.push(
 
@@ -331,7 +203,7 @@ machines.push(
 name:"VIP1",
 series:"vip",
 price:18000,
-income:40000,
+totalReturn:40000,
 days:20
 },
 
@@ -339,7 +211,7 @@ days:20
 name:"VIP2",
 series:"vip",
 price:36000,
-income:79200,
+totalReturn:79200,
 days:20
 },
 
@@ -347,7 +219,7 @@ days:20
 name:"VIP3",
 series:"vip",
 price:80000,
-income:176000,
+totalReturn:176000,
 days:20
 },
 
@@ -355,7 +227,7 @@ days:20
 name:"VIP4",
 series:"vip",
 price:110000,
-income:242000,
+totalReturn:242000,
 days:20
 },
 
@@ -363,7 +235,7 @@ days:20
 name:"VIP5",
 series:"vip",
 price:240000,
-income:528000,
+totalReturn:528000,
 days:20
 },
 
@@ -371,7 +243,7 @@ days:20
 name:"VIP6",
 series:"vip",
 price:400000,
-income:880000,
+totalReturn:880000,
 days:20
 },
 
@@ -379,7 +251,7 @@ days:20
 name:"VIP7",
 series:"vip",
 price:650000,
-income:1430000,
+totalReturn:1430000,
 days:20
 },
 
@@ -387,7 +259,7 @@ days:20
 name:"VIP8",
 series:"vip",
 price:850000,
-income:1870000,
+totalReturn:1870000,
 days:20
 },
 
@@ -395,7 +267,7 @@ days:20
 name:"VIP9",
 series:"vip",
 price:1200000,
-income:2640000,
+totalReturn:2640000,
 days:20
 },
 
@@ -403,80 +275,249 @@ days:20
 name:"VIP10",
 series:"vip",
 price:1500000,
-income:3300000,
+totalReturn:3300000,
 days:20
 }
 
 );
 
+// ======================
+// B SERIES
+// ======================
 
-function loadSeries(series){
+machines.push(
+
+{
+name:"B1",
+series:"b",
+price:30000,
+totalReturn:50000,
+days:20
+},
+
+{
+name:"B2",
+series:"b",
+price:70000,
+totalReturn:133000,
+days:20
+},
+
+{
+name:"B3",
+series:"b",
+price:100000,
+totalReturn:200000,
+days:20
+}
+
+);
+
+   // ======================
+// D SERIES
+// ======================
+
+machines.push(
+
+{
+name:"D1",
+series:"d",
+price:120000,
+totalReturn:1350000,
+days:100
+},
+
+{
+name:"D2",
+series:"d",
+price:200000,
+totalReturn:2450000,
+days:100
+},
+
+{
+name:"D3",
+series:"d",
+price:430000,
+totalReturn:7417500,
+days:100
+},
+
+{
+name:"D4",
+series:"d",
+price:500000,
+totalReturn:10625000,
+days:100
+},
+
+{
+name:"D5",
+series:"d",
+price:950000,
+totalReturn:22325000,
+days:90
+},
+
+{
+name:"D6",
+series:"d",
+price:2275000,
+totalReturn:58012500,
+days:90
+},
+
+{
+name:"D7",
+series:"d",
+price:4950000,
+totalReturn:121275000,
+days:90
+}
+
+);
+
+// ======================
+// R SERIES
+// ======================
+
+machines.push(
+
+{
+name:"R1",
+series:"r",
+price:57000,
+totalReturn:142000,
+days:120
+},
+
+{
+name:"R2",
+series:"r",
+price:68500,
+totalReturn:171250,
+days:120
+},
+
+{
+name:"R3",
+series:"r",
+price:150000,
+totalReturn:375000,
+days:110
+},
+
+{
+name:"R4",
+series:"r",
+price:750000,
+totalReturn:1875000,
+days:110
+},
+
+{
+name:"R5",
+series:"r",
+price:1000000,
+totalReturn:2500000,
+days:110
+},
+
+{
+name:"R6",
+series:"r",
+price:2500000,
+totalReturn:42500000,
+days:110
+},
+
+{
+name:"R7",
+series:"r",
+price:3000000,
+totalReturn:54000000,
+days:75
+},
+
+{
+name:"R8",
+series:"r",
+price:6000000,
+totalReturn:150000000,
+days:80
+}
+
+);
+
+// ======================
+// MACHINE DISPLAY
+// ======================
+
+function filterMachines(series, element){
+
+document
+.querySelectorAll('.tab')
+.forEach(tab=>{
+tab.classList.remove('active');
+});
+
+if(element){
+element.classList.add('active');
+}
 
 const container =
 document.getElementById(
 'machineContainer'
 );
 
-container.innerHTML = '';
-
-document
-.querySelectorAll('.tab')
-.forEach(tab=>{
-tab.classList.remove(
-'active'
-);
-});
-
-event.target.classList.add(
-'active'
-);
+container.innerHTML='';
 
 const filtered =
 series === 'all'
 ? machines
 : machines.filter(
-m=>m.series===series
+m => m.series === series
 );
 
 filtered.forEach(machine=>{
+
+const dailyIncome =
+Math.floor(
+machine.totalReturn /
+machine.days
+);
 
 container.innerHTML += `
 
 <div class="machine-card">
 
-<h2>${machine.name}</h2>
+<div class="machine-name">
+${machine.name}
+</div>
 
-<p>
-💰 Price:
-UGX ${machine.price.toLocaleString()}
-</p>
+<div class="machine-row">
+<span>Price</span>
+<span>UGX ${machine.price.toLocaleString()}</span>
+</div>
 
-<p>
-📈 Total Return:
-UGX ${machine.income.toLocaleString()}
-</p>
+<div class="machine-row">
+<span>Total Return</span>
+<span>UGX ${machine.totalReturn.toLocaleString()}</span>
+</div>
 
-<p>
-📅 Duration:
-${machine.days} Days
-</p>
+<div class="machine-row">
+<span>Duration</span>
+<span>${machine.days} Days</span>
+</div>
 
-<p>
-💵 Daily Income:
-UGX ${Math.floor(
-machine.income /
-machine.days
-).toLocaleString()}
-</p>
+<div class="machine-row">
+<span>Daily Income</span>
+<span>UGX ${dailyIncome.toLocaleString()}</span>
+</div>
 
 <button
 class="buy-btn"
-onclick="buyMachine(
-'${machine.name}',
-${machine.price},
-${machine.income},
-${machine.days}
-)">
+onclick="buyMachine('${machine.name}')">
 
 BUY NOW
 
@@ -490,20 +531,69 @@ BUY NOW
 
 }
 
-// LOAD ALL MACHINES
+filterMachines('all');
 
-loadSeries('all');
+   // ======================
+// LOAD USER BALANCE
+// ======================
 
-     async function buyMachine(
-
-name,
-price,
-income,
-days
-
-){
+async function loadBalance(){
 
 try{
+
+const {
+data:{user}
+}
+=
+await supabase.auth.getUser();
+
+if(!user) return;
+
+const {
+data
+}
+=
+await supabase
+.from('profiles')
+.select('balance')
+.eq('id',user.id)
+.single();
+
+if(data){
+
+document.getElementById(
+'userBalance'
+).innerText =
+
+'UGX ' +
+Number(
+data.balance || 0
+).toLocaleString();
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+// ======================
+// BUY MACHINE
+// ======================
+
+async function buyMachine(machineName){
+
+try{
+
+const machine =
+machines.find(
+m => m.name === machineName
+);
+
+if(!machine) return;
 
 const {
 data:{user}
@@ -521,11 +611,9 @@ return;
 
 }
 
-/* GET USER WALLET */
-
 const {
-data:userData,
-error:userError
+data:profile,
+error:profileError
 }
 =
 await supabase
@@ -534,33 +622,35 @@ await supabase
 .eq('id',user.id)
 .single();
 
-if(userError){
+if(profileError){
 
 alert(
-'User account not found'
+'Profile not found'
 );
 
 return;
 
 }
 
-const wallet =
-userData.balance || 0;
+const balance =
+Number(
+profile.balance || 0
+);
 
-if(wallet < price){
+if(balance < machine.price){
 
 alert(
-'Insufficient balance'
+'Insufficient Balance'
 );
 
 return;
 
 }
 
-/* DEDUCT BALANCE */
+/* DEDUCT WALLET */
 
 const newBalance =
-wallet - price;
+balance - machine.price;
 
 const {
 error:updateError
@@ -581,29 +671,31 @@ user.id
 if(updateError){
 
 alert(
-'Failed to deduct balance'
+'Balance update failed'
 );
 
 return;
 
 }
 
-/* SAVE MACHINE */
+/* SAVE PURCHASE */
 
 const expiry =
 new Date();
 
 expiry.setDate(
-expiry.getDate() + days
+expiry.getDate() +
+machine.days
 );
 
 const dailyIncome =
 Math.floor(
-income / days
+machine.totalReturn /
+machine.days
 );
 
 const {
-error:machineError
+error:purchaseError
 }
 =
 await supabase
@@ -612,27 +704,38 @@ await supabase
 
 user_id:user.id,
 
-machine_name:name,
+machine_name:
+machine.name,
 
-purchase_price:price,
+machine_series:
+machine.series,
 
-total_return:income,
+purchase_price:
+machine.price,
 
-daily_income:dailyIncome,
+total_return:
+machine.totalReturn,
 
-days_remaining:days,
+daily_income:
+dailyIncome,
+
+days_remaining:
+machine.days,
 
 active:true,
 
 expiry_date:
-expiry.toISOString()
+expiry.toISOString(),
+
+created_at:
+new Date().toISOString()
 
 });
 
-if(machineError){
+if(purchaseError){
 
 alert(
-machineError.message
+purchaseError.message
 );
 
 return;
@@ -641,12 +744,12 @@ return;
 
 alert(
 
-name +
-' purchased successfully'
+machine.name +
+' Purchased Successfully'
 
 );
 
-location.reload();
+loadBalance();
 
 }catch(err){
 
@@ -658,9 +761,11 @@ err.message
 
 }
 
-/* INITIAL LOAD */
+// ======================
+// PAGE START
+// ======================
 
-loadSeries('all');
+loadBalance();
 
 </script>
 
