@@ -6,7 +6,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Machines</title>
+<title>Machines Center</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 
@@ -21,54 +23,20 @@ body{
 background:#050816;
 color:white;
 padding-bottom:100px;
-overflow-x:hidden;
 }
-
-/* COLORFUL DOT BACKGROUND */
-
-body::before{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:
-radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
-radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
-radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
-z-index:-2;
-}
-
-body::after{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background-image:
-radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
-background-size:18px 18px;
-z-index:-1;
-}
-
-/* HEADER */
 
 .header{
 height:70px;
-background:#000;
 display:flex;
-justify-content:center;
 align-items:center;
+justify-content:center;
+background:#000;
 border-bottom:1px solid rgba(0,200,255,.3);
 }
 
 .header h1{
 color:#00c8ff;
 }
-
-/* TABS */
 
 .tabs{
 display:flex;
@@ -79,13 +47,14 @@ gap:10px;
 }
 
 .tab{
-padding:10px 18px;
-border-radius:10px;
-background:#00142c;
-border:1px solid #00c8ff;
-color:#00c8ff;
-white-space:nowrap;
+min-width:120px;
+padding:12px;
+text-align:center;
+background:#02122b;
+border-radius:12px;
 cursor:pointer;
+color:white;
+border:1px solid rgba(0,200,255,.2);
 }
 
 .tab.active{
@@ -94,52 +63,36 @@ color:#000;
 font-weight:bold;
 }
 
-/* MACHINE AREA */
-
 .machine-container{
 padding:15px;
 }
 
 .machine-card{
 background:#02122b;
-border:2px solid rgba(0,200,255,.4);
-border-radius:25px;
-overflow:hidden;
-margin-bottom:20px;
+border:2px solid rgba(0,200,255,.25);
+border-radius:20px;
+padding:20px;
+margin-bottom:15px;
 box-shadow:0 0 15px rgba(0,200,255,.15);
 }
 
-.machine-card img{
-width:100%;
-height:220px;
-object-fit:cover;
-display:block;
-}
-
-.machine-info{
-padding:18px;
-}
-
-.machine-info h2{
+.machine-card h2{
 color:#00c8ff;
-font-size:34px;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
-.machine-info p{
-margin:10px 0;
-font-size:20px;
+.machine-card p{
+margin:8px 0;
 }
 
-.activate-btn{
+.buy-btn{
 width:100%;
-padding:16px;
+padding:15px;
 margin-top:15px;
 border:none;
 border-radius:15px;
-background:linear-gradient(90deg,#00c8ff,#0066ff);
-color:white;
-font-size:18px;
+background:#00c8ff;
+font-size:16px;
 font-weight:bold;
 cursor:pointer;
 }
@@ -152,751 +105,564 @@ cursor:pointer;
 
 <div class="header">
 
-<h1>Mining Machines</h1>
+<h1>Machines Center</h1>
 
 </div>
 
 <div class="tabs">
 
-<div class="tab active">All</div>
-
-<div class="tab">VIP Series</div>
-
-<div class="tab">B Series</div>
-
-<div class="tab">D Series</div>
-
-<div class="tab">R Series</div>
-
+<div class="tab active"
+onclick="loadSeries('all')">
+All
 </div>
 
-<div class="machine-container">
+<div class="tab"
+onclick="loadSeries('vip')">
+VIP Series
+</div>
 
-     <!-- VIP 1 -->
+<div class="tab"
+onclick="loadSeries('b')">
+B Series
+</div>
 
-<div class="machine-card">
+<div class="tab"
+onclick="loadSeries('d')">
+D Series
+</div>
 
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 1</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 18,000</p>
-
-<p>Total Income: UGX 40,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
+<div class="tab"
+onclick="loadSeries('r')">
+R Series
 </div>
 
 </div>
 
-<!-- VIP 2 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 2</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 36,000</p>
-
-<p>Total Income: UGX 79,200</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
+<div id="machineContainer"
+class="machine-container">
 
 </div>
 
-</div>
-
-<!-- VIP 3 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 3</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 80,000</p>
-
-<p>Total Income: UGX 176,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- VIP 4 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 4</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 110,000</p>
-
-<p>Total Income: UGX 242,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- VIP 5 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 5</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 240,000</p>
-
-<p>Total Income: UGX 528,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-     </div>
-
-     <!-- VIP 6 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 6</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 400,000</p>
-
-<p>Total Income: UGX 880,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- VIP 7 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 7</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 650,000</p>
-
-<p>Total Income: UGX 1,430,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- VIP 8 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 8</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 850,000</p>
-
-<p>Total Income: UGX 1,870,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- VIP 9 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 9</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 1,200,000</p>
-
-<p>Total Income: UGX 2,640,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- VIP 10 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
-
-<div class="machine-info">
-
-<h2>VIP 10</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 1,500,000</p>
-
-<p>Total Income: UGX 3,300,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-     </div>
-
-<!-- B1 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
-
-<div class="machine-info">
-
-<h2>B1 Miner</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 30,000</p>
-
-<p>Total Income: UGX 50,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- B2 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
-
-<div class="machine-info">
-
-<h2>B2 Miner</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 70,000</p>
-
-<p>Total Income: UGX 133,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- B3 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
-
-<div class="machine-info">
-
-<h2>B3 Miner</h2>
-
-<p>Duration: 20 Days</p>
-
-<p>Investment: UGX 100,000</p>
-
-<p>Total Income: UGX 200,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- D1 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
-
-<div class="machine-info">
-
-<h2>D1 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 120,000</p>
-
-<p>Total Income: UGX 1,350,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- D2 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
-
-<div class="machine-info">
-
-<h2>D2 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 200,000</p>
-
-<p>Total Income: UGX 2,450,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- D3 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
-
-<div class="machine-info">
-
-<h2>D3 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 430,000</p>
-
-<p>Total Income: UGX 7,417,500</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- D4 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
-
-<div class="machine-info">
-
-<h2>D4 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 500,000</p>
-
-<p>Total Income: UGX 10,625,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-     </div>
-
-     <!-- D5 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
-
-<div class="machine-info">
-
-<h2>D5 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 950,000</p>
-
-<p>Total Income: UGX 22,325,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- D6 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
-
-<div class="machine-info">
-
-<h2>D6 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 2,275,000</p>
-
-<p>Total Income: UGX 58,012,500</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- D7 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
-
-<div class="machine-info">
-
-<h2>D7 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 4,950,000</p>
-
-<p>Total Income: UGX 121,275,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- R1 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
-
-<div class="machine-info">
-
-<h2>R1 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 57,000</p>
-
-<p>Total Income: UGX 1,420,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- R2 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
-
-<div class="machine-info">
-
-<h2>R2 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 68,500</p>
-
-<p>Total Income: UGX 1,712,500</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- R3 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
-
-<div class="machine-info">
-
-<h2>R3 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 150,000</p>
-
-<p>Total Income: UGX 3,750,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-     <!-- R4 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
-
-<div class="machine-info">
-
-<h2>R4 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 750,000</p>
-
-<p>Total Income: UGX 18,750,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- R5 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
-
-<div class="machine-info">
-
-<h2>R5 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 1,000,000</p>
-
-<p>Total Income: UGX 25,000,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- R6 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
-
-<div class="machine-info">
-
-<h2>R6 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 2,500,000</p>
-
-<p>Total Income: UGX 62,500,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- R7 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
-
-<div class="machine-info">
-
-<h2>R7 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 3,000,000</p>
-
-<p>Total Income: UGX 54,000,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<!-- R8 -->
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
-
-<div class="machine-info">
-
-<h2>R8 Miner</h2>
-
-<p>Duration: 30 Days</p>
-
-<p>Investment: UGX 6,000,000</p>
-
-<p>Total Income: UGX 150,000,000</p>
-
-<button class="activate-btn">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- BOTTOM NAVIGATION -->
-
-<div class="bottom-nav">
-
-<a href="dashboard.html">
-🏠<br>Home
-</a>
-
-<a href="machines.html" style="color:#00c8ff;">
-⚙️<br>Machines
-</a>
-
-<a href="deposit.html">
-💳<br>Deposit
-</a>
-
-<a href="income.html">
-📈<br>Income
-</a>
-
-<a href="my.html">
-👤<br>My
-</a>
-
-</div>
-
-<style>
-
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:75px;
-background:#000;
-border-top:1px solid rgba(0,200,255,.3);
-display:flex;
-justify-content:space-around;
-align-items:center;
-z-index:999;
+<script>
+
+const SUPABASE_URL =
+"https://wcrrxsrtbelcbycppieg.supabase.co";
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjcnJ4c3J0YmVsY2J5Y3BwaWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTM0ODQsImV4cCI6MjA5NjE4OTQ4NH0.yh_xCiEW2T9riiDJgEWBmIU4V0e5azRQ0sITaEhfCo4";
+
+const supabase =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+const machines = [
+
+{
+name:"R1",
+series:"r",
+price:57000,
+income:142000,
+days:120
+},
+
+{
+name:"R2",
+series:"r",
+price:68500,
+income:171250,
+days:120
+},
+
+{
+name:"R3",
+series:"r",
+price:150000,
+income:375000,
+days:110
 }
 
-.bottom-nav a{
-text-decoration:none;
-color:#aaa;
-font-size:13px;
-text-align:center;
+];
+
+   // R SERIES
+
+machines.push(
+
+{
+name:"R4",
+series:"r",
+price:750000,
+income:1875000,
+days:110
+},
+
+{
+name:"R5",
+series:"r",
+price:1000000,
+income:2500000,
+days:110
+},
+
+{
+name:"R6",
+series:"r",
+price:2500000,
+income:42500000,
+days:110
+},
+
+{
+name:"R7",
+series:"r",
+price:3000000,
+income:54000000,
+days:75
+},
+
+{
+name:"R8",
+series:"r",
+price:6000000,
+income:150000000,
+days:80
 }
 
-</style>
+);
+
+// D SERIES
+
+machines.push(
+
+{
+name:"D1",
+series:"d",
+price:120000,
+income:1350000,
+days:100
+},
+
+{
+name:"D2",
+series:"d",
+price:200000,
+income:2450000,
+days:100
+},
+
+{
+name:"D3",
+series:"d",
+price:430000,
+income:7417500,
+days:100
+},
+
+{
+name:"D4",
+series:"d",
+price:500000,
+income:10625000,
+days:100
+},
+
+{
+name:"D5",
+series:"d",
+price:950000,
+income:22325000,
+days:90
+},
+
+{
+name:"D6",
+series:"d",
+price:2275000,
+income:58012500,
+days:90
+},
+
+{
+name:"D7",
+series:"d",
+price:4950000,
+income:121275000,
+days:90
+}
+
+);
+
+// B SERIES
+
+machines.push(
+
+{
+name:"B1",
+series:"b",
+price:30000,
+income:50000,
+days:20
+},
+
+{
+name:"B2",
+series:"b",
+price:70000,
+income:133000,
+days:20
+},
+
+{
+name:"B3",
+series:"b",
+price:100000,
+income:200000,
+days:20
+}
+
+);
+
+// VIP SERIES
+
+machines.push(
+
+{
+name:"VIP1",
+series:"vip",
+price:18000,
+income:40000,
+days:20
+},
+
+{
+name:"VIP2",
+series:"vip",
+price:36000,
+income:79200,
+days:20
+},
+
+{
+name:"VIP3",
+series:"vip",
+price:80000,
+income:176000,
+days:20
+},
+
+{
+name:"VIP4",
+series:"vip",
+price:110000,
+income:242000,
+days:20
+},
+
+{
+name:"VIP5",
+series:"vip",
+price:240000,
+income:528000,
+days:20
+},
+
+{
+name:"VIP6",
+series:"vip",
+price:400000,
+income:880000,
+days:20
+},
+
+{
+name:"VIP7",
+series:"vip",
+price:650000,
+income:1430000,
+days:20
+},
+
+{
+name:"VIP8",
+series:"vip",
+price:850000,
+income:1870000,
+days:20
+},
+
+{
+name:"VIP9",
+series:"vip",
+price:1200000,
+income:2640000,
+days:20
+},
+
+{
+name:"VIP10",
+series:"vip",
+price:1500000,
+income:3300000,
+days:20
+}
+
+);
+
+
+function loadSeries(series){
+
+const container =
+document.getElementById(
+'machineContainer'
+);
+
+container.innerHTML = '';
+
+document
+.querySelectorAll('.tab')
+.forEach(tab=>{
+tab.classList.remove(
+'active'
+);
+});
+
+event.target.classList.add(
+'active'
+);
+
+const filtered =
+series === 'all'
+? machines
+: machines.filter(
+m=>m.series===series
+);
+
+filtered.forEach(machine=>{
+
+container.innerHTML += `
+
+<div class="machine-card">
+
+<h2>${machine.name}</h2>
+
+<p>
+💰 Price:
+UGX ${machine.price.toLocaleString()}
+</p>
+
+<p>
+📈 Total Return:
+UGX ${machine.income.toLocaleString()}
+</p>
+
+<p>
+📅 Duration:
+${machine.days} Days
+</p>
+
+<p>
+💵 Daily Income:
+UGX ${Math.floor(
+machine.income /
+machine.days
+).toLocaleString()}
+</p>
+
+<button
+class="buy-btn"
+onclick="buyMachine(
+'${machine.name}',
+${machine.price},
+${machine.income},
+${machine.days}
+)">
+
+BUY NOW
+
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+
+// LOAD ALL MACHINES
+
+loadSeries('all');
+
+     async function buyMachine(
+
+name,
+price,
+income,
+days
+
+){
+
+try{
+
+const {
+data:{user}
+}
+=
+await supabase.auth.getUser();
+
+if(!user){
+
+alert(
+'Please login first'
+);
+
+return;
+
+}
+
+/* GET USER WALLET */
+
+const {
+data:userData,
+error:userError
+}
+=
+await supabase
+.from('profiles')
+.select('*')
+.eq('id',user.id)
+.single();
+
+if(userError){
+
+alert(
+'User account not found'
+);
+
+return;
+
+}
+
+const wallet =
+userData.balance || 0;
+
+if(wallet < price){
+
+alert(
+'Insufficient balance'
+);
+
+return;
+
+}
+
+/* DEDUCT BALANCE */
+
+const newBalance =
+wallet - price;
+
+const {
+error:updateError
+}
+=
+await supabase
+.from('profiles')
+.update({
+
+balance:newBalance
+
+})
+.eq(
+'id',
+user.id
+);
+
+if(updateError){
+
+alert(
+'Failed to deduct balance'
+);
+
+return;
+
+}
+
+/* SAVE MACHINE */
+
+const expiry =
+new Date();
+
+expiry.setDate(
+expiry.getDate() + days
+);
+
+const dailyIncome =
+Math.floor(
+income / days
+);
+
+const {
+error:machineError
+}
+=
+await supabase
+.from('user_machines')
+.insert({
+
+user_id:user.id,
+
+machine_name:name,
+
+purchase_price:price,
+
+total_return:income,
+
+daily_income:dailyIncome,
+
+days_remaining:days,
+
+active:true,
+
+expiry_date:
+expiry.toISOString()
+
+});
+
+if(machineError){
+
+alert(
+machineError.message
+);
+
+return;
+
+}
+
+alert(
+
+name +
+' purchased successfully'
+
+);
+
+location.reload();
+
+}catch(err){
+
+alert(
+err.message
+);
+
+}
+
+}
+
+/* INITIAL LOAD */
+
+loadSeries('all');
+
+</script>
 
 </body>
-
 </html>
