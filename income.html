@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Income</title>
+<title>Income Center</title>
 
 <style>
 
@@ -18,58 +18,73 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#000814;
+background:#050816;
 color:white;
-padding-bottom:90px;
+padding-bottom:100px;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
+radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
+radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
+background-size:18px 18px;
+z-index:-1;
 }
 
 .header{
-background:#03122c;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #00c8ff;
+height:70px;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+border-bottom:1px solid rgba(0,200,255,.3);
 }
 
 .header h1{
 color:#00c8ff;
-font-size:28px;
 }
 
-.summary-card{
-margin:15px;
-padding:20px;
-background:#03122c;
-border:2px solid #00c8ff;
-border-radius:18px;
+.income-container{
+padding:15px;
+}
+
+.balance-card{
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
+padding:25px;
 text-align:center;
-box-shadow:0 0 15px rgba(0,200,255,.2);
+margin-bottom:20px;
 }
 
-.summary-card h2{
-font-size:34px;
+.balance-card h1{
+font-size:40px;
 color:#00ff88;
 margin-top:10px;
 }
 
-.container{
-padding:10px;
-}
-
-.income-card{
-background:#03122c;
-border:2px solid rgba(0,200,255,.3);
-border-radius:18px;
-padding:15px;
-margin-bottom:15px;
-}
-
-.income-card h3{
-color:#00c8ff;
-margin-bottom:10px;
-}
-
-.income-card p{
-margin:6px 0;
+.balance-card p{
+color:#ccc;
 }
 
 </style>
@@ -84,187 +99,268 @@ margin:6px 0;
 
 </div>
 
-<div class="summary-card">
+<div class="income-container">
 
-<p>Today's Income</p>
-
-<h2>UGX 125,670</h2>
-
-</div>
-
-<div class="container">
-  <!-- INCOME RECORD 1 -->
-
-<div class="income-card">
-
-<h3>VIP 5 Earnings</h3>
-
-<p>Amount: UGX 26,400</p>
-
-<p>Date: Today</p>
-
-<p>Status: Credited</p>
-
-</div>
-
-<!-- INCOME RECORD 2 -->
-
-<div class="income-card">
-
-<h3>VIP 7 Earnings</h3>
-
-<p>Amount: UGX 71,500</p>
-
-<p>Date: Today</p>
-
-<p>Status: Credited</p>
-
-</div>
-
-<!-- INCOME RECORD 3 -->
-
-<div class="income-card">
-
-<h3>R2 Miner Earnings</h3>
-
-<p>Amount: UGX 14,270</p>
-
-<p>Date: Today</p>
-
-<p>Status: Credited</p>
-
-</div>
-
-<!-- INCOME RECORD 4 -->
-
-<div class="income-card">
-
-<h3>D1 Miner Earnings</h3>
-
-<p>Amount: UGX 13,500</p>
-
-<p>Date: Today</p>
-
-<p>Status: Credited</p>
-
-</div>
-
-<!-- INCOME RECORD 5 -->
-
-<div class="income-card">
-
-<h3>Referral Bonus</h3>
-
-<p>Amount: UGX 5,000</p>
-
-<p>Date: Today</p>
-
-<p>Status: Credited</p>
-
-</div>
-<!-- TOTAL INCOME -->
-
-<div class="summary-card">
+<div class="balance-card">
 
 <p>Total Income Earned</p>
 
-<h2>UGX 691,850</h2>
+<h1>UGX 0</h1>
 
 </div>
 
-<!-- MONTHLY INCOME -->
+  <!-- INCOME STATISTICS -->
 
-<div class="summary-card">
+<div class="stats-grid">
 
-<p>Monthly Income</p>
+<div class="income-card">
 
-<h2>UGX 420,000</h2>
+<h3>UGX 0</h3>
 
-</div>
-
-<!-- LIFETIME PROFIT -->
-
-<div class="summary-card">
-
-<p>Lifetime Profit</p>
-
-<h2>UGX 1,250,000</h2>
+<p>Today's Income</p>
 
 </div>
 
-<!-- TOTAL REFERRAL BONUS -->
+<div class="income-card">
 
-<div class="summary-card">
+<h3>UGX 0</h3>
 
-<p>Referral Bonus Earned</p>
-
-<h2>UGX 85,000</h2>
+<p>Machine Income</p>
 
 </div>
 
-<!-- ACTIVE INCOME SOURCES -->
+<div class="income-card">
 
-<div class="summary-card">
+<h3>UGX 0</h3>
 
-<p>Active Income Sources</p>
-
-<h2>5</h2>
+<p>Team Income</p>
 
 </div>
+
+<div class="income-card">
+
+<h3>UGX 0</h3>
+
+<p>Referral Income</p>
+
+</div>
+
+</div>
+
+<style>
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:20px;
+}
+
+.income-card{
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:20px;
+padding:20px;
+text-align:center;
+}
+
+.income-card h3{
+color:#00ff88;
+font-size:26px;
+margin-bottom:8px;
+}
+
+.income-card p{
+color:#ddd;
+font-size:14px;
+}
+
+</style>
+
+  <!-- RECENT EARNINGS -->
+
+<div class="balance-card">
+
+<h2 style="color:#00c8ff;margin-bottom:15px;">
+Recent Earnings
+</h2>
+
+<div class="earning-row">
+
+<span>GPU Machine Income</span>
+
+<span style="color:#00ff88;">
++ UGX 5,000
+</span>
+
+</div>
+
+<div class="earning-row">
+
+<span>Referral Commission</span>
+
+<span style="color:#00ff88;">
++ UGX 2,500
+</span>
+
+</div>
+
+<div class="earning-row">
+
+<span>Team Bonus</span>
+
+<span style="color:#00ff88;">
++ UGX 10,000
+</span>
+
+</div>
+
+<div class="earning-row">
+
+<span>Mining Reward</span>
+
+<span style="color:#00ff88;">
++ UGX 15,000
+</span>
+
+</div>
+
+</div>
+
+<!-- INCOME HISTORY -->
+
+<div class="balance-card">
+
+<h2 style="color:#00c8ff;margin-bottom:15px;">
+Income History
+</h2>
+
+<div class="earning-row">
+
+<span>01/07/2026</span>
+
+<span>
+UGX 50,000
+</span>
+
+</div>
+
+<div class="earning-row">
+
+<span>02/07/2026</span>
+
+<span>
+UGX 75,000
+</span>
+
+</div>
+
+<div class="earning-row">
+
+<span>03/07/2026</span>
+
+<span>
+UGX 120,000
+</span>
+
+</div>
+
+</div>
+
+<style>
+
+.earning-row{
+display:flex;
+justify-content:space-between;
+padding:15px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.earning-row:last-child{
+border-bottom:none;
+}
+
+</style>
+
+  <!-- FLOATING SUPPORT BUTTON -->
+
+<div class="support-btn"
+onclick="window.open('https://wa.me/256784010287')">
+
+💬
+
 </div>
 
 <!-- BOTTOM NAVIGATION -->
 
-<div style="
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:70px;
-background:#010b23;
-display:flex;
-justify-content:space-around;
-align-items:center;
-border-top:1px solid rgba(0,200,255,.2);
-z-index:999;
-">
+<div class="bottom-nav">
 
-<a href="dashboard.html"
-style="color:white;text-decoration:none;text-align:center;">
+<a href="dashboard.html">
 🏠<br>Home
 </a>
 
-<a href="machines.html"
-style="color:white;text-decoration:none;text-align:center;">
+<a href="machines.html">
 ⚙️<br>Machines
 </a>
 
-<a href="deposit.html"
-style="color:white;text-decoration:none;text-align:center;">
-💰<br>Deposit
+<a href="deposit.html">
+💳<br>Deposit
 </a>
 
-<a href="income.html"
-style="color:#00c8ff;text-decoration:none;text-align:center;">
+<a href="income.html" style="color:#00c8ff;">
 📈<br>Income
 </a>
 
-<a href="my.html"
-style="color:white;text-decoration:none;text-align:center;">
+<a href="my.html">
 👤<br>My
 </a>
 
 </div>
 
-<script>
+<style>
 
-setInterval(() => {
+.support-btn{
+position:fixed;
+right:20px;
+bottom:90px;
+width:60px;
+height:60px;
+background:#00c8ff;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+cursor:pointer;
+box-shadow:0 0 20px rgba(0,200,255,.6);
+z-index:999;
+}
 
-console.log("Refreshing income data...");
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:75px;
+background:#000;
+border-top:1px solid rgba(0,200,255,.3);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:999;
+}
 
-}, 30000);
+.bottom-nav a{
+text-decoration:none;
+color:#aaa;
+font-size:13px;
+text-align:center;
+}
 
-</script>
+</style>
+
+</div>
 
 </body>
-                </html>
+
+  </html>
