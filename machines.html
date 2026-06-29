@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Machines Center</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Machine Test V2</title>
 
 <style>
 
@@ -14,42 +15,44 @@ font-family:Arial,sans-serif;
 padding:15px;
 }
 
-h1{
+.header{
 text-align:center;
+margin-bottom:20px;
+}
+
+.balance{
+background:#03142f;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+border:1px solid #00c8ff;
+}
+
+.balance h2{
 color:#00c8ff;
 }
 
-.machine-card{
+.machine{
 background:#03142f;
-border:1px solid #00c8ff;
-border-radius:20px;
 padding:20px;
+border-radius:20px;
 margin-bottom:15px;
+border:1px solid #00c8ff;
 }
 
-.machine-name{
-font-size:24px;
-font-weight:bold;
+.machine h3{
 color:#00c8ff;
 margin-bottom:10px;
 }
 
-.machine-row{
-display:flex;
-justify-content:space-between;
-margin:8px 0;
-}
-
-.buy-btn{
+.buy{
 width:100%;
 padding:15px;
-margin-top:15px;
 border:none;
 border-radius:12px;
 background:#00c8ff;
-color:#000;
 font-weight:bold;
-font-size:16px;
+margin-top:10px;
 }
 
 </style>
@@ -57,99 +60,53 @@ font-size:16px;
 
 <body>
 
-<h1>Machines Center</h1>
+<div class="header">
+<h1>Machine Test V2</h1>
+</div>
 
-<div id="machineContainer"></div>
+<div class="balance">
+<h2 id="wallet">UGX 1,000,000</h2>
+<p>Wallet Balance</p>
+<p>Machines Owned: <span id="owned">0</span></p>
+</div>
+
+<div id="machines"></div>
 
 <script>
 
-const machines = [
+let wallet = 1000000;
+let owned = 0;
 
-{
-name:"VIP1",
-price:18000,
-income:40000,
-days:20
-},
+const data = [
 
-{
-name:"B1",
-price:30000,
-income:50000,
-days:20
-},
-
-{
-name:"R1",
-price:57000,
-income:142000,
-days:120
-},
-
-{
-name:"D1",
-price:120000,
-income:1350000,
-days:100
-}
+{name:"VIP1",price:18000},
+{name:"VIP2",price:36000},
+{name:"VIP3",price:80000},
+{name:"B1",price:30000},
+{name:"B2",price:70000},
+{name:"D1",price:120000},
+{name:"R1",price:57000},
+{name:"R2",price:68500}
 
 ];
 
-const container =
-document.getElementById(
-"machineContainer"
-);
+const box =
+document.getElementById("machines");
 
-machines.forEach(machine=>{
+data.forEach(machine=>{
 
-const dailyIncome =
-Math.floor(
-machine.income /
-machine.days
-);
+box.innerHTML += `
 
-container.innerHTML += `
+<div class="machine">
 
-<div class="machine-card">
+<h3>${machine.name}</h3>
 
-<div class="machine-name">
-${machine.name}
-</div>
-
-<div class="machine-row">
-<span>Price</span>
-<span>
-UGX ${machine.price.toLocaleString()}
-</span>
-</div>
-
-<div class="machine-row">
-<span>Total Return</span>
-<span>
-UGX ${machine.income.toLocaleString()}
-</span>
-</div>
-
-<div class="machine-row">
-<span>Duration</span>
-<span>
-${machine.days} Days
-</span>
-</div>
-
-<div class="machine-row">
-<span>Daily Income</span>
-<span>
-UGX ${dailyIncome.toLocaleString()}
-</span>
-</div>
+<p>Price:
+UGX ${machine.price.toLocaleString()}</p>
 
 <button
-class="buy-btn"
-onclick="buyMachine('${machine.name}')"
-function buyMachine(name){
-alert(name + " selected");
-}
+class="buy"
+onclick="buy(${machine.price},'${machine.name}')">
 
 BUY NOW
 
@@ -160,6 +117,36 @@ BUY NOW
 `;
 
 });
+
+function buy(price,name){
+
+if(wallet < price){
+
+alert("Insufficient Balance");
+
+return;
+
+}
+
+wallet -= price;
+owned++;
+
+document.getElementById(
+"wallet"
+).innerText =
+"UGX " +
+wallet.toLocaleString();
+
+document.getElementById(
+"owned"
+).innerText =
+owned;
+
+alert(
+name + " purchased successfully"
+);
+
+}
 
 </script>
 
