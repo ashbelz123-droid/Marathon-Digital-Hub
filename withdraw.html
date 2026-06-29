@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Withdraw</title>
+<title>Withdraw Funds</title>
 
 <style>
 
@@ -18,80 +18,87 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#000814;
+background:#050816;
 color:white;
-padding-bottom:90px;
+padding-bottom:100px;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
+radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
+radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
+background-size:18px 18px;
+z-index:-1;
 }
 
 .header{
-background:#03122c;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #00c8ff;
+height:70px;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#000;
+border-bottom:1px solid rgba(0,200,255,.3);
 }
 
 .header h1{
 color:#00c8ff;
-font-size:28px;
+}
+
+.container{
+padding:15px;
 }
 
 .balance-card{
-margin:15px;
-padding:20px;
-background:#03122c;
-border:2px solid #00c8ff;
-border-radius:20px;
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
+padding:25px;
 text-align:center;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,200,255,.2);
 }
 
 .balance-card h3{
-color:#00c8ff;
+color:#ccc;
 margin-bottom:10px;
 }
 
 .balance-card h1{
-font-size:36px;
+font-size:38px;
 color:#00ff88;
 }
 
 .withdraw-card{
-margin:15px;
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
 padding:20px;
-background:#03122c;
-border-radius:20px;
-border:2px solid rgba(0,200,255,.3);
+box-shadow:0 0 20px rgba(0,200,255,.2);
 }
 
 .withdraw-card h2{
 color:#00c8ff;
-margin-bottom:15px;
-}
-
-.input-group{
-margin-bottom:15px;
-}
-
-.input-group input,
-.input-group select{
-width:100%;
-padding:14px;
-border:none;
-border-radius:10px;
-background:#081a38;
-color:white;
-font-size:16px;
-}
-
-.withdraw-btn{
-width:100%;
-padding:15px;
-border:none;
-border-radius:12px;
-background:linear-gradient(90deg,#00c8ff,#0066ff);
-color:white;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
+margin-bottom:20px;
 }
 
 </style>
@@ -106,11 +113,15 @@ cursor:pointer;
 
 </div>
 
+<div class="container">
+
 <div class="balance-card">
 
 <h3>Available Balance</h3>
 
-<h1>UGX 125,670</h1>
+<h1 id="availableBalance">
+UGX 0
+</h1>
 
 </div>
 
@@ -118,143 +129,290 @@ cursor:pointer;
 
 <h2>Withdrawal Request</h2>
 
-<div class="input-group">
+  <label>
 
-<select id="network">
+Amount To Withdraw
 
-<option>MTN Mobile Money</option>
-
-<option>Airtel Money</option>
-
-</select>
-
-</div>
-
-<div class="input-group">
-
-<input
-type="text"
-id="phone"
-placeholder="Phone Number">
-
-</div>
-
-<div class="input-group">
+</label>
 
 <input
 type="number"
-id="amount"
-placeholder="Amount">
+id="withdrawAmount"
+placeholder="Enter amount">
 
-</div>
-<button
-class="withdraw-btn"
-onclick="submitWithdraw()">
+<br><br>
+
+<label>
+
+Select Network
+
+</label>
+
+<select id="network">
+
+<option value="MTN">
+MTN Mobile Money
+</option>
+
+<option value="Airtel">
+Airtel Money
+</option>
+
+</select>
+
+<br><br>
+
+<label>
+
+Phone Number
+
+</label>
+
+<input
+type="text"
+id="phoneNumber"
+placeholder="Enter phone number">
+
+<br><br>
+
+<button id="withdrawBtn">
 
 Submit Withdrawal
 
 </button>
 
-</div>
+<style>
+
+label{
+display:block;
+margin-bottom:8px;
+color:#ccc;
+}
+
+input,
+select{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:15px;
+background:#071935;
+color:white;
+font-size:16px;
+}
+
+#withdrawBtn{
+width:100%;
+padding:16px;
+border:none;
+border-radius:15px;
+background:linear-gradient(
+90deg,
+#00c8ff,
+#0066ff
+);
+color:white;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
+  </div>
 
 <!-- WITHDRAWAL RULES -->
 
-<div class="withdraw-card">
+<div class="withdraw-card" style="margin-top:20px;">
 
 <h2>Withdrawal Rules</h2>
 
-<p>• Minimum Withdrawal: UGX 10,000</p>
+<p style="margin-bottom:10px;">
+✅ Minimum Withdrawal: UGX 10,000
+</p>
 
-<p>• Maximum Withdrawal: UGX 5,000,000</p>
+<p style="margin-bottom:10px;">
+✅ Processing Time: 5 Minutes - 24 Hours
+</p>
 
-<p>• Processing Time: 1 - 24 Hours</p>
+<p style="margin-bottom:10px;">
+✅ Withdrawals are sent to MTN or Airtel only
+</p>
 
-<p>• Withdrawals are processed manually.</p>
+<p>
+✅ Ensure your phone number is correct
+</p>
 
 </div>
 
-<!-- RECENT WITHDRAWALS -->
+<!-- WITHDRAWAL HISTORY -->
 
-<div class="withdraw-card">
+<div class="withdraw-card" style="margin-top:20px;">
 
-<h2>Recent Withdrawals</h2>
+<h2>Withdrawal History</h2>
 
-<p>UGX 50,000 → MTN → Completed</p>
+<div class="history-item">
 
-<p>UGX 25,000 → Airtel → Completed</p>
+<span>UGX 50,000</span>
 
-<p>UGX 100,000 → MTN → Pending</p>
+<span style="color:orange;">
+Pending
+</span>
+
+</div>
+
+<div class="history-item">
+
+<span>UGX 100,000</span>
+
+<span style="color:#00ff88;">
+Approved
+</span>
+
+</div>
+
+<div class="history-item">
+
+<span>UGX 25,000</span>
+
+<span style="color:red;">
+Rejected
+</span>
+
+</div>
+
+</div>
+
+<style>
+
+.history-item{
+display:flex;
+justify-content:space-between;
+padding:15px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.history-item:last-child{
+border-bottom:none;
+}
+
+</style>
+
+  <!-- SUPPORT BUTTON -->
+
+<div class="support-btn"
+onclick="window.open('https://wa.me/256784010287')">
+
+💬
 
 </div>
 
 <!-- BOTTOM NAVIGATION -->
 
-<div style="
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:70px;
-background:#010b23;
-display:flex;
-justify-content:space-around;
-align-items:center;
-border-top:1px solid rgba(0,200,255,.2);
-z-index:999;
-">
+<div class="bottom-nav">
 
-<a href="dashboard.html"
-style="color:white;text-decoration:none;text-align:center;">
+<a href="dashboard.html">
 🏠<br>Home
 </a>
 
-<a href="machines.html"
-style="color:white;text-decoration:none;text-align:center;">
+<a href="deposit.html">
+💳<br>Deposit
+</a>
+
+<a href="machines.html">
 ⚙️<br>Machines
 </a>
 
-<a href="deposit.html"
-style="color:white;text-decoration:none;text-align:center;">
-💰<br>Deposit
+<a href="income.html">
+📈<br>Income
 </a>
 
-<a href="withdraw.html"
-style="color:#00c8ff;text-decoration:none;text-align:center;">
-💸<br>Withdraw
-</a>
-
-<a href="my.html"
-style="color:white;text-decoration:none;text-align:center;">
+<a href="my.html">
 👤<br>My
 </a>
 
 </div>
 
+<style>
+
+.support-btn{
+position:fixed;
+right:20px;
+bottom:90px;
+width:60px;
+height:60px;
+background:#00c8ff;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+cursor:pointer;
+box-shadow:0 0 20px rgba(0,200,255,.6);
+z-index:999;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:75px;
+background:#000;
+border-top:1px solid rgba(0,200,255,.3);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:999;
+}
+
+.bottom-nav a{
+text-decoration:none;
+color:#888;
+font-size:13px;
+text-align:center;
+}
+
+</style>
+
 <script>
 
-function submitWithdraw(){
-
-const phone =
-document.getElementById("phone").value;
+document.getElementById(
+'withdrawBtn'
+).addEventListener(
+'click',
+function(){
 
 const amount =
-document.getElementById("amount").value;
+document.getElementById(
+'withdrawAmount'
+).value;
 
-if(phone === "" || amount === ""){
+const phone =
+document.getElementById(
+'phoneNumber'
+).value;
 
-alert("Please fill all fields");
+if(!amount || !phone){
+
+alert(
+'Please fill all fields'
+);
 
 return;
 
 }
 
 alert(
-"Withdrawal request submitted successfully."
+'Withdrawal request submitted successfully'
 );
 
-}
+});
 
 </script>
 
+</div>
+
 </body>
+
 </html>
