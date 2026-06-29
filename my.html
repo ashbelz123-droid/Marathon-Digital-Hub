@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Account</title>
+<title>My Center</title>
 
 <style>
 
@@ -18,7 +18,7 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#000;
+background:#050816;
 color:white;
 padding-bottom:100px;
 overflow-x:hidden;
@@ -31,113 +31,78 @@ top:0;
 left:0;
 width:100%;
 height:100%;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
+radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
+radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
 background-image:
-radial-gradient(rgba(0,180,255,.35) 2px, transparent 2px);
-background-size:28px 28px;
-opacity:.45;
+radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
+background-size:18px 18px;
 z-index:-1;
 }
 
-.welcome{
-padding:20px;
-color:#00aaff;
-font-size:18px;
-}
-
-.profile-header{
+.profile-area{
+padding:25px 20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:0 20px 20px;
 }
 
-.user-box{
-font-size:18px;
+.user-details h2{
+font-size:24px;
+margin-bottom:6px;
 }
 
-.user-box .phone{
-font-size:20px;
-font-weight:bold;
-}
-
-.user-box .name{
+.user-details p{
 color:#ccc;
-margin-left:10px;
 }
 
 .avatar{
 width:90px;
 height:90px;
 border-radius:50%;
-border:3px solid #00aaff;
-box-shadow:0 0 20px #00aaff;
+background:#02122b;
+border:3px solid #00c8ff;
 display:flex;
 align-items:center;
 justify-content:center;
 font-size:40px;
+box-shadow:0 0 20px rgba(0,200,255,.5);
 }
 
 .wallet-card{
 margin:15px;
-background:#041020;
-border:2px solid #00aaff;
-border-radius:30px;
 padding:25px;
-display:flex;
-justify-content:space-between;
-text-align:center;
-box-shadow:0 0 20px rgba(0,170,255,.4);
-}
-
-.wallet-box h3{
-font-size:18px;
-margin-bottom:10px;
-}
-
-.wallet-box h1{
-font-size:30px;
-}
-
-.wallet-box p{
-color:#ccc;
-margin-top:5px;
-}
-
-.menu-card{
-margin:15px;
-padding:25px;
-background:#041020;
-border:2px solid #00aaff;
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
 border-radius:25px;
-box-shadow:0 0 20px rgba(0,170,255,.3);
-}
-
-.menu-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:25px;
-}
-
-.menu-item{
+box-shadow:0 0 25px rgba(0,200,255,.25);
 text-align:center;
-cursor:pointer;
 }
 
-.icon-box{
-width:60px;
-height:60px;
-background:#12a8ff;
-border-radius:18px;
-display:flex;
-align-items:center;
-justify-content:center;
-margin:auto;
+.wallet-card h3{
+color:#ccc;
 margin-bottom:10px;
-font-size:28px;
 }
 
-.menu-item p{
-font-size:14px;
+.wallet-card h1{
+font-size:38px;
+color:#00ff88;
+}
+
+.wallet-card p{
+margin-top:8px;
+color:#aaa;
 }
 
 </style>
@@ -146,23 +111,17 @@ font-size:14px;
 
 <body>
 
-<div class="welcome">
+<div class="profile-area">
 
-Welcome to Marathon Digital Hub
+<div class="user-details">
 
-</div>
+<h2 id="username">
+Hajira
+</h2>
 
-<div class="profile-header">
-
-<div class="user-box">
-
-<span class="phone">
+<p id="phone">
 0784010287
-</span>
-
-<span class="name">
-Anon
-</span>
+</p>
 
 </div>
 
@@ -176,223 +135,299 @@ Anon
 
 <div class="wallet-card">
 
-<div class="wallet-box">
-
-<h3>Wallet</h3>
+<h3>Total Wallet Balance</h3>
 
 <h1 id="walletBalance">
-0.00
+UGX 0
 </h1>
 
-<p>UGX</p>
+<p>
+Available for investment and withdrawal
+</p>
 
 </div>
 
-<div class="wallet-box">
+  <!-- QUICK ACTIONS -->
 
-<h3>Balance</h3>
+<div class="action-card">
 
-<h1 id="mainBalance">
-0.00
-</h1>
+<div class="action-grid">
 
-<p>UGX</p>
+<div class="action-item"
+onclick="location.href='deposit.html'">
 
-</div>
+<div class="action-icon">💳</div>
 
-</div>
-
-<div class="menu-card">
-
-<div class="menu-grid">
-
-<div class="menu-item">
-<div class="icon-box">💳</div>
 <p>Deposit</p>
+
 </div>
 
-<div class="menu-item">
-<div class="icon-box">💸</div>
+<div class="action-item"
+onclick="location.href='withdraw.html'">
+
+<div class="action-icon">💸</div>
+
 <p>Withdraw</p>
+
 </div>
 
-<div class="menu-item">
-<div class="icon-box">📄</div>
-<p>Bill</p>
-</div>
+<div class="action-item">
 
-<div class="menu-item">
-<div class="icon-box">🤝</div>
+<div class="action-icon">🤝</div>
+
 <p>Invite</p>
-             </div>
 
-  <div class="menu-item">
-<div class="icon-box">👥</div>
-<p>My Team</p>
 </div>
 
-<div class="menu-item">
-<div class="icon-box">⭐</div>
-<p>VIP Task</p>
+<div class="action-item">
+
+<div class="action-icon">👥</div>
+
+<p>Team</p>
+
 </div>
 
-<div class="menu-item">
-<div class="icon-box">🎁</div>
+<div class="action-item">
+
+<div class="action-icon">🎁</div>
+
 <p>Reward</p>
+
 </div>
 
-<div class="menu-item">
-<div class="icon-box">🎯</div>
-<p>Raffle</p>
+<div class="action-item">
+
+<div class="action-icon">📈</div>
+
+<p>Income</p>
+
 </div>
 
-<div class="menu-item">
-<div class="icon-box">⬇️</div>
-<p>Download</p>
-</div>
+<div class="action-item">
 
-<div class="menu-item">
-<div class="icon-box">🎧</div>
-<p>Manager</p>
-</div>
+<div class="action-icon">⚙️</div>
 
-<div class="menu-item">
-<div class="icon-box">⚙️</div>
 <p>Settings</p>
-</div>
-
-<div class="menu-item">
-<div class="icon-box">📢</div>
-<p>Notice</p>
-</div>
 
 </div>
 
+<div class="action-item">
+
+<div class="action-icon">🎧</div>
+
+<p>Support</p>
+
 </div>
 
-<!-- SALARY CARD -->
+</div>
 
-<div class="menu-card">
+</div>
 
-<div style="
-display:flex;
-justify-content:space-between;
+<style>
+
+.action-card{
+margin:15px;
+padding:20px;
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
+box-shadow:0 0 20px rgba(0,200,255,.2);
+}
+
+.action-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+}
+
+.action-item{
 text-align:center;
-margin-bottom:20px;
-">
+cursor:pointer;
+}
 
-<div>
+.action-icon{
+width:60px;
+height:60px;
+margin:auto;
+margin-bottom:10px;
+border-radius:18px;
+background:linear-gradient(
+135deg,
+#00c8ff,
+#0066ff
+);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+box-shadow:0 0 15px rgba(0,200,255,.4);
+}
 
-<p style="color:#ccc;">
-Last Month Salary
-</p>
-
-<h2 style="
-color:#00ff88;
-margin-top:10px;
-">
-UGX 0
-</h2>
-
-</div>
-
-<div>
-
-<p style="color:#ccc;">
-This Month Salary
-</p>
-
-<h2 style="
-color:#00ff88;
-margin-top:10px;
-">
-UGX 0
-</h2>
-
-</div>
-
-</div>
-
-<button style="
-width:100%;
-padding:18px;
-background:#12a8ff;
-border:none;
-border-radius:15px;
+.action-item p{
+font-size:13px;
 color:white;
-font-size:18px;
-font-weight:bold;
-">
+}
 
-Claim Salary
+  </style>
 
-</button>
+  <!-- ACCOUNT STATISTICS -->
 
-</div>
+<div class="stats-card">
 
-<!-- ACCOUNT INFORMATION -->
+<h2 class="section-title">
 
-<div class="menu-card">
-
-<h2 style="
-margin-bottom:20px;
-color:#12a8ff;
-">
-
-Account Information
+Account Statistics
 
 </h2>
 
-  </div>
+<div class="stats-grid">
 
-  <div class="menu-item">
+<div class="stat-box">
 
-<span>🆔 User ID</span>
+<h3 id="depositBalance">
+UGX 0
+</h3>
 
-<span id="userid">
-MDH001
-</span>
-
-</div>
-
-<div class="menu-item">
-
-<span>📱 Phone Number</span>
-
-<span id="phone">
-0784010287
-</span>
+<p>Deposit Balance</p>
 
 </div>
 
-<div class="menu-item">
+<div class="stat-box">
 
-<span>📧 Email</span>
+<h3 id="withdrawBalance">
+UGX 0
+</h3>
 
-<span id="email">
-user@email.com
-</span>
+<p>Withdraw Balance</p>
 
 </div>
 
-<div class="menu-item">
+<div class="stat-box">
 
-<span>🪪 KYC Status</span>
+<h3 id="totalIncome">
+UGX 0
+</h3>
 
-<span id="kycStatus"
+<p>Total Income</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="activeMachines">
+0
+</h3>
+
+<p>Machines</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="teamMembers">
+0
+</h3>
+
+<p>Team Members</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="vipLevel">
+VIP 0
+</h3>
+
+<p>VIP Level</p>
+
+</div>
+
+</div>
+
+</div>
+
+<style>
+
+.section-title{
+color:#00c8ff;
+margin-bottom:20px;
+text-align:center;
+}
+
+.stats-card{
+margin:15px;
+padding:20px;
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
+box-shadow:0 0 20px rgba(0,200,255,.2);
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.stat-box{
+background:#071935;
+border-radius:18px;
+padding:18px;
+text-align:center;
+border:1px solid rgba(0,200,255,.25);
+}
+
+.stat-box h3{
+color:#00ff88;
+font-size:20px;
+margin-bottom:8px;
+}
+
+.stat-box p{
+color:#ccc;
+font-size:13px;
+}
+
+</style>
+
+  <!-- HISTORY SECTION -->
+
+<div class="stats-card">
+
+<h2 class="section-title">
+
+Account Activity
+
+</h2>
+
+<div class="stat-box" style="margin-bottom:15px;">
+
+<h3>Latest Deposit</h3>
+
+<p id="latestDeposit">
+No deposits yet
+</p>
+
+</div>
+
+<div class="stat-box" style="margin-bottom:15px;">
+
+<h3>Latest Withdrawal</h3>
+
+<p id="latestWithdraw">
+No withdrawals yet
+</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3>KYC Status</h3>
+
+<p id="kycStatus"
 style="color:#00ff88;">
 Verified
-</span>
-
-</div>
-
-<div class="menu-item">
-
-<span>👥 Team Members</span>
-
-<span id="teamCount">
-0
-</span>
+</p>
 
 </div>
 
@@ -400,16 +435,16 @@ Verified
 
 <!-- LOGOUT -->
 
-<div class="menu-card">
+<div style="padding:15px;">
 
 <button id="logoutBtn"
 
 style="
 width:100%;
 padding:18px;
-background:#ff3b30;
 border:none;
-border-radius:15px;
+border-radius:18px;
+background:#ff3b30;
 color:white;
 font-size:18px;
 font-weight:bold;
@@ -419,6 +454,15 @@ cursor:pointer;
 Logout
 
 </button>
+
+</div>
+
+<!-- SUPPORT BUTTON -->
+
+<div class="support-btn"
+onclick="window.open('https://wa.me/256784010287')">
+
+💬
 
 </div>
 
@@ -442,13 +486,31 @@ Logout
 📈<br>Income
 </a>
 
-<a href="my.html" style="color:#12a8ff;">
+<a href="my.html"
+style="color:#00c8ff;">
 👤<br>My
 </a>
 
 </div>
 
 <style>
+
+.support-btn{
+position:fixed;
+right:20px;
+bottom:90px;
+width:60px;
+height:60px;
+background:#00c8ff;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+cursor:pointer;
+box-shadow:0 0 20px rgba(0,200,255,.6);
+z-index:999;
+}
 
 .bottom-nav{
 position:fixed;
@@ -457,7 +519,7 @@ left:0;
 width:100%;
 height:75px;
 background:#000;
-border-top:2px solid #12a8ff;
+border-top:1px solid rgba(0,200,255,.4);
 display:flex;
 justify-content:space-around;
 align-items:center;
@@ -471,32 +533,22 @@ font-size:13px;
 text-align:center;
 }
 
-.menu-item{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px 0;
-border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.menu-item:last-child{
-border-bottom:none;
-}
-
 </style>
 
 <script>
 
 document.getElementById(
-"logoutBtn"
+'logoutBtn'
 ).onclick=function(){
 
+localStorage.clear();
+
 window.location.href=
-"login.html";
+'login.html';
 
 };
 
 </script>
 
 </body>
-</html>
+  </html>
