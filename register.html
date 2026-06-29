@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marathon Digital Hub - Register</title><style>
+<title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
 *{
 margin:0;
@@ -135,6 +135,18 @@ Already have an account?
 <a href="login.html">Login</a>
 </div></div><script>
 
+const SUPABASE_URL =
+"https://wcrrxsrtbelcbycppieg.supabase.co";
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjcnJ4c3J0YmVsY2J5Y3BwaWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTM0ODQsImV4cCI6MjA5NjE4OTQ4NH0.yh_xCiEW2T9riiDJgEWBmIU4V0e5azRQ0sITaEhfCo4";
+
+const supabase =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
 document.getElementById("showPasswords")
 .addEventListener("change",function(){
 
@@ -147,7 +159,7 @@ document.getElementById("confirmPassword").type = type;
 });
 
 document.getElementById("registerBtn")
-.addEventListener("click",function(){
+.addEventListener("click", async function(){
 
 const fullname =
 document.getElementById("fullname").value.trim();
@@ -164,16 +176,13 @@ document.getElementById("password").value;
 const confirmPassword =
 document.getElementById("confirmPassword").value;
 
+const referral =
+document.getElementById("referral").value.trim();
+
 document.getElementById("error").innerText="";
 document.getElementById("success").innerText="";
 
-if(
-!fullname ||
-!phone ||
-!email ||
-!password ||
-!confirmPassword
-){
+if(!fullname || !phone || !email || !password || !confirmPassword){
 
 document.getElementById("error").innerText =
 "Please fill all required fields";
@@ -191,10 +200,52 @@ return;
 
 }
 
+try{
+
+document.getElementById("registerBtn").disabled = true;
+document.getElementById("registerBtn").innerText =
+"Creating Account...";
+
+const { data, error } =
+await supabase.auth.signUp({
+email,
+password
+});
+
+if(error){
+throw error;
+}
+
+await supabase
+.from("profiles")
+.insert({
+id:data.user.id,
+fullname,
+phone,
+email,
+wallet_balance:0,
+referral_code:referral
+});
+
 document.getElementById("success").innerText =
-"REGISTER PAGE WORKING";
+"Account Created Successfully";
+
+setTimeout(()=>{
+window.location.href="login.html";
+},1500);
+
+}catch(err){
+
+document.getElementById("error").innerText =
+err.message;
+
+document.getElementById("registerBtn").disabled = false;
+document.getElementById("registerBtn").innerText =
+"CREATE ACCOUNT";
+
+}
 
 });
 
 </script></body>
-</html>
+        </html>
