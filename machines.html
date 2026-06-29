@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Machine Test</title>
+<title>Machines Center</title>
 
 <style>
 
 body{
 background:#020b1f;
-font-family:Arial,sans-serif;
 color:white;
-padding:20px;
+font-family:Arial,sans-serif;
+padding:15px;
+}
+
+h1{
+text-align:center;
+color:#00c8ff;
 }
 
 .machine-card{
@@ -30,23 +34,30 @@ color:#00c8ff;
 margin-bottom:10px;
 }
 
+.machine-row{
+display:flex;
+justify-content:space-between;
+margin:8px 0;
+}
+
 .buy-btn{
 width:100%;
 padding:15px;
-background:#00c8ff;
+margin-top:15px;
 border:none;
 border-radius:12px;
+background:#00c8ff;
+color:#000;
 font-weight:bold;
-cursor:pointer;
+font-size:16px;
 }
 
 </style>
-
 </head>
 
 <body>
 
-<h1>MACHINE TEST PAGE</h1>
+<h1>Machines Center</h1>
 
 <div id="machineContainer"></div>
 
@@ -57,22 +68,29 @@ const machines = [
 {
 name:"VIP1",
 price:18000,
-days:20,
-income:40000
+income:40000,
+days:20
 },
 
 {
 name:"B1",
 price:30000,
-days:20,
-income:50000
+income:50000,
+days:20
 },
 
 {
 name:"R1",
 price:57000,
-days:120,
-income:142000
+income:142000,
+days:120
+},
+
+{
+name:"D1",
+price:120000,
+income:1350000,
+days:100
 }
 
 ];
@@ -84,6 +102,12 @@ document.getElementById(
 
 machines.forEach(machine=>{
 
+const dailyIncome =
+Math.floor(
+machine.income /
+machine.days
+);
+
 container.innerHTML += `
 
 <div class="machine-card">
@@ -92,20 +116,33 @@ container.innerHTML += `
 ${machine.name}
 </div>
 
-<p>
-Price:
+<div class="machine-row">
+<span>Price</span>
+<span>
 UGX ${machine.price.toLocaleString()}
-</p>
+</span>
+</div>
 
-<p>
-Income:
+<div class="machine-row">
+<span>Total Return</span>
+<span>
 UGX ${machine.income.toLocaleString()}
-</p>
+</span>
+</div>
 
-<p>
-Duration:
+<div class="machine-row">
+<span>Duration</span>
+<span>
 ${machine.days} Days
-</p>
+</span>
+</div>
+
+<div class="machine-row">
+<span>Daily Income</span>
+<span>
+UGX ${dailyIncome.toLocaleString()}
+</span>
+</div>
 
 <button
 class="buy-btn"
