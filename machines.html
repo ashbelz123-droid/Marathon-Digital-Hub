@@ -320,16 +320,15 @@ document.getElementById(
 
 container.innerHTML =
 "Loading Machines...";
-
-const {
-data,
-error
-}
-=
+const result =
 await supabase
 .from('machines')
-.select('*')
-.order('price');
+.select('*');
+
+console.log(result);
+
+const data = result.data;
+const error = result.error;
 
 if(error){
 
