@@ -288,12 +288,21 @@ console.log(err);
 // LOAD MACHINES
 // ==========================
 
-async function loadMachines(
-series='all',
-element=null
-){
+async function loadMachines(){
 
-try{
+document.getElementById(
+'machineContainer'
+).innerHTML =
+
+`
+<div class="machine-card">
+<div class="machine-name">
+TEST MACHINE
+</div>
+</div>
+`;
+
+}
 
 document
 .querySelectorAll('.tab')
