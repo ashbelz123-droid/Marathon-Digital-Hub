@@ -21,6 +21,7 @@ body{
 background:#000;
 color:white;
 padding-bottom:100px;
+overflow-x:hidden;
 }
 
 body::before{
@@ -32,31 +33,34 @@ width:100%;
 height:100%;
 background-image:
 radial-gradient(rgba(0,180,255,.35) 2px, transparent 2px);
-background-size:30px 30px;
-opacity:.5;
+background-size:28px 28px;
+opacity:.45;
 z-index:-1;
 }
 
-/* HEADER */
-
-.top-text{
+.welcome{
 padding:20px;
 color:#00aaff;
 font-size:18px;
 }
 
-.profile-row{
+.profile-header{
 display:flex;
 justify-content:space-between;
 align-items:center;
 padding:0 20px 20px;
 }
 
-.user-info{
+.user-box{
 font-size:18px;
 }
 
-.user-info span{
+.user-box .phone{
+font-size:20px;
+font-weight:bold;
+}
+
+.user-box .name{
 color:#ccc;
 margin-left:10px;
 }
@@ -73,18 +77,16 @@ justify-content:center;
 font-size:40px;
 }
 
-/* WALLET CARD */
-
 .wallet-card{
 margin:15px;
-padding:20px;
-border-radius:30px;
 background:#041020;
 border:2px solid #00aaff;
-box-shadow:0 0 20px rgba(0,170,255,.5);
+border-radius:30px;
+padding:25px;
 display:flex;
 justify-content:space-between;
 text-align:center;
+box-shadow:0 0 20px rgba(0,170,255,.4);
 }
 
 .wallet-box h3{
@@ -93,24 +95,27 @@ margin-bottom:10px;
 }
 
 .wallet-box h1{
-font-size:28px;
+font-size:30px;
 }
 
-/* MENU GRID */
+.wallet-box p{
+color:#ccc;
+margin-top:5px;
+}
 
 .menu-card{
 margin:15px;
-padding:20px;
-border-radius:25px;
+padding:25px;
 background:#041020;
 border:2px solid #00aaff;
+border-radius:25px;
 box-shadow:0 0 20px rgba(0,170,255,.3);
 }
 
 .menu-grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:20px;
+gap:25px;
 }
 
 .menu-item{
@@ -118,17 +123,17 @@ text-align:center;
 cursor:pointer;
 }
 
-.icon{
+.icon-box{
 width:60px;
 height:60px;
 background:#12a8ff;
 border-radius:18px;
-margin:auto;
 display:flex;
 align-items:center;
 justify-content:center;
+margin:auto;
+margin-bottom:10px;
 font-size:28px;
-margin-bottom:8px;
 }
 
 .menu-item p{
@@ -141,19 +146,23 @@ font-size:14px;
 
 <body>
 
-<div class="top-text">
+<div class="welcome">
 
 Welcome to Marathon Digital Hub
 
 </div>
 
-<div class="profile-row">
+<div class="profile-header">
 
-<div class="user-info">
+<div class="user-box">
 
+<span class="phone">
 0784010287
+</span>
 
-<span>Anon</span>
+<span class="name">
+Anon
+</span>
 
 </div>
 
@@ -175,6 +184,8 @@ Welcome to Marathon Digital Hub
 0.00
 </h1>
 
+<p>UGX</p>
+
 </div>
 
 <div class="wallet-box">
@@ -185,6 +196,8 @@ Welcome to Marathon Digital Hub
 0.00
 </h1>
 
+<p>UGX</p>
+
 </div>
 
 </div>
@@ -193,61 +206,64 @@ Welcome to Marathon Digital Hub
 
 <div class="menu-grid">
 
-<div class="menu-item" onclick="location.href='deposit.html'">
-<div class="icon">💳</div>
+<div class="menu-item">
+<div class="icon-box">💳</div>
 <p>Deposit</p>
 </div>
 
-<div class="menu-item" onclick="location.href='withdraw.html'">
-<div class="icon">💸</div>
+<div class="menu-item">
+<div class="icon-box">💸</div>
 <p>Withdraw</p>
 </div>
 
 <div class="menu-item">
-<div class="icon">📄</div>
+<div class="icon-box">📄</div>
 <p>Bill</p>
 </div>
 
 <div class="menu-item">
-<div class="icon">🤝</div>
+<div class="icon-box">🤝</div>
 <p>Invite</p>
-</div>
+             </div>
 
-<div class="menu-item">
-<div class="icon">👥</div>
+  <div class="menu-item">
+<div class="icon-box">👥</div>
 <p>My Team</p>
 </div>
 
 <div class="menu-item">
-<div class="icon">⭐</div>
+<div class="icon-box">⭐</div>
 <p>VIP Task</p>
 </div>
 
 <div class="menu-item">
-<div class="icon">🎁</div>
+<div class="icon-box">🎁</div>
 <p>Reward</p>
 </div>
 
 <div class="menu-item">
-<div class="icon">🎯</div>
+<div class="icon-box">🎯</div>
 <p>Raffle</p>
-  </div>
-
-  <!-- SECOND ROW -->
-
-<div class="menu-item">
-<div class="icon">⬇️</div>
-<p>Download App</p>
 </div>
 
 <div class="menu-item">
-<div class="icon">🎧</div>
+<div class="icon-box">⬇️</div>
+<p>Download</p>
+</div>
+
+<div class="menu-item">
+<div class="icon-box">🎧</div>
 <p>Manager</p>
 </div>
 
 <div class="menu-item">
-<div class="icon">⚙️</div>
+<div class="icon-box">⚙️</div>
 <p>Settings</p>
+</div>
+
+<div class="menu-item">
+<div class="icon-box">📢</div>
+<p>Notice</p>
 </div>
 
 </div>
@@ -267,27 +283,31 @@ margin-bottom:20px;
 
 <div>
 
-<p>Last Month Salary</p>
+<p style="color:#ccc;">
+Last Month Salary
+</p>
 
-<h1 style="
-color:#00ff66;
+<h2 style="
+color:#00ff88;
 margin-top:10px;
 ">
-0.00
-</h1>
+UGX 0
+</h2>
 
 </div>
 
 <div>
 
-<p>This Month Salary</p>
+<p style="color:#ccc;">
+This Month Salary
+</p>
 
-<h1 style="
-color:#00ff66;
+<h2 style="
+color:#00ff88;
 margin-top:10px;
 ">
-0.00
-</h1>
+UGX 0
+</h2>
 
 </div>
 
@@ -296,30 +316,51 @@ margin-top:10px;
 <button style="
 width:100%;
 padding:18px;
+background:#12a8ff;
 border:none;
 border-radius:15px;
-background:#12a8ff;
 color:white;
-font-size:20px;
-cursor:pointer;
+font-size:18px;
+font-weight:bold;
 ">
 
-Get Last Month Salary
+Claim Salary
 
 </button>
 
 </div>
 
-<!-- ACCOUNT DETAILS -->
+<!-- ACCOUNT INFORMATION -->
 
 <div class="menu-card">
 
-<div class="menu-item">
+<h2 style="
+margin-bottom:20px;
+color:#12a8ff;
+">
+
+Account Information
+
+</h2>
+
+  </div>
+
+  <div class="menu-item">
 
 <span>🆔 User ID</span>
 
 <span id="userid">
-MDH-00001
+MDH001
+</span>
+
+</div>
+
+<div class="menu-item">
+
+<span>📱 Phone Number</span>
+
+<span id="phone">
+0784010287
 </span>
 
 </div>
@@ -336,20 +377,10 @@ user@email.com
 
 <div class="menu-item">
 
-<span>📱 Phone</span>
-
-<span id="phone">
-0784010287
-</span>
-
-</div>
-
-<div class="menu-item">
-
 <span>🪪 KYC Status</span>
 
-<span id="kyc"
-style="color:#00ff66;">
+<span id="kycStatus"
+style="color:#00ff88;">
 Verified
 </span>
 
@@ -359,26 +390,27 @@ Verified
 
 <span>👥 Team Members</span>
 
-<span id="teamcount">
+<span id="teamCount">
 0
 </span>
 
 </div>
 
-  </div>
+</div>
 
-<!-- LOGOUT BUTTON -->
+<!-- LOGOUT -->
+
+<div class="menu-card">
 
 <button id="logoutBtn"
 
 style="
 width:100%;
 padding:18px;
-margin-top:20px;
 background:#ff3b30;
-color:white;
 border:none;
 border-radius:15px;
+color:white;
 font-size:18px;
 font-weight:bold;
 cursor:pointer;
@@ -390,64 +422,6 @@ Logout
 
 </div>
 
-<!-- SUPABASE -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
-
-const supabaseUrl =
-'https://wcrrxsrtbelcbycppieg.supabase.co';
-
-const supabaseKey =
-'YOUR_ANON_KEY';
-
-const supabase =
-window.supabase.createClient(
-supabaseUrl,
-supabaseKey
-);
-
-async function loadUser(){
-
-const {
-data:{user}
-}
-=
-await supabase.auth.getUser();
-
-if(!user){
-
-window.location.href =
-'login.html';
-
-return;
-
-}
-
-document.getElementById(
-'email'
-).innerText =
-user.email;
-
-}
-
-loadUser();
-
-document.getElementById(
-'logoutBtn'
-).onclick =
-async ()=>{
-
-await supabase.auth.signOut();
-
-window.location.href =
-'login.html';
-
-};
-
-</script>
-
 <!-- BOTTOM NAVIGATION -->
 
 <div class="bottom-nav">
@@ -456,24 +430,19 @@ window.location.href =
 🏠<br>Home
 </a>
 
-<a href="raffle.html">
-🎲<br>Raffle
-</a>
-
-<a href="chat.html">
-💬<br>Chats
+<a href="deposit.html">
+💳<br>Deposit
 </a>
 
 <a href="machines.html">
-🤖<br>AI
+⚙️<br>Machines
 </a>
 
 <a href="income.html">
-₿<br>Income
+📈<br>Income
 </a>
 
-<a href="my.html"
-style="color:#12a8ff;">
+<a href="my.html" style="color:#12a8ff;">
 👤<br>My
 </a>
 
@@ -488,21 +457,46 @@ left:0;
 width:100%;
 height:75px;
 background:#000;
+border-top:2px solid #12a8ff;
 display:flex;
 justify-content:space-around;
 align-items:center;
-border-top:1px solid rgba(0,170,255,.4);
 z-index:999;
 }
 
 .bottom-nav a{
 text-decoration:none;
-color:#aaa;
+color:#888;
 font-size:13px;
 text-align:center;
 }
 
+.menu-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.menu-item:last-child{
+border-bottom:none;
+}
+
 </style>
 
+<script>
+
+document.getElementById(
+"logoutBtn"
+).onclick=function(){
+
+window.location.href=
+"login.html";
+
+};
+
+</script>
+
 </body>
-</html>  
+</html>
