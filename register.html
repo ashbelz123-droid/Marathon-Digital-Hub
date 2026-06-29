@@ -1,20 +1,223 @@
-<!DOCTYPE html>
-<html>
-<body>
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create Account - Marathon Digital Hub</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#020b1f;
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
+}
 
-<button onclick="testSupabase()">
-TEST
-</button>
+.container{
+width:100%;
+max-width:420px;
+background:#03142f;
+padding:25px;
+border-radius:25px;
+border:1px solid rgba(0,200,255,.3);
+box-shadow:0 0 25px rgba(0,200,255,.15);
+}
 
-<script>
+.logo{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+color:#00c8ff;
+margin-bottom:8px;
+}
 
-function testSupabase(){
+.subtitle{
+text-align:center;
+opacity:.8;
+margin-bottom:25px;
+}
 
-alert("FUNCTION STARTED");
+.input-group{
+margin-bottom:15px;
+}
+
+input{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#081f44;
+color:white;
+box-sizing:border-box;
+}
+
+input:focus{
+outline:1px solid #00c8ff;
+}
+
+.checkbox{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:14px;
+margin:10px 0;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#00c8ff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.link{
+text-align:center;
+margin-top:15px;
+}
+
+.link a{
+color:#00c8ff;
+text-decoration:none;
+}
+
+#error{
+color:#ff6666;
+margin-bottom:10px;
+text-align:center;
+}
+
+#success{
+color:#66ff99;
+margin-bottom:10px;
+text-align:center;
+}
+</style></head><body><div class="container"><div class="logo">Marathon Digital Hub</div>
+<div class="subtitle">Create Your Account</div><div id="error"></div>
+<div id="success"></div><div class="input-group">
+<input type="text" id="fullname" placeholder="Full Name">
+</div><div class="input-group">
+<input type="text" id="phone" placeholder="Phone Number">
+</div><div class="input-group">
+<input type="email" id="email" placeholder="Email Address">
+</div><div class="input-group">
+<input type="password" id="password" placeholder="Password">
+</div><div class="input-group">
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
+</div><div class="input-group">
+<input type="text" id="referral" placeholder="Referral Code (Optional)">
+</div><div class="checkbox">
+<input type="checkbox" id="showPass">
+<label for="showPass">Show Passwords</label>
+</div><div class="checkbox">
+<input type="checkbox" id="terms">
+<label for="terms">I agree to the Terms & Conditions</label>
+</div><button onclick="registerUser()">
+CREATE ACCOUNT
+</button><div class="link">
+Already have an account?
+<a href="login.html">Login</a>
+</div></div><script>
+
+const SUPABASE_URL =
+"https://wcrrxsrtbelcbycppieg.supabase.co";
+
+const SUPABASE_KEY =
+"YOUR_ANON_KEY";
+
+const supabase =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+document.getElementById("showPass")
+.addEventListener("change",function(){
+
+const type =
+this.checked ? "text" : "password";
+
+document.getElementById("password").type = type;
+document.getElementById("confirmPassword").type = type;
+
+});
+
+async function registerUser(){
+
+document.getElementById("error").innerText="";
+document.getElementById("success").innerText="";
+
+const fullname =
+document.getElementById("fullname").value.trim();
+
+const phone =
+document.getElementById("phone").value.trim();
+
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+const confirmPassword =
+document.getElementById("confirmPassword").value;
+
+const referral =
+document.getElementById("referral").value.trim();
+
+if(!document.getElementById("terms").checked){
+return document.getElementById("error").innerText =
+"Please accept Terms & Conditions";
+}
+
+if(password !== confirmPassword){
+return document.getElementById("error").innerText =
+"Passwords do not match";
+}
+
+try{
+
+const { data, error } =
+await supabase.auth.signUp({
+email,
+password
+});
+
+if(error){
+throw error;
+}
+
+await supabase
+.from("profiles")
+.insert({
+id:data.user.id,
+fullname,
+phone,
+email,
+wallet_balance:0,
+referral_code:referral
+});
+
+document.getElementById("success").innerText =
+"Account created successfully!";
+
+}catch(err){
+
+document.getElementById("error").innerText =
+err.message;
 
 }
 
-</script>
+}
 
-</body>
-</html>
+</script></body>
+  </html>
