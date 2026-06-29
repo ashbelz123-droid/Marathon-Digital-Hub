@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Login</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -29,12 +29,13 @@ border:1px solid #00c8ff;
 h1{
 text-align:center;
 color:#00c8ff;
+margin-bottom:20px;
 }
 
 input{
 width:100%;
 padding:15px;
-margin-top:10px;
+margin-bottom:12px;
 border:none;
 border-radius:10px;
 }
@@ -42,10 +43,9 @@ border-radius:10px;
 button{
 width:100%;
 padding:15px;
-margin-top:15px;
+background:#00c8ff;
 border:none;
 border-radius:10px;
-background:#00c8ff;
 font-weight:bold;
 cursor:pointer;
 }
@@ -55,6 +55,7 @@ color:#00c8ff;
 }
 
 </style>
+
 </head>
 
 <body>
@@ -73,11 +74,11 @@ type="password"
 id="password"
 placeholder="Password">
 
-<button onclick="login()">
+<button onclick="loginUser()">
 LOGIN
 </button>
 
-<p style="margin-top:15px;">
+<p style="margin-top:15px;text-align:center;">
 Don't have an account?
 <a href="register.html">
 Create Account
@@ -100,7 +101,7 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-async function login(){
+async function loginUser(){
 
 const email =
 document.getElementById(
@@ -112,7 +113,20 @@ document.getElementById(
 "password"
 ).value;
 
-const { error } =
+if(!email || !password){
+
+alert(
+"Enter email and password"
+);
+
+return;
+
+}
+
+const {
+error
+}
+=
 await supabase.auth.signInWithPassword({
 
 email,
@@ -122,7 +136,10 @@ password
 
 if(error){
 
-alert(error.message);
+alert(
+error.message
+);
+
 return;
 
 }
