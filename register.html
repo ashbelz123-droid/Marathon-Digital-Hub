@@ -1,126 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Register</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
-body{
-background:#020b1f;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-font-family:Arial,sans-serif;
-color:white;
-}
-
-.card{
-width:90%;
-max-width:400px;
-background:#03142f;
-padding:25px;
-border-radius:20px;
-border:1px solid #00c8ff;
-}
-
-h2{
-text-align:center;
-color:#00c8ff;
-}
-
-input{
-width:100%;
-padding:14px;
-margin-top:10px;
-border:none;
-border-radius:10px;
-}
-
-button{
-width:100%;
-padding:14px;
-margin-top:15px;
-background:#00c8ff;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
-</style>
-</head>
-
 <body>
 
-<div class="card">
+<h1>TEST FILE</h1>
 
-<h2>Create Account</h2>
-
-<input id="fullname" placeholder="Full Name">
-
-<input id="phone" placeholder="Phone Number">
-
-<input id="email" type="email" placeholder="Email">
-
-<input id="password" type="password" placeholder="Password">
-
-<button onclick="registerUser()">
-CREATE ACCOUNT
+<button onclick="alert('WORKING')">
+CLICK ME
 </button>
-
-</div>
-
-<script>
-
-const supabase =
-window.supabase.createClient(
-"https://wcrrxsrtbelcbycppieg.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjcnJ4c3J0YmVsY2J5Y3BwaWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTM0ODQsImV4cCI6MjA5NjE4OTQ4NH0.yh_xCiEW2T9riiDJgEWBmIU4V0e5azRQ0sITaEhfCo4"
-);
-
-async function registerUser(){
-
-try{
-
-const fullname =
-document.getElementById("fullname").value;
-
-const phone =
-document.getElementById("phone").value;
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-const { data, error } =
-await supabase.auth.signUp({
-email,
-password
-});
-
-if(error){
-alert(error.message);
-return;
-}
-
-alert("Account Created!");
-
-console.log(data);
-
-}catch(err){
-
-alert(err.message);
-
-}
-
-}
-
-</script>
 
 </body>
 </html>
