@@ -22,15 +22,20 @@ margin:8px 0;
 box-sizing:border-box;
 }
 
-button{
-width:100%;
-padding:12px;
-background:#00c8ff;
-border:none;
-border-radius:10px;
-font-weight:bold;
-}
-</style>
+<button id="testBtn">
+CREATE ACCOUNT
+</button>
+
+<script>
+
+document.getElementById("testBtn")
+.addEventListener("click", function(){
+
+alert("BUTTON WORKING");
+
+});
+
+</script>
 
 </head>
 <body><div class="box"><h2>Marathon Digital Hub</h2><input type="text" placeholder="Full Name"><input type="text" placeholder="Phone"><input type="email" placeholder="Email"><input type="password" placeholder="Password"><input type="password" placeholder="Confirm Password"><input type="text" placeholder="Referral Code"><button onclick="alert('UI WORKING')">
