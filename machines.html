@@ -1,17 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Machine Test V2</title>
+<title>Machines Center</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
 body{
 background:#020b1f;
 color:white;
-font-family:Arial,sans-serif;
 padding:15px;
 }
 
@@ -20,7 +25,11 @@ text-align:center;
 margin-bottom:20px;
 }
 
-.balance{
+.header h1{
+color:#00c8ff;
+}
+
+.balance-card{
 background:#03142f;
 padding:20px;
 border-radius:20px;
@@ -28,31 +37,48 @@ margin-bottom:20px;
 border:1px solid #00c8ff;
 }
 
-.balance h2{
+.balance{
+font-size:30px;
+font-weight:bold;
 color:#00c8ff;
 }
 
-.machine{
+.machine-card{
 background:#03142f;
 padding:20px;
 border-radius:20px;
 margin-bottom:15px;
-border:1px solid #00c8ff;
+border:1px solid rgba(0,200,255,.3);
 }
 
-.machine h3{
+.machine-name{
+font-size:24px;
+font-weight:bold;
 color:#00c8ff;
 margin-bottom:10px;
 }
 
-.buy{
+.machine-row{
+display:flex;
+justify-content:space-between;
+margin:8px 0;
+}
+
+.buy-btn{
 width:100%;
 padding:15px;
+margin-top:15px;
 border:none;
 border-radius:12px;
 background:#00c8ff;
+color:#000;
 font-weight:bold;
-margin-top:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+.buy-btn:hover{
+opacity:.9;
 }
 
 </style>
@@ -61,13 +87,20 @@ margin-top:10px;
 <body>
 
 <div class="header">
-<h1>Machine Test V2</h1>
+<h1>Machines Center</h1>
 </div>
 
+<div class="balance-card">
+
 <div class="balance">
-<h2 id="wallet">UGX 1,000,000</h2>
-<p>Wallet Balance</p>
-<p>Machines Owned: <span id="owned">0</span></p>
+UGX <span id="wallet">1000000</span>
+</div>
+
+<p>
+Owned Machines:
+<span id="owned">0</span>
+</p>
+
 </div>
 
 <div id="machines"></div>
@@ -77,36 +110,111 @@ margin-top:10px;
 let wallet = 1000000;
 let owned = 0;
 
-const data = [
+const machines = [
 
-{name:"VIP1",price:18000},
-{name:"VIP2",price:36000},
-{name:"VIP3",price:80000},
-{name:"B1",price:30000},
-{name:"B2",price:70000},
-{name:"D1",price:120000},
-{name:"R1",price:57000},
-{name:"R2",price:68500}
+{
+name:"VIP1",
+price:18000,
+income:40000,
+days:20
+},
+
+{
+name:"VIP2",
+price:36000,
+income:79200,
+days:20
+},
+
+{
+name:"B1",
+price:30000,
+income:50000,
+days:20
+},
+
+{
+name:"B2",
+price:70000,
+income:133000,
+days:20
+},
+
+{
+name:"D1",
+price:120000,
+income:1350000,
+days:100
+},
+
+{
+name:"D2",
+price:200000,
+income:2450000,
+days:100
+},
+
+{
+name:"R1",
+price:57000,
+income:142000,
+days:120
+},
+
+{
+name:"R2",
+price:68500,
+income:171250,
+days:120
+}
 
 ];
 
-const box =
+const container =
 document.getElementById("machines");
 
-data.forEach(machine=>{
+machines.forEach(machine=>{
 
-box.innerHTML += `
+const daily =
+Math.floor(
+machine.income /
+machine.days
+);
 
-<div class="machine">
+container.innerHTML += `
 
-<h3>${machine.name}</h3>
+<div class="machine-card">
 
-<p>Price:
-UGX ${machine.price.toLocaleString()}</p>
+<div class="machine-name">
+${machine.name}
+</div>
+
+<div class="machine-row">
+<span>Price</span>
+<span>UGX ${machine.price.toLocaleString()}</span>
+</div>
+
+<div class="machine-row">
+<span>Total Return</span>
+<span>UGX ${machine.income.toLocaleString()}</span>
+</div>
+
+<div class="machine-row">
+<span>Duration</span>
+<span>${machine.days} Days</span>
+</div>
+
+<div class="machine-row">
+<span>Daily Income</span>
+<span>UGX ${daily.toLocaleString()}</span>
+</div>
 
 <button
-class="buy"
-onclick="buy(${machine.price},'${machine.name}')">
+class="buy-btn"
+onclick="buyMachine(
+${machine.price},
+'${machine.name}'
+)">
 
 BUY NOW
 
@@ -118,14 +226,23 @@ BUY NOW
 
 });
 
-function buy(price,name){
+function buyMachine(price,name){
+
+const ok = confirm(
+`Buy ${name} for UGX ${price.toLocaleString()} ?`
+);
+
+if(!ok){
+return;
+}
 
 if(wallet < price){
 
-alert("Insufficient Balance");
+alert(
+"Insufficient Balance"
+);
 
 return;
-
 }
 
 wallet -= price;
@@ -134,7 +251,6 @@ owned++;
 document.getElementById(
 "wallet"
 ).innerText =
-"UGX " +
 wallet.toLocaleString();
 
 document.getElementById(
@@ -143,7 +259,8 @@ document.getElementById(
 owned;
 
 alert(
-name + " purchased successfully"
+name +
+" purchased successfully"
 );
 
 }
