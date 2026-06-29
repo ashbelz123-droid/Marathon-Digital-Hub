@@ -6,53 +6,189 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Mining Packages</title>
+<title>Machines</title>
 
-<link rel="stylesheet" href="assets/css/style.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050816;
+color:white;
+padding-bottom:100px;
+overflow-x:hidden;
+}
+
+/* COLORFUL DOT BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
+radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
+radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
+background-size:18px 18px;
+z-index:-1;
+}
+
+/* HEADER */
+
+.header{
+height:70px;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+border-bottom:1px solid rgba(0,200,255,.3);
+}
+
+.header h1{
+color:#00c8ff;
+}
+
+/* TABS */
+
+.tabs{
+display:flex;
+overflow-x:auto;
+background:#111;
+padding:10px;
+gap:10px;
+}
+
+.tab{
+padding:10px 18px;
+border-radius:10px;
+background:#00142c;
+border:1px solid #00c8ff;
+color:#00c8ff;
+white-space:nowrap;
+cursor:pointer;
+}
+
+.tab.active{
+background:#00c8ff;
+color:#000;
+font-weight:bold;
+}
+
+/* MACHINE AREA */
+
+.machine-container{
+padding:15px;
+}
+
+.machine-card{
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
+overflow:hidden;
+margin-bottom:20px;
+box-shadow:0 0 15px rgba(0,200,255,.15);
+}
+
+.machine-card img{
+width:100%;
+height:220px;
+object-fit:cover;
+display:block;
+}
+
+.machine-info{
+padding:18px;
+}
+
+.machine-info h2{
+color:#00c8ff;
+font-size:34px;
+margin-bottom:15px;
+}
+
+.machine-info p{
+margin:10px 0;
+font-size:20px;
+}
+
+.activate-btn{
+width:100%;
+padding:16px;
+margin-top:15px;
+border:none;
+border-radius:15px;
+background:linear-gradient(90deg,#00c8ff,#0066ff);
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
 
 </head>
 
 <body>
 
-<canvas id="network"></canvas>
-
 <div class="header">
-<h1>Mining Packages</h1>
-</div>
 
-<div class="balance-card">
-
-<h3>Wallet Balance</h3>
-
-<h1 id="walletBalance">
-UGX 0
-</h1>
+<h1>Mining Machines</h1>
 
 </div>
 
-<div class="card">
+<div class="tabs">
 
-<h2>VIP Series</h2>
+<div class="tab active">All</div>
+
+<div class="tab">VIP Series</div>
+
+<div class="tab">B Series</div>
+
+<div class="tab">D Series</div>
+
+<div class="tab">R Series</div>
 
 </div>
 
-<div class="machine-grid">
+<div class="machine-container">
+
+     <!-- VIP 1 -->
 
 <div class="machine-card">
 
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
+
 <div class="machine-info">
 
-<h3>VIP 1</h3>
+<h2>VIP 1</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 18,000</p>
+<p>Investment: UGX 18,000</p>
 
-<p><strong>Total Income:</strong> UGX 40,000</p>
+<p>Total Income: UGX 40,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(18000,'VIP 1')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -60,21 +196,23 @@ Activate Machine
 
 </div>
 
+<!-- VIP 2 -->
+
 <div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
 
 <div class="machine-info">
 
-<h3>VIP 2</h3>
+<h2>VIP 2</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 36,000</p>
+<p>Investment: UGX 36,000</p>
 
-<p><strong>Total Income:</strong> UGX 79,200</p>
+<p>Total Income: UGX 79,200</p>
 
-<button
-class="btn"
-onclick="buyMachine(36000,'VIP 2')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -82,42 +220,23 @@ Activate Machine
 
 </div>
 
+<!-- VIP 3 -->
+
 <div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
 
 <div class="machine-info">
 
-<h3>VIP 3</h3>
+<h2>VIP 3</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 80,000</p>
+<p>Investment: UGX 80,000</p>
 
-<p><strong>Total Income:</strong> UGX 176,000</p>
+<p>Total Income: UGX 176,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(80000,'VIP 3')">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-<div class="machine-card">
-
-<div class="machine-info">
-
-<h3>VIP 4</h3>
-
-<p><strong>Lock:</strong> 20 Days</p>
-
-<p><strong>Price:</strong> UGX 110,000</p>
-
-<p><strong>Total Income:</strong> UGX 242,000</p>
-
-<button
-class="btn"
-onclick="buyMachine(110000,'VIP 4')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -125,21 +244,23 @@ Activate Machine
 
 </div>
 
+<!-- VIP 4 -->
+
 <div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=1200">
 
 <div class="machine-info">
 
-<h3>VIP 5</h3>
+<h2>VIP 4</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 240,000</p>
+<p>Investment: UGX 110,000</p>
 
-<p><strong>Total Income:</strong> UGX 528,000</p>
+<p>Total Income: UGX 242,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(240000,'VIP 5')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -147,86 +268,47 @@ Activate Machine
 
 </div>
 
-<div class="machine-card">
-
-<div class="machine-info">
-
-<h3>VIP 6</h3>
-
-<p><strong>Lock:</strong> 20 Days</p>
-
-<p><strong>Price:</strong> UGX 400,000</p>
-
-<p><strong>Total Income:</strong> UGX 880,000</p>
-
-<button
-class="btn"
-onclick="buyMachine(400000,'VIP 6')">
-Activate Machine
-</button>
-
-</div>
-
-</div>
+<!-- VIP 5 -->
 
 <div class="machine-card">
 
-<div class="machine-info">
-
-<h3>VIP 7</h3>
-
-<p><strong>Lock:</strong> 20 Days</p>
-
-<p><strong>Price:</strong> UGX 650,000</p>
-
-<p><strong>Total Income:</strong> UGX 1,430,000</p>
-
-<button
-class="btn"
-onclick="buyMachine(650000,'VIP 7')">
-Activate Machine
-</button>
-
-</div>
-
-</div>
-
-<div class="machine-card">
+<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
 
 <div class="machine-info">
 
-<h3>VIP 8</h3>
+<h2>VIP 5</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 850,000</p>
+<p>Investment: UGX 240,000</p>
 
-<p><strong>Total Income:</strong> UGX 1,870,000</p>
+<p>Total Income: UGX 528,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(850000,'VIP 8')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
 </div>
 
      </div>
-     <div class="machine-card">
+
+     <!-- VIP 6 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
 
 <div class="machine-info">
 
-<h3>VIP 9</h3>
+<h2>VIP 6</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 1,200,000</p>
+<p>Investment: UGX 400,000</p>
 
-<p><strong>Total Income:</strong> UGX 2,640,000</p>
+<p>Total Income: UGX 880,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(1200000,'VIP 9')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -234,21 +316,23 @@ Activate Machine
 
 </div>
 
+<!-- VIP 7 -->
+
 <div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
 
 <div class="machine-info">
 
-<h3>VIP 10</h3>
+<h2>VIP 7</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 1,500,000</p>
+<p>Investment: UGX 650,000</p>
 
-<p><strong>Total Income:</strong> UGX 3,300,000</p>
+<p>Total Income: UGX 1,430,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(1500000,'VIP 10')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -256,31 +340,23 @@ Activate Machine
 
 </div>
 
-</div>
-
-<div class="card">
-
-<h2>B Series</h2>
-
-</div>
-
-<div class="machine-grid">
+<!-- VIP 8 -->
 
 <div class="machine-card">
 
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
+
 <div class="machine-info">
 
-<h3>B1</h3>
+<h2>VIP 8</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 30,000</p>
+<p>Investment: UGX 850,000</p>
 
-<p><strong>Total Income:</strong> UGX 50,000</p>
+<p>Total Income: UGX 1,870,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(30000,'B1')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -288,21 +364,23 @@ Activate Machine
 
 </div>
 
+<!-- VIP 9 -->
+
 <div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
 
 <div class="machine-info">
 
-<h3>B2</h3>
+<h2>VIP 9</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 70,000</p>
+<p>Investment: UGX 1,200,000</p>
 
-<p><strong>Total Income:</strong> UGX 133,000</p>
+<p>Total Income: UGX 2,640,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(70000,'B2')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -310,183 +388,455 @@ Activate Machine
 
 </div>
 
+<!-- VIP 10 -->
+
 <div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
 
 <div class="machine-info">
 
-<h3>B3</h3>
+<h2>VIP 10</h2>
 
-<p><strong>Lock:</strong> 20 Days</p>
+<p>Duration: 20 Days</p>
 
-<p><strong>Price:</strong> UGX 100,000</p>
+<p>Investment: UGX 1,500,000</p>
 
-<p><strong>Total Income:</strong> UGX 200,000</p>
+<p>Total Income: UGX 3,300,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(100000,'B3')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
 </div>
 
      </div>
+
+<!-- B1 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
+
+<div class="machine-info">
+
+<h2>B1 Miner</h2>
+
+<p>Duration: 20 Days</p>
+
+<p>Investment: UGX 30,000</p>
+
+<p>Total Income: UGX 50,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- B2 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
+
+<div class="machine-info">
+
+<h2>B2 Miner</h2>
+
+<p>Duration: 20 Days</p>
+
+<p>Investment: UGX 70,000</p>
+
+<p>Total Income: UGX 133,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- B3 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
+
+<div class="machine-info">
+
+<h2>B3 Miner</h2>
+
+<p>Duration: 20 Days</p>
+
+<p>Investment: UGX 100,000</p>
+
+<p>Total Income: UGX 200,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- D1 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
+
+<div class="machine-info">
+
+<h2>D1 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 120,000</p>
+
+<p>Total Income: UGX 1,350,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- D2 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
+
+<div class="machine-info">
+
+<h2>D2 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 200,000</p>
+
+<p>Total Income: UGX 2,450,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- D3 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
+
+<div class="machine-info">
+
+<h2>D3 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 430,000</p>
+
+<p>Total Income: UGX 7,417,500</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- D4 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
+
+<div class="machine-info">
+
+<h2>D4 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 500,000</p>
+
+<p>Total Income: UGX 10,625,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
      </div>
 
-<div class="card">
-
-<h2>D Series</h2>
-
-</div>
-
-<div class="machine-grid">
+     <!-- D5 -->
 
 <div class="machine-card">
 
+<img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=1200">
+
 <div class="machine-info">
 
-<h3>D1</h3>
+<h2>D5 Miner</h2>
 
-<p><strong>Lock:</strong> 100 Days</p>
+<p>Duration: 30 Days</p>
 
-<p><strong>Price:</strong> UGX 120,000</p>
+<p>Investment: UGX 950,000</p>
 
-<p><strong>Total Income:</strong> UGX 1,350,000</p>
+<p>Total Income: UGX 22,325,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(120000,'D1')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
 </div>
 
 </div>
+
+<!-- D6 -->
 
 <div class="machine-card">
 
+<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
+
 <div class="machine-info">
 
-<h3>D2</h3>
+<h2>D6 Miner</h2>
 
-<p><strong>Lock:</strong> 100 Days</p>
+<p>Duration: 30 Days</p>
 
-<p><strong>Price:</strong> UGX 200,000</p>
+<p>Investment: UGX 2,275,000</p>
 
-<p><strong>Total Income:</strong> UGX 2,450,000</p>
+<p>Total Income: UGX 58,012,500</p>
 
-<button
-class="btn"
-onclick="buyMachine(200000,'D2')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
 </div>
 
 </div>
+
+<!-- D7 -->
 
 <div class="machine-card">
 
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
+
 <div class="machine-info">
 
-<h3>D3</h3>
+<h2>D7 Miner</h2>
 
-<p><strong>Lock:</strong> 100 Days</p>
+<p>Duration: 30 Days</p>
 
-<p><strong>Price:</strong> UGX 430,000</p>
+<p>Investment: UGX 4,950,000</p>
 
-<p><strong>Total Income:</strong> UGX 7,417,500</p>
+<p>Total Income: UGX 121,275,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(430000,'D3')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
 </div>
 
 </div>
+
+<!-- R1 -->
 
 <div class="machine-card">
 
+<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
+
 <div class="machine-info">
 
-<h3>D4</h3>
+<h2>R1 Miner</h2>
 
-<p><strong>Lock:</strong> 100 Days</p>
+<p>Duration: 30 Days</p>
 
-<p><strong>Price:</strong> UGX 500,000</p>
+<p>Investment: UGX 57,000</p>
 
-<p><strong>Total Income:</strong> UGX 10,625,000</p>
+<p>Total Income: UGX 1,420,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(500000,'D4')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
 </div>
 
 </div>
+
+<!-- R2 -->
 
 <div class="machine-card">
 
-<div class="machine-info">
-
-<h3>D5</h3>
-
-<p><strong>Lock:</strong> 90 Days</p>
-
-<p><strong>Price:</strong> UGX 950,000</p>
-
-<p><strong>Total Income:</strong> UGX 22,325,000</p>
-
-<button
-class="btn"
-onclick="buyMachine(950000,'D5')">
-Activate Machine
-</button>
-
-</div>
-
-     </div>
-     <div class="machine-card">
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
 
 <div class="machine-info">
 
-<h3>D6</h3>
+<h2>R2 Miner</h2>
 
-<p><strong>Lock:</strong> 90 Days</p>
+<p>Duration: 30 Days</p>
 
-<p><strong>Price:</strong> UGX 2,000,000</p>
+<p>Investment: UGX 68,500</p>
 
-<p><strong>Total Income:</strong> UGX 49,500,000</p>
+<p>Total Income: UGX 1,712,500</p>
 
-<button
-class="btn"
-onclick="buyMachine(2000000,'D6')">
+<button class="activate-btn">
 Activate Machine
 </button>
 
 </div>
 
 </div>
+
+<!-- R3 -->
 
 <div class="machine-card">
 
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
+
 <div class="machine-info">
 
-<h3>D7</h3>
+<h2>R3 Miner</h2>
 
-<p><strong>Lock:</strong> 90 Days</p>
+<p>Duration: 30 Days</p>
 
-<p><strong>Price:</strong> UGX 4,000,000</p>
+<p>Investment: UGX 150,000</p>
 
-<p><strong>Total Income:</strong> UGX 99,000,000</p>
+<p>Total Income: UGX 3,750,000</p>
 
-<button
-class="btn"
-onclick="buyMachine(4000000,'D7')">
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+     <!-- R4 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200">
+
+<div class="machine-info">
+
+<h2>R4 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 750,000</p>
+
+<p>Total Income: UGX 18,750,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- R5 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=1200">
+
+<div class="machine-info">
+
+<h2>R5 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 1,000,000</p>
+
+<p>Total Income: UGX 25,000,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- R6 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=1200">
+
+<div class="machine-info">
+
+<h2>R6 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 2,500,000</p>
+
+<p>Total Income: UGX 62,500,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- R7 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
+
+<div class="machine-info">
+
+<h2>R7 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 3,000,000</p>
+
+<p>Total Income: UGX 54,000,000</p>
+
+<button class="activate-btn">
+Activate Machine
+</button>
+
+</div>
+
+</div>
+
+<!-- R8 -->
+
+<div class="machine-card">
+
+<img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200">
+
+<div class="machine-info">
+
+<h2>R8 Miner</h2>
+
+<p>Duration: 30 Days</p>
+
+<p>Investment: UGX 6,000,000</p>
+
+<p>Total Income: UGX 150,000,000</p>
+
+<button class="activate-btn">
 Activate Machine
 </button>
 
@@ -496,33 +846,7 @@ Activate Machine
 
 </div>
 
-<div class="card">
-
-<h2>R Series</h2>
-
-</div>
-
-<div class="machine-grid">
-
-<div class="machine-card"><div class="machine-info"><h3>R1</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 6,000,000</p><button class="btn" onclick="buyMachine(6000000,'R1')">Activate Machine</button></div></div>
-
-<div class="machine-card"><div class="machine-info"><h3>R2</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 8,000,000</p><button class="btn" onclick="buyMachine(8000000,'R2')">Activate Machine</button></div></div>
-
-<div class="machine-card"><div class="machine-info"><h3>R3</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 10,000,000</p><button class="btn" onclick="buyMachine(10000000,'R3')">Activate Machine</button></div></div>
-
-<div class="machine-card"><div class="machine-info"><h3>R4</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 15,000,000</p><button class="btn" onclick="buyMachine(15000000,'R4')">Activate Machine</button></div></div>
-
-<div class="machine-card"><div class="machine-info"><h3>R5</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 20,000,000</p><button class="btn" onclick="buyMachine(20000000,'R5')">Activate Machine</button></div></div>
-
-<div class="machine-card"><div class="machine-info"><h3>R6</h3><p><strong>Lock:</strong> 120 Days</p><p><strong>Price:</strong> UGX 30,000,000</p><button class="btn" onclick="buyMachine(30000000,'R6')">Activate Machine</button></div></div>
-
-<div class="machine-card"><div class="machine-info"><h3>R7</h3><p><strong>Lock:</strong> 75 Days</p><p><strong>Price:</strong> UGX 50,000,000</p><button class="btn" onclick="buyMachine(50000000,'R7')">Activate Machine</button></div></div>
-
-<div class="machine-card"><div class="machine-info"><h3>R8</h3><p><strong>Lock:</strong> 80 Days</p><p><strong>Price:</strong> UGX 100,000,000</p><button class="btn" onclick="buyMachine(100000000,'R8')">Activate Machine</button></div></div>
-
-</div>
-
-<div class="footer-space"></div>
+<!-- BOTTOM NAVIGATION -->
 
 <div class="bottom-nav">
 
@@ -530,12 +854,12 @@ Activate Machine
 🏠<br>Home
 </a>
 
-<a href="machines.html" class="active">
+<a href="machines.html" style="color:#00c8ff;">
 ⚙️<br>Machines
 </a>
 
-<a href="wallet.html">
-👛<br>Wallet
+<a href="deposit.html">
+💳<br>Deposit
 </a>
 
 <a href="income.html">
@@ -548,66 +872,31 @@ Activate Machine
 
 </div>
 
-<script>
+<style>
 
-let wallet =
-parseFloat(localStorage.getItem("walletBalance")) || 0;
-
-document.getElementById("walletBalance").innerText =
-"UGX " + wallet.toLocaleString();
-
-function buyMachine(price,name){
-
-if(wallet < price){
-
-alert("Insufficient Balance");
-
-return;
-
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:75px;
+background:#000;
+border-top:1px solid rgba(0,200,255,.3);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:999;
 }
 
-wallet -= price;
-
-localStorage.setItem(
-"walletBalance",
-wallet
-);
-
-document.getElementById(
-"walletBalance"
-).innerText =
-"UGX " + wallet.toLocaleString();
-
-let machines =
-JSON.parse(
-localStorage.getItem(
-"activeMachines"
-)
-) || [];
-
-machines.push({
-
-name:name,
-price:price,
-date:new Date().toISOString()
-
-});
-
-localStorage.setItem(
-"activeMachines",
-JSON.stringify(machines)
-);
-
-alert(
-name + " Activated Successfully"
-);
-
+.bottom-nav a{
+text-decoration:none;
+color:#aaa;
+font-size:13px;
+text-align:center;
 }
 
-</script>
-
-<script src="assets/js/app.js"></script>
-<script src="assets/js/network.js"></script>
+</style>
 
 </body>
-                                                                                                                                                                                                                                              </html>
+
+</html>
