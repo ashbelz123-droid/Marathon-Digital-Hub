@@ -15,7 +15,7 @@ async function requireAuth(){
 const {
 data:{user}
 }
-=
+
 await supabase.auth.getUser();
 
 if(!user){
@@ -23,21 +23,9 @@ if(!user){
 window.location =
 "login.html";
 
-return;
+return null;
 
 }
-
-return user;
-
-}
-
-async function getCurrentUser(){
-
-const {
-data:{user}
-}
-=
-await supabase.auth.getUser();
 
 return user;
 
@@ -51,10 +39,3 @@ window.location =
 "login.html";
 
 }
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="auth.js"></script>
-
-<script>
-requireAuth();
-</script>
