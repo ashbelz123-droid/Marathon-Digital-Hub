@@ -1,20 +1,76 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Register Test</title>
+<title>Supabase Test</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
 <body>
 
-<h1>Register Test</h1>
+<h1>Supabase Connection Test</h1>
 
-<button onclick="test()">
-TEST BUTTON
+<button onclick="testSupabase()">
+TEST SUPABASE
 </button>
 
 <script>
 
-function test(){
-alert("BUTTON WORKING");
+const supabase =
+window.supabase.createClient(
+"https://wcrrxsrtbelcbycppieg.supabase.co",
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjcnJ4c3J0YmVsY2J5Y3BwaWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTM0ODQsImV4cCI6MjA5NjE4OTQ4NH0.yh_xCiEW2T9riiDJgEWBmIU4V0e5azRQ0sITaEhfCo4"
+);
+
+async function testSupabase(){
+
+try{
+
+alert("Testing...");
+
+const {
+data,
+error
+}
+=
+await supabase.auth.signUp({
+
+email:
+"test" +
+Date.now() +
+"@gmail.com",
+
+password:
+"12345678"
+
+});
+
+if(error){
+
+alert(
+"ERROR: " +
+error.message
+);
+
+return;
+
+}
+
+alert(
+"SUCCESS"
+);
+
+console.log(data);
+
+}catch(err){
+
+alert(
+"JS ERROR: " +
+err.message
+);
+
+}
+
 }
 
 </script>
