@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deposit | Marathon Digital Hub</title>
+<title>Deposit</title>
 
 <style>
 
@@ -16,21 +18,50 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#000814;
+background:#050816;
 color:white;
-padding-bottom:90px;
+padding-bottom:100px;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
+radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
+radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
+background-size:18px 18px;
+z-index:-1;
 }
 
 .header{
-background:#03122c;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #00c8ff;
+height:70px;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+border-bottom:1px solid rgba(0,200,255,.3);
 }
 
 .header h1{
 color:#00c8ff;
-font-size:28px;
 }
 
 .deposit-container{
@@ -38,12 +69,11 @@ padding:15px;
 }
 
 .deposit-card{
-background:#03122c;
-border:2px solid #00c8ff;
-border-radius:18px;
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
 padding:20px;
-margin-bottom:15px;
-box-shadow:0 0 15px rgba(0,200,255,.2);
+margin-bottom:20px;
 }
 
 .deposit-card h2{
@@ -52,47 +82,45 @@ margin-bottom:15px;
 }
 
 .deposit-card p{
-font-size:17px;
-margin-bottom:10px;
-}
-
-.input-group{
-margin-top:15px;
-}
-
-.input-group input{
-width:100%;
-padding:14px;
-border:none;
-border-radius:10px;
-background:#081a38;
-color:white;
-font-size:16px;
-}
-
-.submit-btn{
-width:100%;
-padding:15px;
-border:none;
-border-radius:12px;
-background:linear-gradient(90deg,#00c8ff,#0066ff);
-color:white;
-font-size:18px;
-font-weight:bold;
-margin-top:15px;
-cursor:pointer;
+line-height:1.8;
 }
 
 </style>
+
 </head>
 
 <body>
 
 <div class="header">
+
 <h1>Deposit Funds</h1>
+
 </div>
 
-<div class="deposit-container">MTN PAYMENT
+<div class="deposit-container">
+
+<div class="deposit-card">
+
+<h2>Deposit Instructions</h2>
+
+<p>
+1. Send money using the payment method below.
+</p>
+
+<p>
+2. Upload your payment screenshot.
+</p>
+
+<p>
+3. Submit your deposit request.
+</p>
+
+<p>
+4. Admin will verify and credit your wallet.
+</p>
+
+</div>
+<!-- PAYMENT METHODS -->
 
 <div class="deposit-card">
 
@@ -100,15 +128,13 @@ cursor:pointer;
 
 <p><strong>Name:</strong> Marathon Digital Hub</p>
 
-<p><strong>Number:</strong> 0770123456</p>
+<p><strong>Number:</strong> 0784010287</p>
 
-<button onclick="copyMTN()" class="submit-btn">
+<button class="action-btn">
 Copy MTN Number
 </button>
 
 </div>
-
-AIRTEL PAYMENT
 
 <div class="deposit-card">
 
@@ -116,49 +142,63 @@ AIRTEL PAYMENT
 
 <p><strong>Name:</strong> Marathon Digital Hub</p>
 
-<p><strong>Number:</strong> 0700123456</p>
+<p><strong>Number:</strong> +256 703 424180</p>
 
-<button onclick="copyAirtel()" class="submit-btn">
+<button class="action-btn">
 Copy Airtel Number
 </button>
 
 </div>
 
-AMOUNT INPUT
+<style>
+
+.action-btn{
+width:100%;
+margin-top:15px;
+padding:15px;
+border:none;
+border-radius:15px;
+background:linear-gradient(
+90deg,
+#00c8ff,
+#0066ff
+);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.action-btn:hover{
+opacity:.9;
+}
+
+</style>
+
+  <!-- DEPOSIT FORM -->
 
 <div class="deposit-card">
 
-<h2>Deposit Amount</h2>
+<h2>Submit Deposit</h2>
 
-<div class="input-group">
+<p>Amount Deposited</p>
+
 <input
 type="number"
-id="amount"
-placeholder="Enter Deposit Amount">
-</div>
+placeholder="Enter Amount"
+class="deposit-input">
 
-</div><!-- SCREENSHOT UPLOAD -->
+<br><br>
 
-<div class="deposit-card">
+<p>Upload Payment Screenshot</p>
 
-<h2>Upload Payment Screenshot</h2>
-
-<div class="input-group">
 <input
 type="file"
-id="screenshot"
-accept="image/*">
-</div>
+class="deposit-input">
 
-</div>
+<br><br>
 
-<!-- SUBMIT -->
-
-<div class="deposit-card">
-
-<button
-class="submit-btn"
-onclick="submitDeposit()">
+<button class="submit-btn">
 
 Submit Deposit
 
@@ -166,88 +206,162 @@ Submit Deposit
 
 </div>
 
+<!-- DEPOSIT HISTORY -->
+
+<div class="deposit-card">
+
+<h2>Recent Deposits</h2>
+
+<div class="history-item">
+
+<span>UGX 50,000</span>
+
+<span style="color:orange;">
+Pending
+</span>
+
+</div>
+
+<div class="history-item">
+
+<span>UGX 100,000</span>
+
+<span style="color:lime;">
+Approved
+</span>
+
+</div>
+
+<div class="history-item">
+
+<span>UGX 25,000</span>
+
+<span style="color:red;">
+Rejected
+</span>
+
+</div>
+
+</div>
+
+<style>
+
+.deposit-input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:12px;
+background:#0d203d;
+color:white;
+}
+
+.submit-btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:linear-gradient(
+90deg,
+#00c8ff,
+#0066ff
+);
+color:white;
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.history-item{
+display:flex;
+justify-content:space-between;
+padding:15px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.history-item:last-child{
+border-bottom:none;
+}
+
+  </style>
+
+  <!-- FLOATING SUPPORT -->
+
+<div class="support-btn"
+onclick="window.open('https://wa.me/256784010287')">
+
+💬
+
 </div>
 
 <!-- BOTTOM NAVIGATION -->
 
-<div style="
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:70px;
-background:#010b23;
-display:flex;
-justify-content:space-around;
-align-items:center;
-border-top:1px solid rgba(0,200,255,.2);
-">
+<div class="bottom-nav">
 
-<a href="dashboard.html"
-style="color:white;text-decoration:none;">
+<a href="dashboard.html">
 🏠<br>Home
 </a>
 
-<a href="machines.html"
-style="color:white;text-decoration:none;">
+<a href="machines.html">
 ⚙️<br>Machines
 </a>
 
-<a href="deposit.html"
-style="color:#00c8ff;text-decoration:none;">
-💰<br>Deposit
+<a href="deposit.html" style="color:#00c8ff;">
+💳<br>Deposit
 </a>
 
-<a href="income.html"
-style="color:white;text-decoration:none;">
+<a href="income.html">
 📈<br>Income
 </a>
 
-<a href="my.html"
-style="color:white;text-decoration:none;">
+<a href="my.html">
 👤<br>My
 </a>
 
 </div>
 
-<script>
+<style>
 
-function copyMTN(){
-
-navigator.clipboard.writeText("0784010287");
-
-alert("MTN Number Copied");
-
+.support-btn{
+position:fixed;
+right:20px;
+bottom:90px;
+width:60px;
+height:60px;
+background:#00c8ff;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+cursor:pointer;
+box-shadow:0 0 20px rgba(0,200,255,.6);
+z-index:999;
 }
 
-function copyAirtel(){
-
-navigator.clipboard.writeText("+256 703 424180");
-
-alert("Airtel Number Copied");
-
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:75px;
+background:#000;
+border-top:1px solid rgba(0,200,255,.3);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:999;
 }
 
-function submitDeposit(){
-
-const amount =
-document.getElementById("amount").value;
-
-if(!amount){
-
-alert("Enter deposit amount");
-
-return;
-
+.bottom-nav a{
+text-decoration:none;
+color:#aaa;
+font-size:13px;
+text-align:center;
 }
 
-alert(
-"Deposit request submitted successfully. Waiting for admin approval."
-);
-
-}
-
-</script>
+</style>
 
 </body>
-  </html>
+
+</html>
