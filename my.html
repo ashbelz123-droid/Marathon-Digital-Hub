@@ -51,32 +51,32 @@ background-size:18px 18px;
 z-index:-1;
 }
 
-.profile-area{
+.header{
 padding:25px 20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 }
 
-.user-details h2{
+.user-info h2{
 font-size:24px;
-margin-bottom:6px;
+margin-bottom:5px;
 }
 
-.user-details p{
+.user-info p{
 color:#ccc;
 }
 
 .avatar{
-width:90px;
-height:90px;
+width:85px;
+height:85px;
 border-radius:50%;
 background:#02122b;
 border:3px solid #00c8ff;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:40px;
+font-size:36px;
 box-shadow:0 0 20px rgba(0,200,255,.5);
 }
 
@@ -86,8 +86,8 @@ padding:25px;
 background:#02122b;
 border:2px solid rgba(0,200,255,.4);
 border-radius:25px;
-box-shadow:0 0 25px rgba(0,200,255,.25);
 text-align:center;
+box-shadow:0 0 20px rgba(0,200,255,.25);
 }
 
 .wallet-card h3{
@@ -96,12 +96,12 @@ margin-bottom:10px;
 }
 
 .wallet-card h1{
-font-size:38px;
+font-size:40px;
 color:#00ff88;
 }
 
 .wallet-card p{
-margin-top:8px;
+margin-top:10px;
 color:#aaa;
 }
 
@@ -111,15 +111,15 @@ color:#aaa;
 
 <body>
 
-<div class="profile-area">
+<div class="header">
 
-<div class="user-details">
+<div class="user-info">
 
-<h2 id="username">
-Hajira
+<h2 id="userName">
+User Name
 </h2>
 
-<p id="phone">
+<p id="userPhone">
 0784010287
 </p>
 
@@ -138,23 +138,27 @@ Hajira
 <h3>Total Wallet Balance</h3>
 
 <h1 id="walletBalance">
+
 UGX 0
+
 </h1>
 
 <p>
-Available for investment and withdrawal
+
+Available Balance
+
 </p>
 
 </div>
 
-  <!-- QUICK ACTIONS -->
+<!-- QUICK ACTIONS -->
 
 <div class="action-card">
 
 <div class="action-grid">
 
 <div class="action-item"
-onclick="location.href='deposit.html'">
+onclick="window.location.href='deposit.html'">
 
 <div class="action-icon">💳</div>
 
@@ -163,7 +167,7 @@ onclick="location.href='deposit.html'">
 </div>
 
 <div class="action-item"
-onclick="location.href='withdraw.html'">
+onclick="window.location.href='withdraw.html'">
 
 <div class="action-icon">💸</div>
 
@@ -171,11 +175,21 @@ onclick="location.href='withdraw.html'">
 
 </div>
 
-<div class="action-item">
+<div class="action-item"
+onclick="window.location.href='income.html'">
 
-<div class="action-icon">🤝</div>
+<div class="action-icon">📈</div>
 
-<p>Invite</p>
+<p>Income</p>
+
+</div>
+
+<div class="action-item"
+onclick="window.location.href='machines.html'">
+
+<div class="action-icon">⚙️</div>
+
+<p>Machines</p>
 
 </div>
 
@@ -197,21 +211,14 @@ onclick="location.href='withdraw.html'">
 
 <div class="action-item">
 
-<div class="action-icon">📈</div>
-
-<p>Income</p>
-
-</div>
-
-<div class="action-item">
-
 <div class="action-icon">⚙️</div>
 
 <p>Settings</p>
 
 </div>
 
-<div class="action-item">
+<div class="action-item"
+onclick="window.open('https://wa.me/256784010287')">
 
 <div class="action-icon">🎧</div>
 
@@ -237,7 +244,7 @@ box-shadow:0 0 20px rgba(0,200,255,.2);
 .action-grid{
 display:grid;
 grid-template-columns:repeat(4,1fr);
-gap:20px;
+gap:18px;
 }
 
 .action-item{
@@ -246,8 +253,8 @@ cursor:pointer;
 }
 
 .action-icon{
-width:60px;
-height:60px;
+width:58px;
+height:58px;
 margin:auto;
 margin-bottom:10px;
 border-radius:18px;
@@ -259,12 +266,12 @@ background:linear-gradient(
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:28px;
+font-size:26px;
 box-shadow:0 0 15px rgba(0,200,255,.4);
 }
 
 .action-item p{
-font-size:13px;
+font-size:12px;
 color:white;
 }
 
@@ -274,7 +281,7 @@ color:white;
 
 <div class="stats-card">
 
-<h2 class="section-title">
+<h2 class="stats-title">
 
 Account Statistics
 
@@ -285,7 +292,9 @@ Account Statistics
 <div class="stat-box">
 
 <h3 id="depositBalance">
+
 UGX 0
+
 </h3>
 
 <p>Deposit Balance</p>
@@ -295,7 +304,9 @@ UGX 0
 <div class="stat-box">
 
 <h3 id="withdrawBalance">
+
 UGX 0
+
 </h3>
 
 <p>Withdraw Balance</p>
@@ -305,7 +316,9 @@ UGX 0
 <div class="stat-box">
 
 <h3 id="totalIncome">
+
 UGX 0
+
 </h3>
 
 <p>Total Income</p>
@@ -314,18 +327,22 @@ UGX 0
 
 <div class="stat-box">
 
-<h3 id="activeMachines">
-0
+<h3 id="todayIncome">
+
+UGX 0
+
 </h3>
 
-<p>Machines</p>
+<p>Today's Income</p>
 
 </div>
 
 <div class="stat-box">
 
-<h3 id="teamMembers">
+<h3 id="teamCount">
+
 0
+
 </h3>
 
 <p>Team Members</p>
@@ -334,11 +351,13 @@ UGX 0
 
 <div class="stat-box">
 
-<h3 id="vipLevel">
-VIP 0
+<h3 id="machineCount">
+
+0
+
 </h3>
 
-<p>VIP Level</p>
+<p>Active Machines</p>
 
 </div>
 
@@ -347,12 +366,6 @@ VIP 0
 </div>
 
 <style>
-
-.section-title{
-color:#00c8ff;
-margin-bottom:20px;
-text-align:center;
-}
 
 .stats-card{
 margin:15px;
@@ -363,6 +376,12 @@ border-radius:25px;
 box-shadow:0 0 20px rgba(0,200,255,.2);
 }
 
+.stats-title{
+text-align:center;
+color:#00c8ff;
+margin-bottom:20px;
+}
+
 .stats-grid{
 display:grid;
 grid-template-columns:1fr 1fr;
@@ -371,8 +390,8 @@ gap:15px;
 
 .stat-box{
 background:#071935;
-border-radius:18px;
 padding:18px;
+border-radius:18px;
 text-align:center;
 border:1px solid rgba(0,200,255,.25);
 }
@@ -384,72 +403,70 @@ margin-bottom:8px;
 }
 
 .stat-box p{
-color:#ccc;
 font-size:13px;
+color:#ccc;
 }
 
 </style>
 
-  <!-- HISTORY SECTION -->
+  <!-- PROFILE INFORMATION -->
 
 <div class="stats-card">
 
-<h2 class="section-title">
+<h2 class="stats-title">
 
-Account Activity
+Profile Information
 
 </h2>
 
-<div class="stat-box" style="margin-bottom:15px;">
+<div class="profile-row">
 
-<h3>Latest Deposit</h3>
+<span>User ID</span>
 
-<p id="latestDeposit">
-No deposits yet
-</p>
-
-</div>
-
-<div class="stat-box" style="margin-bottom:15px;">
-
-<h3>Latest Withdrawal</h3>
-
-<p id="latestWithdraw">
-No withdrawals yet
-</p>
+<span id="userId">
+MDH000001
+</span>
 
 </div>
 
-<div class="stat-box">
+<div class="profile-row">
 
-<h3>KYC Status</h3>
+<span>Email</span>
 
-<p id="kycStatus"
+<span id="userEmail">
+user@email.com
+</span>
+
+</div>
+
+<div class="profile-row">
+
+<span>Phone</span>
+
+<span id="userPhone2">
+0784010287
+</span>
+
+</div>
+
+<div class="profile-row">
+
+<span>KYC Status</span>
+
+<span id="kycStatus"
 style="color:#00ff88;">
 Verified
-</p>
+</span>
 
 </div>
 
 </div>
 
-<!-- LOGOUT -->
+<!-- LOGOUT BUTTON -->
 
 <div style="padding:15px;">
 
-<button id="logoutBtn"
-
-style="
-width:100%;
-padding:18px;
-border:none;
-border-radius:18px;
-background:#ff3b30;
-color:white;
-font-size:18px;
-font-weight:bold;
-cursor:pointer;
-">
+<button id="logoutBtn">
 
 Logout
 
@@ -486,14 +503,36 @@ onclick="window.open('https://wa.me/256784010287')">
 📈<br>Income
 </a>
 
-<a href="my.html"
-style="color:#00c8ff;">
+<a href="my.html" class="active">
 👤<br>My
 </a>
 
 </div>
 
 <style>
+
+.profile-row{
+display:flex;
+justify-content:space-between;
+padding:15px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.profile-row:last-child{
+border-bottom:none;
+}
+
+#logoutBtn{
+width:100%;
+padding:18px;
+border:none;
+border-radius:18px;
+background:#ff3b30;
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
 
 .support-btn{
 position:fixed;
@@ -533,6 +572,10 @@ font-size:13px;
 text-align:center;
 }
 
+.bottom-nav .active{
+color:#00c8ff;
+}
+
 </style>
 
 <script>
@@ -543,8 +586,7 @@ document.getElementById(
 
 localStorage.clear();
 
-window.location.href=
-'login.html';
+window.location.href='login.html';
 
 };
 
