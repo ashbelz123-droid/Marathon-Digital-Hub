@@ -2,159 +2,556 @@
 <html lang="en">
 
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Dashboard</title>
+<title>Marathon Digital Hub</title>
 
-<link rel="stylesheet" href="assets/css/style.css">
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050816;
+color:white;
+padding-bottom:100px;
+overflow-x:hidden;
+}
+
+/* COLORFUL BACKGROUND */
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 10% 20%, rgba(0,255,255,.15), transparent 30%),
+radial-gradient(circle at 90% 30%, rgba(255,0,255,.15), transparent 30%),
+radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(rgba(255,255,255,.15) 1px, transparent 1px);
+background-size:20px 20px;
+z-index:-1;
+}
+
+/* HEADER */
+
+.header{
+height:70px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:0 20px;
+background:#000;
+border-bottom:1px solid rgba(0,200,255,.3);
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#00c8ff;
+}
+
+.notification{
+font-size:28px;
+position:relative;
+}
+
+.badge{
+position:absolute;
+top:-6px;
+right:-8px;
+background:red;
+color:white;
+font-size:12px;
+padding:2px 6px;
+border-radius:50%;
+}
+
+/* BANNER */
+
+.banner{
+margin:15px;
+border-radius:20px;
+overflow:hidden;
+position:relative;
+border:2px solid #00c8ff;
+}
+
+.banner img{
+width:100%;
+height:220px;
+object-fit:cover;
+display:block;
+}
+
+.banner-text{
+position:absolute;
+bottom:0;
+left:0;
+right:0;
+background:rgba(0,0,0,.6);
+padding:15px;
+}
+
+.banner-text h2{
+color:#00c8ff;
+}
+
+.banner-text p{
+margin-top:5px;
+}
+
+/* BALANCE CARD */
+
+.balance-card{
+margin:15px;
+padding:25px;
+text-align:center;
+background:rgba(0,20,50,.9);
+border-radius:20px;
+border:2px solid #00c8ff;
+}
+
+.balance-card p{
+color:#ccc;
+}
+
+.balance-card h1{
+font-size:38px;
+color:#00ff88;
+margin-top:10px;
+}
+
+</style>
 
 </head>
 
 <body>
 
 <div class="header">
-<h1>Marathon Digital Hub</h1>
+
+<div class="logo">
+MDH
+</div>
+
+<div class="notification">
+🔔
+<span class="badge">3</span>
+</div>
+
 </div>
 
 <div class="banner">
-<img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200"
-alt="Banner">
+
+<img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200">
+
+<div class="banner-text">
+
+<h2>Marathon Digital Hub</h2>
+
+<p>Powering The Future Of Digital Mining</p>
+
+</div>
+
 </div>
 
 <div class="balance-card">
 
-<h3>Total Balance</h3>
+<p>Total Balance</p>
 
 <h1>UGX 0</h1>
 
 </div>
 
+  <!-- QUICK STATISTICS -->
+
 <div class="stats-grid">
 
 <div class="stat-card">
-<h2>UGX 0</h2>
-<p>Deposit Balance</p>
+
+<h3>UGX 0</h3>
+
+<p>Deposit Details</p>
+
 </div>
 
 <div class="stat-card">
-<h2>UGX 0</h2>
-<p>Withdrawal Balance</p>
-</div>
+
+<h3>UGX 0</h3>
+
+<p>Withdraw Details</p>
 
 </div>
-<div class="stats-grid">
 
 <div class="stat-card">
-<h2>UGX 0</h2>
+
+<h3>UGX 0</h3>
+
+<p>AI Income</p>
+
+</div>
+
+<div class="stat-card">
+
+<h3>UGX 0</h3>
+
 <p>Today's Earnings</p>
+
 </div>
 
-<div class="stat-card">
-<h2>UGX 0</h2>
+</div>
+
+<!-- TEAM DATA -->
+
+<div class="team-grid">
+
+<div class="team-card">
+
+<h3>0</h3>
+
+<p>Invite Count</p>
+
+</div>
+
+<div class="team-card">
+
+<h3>0</h3>
+
+<p>Team Count</p>
+
+</div>
+
+<div class="team-card">
+
+<h3>UGX 0</h3>
+
 <p>Team Income</p>
+
+</div>
+
+</div>
+
+<style>
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+padding:15px;
+}
+
+.stat-card{
+background:rgba(0,20,50,.9);
+border:1px solid rgba(0,200,255,.5);
+border-radius:18px;
+padding:20px;
+text-align:center;
+cursor:pointer;
+box-shadow:0 0 15px rgba(0,200,255,.15);
+}
+
+.stat-card h3{
+color:#00ff88;
+font-size:24px;
+margin-bottom:8px;
+}
+
+.stat-card p{
+font-size:14px;
+}
+
+.team-grid{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+padding:0 15px 15px;
+}
+
+.team-card{
+background:rgba(0,20,50,.9);
+border:1px solid rgba(0,200,255,.5);
+border-radius:15px;
+padding:15px;
+text-align:center;
+}
+
+.team-card h3{
+color:#00c8ff;
+margin-bottom:6px;
+}
+
+.team-card p{
+font-size:13px;
+}
+
+  </style>
+
+  <!-- MESSAGE CENTER -->
+
+<div class="section-title">
+
+<h2>📢 Message Center</h2>
+
+</div>
+
+<div class="message-box">
+
+<div class="message-row">
+
+<span>📋 Member Guidelines</span>
+
+<span>›</span>
+
+</div>
+
+<div class="message-row">
+
+<span>💳 Withdrawal Instructions</span>
+
+<span>›</span>
+
+</div>
+
+<div class="message-row">
+
+<span>⚙️ Machine Updates</span>
+
+<span>›</span>
+
+</div>
+
+<div class="message-row">
+
+<span>🎁 Referral Rewards</span>
+
+<span>›</span>
+
 </div>
 
 </div>
 
-<div class="card">
+<!-- ANNOUNCEMENTS -->
 
-<h2>Quick Actions</h2>
+<div class="section-title">
 
-<button class="btn"
-onclick="location.href='deposit.html'">
-Deposit
-</button>
-
-<br><br>
-
-<button class="btn"
-onclick="location.href='withdraw.html'">
-Withdraw
-</button>
-
-<br><br>
-
-<button class="btn"
-onclick="location.href='machines.html'">
-Machines
-</button>
+<h2>📡 Announcements</h2>
 
 </div>
 
-<div class="card">
+<div class="announcement-card">
 
-<h2>Statistics</h2>
-
-<p>Invite Count: 0</p>
-
-<p>Team Count: 0</p>
-
-<p>Active Machines: 0</p>
-
-<p>Total Income: UGX 0</p>
-
-</div>
-
-<div class="card">
-
-<h2>Latest Messages</h2>
-
-<p>📢 Welcome to Marathon Digital Hub</p>
-
-<p>📢 New Mining Packages Available</p>
-
-<p>📢 Check Announcements For Updates</p>
-
-  </div>
-  
-<div class="card">
-
-<h2>Announcements</h2>
+<h3>🚀 System Running Normally</h3>
 
 <p>
-🚀 System running normally.
-</p>
-
-<p>
-📈 New investment packages available.
-</p>
-
-<p>
-🎁 Invite friends and grow your team.
+All mining services are operating normally.
 </p>
 
 </div>
 
-<div class="footer-space"></div>
+<div class="announcement-card">
+
+<h3>📈 New Mining Packages</h3>
+
+<p>
+New machine packages have been added.
+</p>
+
+</div>
+
+<div class="announcement-card">
+
+<h3>🎁 Invite & Earn</h3>
+
+<p>
+Invite friends and earn referral commissions.
+</p>
+
+</div>
+
+<style>
+
+.section-title{
+padding:0 15px 10px;
+}
+
+.section-title h2{
+color:#00c8ff;
+font-size:22px;
+}
+
+.message-box{
+margin:0 15px 20px;
+background:rgba(0,20,50,.9);
+border:1px solid rgba(0,200,255,.5);
+border-radius:18px;
+overflow:hidden;
+}
+
+.message-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px;
+border-bottom:1px solid rgba(255,255,255,.08);
+cursor:pointer;
+}
+
+.message-row:last-child{
+border-bottom:none;
+}
+
+.message-row:hover{
+background:rgba(0,200,255,.08);
+}
+
+.announcement-card{
+margin:0 15px 15px;
+padding:18px;
+background:rgba(0,20,50,.9);
+border:1px solid rgba(0,200,255,.5);
+border-radius:18px;
+}
+
+.announcement-card h3{
+color:#00ff88;
+margin-bottom:8px;
+}
+
+.announcement-card p{
+color:#ddd;
+line-height:1.5;
+}
+
+  </style>
+
+<!-- FLOATING SUPPORT BUTTON -->
+
+<div class="support-btn"
+onclick="window.open('https://wa.me/256700000000')">
+
+💬
+
+</div>
 
 <!-- BOTTOM NAVIGATION -->
 
 <div class="bottom-nav">
 
 <a href="dashboard.html" class="active">
-🏠<br>Home
-</a>
 
-<a href="deposit.html">
-💳<br>Deposit
+🏠
+
+<span>Home</span>
+
 </a>
 
 <a href="machines.html">
-⚙️<br>Machines
+
+⚙️
+
+<span>Machines</span>
+
+</a>
+
+<a href="deposit.html">
+
+💳
+
+<span>Deposit</span>
+
 </a>
 
 <a href="income.html">
-📈<br>Income
+
+📈
+
+<span>Income</span>
+
 </a>
 
 <a href="my.html">
-👤<br>My
+
+👤
+
+<span>My</span>
+
 </a>
 
 </div>
 
-<script src="assets/js/app.js"></script>
+<style>
+
+.support-btn{
+position:fixed;
+right:20px;
+bottom:90px;
+width:60px;
+height:60px;
+background:#00c8ff;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+cursor:pointer;
+box-shadow:0 0 20px rgba(0,200,255,.6);
+z-index:999;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:75px;
+background:#000;
+border-top:1px solid rgba(0,200,255,.3);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:1000;
+}
+
+.bottom-nav a{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-decoration:none;
+color:#aaa;
+font-size:13px;
+}
+
+.bottom-nav a.active{
+color:#00c8ff;
+}
+
+.bottom-nav a span{
+margin-top:3px;
+}
+
+</style>
 
 </body>
-  </html>
+
+    </html>  
