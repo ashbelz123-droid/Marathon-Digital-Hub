@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Create Account</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -29,12 +29,13 @@ border:1px solid #00c8ff;
 h1{
 text-align:center;
 color:#00c8ff;
+margin-bottom:20px;
 }
 
 input{
 width:100%;
 padding:15px;
-margin-top:10px;
+margin-bottom:12px;
 border:none;
 border-radius:10px;
 }
@@ -42,11 +43,11 @@ border-radius:10px;
 button{
 width:100%;
 padding:15px;
-margin-top:15px;
+background:#00c8ff;
 border:none;
 border-radius:10px;
-background:#00c8ff;
 font-weight:bold;
+cursor:pointer;
 }
 
 a{
@@ -55,26 +56,37 @@ color:#00c8ff;
 
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
 <h1>Create Account</h1>
 
-<input type="text" id="fullname" placeholder="Full Name">
+<input
+type="text"
+id="fullname"
+placeholder="Full Name">
 
-<input type="text" id="phone" placeholder="Phone Number">
+<input
+type="text"
+id="phone"
+placeholder="Phone Number">
 
-<input type="email" id="email" placeholder="Email">
+<input
+type="email"
+id="email"
+placeholder="Email">
 
-<input type="password" id="password" placeholder="Password">
+<input
+type="password"
+id="password"
+placeholder="Password">
 
-<button onclick="register()">
+<button onclick="registerUser()">
 CREATE ACCOUNT
 </button>
 
-<p style="margin-top:15px;">
+<p style="margin-top:15px;text-align:center;">
 Already have an account?
 <a href="login.html">Login</a>
 </p>
@@ -95,21 +107,48 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-async function register(){
+async function registerUser(){
 
 const fullname =
-document.getElementById("fullname").value;
+document.getElementById(
+"fullname"
+).value;
 
 const phone =
-document.getElementById("phone").value;
+document.getElementById(
+"phone"
+).value;
 
 const email =
-document.getElementById("email").value;
+document.getElementById(
+"email"
+).value;
 
 const password =
-document.getElementById("password").value;
+document.getElementById(
+"password"
+).value;
 
-const { data, error } =
+if(
+!fullname ||
+!phone ||
+!email ||
+!password
+){
+
+alert(
+"Fill all fields"
+);
+
+return;
+
+}
+
+const {
+data,
+error
+}
+=
 await supabase.auth.signUp({
 
 email,
@@ -119,13 +158,23 @@ password
 
 if(error){
 
-alert(error.message);
+alert(
+error.message
+);
+
 return;
 
 }
 
 const user =
 data.user;
+
+const referralCode =
+"MDH" +
+Math.floor(
+100000 +
+Math.random()*900000
+);
 
 await supabase
 .from("profiles")
@@ -139,12 +188,15 @@ phone,
 
 email,
 
-wallet_balance:0
+wallet_balance:0,
+
+referral_code:
+referralCode
 
 });
 
 alert(
-"Account created successfully"
+"Account Created Successfully"
 );
 
 window.location =
