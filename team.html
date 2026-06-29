@@ -1,43 +1,535 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Team - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
 
-<header class="topbar">
-<div class="logo-area">
+<title>My Team</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050816;
+color:white;
+padding-bottom:100px;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:
+radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
+radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
+radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+z-index:-2;
+}
+
+body::after{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background-image:
+radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
+background-size:18px 18px;
+z-index:-1;
+}
+
+.header{
+height:70px;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+border-bottom:1px solid rgba(0,200,255,.3);
+}
+
+.header h1{
+color:#00c8ff;
+}
+
+.container{
+padding:15px;
+}
+
+.team-card{
+background:#02122b;
+border:2px solid rgba(0,200,255,.4);
+border-radius:25px;
+padding:20px;
+margin-bottom:20px;
+box-shadow:0 0 20px rgba(0,200,255,.2);
+}
+
+.team-card h2{
+color:#00c8ff;
+margin-bottom:15px;
+text-align:center;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+.stat-box{
+background:#071935;
+padding:18px;
+border-radius:18px;
+text-align:center;
+border:1px solid rgba(0,200,255,.25);
+}
+
+.stat-box h3{
+font-size:24px;
+color:#00ff88;
+margin-bottom:8px;
+}
+
+.stat-box p{
+color:#ccc;
+font-size:13px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
 <h1>My Team</h1>
-</div>
-</header><div class="dashboard-grid"><div class="dash-card">
-<h2>0</h2>
-<p>Total Team Members</p>
-</div><div class="dash-card">
-<h2>UGX 0</h2>
-<p>Referral Earnings</p>
-</div></div><div class="card" style="margin:15px;"><h2>Referral Link</h2><br><input
-type="text"
-value="https://marathon-digital-hub.vercel.app/register.html?ref=USER001"
-readonly>
 
-<button class="btn" style="width:100%;">
-Copy Referral Link
-</button></div><div class="card" style="margin:15px;"><h2>Invite Friends</h2><br><button class="btn" style="width:100%;">
-Invite Now
-</button></div><div class="card" style="margin:15px;"><h2>Team Members</h2><br><p>No team members yet.</p></div><nav class="nav"><a href="dashboard.html">
-<i class="fas fa-home"></i>
-<span>Home</span>
-</a><a href="machines.html">
-<i class="fas fa-microchip"></i>
-<span>Machines</span>
-</a><a href="wallet.html">
-<i class="fas fa-wallet"></i>
-<span>Wallet</span>
-</a><a href="team.html" class="active">
-<i class="fas fa-users"></i>
-<span>Team</span>
-</a><a href="profile.html">
-<i class="fas fa-user"></i>
-<span>My</span>
-</a></nav></body>
-</html>
+</div>
+
+<div class="container">
+
+<div class="team-card">
+
+<h2>Team Overview</h2>
+
+<div class="stats-grid">
+
+<div class="stat-box">
+
+<h3 id="totalTeam">
+0
+</h3>
+
+<p>Total Team</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="activeTeam">
+0
+</h3>
+
+<p>Active Members</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="teamDeposit">
+UGX 0
+</h3>
+
+<p>Team Deposits</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="teamIncome">
+UGX 0
+</h3>
+
+<p>Team Income</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LEVEL STATISTICS -->
+
+<div class="team-card">
+
+<h2>Referral Levels</h2>
+
+<div class="stats-grid">
+
+<div class="stat-box">
+
+<h3 id="level1">
+0
+</h3>
+
+<p>Level 1 Team</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="level2">
+0
+</h3>
+
+<p>Level 2 Team</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="level3">
+0
+</h3>
+
+<p>Level 3 Team</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="totalReferrals">
+0
+</h3>
+
+<p>Total Referrals</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SEARCH MEMBER -->
+
+<div class="team-card">
+
+<h2>Search Team Member</h2>
+
+<input
+type="text"
+id="searchMember"
+placeholder="Enter member phone or ID">
+
+<br><br>
+
+<button id="searchBtn">
+
+Search Member
+
+</button>
+
+</div>
+
+<style>
+
+input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:15px;
+background:#071935;
+color:white;
+font-size:16px;
+}
+
+#searchBtn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:linear-gradient(
+90deg,
+#00c8ff,
+#0066ff
+);
+color:white;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+                    </style>
+
+  <!-- TEAM MEMBERS -->
+
+<div class="team-card">
+
+<h2>Team Members</h2>
+
+<div class="member-row">
+
+<div>
+
+<h4>User001</h4>
+
+<p>Level 1 Member</p>
+
+</div>
+
+<div style="text-align:right;">
+
+<span style="color:#00ff88;">
+Active
+</span>
+
+<br>
+
+<small>
+01 Jul 2026
+</small>
+
+</div>
+
+</div>
+
+<div class="member-row">
+
+<div>
+
+<h4>User002</h4>
+
+<p>Level 2 Member</p>
+
+</div>
+
+<div style="text-align:right;">
+
+<span style="color:#00ff88;">
+Active
+</span>
+
+<br>
+
+<small>
+05 Jul 2026
+</small>
+
+</div>
+
+</div>
+
+<div class="member-row">
+
+<div>
+
+<h4>User003</h4>
+
+<p>Level 3 Member</p>
+
+</div>
+
+<div style="text-align:right;">
+
+<span style="color:orange;">
+Inactive
+</span>
+
+<br>
+
+<small>
+10 Jul 2026
+</small>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- TEAM EARNINGS -->
+
+<div class="team-card">
+
+<h2>Team Earnings</h2>
+
+<div class="stats-grid">
+
+<div class="stat-box">
+
+<h3 id="todayTeamIncome">
+UGX 0
+</h3>
+
+<p>Today's Income</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="monthTeamIncome">
+UGX 0
+</h3>
+
+<p>Monthly Income</p>
+
+</div>
+
+</div>
+
+</div>
+
+<style>
+
+.member-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 0;
+border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.member-row:last-child{
+border-bottom:none;
+}
+
+.member-row h4{
+margin-bottom:5px;
+color:#00c8ff;
+}
+
+.member-row p{
+color:#ccc;
+font-size:13px;
+}
+
+  </style>
+
+  <!-- WHATSAPP SUPPORT -->
+
+<div class="support-btn"
+onclick="window.open('https://wa.me/256784010287')">
+
+💬
+
+</div>
+
+<!-- BOTTOM NAVIGATION -->
+
+<div class="bottom-nav">
+
+<a href="dashboard.html">
+🏠<br>Home
+</a>
+
+<a href="deposit.html">
+💳<br>Deposit
+</a>
+
+<a href="machines.html">
+⚙️<br>Machines
+</a>
+
+<a href="income.html">
+📈<br>Income
+</a>
+
+<a href="my.html">
+👤<br>My
+</a>
+
+</div>
+
+<style>
+
+.support-btn{
+position:fixed;
+right:20px;
+bottom:90px;
+width:60px;
+height:60px;
+background:#00c8ff;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
+cursor:pointer;
+box-shadow:0 0 20px rgba(0,200,255,.6);
+z-index:999;
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+height:75px;
+background:#000;
+border-top:1px solid rgba(0,200,255,.3);
+display:flex;
+justify-content:space-around;
+align-items:center;
+z-index:999;
+}
+
+.bottom-nav a{
+text-decoration:none;
+color:#888;
+font-size:13px;
+text-align:center;
+}
+
+</style>
+
+<script>
+
+document.getElementById(
+'searchBtn'
+).addEventListener(
+'click',
+function(){
+
+const member =
+document.getElementById(
+'searchMember'
+).value;
+
+if(!member){
+
+alert(
+'Enter member phone or ID'
+);
+
+return;
+
+}
+
+alert(
+'Search feature ready for Supabase connection'
+);
+
+});
+
+</script>
+
+</div>
+
+</body>
+
+  </html>
