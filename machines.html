@@ -1,50 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Machines Center</title>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Machine Test</title>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
+body{
+background:#020b1f;
 font-family:Arial,sans-serif;
+color:white;
+padding:20px;
 }
-   <body>
 
-<h1 style="color:white">
-MACHINE TEST
-</h1>
+.machine-card{
+background:#03142f;
+border:1px solid #00c8ff;
+border-radius:20px;
+padding:20px;
+margin-bottom:15px;
+}
+
+.machine-name{
+font-size:24px;
+font-weight:bold;
+color:#00c8ff;
+margin-bottom:10px;
+}
+
+.buy-btn{
+width:100%;
+padding:15px;
+background:#00c8ff;
+border:none;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>MACHINE TEST PAGE</h1>
 
 <div id="machineContainer"></div>
 
 <script>
 
+const machines = [
+
+{
+name:"VIP1",
+price:18000,
+days:20,
+income:40000
+},
+
+{
+name:"B1",
+price:30000,
+days:20,
+income:50000
+},
+
+{
+name:"R1",
+price:57000,
+days:120,
+income:142000
+}
+
+];
+
+const container =
 document.getElementById(
 "machineContainer"
-).innerHTML =
+);
 
-`
-<div style="
-background:red;
-padding:20px;
-margin:20px;
-color:white;
-">
-TEST MACHINE
+machines.forEach(machine=>{
+
+container.innerHTML += `
+
+<div class="machine-card">
+
+<div class="machine-name">
+${machine.name}
 </div>
+
+<p>
+Price:
+UGX ${machine.price.toLocaleString()}
+</p>
+
+<p>
+Income:
+UGX ${machine.income.toLocaleString()}
+</p>
+
+<p>
+Duration:
+${machine.days} Days
+</p>
+
+<button
+class="buy-btn"
+onclick="alert('Machine Working')">
+
+BUY NOW
+
+</button>
+
+</div>
+
 `;
+
+});
 
 </script>
 
 </body>
-   </html>
+</html>
