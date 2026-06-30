@@ -1,8 +1,7 @@
 <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub - Register</title><style>
 
 *{
 margin:0;
@@ -13,27 +12,26 @@ font-family:Arial,sans-serif;
 
 body{
 background:#020b1f;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100vh;
 padding:20px;
 }
 
 .container{
 width:100%;
-max-width:420px;
-background:#03142f;
-padding:25px;
+max-width:430px;
+background:#07152f;
 border-radius:25px;
+padding:25px;
 border:1px solid rgba(0,200,255,.3);
 box-shadow:0 0 25px rgba(0,200,255,.2);
-color:white;
 }
 
 .logo{
 text-align:center;
-font-size:30px;
+font-size:28px;
 font-weight:bold;
 color:#00c8ff;
 margin-bottom:10px;
@@ -41,8 +39,8 @@ margin-bottom:10px;
 
 .subtitle{
 text-align:center;
+color:#cfd8dc;
 margin-bottom:25px;
-opacity:.8;
 }
 
 .input-group{
@@ -54,7 +52,7 @@ width:100%;
 padding:14px;
 border:none;
 border-radius:12px;
-background:#081f44;
+background:#0b2148;
 color:white;
 font-size:15px;
 }
@@ -67,7 +65,8 @@ outline:1px solid #00c8ff;
 display:flex;
 align-items:center;
 gap:10px;
-margin:10px 0;
+margin-bottom:15px;
+color:white;
 font-size:14px;
 }
 
@@ -81,10 +80,14 @@ padding:15px;
 border:none;
 border-radius:12px;
 background:#00c8ff;
-color:#000;
-font-weight:bold;
+color:black;
 font-size:16px;
+font-weight:bold;
 cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
 }
 
 #error{
@@ -102,6 +105,7 @@ margin-bottom:10px;
 .login-link{
 text-align:center;
 margin-top:15px;
+color:white;
 }
 
 .login-link a{
@@ -128,18 +132,13 @@ Create Your Account
 <input type="text" id="referral" placeholder="Referral Code (Optional)">
 </div><div class="checkbox">
 <input type="checkbox" id="showPasswords">
-<label>Show Passwords</label>
+<label for="showPasswords">Show Passwords</label>
 </div><button id="registerBtn">
 CREATE ACCOUNT
 </button><div class="login-link">
 Already have an account?
 <a href="login.html">Login</a>
 </div></div><script>
-
-const supabase = window.supabase.createClient(
-"https://sfimuvisljmezpajxxpf.supabase.co",
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmaW11dmlzbGptZXpwYWp4eHBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODA5MDEsImV4cCI6MjA5ODM1NjkwMX0.AsXXp8icUq92j54vjOtGk6VeOYoyo0e8AXwycKG_RSQ"
-);
 
 document.getElementById("showPasswords")
 .addEventListener("change",function(){
@@ -153,7 +152,7 @@ document.getElementById("confirmPassword").type = type;
 });
 
 document.getElementById("registerBtn")
-.addEventListener("click", async function(){
+.addEventListener("click",function(){
 
 const fullname =
 document.getElementById("fullname").value.trim();
@@ -170,9 +169,6 @@ document.getElementById("password").value;
 const confirmPassword =
 document.getElementById("confirmPassword").value;
 
-const referral =
-document.getElementById("referral").value.trim();
-
 document.getElementById("error").innerText="";
 document.getElementById("success").innerText="";
 
@@ -183,81 +179,37 @@ if(
 !password ||
 !confirmPassword
 ){
+
 document.getElementById("error").innerText =
 "Please fill all required fields";
+
 return;
+
+}
+
+if(password.length < 8){
+
+document.getElementById("error").innerText =
+"Password must be at least 8 characters";
+
+return;
+
 }
 
 if(password !== confirmPassword){
+
 document.getElementById("error").innerText =
 "Passwords do not match";
-return;
-}
-
-try{
-
-document.getElementById("registerBtn").innerText =
-"Creating Account...";
-
-const { data: existingUser } =
-await supabase
-.from("users")
-.select("id")
-.eq("email", email)
-.limit(1);
-
-if(existingUser && existingUser.length > 0){
-
-document.getElementById("error").innerText =
-"Email already exists";
-
-document.getElementById("registerBtn").innerText =
-"CREATE ACCOUNT";
 
 return;
 
 }
-
-const { error } =
-await supabase
-.from("users")
-.insert([
-{
-fullname: fullname,
-phone: phone,
-email: email,
-password: password,
-referral_code: referral,
-wallet_balance: 0
-}
-]);
-
-if(error) throw error;
 
 document.getElementById("success").innerText =
-"Account Created Successfully";
-
-document.getElementById("registerBtn").innerText =
-"CREATE ACCOUNT";
-
-setTimeout(function(){
-
-window.location.href =
-"login.html";
-
-},1500);
-
-}catch(err){
-
-document.getElementById("error").innerText =
-err.message;
-
-document.getElementById("registerBtn").innerText =
-"CREATE ACCOUNT";
-
-}
+"VALIDATION PASSED";
 
 });
 
-</script></body>
+</script>
+</body>
 </html>
