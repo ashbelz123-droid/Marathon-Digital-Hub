@@ -221,7 +221,7 @@ SUPABASE_KEY
 
 try{
 
-const { data, error } =
+const { error } =
 await supabase
 .from("profiles")
 .insert([
@@ -229,7 +229,9 @@ await supabase
 fullname: fullname,
 phone: phone,
 email: email,
-wallet_balance: 0
+wallet_balance: 0,
+referral_code:
+document.getElementById("referral").value.trim()
 }
 ]);
 
@@ -240,6 +242,13 @@ throw error;
 document.getElementById("success").innerText =
 "Account Created Successfully";
 
+document.getElementById("fullname").value="";
+document.getElementById("phone").value="";
+document.getElementById("email").value="";
+document.getElementById("password").value="";
+document.getElementById("confirmPassword").value="";
+document.getElementById("referral").value="";
+
 }catch(err){
 
 document.getElementById("error").innerText =
@@ -248,8 +257,6 @@ err.message;
 }
 
 })();
-
-});
 
 </script>
 </body>
