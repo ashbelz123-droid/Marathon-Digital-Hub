@@ -1,60 +1,163 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin Dashboard</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marathon Admin Dashboard</title><style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
 body{
 background:#020b1f;
-font-family:Arial;
-margin:0;
-padding:20px;
 color:white;
+display:flex;
+min-height:100vh;
+}
+
+.sidebar{
+width:250px;
+background:#07152f;
+padding:20px;
+border-right:1px solid rgba(0,200,255,.2);
+}
+
+.logo{
+font-size:24px;
+font-weight:bold;
+color:#00c8ff;
+text-align:center;
+margin-bottom:30px;
+}
+
+.menu a{
+display:block;
+padding:15px;
+margin-bottom:10px;
+background:#0b2148;
+border-radius:10px;
+text-decoration:none;
+color:white;
+transition:.3s;
+}
+
+.menu a:hover{
+background:#00c8ff;
+color:black;
+}
+
+.main{
+flex:1;
+padding:20px;
 }
 
 .header{
 font-size:28px;
 font-weight:bold;
-color:#00c8ff;
 margin-bottom:20px;
+color:#00c8ff;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+margin-bottom:25px;
 }
 
 .card{
 background:#07152f;
 padding:20px;
 border-radius:15px;
-margin-bottom:15px;
+border:1px solid rgba(0,200,255,.2);
 }
 
-.btn{
-display:block;
-background:#00c8ff;
-color:black;
-padding:15px;
-text-decoration:none;
-border-radius:10px;
-margin-top:10px;
-text-align:center;
+.card-title{
+font-size:14px;
+opacity:.8;
+}
+
+.card-value{
+font-size:28px;
 font-weight:bold;
+margin-top:10px;
+color:#00c8ff;
 }
 
-</style></head><body><div class="header">
+.activity{
+background:#07152f;
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(0,200,255,.2);
+}
+
+.activity h3{
+margin-bottom:15px;
+color:#00c8ff;
+}
+
+.activity-item{
+padding:10px 0;
+border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+@media(max-width:768px){
+
+body{
+flex-direction:column;
+}
+
+.sidebar{
+width:100%;
+border-right:none;
+border-bottom:1px solid rgba(0,200,255,.2);
+}
+
+}
+
+</style></head>
+<body><div class="sidebar"><div class="logo">
+MDH ADMIN
+</div><div class="menu"><a href="admin-dashboard.html">📊 Dashboard</a>
+
+<a href="admin-users.html">👥 Users</a>
+
+<a href="admin-machines.html">⚙ Machines</a>
+
+<a href="admin-deposits.html">💰 Deposits</a>
+
+<a href="admin-withdrawals.html">🏧 Withdrawals</a>
+
+<a href="admin-referrals.html">🎁 Referrals</a>
+
+<a href="admin-settings.html">⚡ Settings</a>
+
+<a href="admin-login.html">🚪 Logout</a>
+
+</div></div><div class="main"><div class="header">
 Admin Dashboard
+</div><div class="cards"><div class="card">
+<div class="card-title">Total Users</div>
+<div class="card-value">0</div>
 </div><div class="card">
-Total Users
+<div class="card-title">Total Machines</div>
+<div class="card-value">28</div>
 </div><div class="card">
-Total Machines
+<div class="card-title">Deposits</div>
+<div class="card-value">0</div>
 </div><div class="card">
-Deposits
-</div><div class="card">
-Withdrawals
-</div><a class="btn" href="#">
-Manage Users
-</a><a class="btn" href="#">
-Manage Machines
-</a><a class="btn" href="#">
-Manage Deposits
-</a><a class="btn" href="#">
-Manage Withdrawals
-</a></body>
-</html>
+<div class="card-title">Withdrawals</div>
+<div class="card-value">0</div>
+</div></div><div class="activity"><h3>Recent Activity</h3><div class="activity-item">
+New user registrations will appear here.
+</div><div class="activity-item">
+Machine purchases will appear here.
+</div><div class="activity-item">
+Deposit requests will appear here.
+</div><div class="activity-item">
+Withdrawal requests will appear here.
+</div></div></div></body>
+  </html>
