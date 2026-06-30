@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marathon Digital Hub - Register</title><style>
+<title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
 *{
 margin:0;
@@ -71,6 +71,10 @@ margin:10px 0;
 font-size:14px;
 }
 
+.checkbox input{
+width:auto;
+}
+
 button{
 width:100%;
 padding:15px;
@@ -81,10 +85,6 @@ color:#000;
 font-weight:bold;
 font-size:16px;
 cursor:pointer;
-}
-
-button:hover{
-opacity:.9;
 }
 
 #error{
@@ -134,38 +134,130 @@ CREATE ACCOUNT
 </button><div class="login-link">
 Already have an account?
 <a href="login.html">Login</a>
-</div></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+</div></div><script>
 
 const supabase = window.supabase.createClient(
 "https://sfimuvisljmezpajxxpf.supabase.co",
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmaW11dmlzbGptZXpwYWp4eHBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODA5MDEsImV4cCI6MjA5ODM1NjkwMX0.AsXXp8icUq92j54vjOtGk6VeOYoyo0e8AXwycKG_RSQ"
 );
 
-document.getElementById("registerBtn").onclick = async function(){
+document.getElementById("showPasswords")
+.addEventListener("change",function(){
 
-alert("Button Clicked");
+const type =
+this.checked ? "text" : "password";
 
-const { data, error } =
-await supabase.auth.signUp({
-
-email: "test" + Date.now() + "@gmail.com",
-password: "12345678"
+document.getElementById("password").type = type;
+document.getElementById("confirmPassword").type = type;
 
 });
 
-if(error){
+document.getElementById("registerBtn")
+.addEventListener("click", async function(){
 
-alert(error.message);
+const fullname =
+document.getElementById("fullname").value.trim();
 
-}else{
+const phone =
+document.getElementById("phone").value.trim();
 
-alert("SIGNUP SUCCESS");
+const email =
+document.getElementById("email").value.trim();
+
+const password =
+document.getElementById("password").value;
+
+const confirmPassword =
+document.getElementById("confirmPassword").value;
+
+const referral =
+document.getElementById("referral").value.trim();
+
+document.getElementById("error").innerText="";
+document.getElementById("success").innerText="";
+
+if(
+!fullname ||
+!phone ||
+!email ||
+!password ||
+!confirmPassword
+){
+document.getElementById("error").innerText =
+"Please fill all required fields";
+return;
+}
+
+if(password !== confirmPassword){
+document.getElementById("error").innerText =
+"Passwords do not match";
+return;
+}
+
+try{
+
+document.getElementById("registerBtn").innerText =
+"Creating Account...";
+
+const { data: existingUser } =
+await supabase
+.from("users")
+.select("id")
+.eq("email", email)
+.limit(1);
+
+if(existingUser && existingUser.length > 0){
+
+document.getElementById("error").innerText =
+"Email already exists";
+
+document.getElementById("registerBtn").innerText =
+"CREATE ACCOUNT";
+
+return;
 
 }
 
-};
+const { error } =
+await supabase
+.from("users")
+.insert([
+{
+fullname: fullname,
+phone: phone,
+email: email,
+password: password,
+referral_code: referral,
+wallet_balance: 0
+}
+]);
 
-  </script></body>
-  </html>
+if(error) throw error;
+
+document.getElementById("success").innerText =
+"Account Created Successfully";
+
+document.getElementById("registerBtn").innerText =
+"CREATE ACCOUNT";
+
+setTimeout(function(){
+
+window.location.href =
+"login.html";
+
+},1500);
+
+}catch(err){
+
+document.getElementById("error").innerText =
+err.message;
+
+document.getElementById("registerBtn").innerText =
+"CREATE ACCOUNT";
+
+}
+
+});
+
+</script></body>
+</html>
