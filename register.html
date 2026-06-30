@@ -136,24 +136,36 @@ Already have an account?
 <a href="login.html">Login</a>
 </div></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script>
-
-alert("Script Started");
-
-try{
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 
 const supabase = window.supabase.createClient(
 "https://sfimuvisljmezpajxxpf.supabase.co",
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmaW11dmlzbGptZXpwYWp4eHBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODA5MDEsImV4cCI6MjA5ODM1NjkwMX0.AsXXp8icUq92j54vjOtGk6VeOYoyo0e8AXwycKG_RSQ"
 );
 
-alert("Supabase Connected");
+document.getElementById("registerBtn").onclick = async function(){
 
-}catch(err){
+alert("Button Clicked");
 
-alert(err.message);
+const { data, error } =
+await supabase.auth.signUp({
+
+email: "test" + Date.now() + "@gmail.com",
+password: "12345678"
+
+});
+
+if(error){
+
+alert(error.message);
+
+}else{
+
+alert("SIGNUP SUCCESS");
 
 }
 
-</script></body>
+};
+
+  </script></body>
   </html>
