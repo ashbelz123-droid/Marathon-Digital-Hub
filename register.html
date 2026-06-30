@@ -1,19 +1,158 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Register V3</title>
-</head><body><h2>Marathon Digital Hub</h2><input type="text" id="fullname" placeholder="Full Name">
-<br><br><input type="email" id="email" placeholder="Email">
-<br><br><button id="registerBtn">
+<title>Marathon Digital Hub - Register</title><style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#020b1f;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:420px;
+background:#03142f;
+padding:25px;
+border-radius:25px;
+border:1px solid rgba(0,200,255,.3);
+box-shadow:0 0 25px rgba(0,200,255,.2);
+color:white;
+}
+
+.logo{
+text-align:center;
+font-size:30px;
+font-weight:bold;
+color:#00c8ff;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+margin-bottom:25px;
+opacity:.8;
+}
+
+.input-group{
+margin-bottom:15px;
+}
+
+input{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#081f44;
+color:white;
+font-size:15px;
+}
+
+input:focus{
+outline:1px solid #00c8ff;
+}
+
+.checkbox{
+display:flex;
+align-items:center;
+gap:10px;
+margin:10px 0;
+font-size:14px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#00c8ff;
+color:#000;
+font-weight:bold;
+font-size:16px;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+
+#error{
+color:#ff6b6b;
+text-align:center;
+margin-bottom:10px;
+}
+
+#success{
+color:#5dff9b;
+text-align:center;
+margin-bottom:10px;
+}
+
+.login-link{
+text-align:center;
+margin-top:15px;
+}
+
+.login-link a{
+color:#00c8ff;
+text-decoration:none;
+}
+
+</style></head><body><div class="container"><div class="logo">
+Marathon Digital Hub
+</div><div class="subtitle">
+Create Your Account
+</div><div id="error"></div>
+<div id="success"></div><div class="input-group">
+<input type="text" id="fullname" placeholder="Full Name">
+</div><div class="input-group">
+<input type="text" id="phone" placeholder="Phone Number">
+</div><div class="input-group">
+<input type="email" id="email" placeholder="Email Address">
+</div><div class="input-group">
+<input type="password" id="password" placeholder="Password">
+</div><div class="input-group">
+<input type="password" id="confirmPassword" placeholder="Confirm Password">
+</div><div class="input-group">
+<input type="text" id="referral" placeholder="Referral Code (Optional)">
+</div><div class="checkbox">
+<input type="checkbox" id="showPasswords">
+<label>Show Passwords</label>
+</div><button id="registerBtn">
 CREATE ACCOUNT
-</button><script>
+</button><div class="login-link">
+Already have an account?
+<a href="login.html">Login</a>
+</div></div><script>
 
-document.getElementById("registerBtn").onclick = async function(){
+document.getElementById("showPasswords")
+.addEventListener("change",function(){
 
-alert("Button Works");
+const type =
+this.checked ? "text" : "password";
 
-};
+document.getElementById("password").type = type;
+document.getElementById("confirmPassword").type = type;
+
+});
+
+document.getElementById("registerBtn")
+.addEventListener("click",function(){
+
+alert("REGISTER V3 UI WORKING");
+
+});
 
 </script></body>
-</html>
+  </html>
