@@ -136,18 +136,17 @@ Already have an account?
 </div></div><script src="supabase-config.js"></script><script>
 
 document.getElementById("showPasswords")
-.addEventListener("change",function(){
+.addEventListener("change", function(){
 
-const type =
-this.checked ? "text" : "password";
+const type = this.checked ? "text" : "password";
 
-document.getElementById("password").type=type;
-document.getElementById("confirmPassword").type=type;
+document.getElementById("password").type = type;
+document.getElementById("confirmPassword").type = type;
 
 });
 
 document.getElementById("registerBtn")
-.addEventListener("click",async function(){
+.addEventListener("click", async function(){
 
 const fullname =
 document.getElementById("fullname").value.trim();
@@ -167,40 +166,55 @@ document.getElementById("confirmPassword").value;
 const referral =
 document.getElementById("referral").value.trim();
 
-document.getElementById("error").innerText="";
-document.getElementById("success").innerText="";
+document.getElementById("error").innerText = "";
+document.getElementById("success").innerText = "";
 
-if(
-!fullname ||
-!phone ||
-!email ||
-!password ||
-!confirmPassword
-){
+if(!fullname || !phone || !email || !password || !confirmPassword){
+
 document.getElementById("error").innerText =
 "Please fill all required fields";
+
 return;
 }
 
 if(password.length < 8){
+
 document.getElementById("error").innerText =
 "Password must be at least 8 characters";
+
 return;
 }
 
 if(password !== confirmPassword){
+
 document.getElementById("error").innerText =
 "Passwords do not match";
+
 return;
 }
 
 try{
 
-const { error } =
+const { data, error } =
+await supabase.auth.signUp({
+email: email,
+password: password
+});
+
+if(error){
+throw error;
+}
+
+if(!data.user){
+throw new Error("Registration failed");
+}
+
+const { error: profileError } =
 await supabase
 .from("profiles")
 .insert([
 {
+id: data.user.id,
 fullname: fullname,
 phone: phone,
 email: email,
@@ -209,12 +223,16 @@ referral_code: referral
 }
 ]);
 
-if(error){
-throw error;
+if(profileError){
+throw profileError;
 }
 
 document.getElementById("success").innerText =
 "Account Created Successfully";
+
+setTimeout(function(){
+window.location.href = "login.html";
+},1500);
 
 }catch(err){
 
@@ -226,4 +244,4 @@ err.message;
 });
 
 </script></body>
-    </html>
+</html>
