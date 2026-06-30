@@ -205,8 +205,49 @@ return;
 
 }
 
+const SUPABASE_URL =
+"https://sfimuvisljmezpajxxpf.supabase.co";
+
+const SUPABASE_KEY =
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmaW11dmlzbGptZXpwYWp4eHBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODA5MDEsImV4cCI6MjA5ODM1NjkwMX0.AsXXp8icUq92j54vjOtGk6VeOYoyo0e8AXwycKG_RSQ";
+
+const supabase =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+(async()=>{
+
+try{
+
+const { data, error } =
+await supabase
+.from("profiles")
+.insert([
+{
+fullname: fullname,
+phone: phone,
+email: email,
+wallet_balance: 0
+}
+]);
+
+if(error){
+throw error;
+}
+
 document.getElementById("success").innerText =
-"VALIDATION PASSED";
+"Account Created Successfully";
+
+}catch(err){
+
+document.getElementById("error").innerText =
+err.message;
+
+}
+
+})();
 
 });
 
