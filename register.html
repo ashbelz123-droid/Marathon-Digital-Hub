@@ -1,7 +1,6 @@
-<!DOCTYPE html><html lang="en">
-<head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub - Register</title><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
 *{
 margin:0;
@@ -23,8 +22,8 @@ padding:20px;
 width:100%;
 max-width:430px;
 background:#07152f;
-border-radius:25px;
 padding:25px;
+border-radius:25px;
 border:1px solid rgba(0,200,255,.3);
 box-shadow:0 0 25px rgba(0,200,255,.2);
 }
@@ -39,8 +38,9 @@ margin-bottom:10px;
 
 .subtitle{
 text-align:center;
-color:#cfd8dc;
+color:white;
 margin-bottom:25px;
+opacity:.8;
 }
 
 .input-group{
@@ -67,7 +67,6 @@ align-items:center;
 gap:10px;
 margin-bottom:15px;
 color:white;
-font-size:14px;
 }
 
 .checkbox input{
@@ -81,13 +80,9 @@ border:none;
 border-radius:12px;
 background:#00c8ff;
 color:black;
-font-size:16px;
 font-weight:bold;
+font-size:16px;
 cursor:pointer;
-}
-
-button:hover{
-opacity:.9;
 }
 
 #error{
@@ -97,7 +92,7 @@ margin-bottom:10px;
 }
 
 #success{
-color:#5dff9b;
+color:#66ff99;
 text-align:center;
 margin-bottom:10px;
 }
@@ -138,7 +133,7 @@ CREATE ACCOUNT
 </button><div class="login-link">
 Already have an account?
 <a href="login.html">Login</a>
-</div></div><script>
+</div></div><script src="supabase-config.js"></script><script>
 
 document.getElementById("showPasswords")
 .addEventListener("change",function(){
@@ -146,13 +141,13 @@ document.getElementById("showPasswords")
 const type =
 this.checked ? "text" : "password";
 
-document.getElementById("password").type = type;
-document.getElementById("confirmPassword").type = type;
+document.getElementById("password").type=type;
+document.getElementById("confirmPassword").type=type;
 
 });
 
 document.getElementById("registerBtn")
-.addEventListener("click",function(){
+.addEventListener("click",async function(){
 
 const fullname =
 document.getElementById("fullname").value.trim();
@@ -169,6 +164,9 @@ document.getElementById("password").value;
 const confirmPassword =
 document.getElementById("confirmPassword").value;
 
+const referral =
+document.getElementById("referral").value.trim();
+
 document.getElementById("error").innerText="";
 document.getElementById("success").innerText="";
 
@@ -179,45 +177,22 @@ if(
 !password ||
 !confirmPassword
 ){
-
 document.getElementById("error").innerText =
 "Please fill all required fields";
-
 return;
-
 }
 
 if(password.length < 8){
-
 document.getElementById("error").innerText =
 "Password must be at least 8 characters";
-
 return;
-
 }
 
 if(password !== confirmPassword){
-
 document.getElementById("error").innerText =
 "Passwords do not match";
-
 return;
-
 }
-
-const SUPABASE_URL =
-"https://sfimuvisljmezpajxxpf.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_Lg_uS6NX4c8kd8Vr6FnIZw_GyNS4SwY";
-
-const supabase =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-(async()=>{
 
 try{
 
@@ -230,8 +205,7 @@ fullname: fullname,
 phone: phone,
 email: email,
 wallet_balance: 0,
-referral_code:
-document.getElementById("referral").value.trim()
+referral_code: referral
 }
 ]);
 
@@ -242,13 +216,6 @@ throw error;
 document.getElementById("success").innerText =
 "Account Created Successfully";
 
-document.getElementById("fullname").value="";
-document.getElementById("phone").value="";
-document.getElementById("email").value="";
-document.getElementById("password").value="";
-document.getElementById("confirmPassword").value="";
-document.getElementById("referral").value="";
-
 }catch(err){
 
 document.getElementById("error").innerText =
@@ -256,16 +223,7 @@ err.message;
 
 }
 
-})();
-
-<button id="registerBtn">CREATE ACCOUNT</button>
-
-<script>
-document.getElementById("registerBtn")
-.addEventListener("click",function(){
-    alert("REGISTER BUTTON CLICKED");
 });
-</script>
 
-</body>
-</html>
+</script></body>
+    </html>
