@@ -134,98 +134,26 @@ CREATE ACCOUNT
 </button><div class="login-link">
 Already have an account?
 <a href="login.html">Login</a>
-</div></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+</div></div><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+alert("Script Started");
+
+try{
 
 const supabase = window.supabase.createClient(
 "https://sfimuvisljmezpajxxpf.supabase.co",
 "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmaW11dmlzbGptZXpwYWp4eHBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODA5MDEsImV4cCI6MjA5ODM1NjkwMX0.AsXXp8icUq92j54vjOtGk6VeOYoyo0e8AXwycKG_RSQ"
 );
 
-document.getElementById("showPasswords")
-.addEventListener("change",function(){
-
-const type =
-this.checked ? "text" : "password";
-
-document.getElementById("password").type = type;
-document.getElementById("confirmPassword").type = type;
-
-});
-
-document.getElementById("registerBtn")
-.addEventListener("click", async function(){
-
-const fullname =
-document.getElementById("fullname").value.trim();
-
-const phone =
-document.getElementById("phone").value.trim();
-
-const email =
-document.getElementById("email").value.trim();
-
-const password =
-document.getElementById("password").value;
-
-const confirmPassword =
-document.getElementById("confirmPassword").value;
-
-const referral =
-document.getElementById("referral").value.trim();
-
-document.getElementById("error").innerText="";
-document.getElementById("success").innerText="";
-
-if(!fullname || !phone || !email || !password){
-
-document.getElementById("error").innerText =
-"Fill all required fields";
-
-return;
-
-}
-
-if(password !== confirmPassword){
-
-document.getElementById("error").innerText =
-"Passwords do not match";
-
-return;
-
-}
-
-try{
-
-document.getElementById("registerBtn").innerText =
-"Creating Account...";
-
-const { data, error } =
-await supabase.auth.signUp({
-
-email: email,
-password: password
-
-});
-
-if(error) throw error;
-
-document.getElementById("success").innerText =
-"Account Created Successfully";
-
-document.getElementById("registerBtn").innerText =
-"CREATE ACCOUNT";
+alert("Supabase Connected");
 
 }catch(err){
 
-document.getElementById("error").innerText =
-err.message;
-
-document.getElementById("registerBtn").innerText =
-"CREATE ACCOUNT";
+alert(err.message);
 
 }
 
-});
-
-        </script></body>
+</script></body>
   </html>
