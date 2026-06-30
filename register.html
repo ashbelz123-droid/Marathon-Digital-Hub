@@ -196,7 +196,7 @@ return;
 try{
 
 const { data, error } =
-await supabase.auth.signUp({
+await supabase.auth.signUp(...)
 email: email,
 password: password
 });
@@ -210,7 +210,7 @@ throw new Error("Registration failed");
 }
 
 const { error: profileError } =
-await supabase
+await supabaseClient
 .from("profiles")
 .insert([
 {
