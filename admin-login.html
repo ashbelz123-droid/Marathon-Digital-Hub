@@ -1,0 +1,90 @@
+<!DOCTYPE html><html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login</title><style>
+
+body{
+background:#020b1f;
+font-family:Arial;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+margin:0;
+}
+
+.box{
+width:90%;
+max-width:400px;
+background:#07152f;
+padding:25px;
+border-radius:20px;
+color:white;
+}
+
+h2{
+text-align:center;
+color:#00c8ff;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-top:10px;
+border:none;
+border-radius:10px;
+background:#0b2148;
+color:white;
+box-sizing:border-box;
+}
+
+button{
+width:100%;
+padding:14px;
+margin-top:15px;
+border:none;
+border-radius:10px;
+background:#00c8ff;
+font-weight:bold;
+cursor:pointer;
+}
+
+#error{
+color:red;
+text-align:center;
+margin-top:10px;
+}
+
+</style></head>
+<body><div class="box"><h2>Admin Login</h2><input type="email" id="email" placeholder="Admin Email"><input type="password" id="password" placeholder="Password"><button onclick="loginAdmin()">
+LOGIN
+</button><div id="error"></div></div><script>
+
+function loginAdmin(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+if(
+email==="admin@marathon.com" &&
+password==="MDH#SuperAdmin_8472"
+){
+
+window.location.href=
+"admin-dashboard.html";
+
+}else{
+
+document.getElementById("error").innerText=
+"Invalid Admin Credentials";
+
+}
+
+}
+
+</script></body>
+</html>
