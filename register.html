@@ -1,8 +1,7 @@
 <!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
 *{
 margin:0;
@@ -13,10 +12,10 @@ font-family:Arial,sans-serif;
 
 body{
 background:#020b1f;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100vh;
 padding:20px;
 }
 
@@ -24,11 +23,10 @@ padding:20px;
 width:100%;
 max-width:420px;
 background:#03142f;
-padding:25px;
 border-radius:25px;
+padding:25px;
 border:1px solid rgba(0,200,255,.3);
 box-shadow:0 0 25px rgba(0,200,255,.2);
-color:white;
 }
 
 .logo{
@@ -41,8 +39,8 @@ margin-bottom:10px;
 
 .subtitle{
 text-align:center;
+color:#cfd8dc;
 margin-bottom:25px;
-opacity:.8;
 }
 
 .input-group{
@@ -56,6 +54,7 @@ border:none;
 border-radius:12px;
 background:#081f44;
 color:white;
+font-size:15px;
 }
 
 input:focus{
@@ -66,8 +65,13 @@ outline:1px solid #00c8ff;
 display:flex;
 align-items:center;
 gap:10px;
-margin:10px 0;
+margin-bottom:15px;
+color:white;
 font-size:14px;
+}
+
+.checkbox input{
+width:auto;
 }
 
 button{
@@ -76,7 +80,7 @@ padding:15px;
 border:none;
 border-radius:12px;
 background:#00c8ff;
-color:#000;
+color:black;
 font-weight:bold;
 font-size:16px;
 cursor:pointer;
@@ -93,7 +97,7 @@ margin-bottom:10px;
 }
 
 #success{
-color:#5dff9b;
+color:#66ff99;
 text-align:center;
 margin-bottom:10px;
 }
@@ -127,19 +131,21 @@ Create Your Account
 <input type="text" id="referral" placeholder="Referral Code (Optional)">
 </div><div class="checkbox">
 <input type="checkbox" id="showPasswords">
-<label>Show Passwords</label>
+<label for="showPasswords">Show Passwords</label>
 </div><button id="registerBtn">
 CREATE ACCOUNT
 </button><div class="login-link">
 Already have an account?
 <a href="login.html">Login</a>
-</div></div><script>
+</div></div>
+
+        <script>
 
 const SUPABASE_URL =
-"https://wcrrxsrtbelcbycppieg.supabase.co";
+"https://sfimuvisljmezpajxxpf.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjcnJ4c3J0YmVsY2J5Y3BwaWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTM0ODQsImV4cCI6MjA5NjE4OTQ4NH0.yh_xCiEW2T9riiDJgEWBmIU4V0e5azRQ0sITaEhfCo4";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNmaW11dmlzbGptZXpwYWp4eHBmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI3ODA5MDEsImV4cCI6MjA5ODM1NjkwMX0.AsXXp8icUq92j54vjOtGk6VeOYoyo0e8AXwycKG_RSQ";
 
 const supabase =
 window.supabase.createClient(
@@ -182,22 +188,22 @@ document.getElementById("referral").value.trim();
 document.getElementById("error").innerText="";
 document.getElementById("success").innerText="";
 
-if(!fullname || !phone || !email || !password || !confirmPassword){
-
+if(
+!fullname ||
+!phone ||
+!email ||
+!password ||
+!confirmPassword
+){
 document.getElementById("error").innerText =
 "Please fill all required fields";
-
 return;
-
 }
 
 if(password !== confirmPassword){
-
 document.getElementById("error").innerText =
 "Passwords do not match";
-
 return;
-
 }
 
 try{
@@ -206,11 +212,10 @@ document.getElementById("registerBtn").disabled = true;
 document.getElementById("registerBtn").innerText =
 "Creating Account...";
 
-        alert("Trying signup...");
 const { data, error } =
 await supabase.auth.signUp({
-email,
-password
+email: email,
+password: password
 });
 
 if(error){
@@ -220,12 +225,11 @@ throw error;
 await supabase
 .from("profiles")
 .insert({
-id:data.user.id,
-fullname,
-phone,
-email,
-wallet_balance:0,
-referral_code:referral
+fullname: fullname,
+phone: phone,
+email: email,
+wallet_balance: 0,
+referral_code: referral
 });
 
 document.getElementById("success").innerText =
@@ -249,4 +253,4 @@ document.getElementById("registerBtn").innerText =
 });
 
 </script></body>
-        </html>
+</html>
