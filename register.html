@@ -226,7 +226,7 @@ referral_code: referral
 if(profileError){
 throw profileError;
 }
-
+console.log(window.supabaseClient);
 document.getElementById("success").innerText =
 "Account Created Successfully";
 
