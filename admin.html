@@ -1,225 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!DOCTYPE html><html>
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Admin Dashboard</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Admin Dashboard</title><style>
 
 body{
-background:#000814;
+background:#020b1f;
+font-family:Arial;
+margin:0;
+padding:20px;
 color:white;
-padding-bottom:90px;
 }
 
 .header{
-background:#03122c;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #00c8ff;
-}
-
-.header h1{
-color:#00c8ff;
 font-size:28px;
-}
-
-.stats{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-padding:15px;
-}
-
-.stat-card{
-background:#03122c;
-padding:20px;
-border-radius:18px;
-text-align:center;
-border:2px solid rgba(0,200,255,.3);
-}
-
-.stat-card h2{
-color:#00ff88;
-margin-top:10px;
-}
-
-.section{
-margin:15px;
-padding:20px;
-background:#03122c;
-border-radius:18px;
-border:2px solid rgba(0,200,255,.3);
-}
-
-.section h3{
+font-weight:bold;
 color:#00c8ff;
+margin-bottom:20px;
+}
+
+.card{
+background:#07152f;
+padding:20px;
+border-radius:15px;
 margin-bottom:15px;
 }
 
-.action-btn{
+.btn{
 display:block;
-width:100%;
-padding:15px;
-margin-top:10px;
-border:none;
-border-radius:12px;
 background:#00c8ff;
-color:white;
+color:black;
+padding:15px;
+text-decoration:none;
+border-radius:10px;
+margin-top:10px;
+text-align:center;
 font-weight:bold;
-font-size:16px;
-cursor:pointer;
 }
 
-</style>
-
-</head>
-
-<body>
-
-<div class="header">
-
-<h1>Admin Dashboard</h1>
-
-</div>
-
-<div class="stats">
-
-<div class="stat-card">
-<p>Total Users</p>
-<h2>1,250</h2>
-</div>
-
-<div class="stat-card">
-<p>Active Users</p>
-<h2>845</h2>
-</div>
-
-<div class="stat-card">
-<p>Total Deposits</p>
-<h2>UGX 85M</h2>
-</div>
-
-<div class="stat-card">
-<p>Total Withdrawals</p>
-<h2>UGX 42M</h2>
-</div>
-
-</div>
-
-<div class="section">
-
-<h3>Quick Actions</h3>
-
-<button class="action-btn">
+</style></head><body><div class="header">
+Admin Dashboard
+</div><div class="card">
+Total Users
+</div><div class="card">
+Total Machines
+</div><div class="card">
+Deposits
+</div><div class="card">
+Withdrawals
+</div><a class="btn" href="#">
 Manage Users
-</button>
-
-<button class="action-btn">
-Manage Deposits
-</button>
-
-<button class="action-btn">
-Manage Withdrawals
-</button>
-
-<button class="action-btn">
+</a><a class="btn" href="#">
 Manage Machines
-</button>
-
-</div>
-<!-- PENDING DEPOSITS -->
-
-<div class="section">
-
-<h3>Pending Deposits</h3>
-
-<p>User: Hajira — UGX 100,000</p>
-
-<p>User: John — UGX 250,000</p>
-
-<button class="action-btn">
-Approve Deposits
-</button>
-
-</div>
-
-<!-- PENDING WITHDRAWALS -->
-
-<div class="section">
-
-<h3>Pending Withdrawals</h3>
-
-<p>User: Sarah — UGX 50,000</p>
-
-<p>User: Peter — UGX 120,000</p>
-
-<button class="action-btn">
-Approve Withdrawals
-</button>
-
-</div>
-
-<!-- RECENT USERS -->
-
-<div class="section">
-
-<h3>Recent Registrations</h3>
-
-<p>• User1001</p>
-
-<p>• User1002</p>
-
-<p>• User1003</p>
-
-<p>• User1004</p>
-
-</div>
-
-<!-- SYSTEM CONTROL -->
-
-<div class="section">
-
-<h3>System Controls</h3>
-
-<button class="action-btn">
-Send Announcement
-</button>
-
-<button class="action-btn">
-Add New Machine
-</button>
-
-<button class="action-btn">
-View Reports
-</button>
-
-<button class="action-btn">
-System Settings
-</button>
-
-</div>
-
-<script>
-
-function adminAction(name){
-
-alert(name + " clicked");
-
-}
-
-</script>
-
-</body>
-  </html>
+</a><a class="btn" href="#">
+Manage Deposits
+</a><a class="btn" href="#">
+Manage Withdrawals
+</a></body>
+</html>
