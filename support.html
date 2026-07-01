@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Support | Marathon Digital Hub</title>
 
@@ -24,10 +24,14 @@ font-family:Arial,sans-serif;
 body{
 
 background:#050B18;
-color:white;
-display:flex;
-flex-direction:column;
+color:#fff;
+
 height:100vh;
+
+display:flex;
+
+flex-direction:column;
+
 overflow:hidden;
 
 }
@@ -50,9 +54,9 @@ radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
 
 radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
 
-radial-gradient(circle at 70% 80%,rgba(0,255,120,.16),transparent 40%);
+radial-gradient(circle at 60% 80%,rgba(0,255,120,.15),transparent 40%);
 
-animation:bgMove 18s linear infinite;
+animation:bgMove 20s linear infinite;
 
 z-index:-2;
 
@@ -80,12 +84,14 @@ padding:15px;
 
 border-bottom:1px solid rgba(255,255,255,.08);
 
+flex-shrink:0;
+
 }
 
 .avatar{
 
-width:45px;
-height:45px;
+width:48px;
+height:48px;
 
 border-radius:50%;
 
@@ -93,15 +99,15 @@ background:#00ff88;
 
 display:flex;
 
-align-items:center;
-
 justify-content:center;
 
-color:#001018;
+align-items:center;
+
+font-size:22px;
 
 font-weight:bold;
 
-font-size:20px;
+color:#001018;
 
 margin-right:12px;
 
@@ -119,6 +125,8 @@ font-size:13px;
 
 color:#9fb5d1;
 
+margin-top:2px;
+
 }
 
 .chatArea{
@@ -128,6 +136,8 @@ flex:1;
 overflow-y:auto;
 
 padding:15px;
+
+padding-bottom:170px;
 
 }
 
@@ -142,6 +152,8 @@ margin-bottom:15px;
 border-radius:16px;
 
 word-wrap:break-word;
+
+line-height:1.5;
 
 }
 
@@ -183,6 +195,14 @@ text-align:right;
 
 .inputArea{
 
+position:fixed;
+
+left:0;
+
+bottom:70px;
+
+width:100%;
+
 background:#08142d;
 
 padding:12px;
@@ -193,13 +213,17 @@ gap:10px;
 
 border-top:1px solid rgba(255,255,255,.08);
 
+z-index:998;
+
 }
 
 .inputArea input{
 
 flex:1;
 
-height:48px;
+height:50px;
+
+background:#111f3d;
 
 border:none;
 
@@ -207,11 +231,11 @@ border-radius:12px;
 
 padding:15px;
 
-background:#111f3d;
-
 color:white;
 
 outline:none;
+
+font-size:15px;
 
 }
 
@@ -241,7 +265,7 @@ cursor:pointer;
 
 <div class="header">
 
-<div class="avatar">
+<div class="avatar" id="avatar">
 
 A
 
@@ -258,7 +282,9 @@ A
 </div>
 
 <div
+
 class="chatArea"
+
 id="chatArea">
 
 Loading conversation...
@@ -292,9 +318,9 @@ const db = window.supabaseClient;
 let currentUser = null;
 let profile = null;
 
-/* ===========================
+/* ==========================
 START
-=========================== */
+========================== */
 
 document.addEventListener("DOMContentLoaded", async ()=>{
 
@@ -310,13 +336,14 @@ return;
 currentUser=user;
 
 await loadProfile();
+
 await loadMessages();
 
 });
 
-/* ===========================
+/* ==========================
 LOAD PROFILE
-=========================== */
+========================== */
 
 async function loadProfile(){
 
@@ -333,26 +360,34 @@ const { data,error } = await db
 if(error){
 
 console.log(error);
+
 return;
 
 }
 
 profile=data;
 
+/* Avatar */
+
 const initials=data.fullname
+
 .split(" ")
-.map(x=>x[0])
+
+.map(n=>n[0])
+
 .join("")
-.substring(0,1)
+
+.substring(0,2)
+
 .toUpperCase();
 
-document.querySelector(".avatar").innerHTML=initials;
+document.getElementById("avatar").innerHTML=initials;
 
 }
 
-/* ===========================
-LOAD MESSAGES
-=========================== */
+/* ==========================
+LOAD CHAT
+========================== */
 
 async function loadMessages(){
 
@@ -369,6 +404,7 @@ const { data,error } = await db
 if(error){
 
 console.log(error);
+
 return;
 
 }
@@ -381,9 +417,11 @@ if(data.length===0){
 
 chat.innerHTML=`
 
-<div style="text-align:center;color:#9fb5d1;margin-top:40px;">
+<div style="text-align:center;color:#9fb5d1;padding-top:50px;">
 
-Start a conversation with support.
+No conversation yet.<br>
+
+Send your first message to Support.
 
 </div>
 
@@ -393,7 +431,7 @@ return;
 
 }
 
-data.forEach(msg=>{
+data.forEach(item=>{
 
 /* USER MESSAGE */
 
@@ -401,11 +439,11 @@ chat.innerHTML+=`
 
 <div class="message user">
 
-${msg.message}
+${item.message}
 
 <span class="time">
 
-${new Date(msg.created_at).toLocaleString()}
+${new Date(item.created_at).toLocaleString()}
 
 </span>
 
@@ -415,17 +453,17 @@ ${new Date(msg.created_at).toLocaleString()}
 
 /* ADMIN REPLY */
 
-if(msg.admin_reply && msg.admin_reply!=""){
+if(item.admin_reply && item.admin_reply!=""){
 
 chat.innerHTML+=`
 
 <div class="message admin">
 
-${msg.admin_reply}
+${item.admin_reply}
 
 <span class="time">
 
-${new Date(msg.created_at).toLocaleString()}
+${new Date(item.created_at).toLocaleString()}
 
 </span>
 
@@ -441,9 +479,9 @@ chat.scrollTop=chat.scrollHeight;
 
 }
 
-/* ===========================
-AUTO REFRESH EVERY 5 SECONDS
-=========================== */
+/* ==========================
+AUTO REFRESH
+========================== */
 
 setInterval(()=>{
 
@@ -455,21 +493,33 @@ loadMessages();
 
 },5000);
 
-</script><script>
+  </script><script>
 
-/* ===========================
+/* ==========================
 SEND MESSAGE
-=========================== */
+========================== */
 
-document.getElementById("sendBtn").onclick = async () => {
+document.getElementById("sendBtn").addEventListener("click", sendMessage);
 
-const input = document.getElementById("messageInput");
+document.getElementById("messageInput").addEventListener("keypress", function(e){
 
-const message = input.value.trim();
+if(e.key==="Enter"){
 
-if(message==""){
+e.preventDefault();
 
-alert("Type your message first.");
+sendMessage();
+
+}
+
+});
+
+async function sendMessage(){
+
+const input=document.getElementById("messageInput");
+
+const text=input.value.trim();
+
+if(text===""){
 
 return;
 
@@ -481,8 +531,6 @@ btn.disabled=true;
 
 btn.innerHTML="Sending...";
 
-/* Save Message */
-
 const { error } = await db
 
 .from("support_messages")
@@ -491,9 +539,9 @@ const { error } = await db
 
 user_id:currentUser.id,
 
-message:message,
+message:text,
 
-admin_reply:"",
+admin_reply:null,
 
 status:"open"
 
@@ -511,39 +559,49 @@ return;
 
 }
 
-/* Clear Input */
-
 input.value="";
-
-/* Reload Chat */
 
 await loadMessages();
 
-};
+}
 
-/* ===========================
-SEND WITH ENTER KEY
-=========================== */
+/* ==========================
+REALTIME UPDATE
+========================== */
 
-document.getElementById("messageInput")
+db.channel("support-chat")
 
-.addEventListener("keypress",(e)=>{
+.on(
 
-if(e.key==="Enter"){
+"postgres_changes",
 
-e.preventDefault();
+{
 
-document.getElementById("sendBtn").click();
+event:"*",
+
+schema:"public",
+
+table:"support_messages",
+
+filter:`user_id=eq.${currentUser?.id}`
+
+},
+
+()=>{
+
+loadMessages();
 
 }
 
-});
+)
 
-</script>
+.subscribe();
 
-  <!-- ===============================
+  </script>
+
+  <!-- ==========================
 BOTTOM NAVIGATION
-=============================== -->
+========================== -->
 
 <style>
 
@@ -653,11 +711,11 @@ color:#00ff88;
 
 </a>
 
-<a href="profile.html" class="active">
+<a href="support.html" class="active">
 
-<i>👤</i>
+<i>💬</i>
 
-<span>Profile</span>
+<span>Support</span>
 
 </a>
 
