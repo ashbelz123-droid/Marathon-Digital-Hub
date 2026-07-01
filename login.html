@@ -1,159 +1,289 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Login</title>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub | Login</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase-config.js"></script><style>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
 body{
+
 background:#020b1f;
-font-family:Arial,sans-serif;
-color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
 padding:20px;
+
 }
 
-.container{
-max-width:400px;
-margin:auto;
-margin-top:80px;
-background:#03142f;
-padding:20px;
-border-radius:20px;
-border:1px solid #00c8ff;
+.card{
+
+width:100%;
+max-width:430px;
+background:#07152f;
+padding:30px;
+border-radius:25px;
+border:1px solid rgba(0,200,255,.25);
+box-shadow:0 0 30px rgba(0,200,255,.2);
+
 }
 
-h1{
+.logo{
+
 text-align:center;
+font-size:30px;
+font-weight:bold;
 color:#00c8ff;
-margin-bottom:20px;
+margin-bottom:8px;
+
 }
 
-input{
+.subtitle{
+
+text-align:center;
+color:#ddd;
+margin-bottom:25px;
+
+}
+
+.message{
+
+text-align:center;
+margin-bottom:15px;
+font-weight:bold;
+
+}
+
+#error{
+
+color:#ff6b6b;
+
+}
+
+#success{
+
+color:#66ff99;
+
+}
+
+.input{
+
+margin-bottom:15px;
+
+}
+
+.input input{
+
 width:100%;
 padding:15px;
-margin-bottom:12px;
 border:none;
-border-radius:10px;
+border-radius:12px;
+background:#0b2148;
+color:white;
+font-size:15px;
+
+}
+
+.input input:focus{
+
+outline:1px solid #00c8ff;
+
+}
+
+.options{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+color:white;
+font-size:14px;
+
+}
+
+.options a{
+
+color:#00c8ff;
+text-decoration:none;
+
 }
 
 button{
+
 width:100%;
 padding:15px;
-background:#00c8ff;
 border:none;
-border-radius:10px;
+border-radius:12px;
+background:#00c8ff;
+font-size:16px;
 font-weight:bold;
 cursor:pointer;
+
 }
 
-a{
+button:hover{
+
+opacity:.9;
+
+}
+
+.footer{
+
+text-align:center;
+margin-top:20px;
+color:white;
+
+}
+
+.footer a{
+
 color:#00c8ff;
+text-decoration:none;
+
 }
 
-</style>
+.loading{
 
-</head>
+display:none;
+margin-top:15px;
+text-align:center;
+color:#00c8ff;
 
-<body>
+}
 
-<div class="container">
-
-<h1>Login</h1>
-
+</style></head><body><div class="card"><div class="logo">
+Marathon Digital Hub
+</div><div class="subtitle">
+Welcome Back 👋
+<br>
+Login to continue
+</div><div id="error" class="message"></div>
+<div id="success" class="message"></div><div class="input">
 <input
 type="email"
 id="email"
-placeholder="Email">
-
+placeholder="Email Address">
+</div><div class="input">
 <input
 type="password"
 id="password"
 placeholder="Password">
+</div><div class="options"><label><input
+type="checkbox"
+id="showPassword">
 
-<button onclick="loginUser()">
-LOGIN
-</button>
+Show Password
 
-<p style="margin-top:15px;text-align:center;">
-Don't have an account?
-<a href="register.html">
-Create Account
-</a>
-</p>
+</label><a href="#">
+Forgot Password?
+</a></div><button id="loginBtn">LOGIN
 
-</div>
+</button><div class="loading"
+id="loading">Signing you in...
 
-<script>
+</div><div class="footer">Don't have an account?
 
-const SUPABASE_URL =
-"https://wcrrxsrtbelcbycppieg.supabase.co";
+<a href="register.html">Create Account
 
-const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndjcnJ4c3J0YmVsY2J5Y3BwaWVnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA2MTM0ODQsImV4cCI6MjA5NjE4OTQ4NH0.yh_xCiEW2T9riiDJgEWBmIU4V0e5azRQ0sITaEhfCo4";
+</a></div></div><script>
 
-const supabase =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
+async function getUserName(userId){
 
-async function loginUser(){
+const { data } =
+await supabaseClient
+.from("profiles")
+.select("fullname")
+.eq("id", userId)
+.single();
+
+return data?.fullname || "User";
+
+}
+
+document.getElementById("showPassword")
+.addEventListener("change",function(){
+
+document.getElementById("password").type =
+this.checked ? "text" : "password";
+
+});
+
+(async()=>{
+
+const {
+data:{session}
+} = await supabaseClient.auth.getSession();
+
+if(session){
+
+window.location.href="dashboard.html";
+
+}
+
+})();
+
+document
+.getElementById("loginBtn")
+.addEventListener("click",async()=>{
 
 const email =
-document.getElementById(
-"email"
-).value;
+document.getElementById("email").value.trim();
 
 const password =
-document.getElementById(
-"password"
-).value;
+document.getElementById("password").value;
+
+document.getElementById("error").innerText="";
+document.getElementById("success").innerText="";
+document.getElementById("loading").style.display="block";
 
 if(!email || !password){
 
-alert(
-"Enter email and password"
-);
-
+document.getElementById("loading").style.display="none";
+document.getElementById("error").innerText =
+"Please enter your email and password.";
 return;
 
 }
 
-const {
-error
-}
-=
-await supabase.auth.signInWithPassword({
+try{
+
+const { data,error } =
+await supabaseClient.auth.signInWithPassword({
 
 email,
 password
 
 });
 
-if(error){
+if(error) throw error;
 
-alert(
-error.message
-);
+const fullname =
+await getUserName(data.user.id);
 
-return;
+document.getElementById("loading").style.display="none";
+
+document.getElementById("success").innerText =
+"👋 Welcome back, " + fullname + "!";
+
+setTimeout(()=>{
+
+window.location.href="dashboard.html";
+
+},1500);
+
+}catch(err){
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("error").innerText =
+err.message;
 
 }
 
-alert(
-"Login Successful"
-);
+});
 
-window.location =
-"dashboard.html";
-
-}
-
-</script>
-
-</body>
-</html>
+</script></body>
+            </html>
