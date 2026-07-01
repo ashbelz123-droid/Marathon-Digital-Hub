@@ -4,9 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Customer Support</title>
+<title>Support | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 
 <style>
 
@@ -18,51 +22,215 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#000814;
+
+background:#050B18;
 color:white;
-padding-bottom:90px;
+display:flex;
+flex-direction:column;
+height:100vh;
+overflow:hidden;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+left:-40%;
+top:-40%;
+
+width:180%;
+height:180%;
+
+background:
+
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
+
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.16),transparent 40%);
+
+animation:bgMove 18s linear infinite;
+
+z-index:-2;
+
+}
+
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
+
 }
 
 .header{
-background:#03122c;
-padding:20px;
-text-align:center;
-border-bottom:2px solid #00c8ff;
-}
 
-.header h1{
-color:#00c8ff;
-font-size:28px;
-}
+height:70px;
 
-.card{
-margin:15px;
-padding:20px;
-background:#03122c;
-border:2px solid rgba(0,200,255,.3);
-border-radius:18px;
-}
+background:#08142d;
 
-.card h2{
-color:#00c8ff;
-margin-bottom:15px;
-}
+display:flex;
 
-.card p{
-margin:8px 0;
-}
+align-items:center;
 
-.contact-btn{
-display:block;
-width:100%;
 padding:15px;
-margin-top:15px;
-text-align:center;
-text-decoration:none;
-background:linear-gradient(90deg,#00c8ff,#0066ff);
-color:white;
-border-radius:12px;
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.avatar{
+
+width:45px;
+height:45px;
+
+border-radius:50%;
+
+background:#00ff88;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+color:#001018;
+
 font-weight:bold;
+
+font-size:20px;
+
+margin-right:12px;
+
+}
+
+.header h3{
+
+font-size:20px;
+
+}
+
+.header p{
+
+font-size:13px;
+
+color:#9fb5d1;
+
+}
+
+.chatArea{
+
+flex:1;
+
+overflow-y:auto;
+
+padding:15px;
+
+}
+
+.message{
+
+max-width:80%;
+
+padding:12px;
+
+margin-bottom:15px;
+
+border-radius:16px;
+
+word-wrap:break-word;
+
+}
+
+.user{
+
+margin-left:auto;
+
+background:#00ff88;
+
+color:#001018;
+
+border-bottom-right-radius:5px;
+
+}
+
+.admin{
+
+margin-right:auto;
+
+background:#111f3d;
+
+border-bottom-left-radius:5px;
+
+}
+
+.time{
+
+display:block;
+
+margin-top:8px;
+
+font-size:11px;
+
+opacity:.7;
+
+text-align:right;
+
+}
+
+.inputArea{
+
+background:#08142d;
+
+padding:12px;
+
+display:flex;
+
+gap:10px;
+
+border-top:1px solid rgba(255,255,255,.08);
+
+}
+
+.inputArea input{
+
+flex:1;
+
+height:48px;
+
+border:none;
+
+border-radius:12px;
+
+padding:15px;
+
+background:#111f3d;
+
+color:white;
+
+outline:none;
+
+}
+
+.sendBtn{
+
+width:90px;
+
+border:none;
+
+border-radius:12px;
+
+background:#00ff88;
+
+color:#001018;
+
+font-weight:bold;
+
+cursor:pointer;
+
 }
 
 </style>
@@ -73,121 +241,428 @@ font-weight:bold;
 
 <div class="header">
 
-<h1>Customer Support</h1>
+<div class="avatar">
+
+A
 
 </div>
 
-<div class="card">
+<div>
 
-<h2>WhatsApp Support</h2>
+<h3>Support</h3>
 
-<p>Need help with deposits, withdrawals or account issues?</p>
-
-<a href="https://wa.me/256700000000"
-class="contact-btn">
-
-Chat on WhatsApp
-
-</a>
+<p>Marathon Customer Care</p>
 
 </div>
 
-<div class="card">
-
-<h2>Telegram Support</h2>
-
-<p>Join our official support channel.</p>
-
-<a href="#"
-class="contact-btn">
-
-Open Telegram
-
-</a>
-
 </div>
-<!-- EMAIL SUPPORT -->
 
-<div class="card">
+<div
+class="chatArea"
+id="chatArea">
 
-<h2>Email Support</h2>
-
-<p>Contact our support team via email.</p>
-
-<p>support@marathondigitalhub.com</p>
-
-<a href="mailto:support@marathondigitalhub.com"
-class="contact-btn">
-
-Send Email
-
-</a>
+Loading conversation...
 
 </div>
 
-<!-- FAQ -->
+<div class="inputArea">
 
-<div class="card">
+<input
 
-<h2>Frequently Asked Questions</h2>
+type="text"
 
-<p><strong>Q:</strong> How long do deposits take?</p>
-<p><strong>A:</strong> Usually 1–30 minutes after approval.</p>
+id="messageInput"
 
-<br>
+placeholder="Type your message...">
 
-<p><strong>Q:</strong> How long do withdrawals take?</p>
-<p><strong>A:</strong> Usually within 24 hours.</p>
+<button
 
-<br>
+class="sendBtn"
 
-<p><strong>Q:</strong> How do I activate a machine?</p>
-<p><strong>A:</strong> Deposit funds, then purchase a machine from the Machines page.</p>
+id="sendBtn">
+
+Send
+
+</button>
+
+</div><script>
+
+const db = window.supabaseClient;
+
+let currentUser = null;
+let profile = null;
+
+/* ===========================
+START
+=========================== */
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+
+const { data:{ user } } = await db.auth.getUser();
+
+if(!user){
+
+window.location.href="login.html";
+return;
+
+}
+
+currentUser=user;
+
+await loadProfile();
+await loadMessages();
+
+});
+
+/* ===========================
+LOAD PROFILE
+=========================== */
+
+async function loadProfile(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error){
+
+console.log(error);
+return;
+
+}
+
+profile=data;
+
+const initials=data.fullname
+.split(" ")
+.map(x=>x[0])
+.join("")
+.substring(0,1)
+.toUpperCase();
+
+document.querySelector(".avatar").innerHTML=initials;
+
+}
+
+/* ===========================
+LOAD MESSAGES
+=========================== */
+
+async function loadMessages(){
+
+const { data,error } = await db
+
+.from("support_messages")
+
+.select("*")
+
+.eq("user_id",currentUser.id)
+
+.order("created_at",{ascending:true});
+
+if(error){
+
+console.log(error);
+return;
+
+}
+
+const chat=document.getElementById("chatArea");
+
+chat.innerHTML="";
+
+if(data.length===0){
+
+chat.innerHTML=`
+
+<div style="text-align:center;color:#9fb5d1;margin-top:40px;">
+
+Start a conversation with support.
 
 </div>
 
-<!-- BOTTOM NAVIGATION -->
+`;
 
-<div style="
+return;
+
+}
+
+data.forEach(msg=>{
+
+/* USER MESSAGE */
+
+chat.innerHTML+=`
+
+<div class="message user">
+
+${msg.message}
+
+<span class="time">
+
+${new Date(msg.created_at).toLocaleString()}
+
+</span>
+
+</div>
+
+`;
+
+/* ADMIN REPLY */
+
+if(msg.admin_reply && msg.admin_reply!=""){
+
+chat.innerHTML+=`
+
+<div class="message admin">
+
+${msg.admin_reply}
+
+<span class="time">
+
+${new Date(msg.created_at).toLocaleString()}
+
+</span>
+
+</div>
+
+`;
+
+}
+
+});
+
+chat.scrollTop=chat.scrollHeight;
+
+}
+
+/* ===========================
+AUTO REFRESH EVERY 5 SECONDS
+=========================== */
+
+setInterval(()=>{
+
+if(currentUser){
+
+loadMessages();
+
+}
+
+},5000);
+
+</script><script>
+
+/* ===========================
+SEND MESSAGE
+=========================== */
+
+document.getElementById("sendBtn").onclick = async () => {
+
+const input = document.getElementById("messageInput");
+
+const message = input.value.trim();
+
+if(message==""){
+
+alert("Type your message first.");
+
+return;
+
+}
+
+const btn=document.getElementById("sendBtn");
+
+btn.disabled=true;
+
+btn.innerHTML="Sending...";
+
+/* Save Message */
+
+const { error } = await db
+
+.from("support_messages")
+
+.insert({
+
+user_id:currentUser.id,
+
+message:message,
+
+admin_reply:"",
+
+status:"open"
+
+});
+
+btn.disabled=false;
+
+btn.innerHTML="Send";
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+/* Clear Input */
+
+input.value="";
+
+/* Reload Chat */
+
+await loadMessages();
+
+};
+
+/* ===========================
+SEND WITH ENTER KEY
+=========================== */
+
+document.getElementById("messageInput")
+
+.addEventListener("keypress",(e)=>{
+
+if(e.key==="Enter"){
+
+e.preventDefault();
+
+document.getElementById("sendBtn").click();
+
+}
+
+});
+
+</script>
+
+  <!-- ===============================
+BOTTOM NAVIGATION
+=============================== -->
+
+<style>
+
+.bottom-nav{
+
 position:fixed;
-bottom:0;
+
 left:0;
+
+bottom:0;
+
 width:100%;
+
 height:70px;
-background:#010b23;
+
+background:#08142d;
+
+border-top:1px solid rgba(255,255,255,.08);
+
 display:flex;
+
 justify-content:space-around;
+
 align-items:center;
-border-top:1px solid rgba(0,200,255,.2);
+
+backdrop-filter:blur(10px);
+
 z-index:999;
-">
 
-<a href="dashboard.html"
-style="color:white;text-decoration:none;text-align:center;">
-🏠<br>Home
+}
+
+.bottom-nav a{
+
+text-decoration:none;
+
+color:#cfd8ea;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+font-size:12px;
+
+transition:.3s;
+
+}
+
+.bottom-nav a i{
+
+font-style:normal;
+
+font-size:24px;
+
+margin-bottom:4px;
+
+}
+
+.bottom-nav a.active{
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+.bottom-nav a:hover{
+
+color:#00ff88;
+
+}
+
+</style>
+
+<div class="bottom-nav">
+
+<a href="dashboard.html">
+
+<i>🏠</i>
+
+<span>Home</span>
+
 </a>
 
-<a href="machines.html"
-style="color:white;text-decoration:none;text-align:center;">
-⚙️<br>Machines
+<a href="machines.html">
+
+<i>⚙️</i>
+
+<span>Machines</span>
+
 </a>
 
-<a href="deposit.html"
-style="color:white;text-decoration:none;text-align:center;">
-💰<br>Deposit
+<a href="deposit.html">
+
+<i>💳</i>
+
+<span>Deposit</span>
+
 </a>
 
-<a href="support.html"
-style="color:#00c8ff;text-decoration:none;text-align:center;">
-💬<br>Support
+<a href="income.html">
+
+<i>📈</i>
+
+<span>Income</span>
+
 </a>
 
-<a href="my.html"
-style="color:white;text-decoration:none;text-align:center;">
-👤<br>My
+<a href="profile.html" class="active">
+
+<i>👤</i>
+
+<span>Profile</span>
+
 </a>
 
 </div>
 
 </body>
-  </html>
+
+</html>
