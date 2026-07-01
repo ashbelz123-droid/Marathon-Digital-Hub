@@ -1,90 +1,484 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login</title><style>
+
+<title>Admin Login | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
 body{
-background:#020b1f;
-font-family:Arial;
+
+background:#050B18;
+color:white;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-margin:0;
+overflow:hidden;
+
 }
 
-.box{
-width:90%;
-max-width:400px;
-background:#07152f;
-padding:25px;
+body::before{
+
+content:"";
+
+position:fixed;
+
+left:-40%;
+top:-40%;
+
+width:180%;
+height:180%;
+
+background:
+
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
+
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+
+radial-gradient(circle at 60% 80%,rgba(0,255,120,.15),transparent 40%);
+
+animation:bgMove 18s linear infinite;
+
+z-index:-2;
+
+}
+
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
+
+}
+
+.loginBox{
+
+width:95%;
+max-width:420px;
+
+background:#08142d;
+
+padding:30px;
+
 border-radius:20px;
-color:white;
+
+border:1px solid rgba(0,255,255,.15);
+
+box-shadow:0 0 30px rgba(0,255,255,.08);
+
+}
+
+.logo{
+
+width:90px;
+height:90px;
+
+border-radius:50%;
+
+background:#00ff88;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:40px;
+
+font-weight:bold;
+
+color:#001018;
+
+margin:auto;
+
+margin-bottom:20px;
+
 }
 
 h2{
+
 text-align:center;
-color:#00c8ff;
+
+margin-bottom:8px;
+
 }
 
-input{
+.subtitle{
+
+text-align:center;
+
+color:#9fb5d1;
+
+margin-bottom:25px;
+
+font-size:14px;
+
+}
+
+.inputGroup{
+
+margin-bottom:18px;
+
+}
+
+.inputGroup label{
+
+display:block;
+
+margin-bottom:8px;
+
+font-size:14px;
+
+color:#9fb5d1;
+
+}
+
+.inputGroup input{
+
 width:100%;
-padding:14px;
-margin-top:10px;
+
+height:50px;
+
 border:none;
-border-radius:10px;
-background:#0b2148;
+
+outline:none;
+
+border-radius:12px;
+
+padding:0 15px;
+
+background:#111f3d;
+
 color:white;
-box-sizing:border-box;
+
+font-size:15px;
+
 }
 
-button{
+.loginBtn{
+
 width:100%;
-padding:14px;
-margin-top:15px;
+
+height:52px;
+
 border:none;
-border-radius:10px;
-background:#00c8ff;
+
+border-radius:12px;
+
+background:#00ff88;
+
+color:#001018;
+
+font-size:17px;
+
 font-weight:bold;
+
 cursor:pointer;
+
+margin-top:10px;
+
 }
 
 #error{
-color:red;
+
+margin-top:15px;
+
 text-align:center;
+
+color:#ff4d4d;
+
+font-size:14px;
+
+display:none;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="loginBox">
+
+<div class="logo">
+
+A
+
+</div>
+
+<h2>Admin Login</h2>
+
+<p class="subtitle">
+
+Marathon Digital Hub Administration
+
+</p>
+
+<div class="inputGroup">
+
+<label>Email</label>
+
+<input
+type="email"
+id="email"
+placeholder="Enter admin email">
+
+</div>
+
+<div class="inputGroup">
+
+<label>Password</label>
+
+<input
+type="password"
+id="password"
+placeholder="Enter password">
+
+</div>
+
+<button
+class="loginBtn"
+id="loginBtn">
+
+Login
+
+</button>
+
+<div id="error"></div>
+
+</div><script>
+
+const db = window.supabaseClient;
+
+/* ==========================
+CHECK EXISTING ADMIN SESSION
+========================== */
+
+if(localStorage.getItem("admin_logged_in")=="true"){
+
+window.location.href="admin-dashboard.html";
+
+}
+
+/* ==========================
+ADMIN LOGIN
+========================== */
+
+document.getElementById("loginBtn").onclick=async()=>{
+
+const email=document.getElementById("email").value.trim();
+
+const password=document.getElementById("password").value.trim();
+
+const errorBox=document.getElementById("error");
+
+errorBox.style.display="none";
+
+if(email=="" || password==""){
+
+errorBox.innerHTML="Please enter email and password.";
+
+errorBox.style.display="block";
+
+return;
+
+}
+
+document.getElementById("loginBtn").disabled=true;
+
+document.getElementById("loginBtn").innerHTML="Logging in...";
+
+const {data,error}=await db
+
+.from("admins")
+
+.select("*")
+
+.eq("email",email)
+
+.eq("password",password)
+
+.single();
+
+document.getElementById("loginBtn").disabled=false;
+
+document.getElementById("loginBtn").innerHTML="Login";
+
+if(error || !data){
+
+errorBox.innerHTML="Invalid email or password.";
+
+errorBox.style.display="block";
+
+return;
+
+}
+
+/* SAVE ADMIN SESSION */
+
+localStorage.setItem("admin_logged_in","true");
+
+localStorage.setItem("admin_id",data.id);
+
+localStorage.setItem("admin_name",data.fullname);
+
+localStorage.setItem("admin_role",data.role);
+
+/* GO TO DASHBOARD */
+
+window.location.href="admin-dashboard.html";
+
+};
+
+/* ==========================
+ENTER KEY
+========================== */
+
+document.getElementById("password")
+
+.addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+
+document.getElementById("loginBtn").click();
+
+}
+
+});
+
+</script><script>
+
+/* ==========================
+ADMIN PAGE PROTECTION
+========================== */
+
+const adminLoggedIn = localStorage.getItem("admin_logged_in");
+
+if(adminLoggedIn !== "true"){
+
+window.location.href = "admin-login.html";
+
+}
+
+/* ==========================
+LOAD ADMIN INFO
+========================== */
+
+const adminName = localStorage.getItem("admin_name") || "Administrator";
+
+const adminRole = localStorage.getItem("admin_role") || "Admin";
+
+/* After the page loads */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+const name=document.getElementById("adminName");
+
+const role=document.getElementById("adminRole");
+
+if(name){
+
+name.innerHTML=adminName;
+
+}
+
+if(role){
+
+role.innerHTML=adminRole;
+
+}
+
+});
+
+/* ==========================
+LOGOUT
+========================== */
+
+function adminLogout(){
+
+if(!confirm("Are you sure you want to logout?")){
+
+return;
+
+}
+
+localStorage.removeItem("admin_logged_in");
+
+localStorage.removeItem("admin_id");
+
+localStorage.removeItem("admin_name");
+
+localStorage.removeItem("admin_role");
+
+window.location.href="admin-login.html";
+
+}
+
+</script><style>
+
+.footer{
+
+margin-top:25px;
+
+text-align:center;
+
+color:#8fa6c7;
+
+font-size:13px;
+
+}
+
+.footer span{
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+.version{
+
 margin-top:10px;
-}
 
-</style></head>
-<body><div class="box"><h2>Admin Login</h2><input type="email" id="email" placeholder="Admin Email"><input type="password" id="password" placeholder="Password"><button onclick="loginAdmin()">
-LOGIN
-</button><div id="error"></div></div><script>
+font-size:12px;
 
-function loginAdmin(){
-
-const email =
-document.getElementById("email").value;
-
-const password =
-document.getElementById("password").value;
-
-if(
-email==="admin@marathon.com" &&
-password==="MDH#SuperAdmin_8472"
-){
-
-window.location.href=
-"admin-dashboard.html";
-
-}else{
-
-document.getElementById("error").innerText=
-"Invalid Admin Credentials";
+color:#6f87aa;
 
 }
 
-}
+</style>
 
-</script></body>
+<div class="footer">
+
+Powered by
+
+<span>Ash Tech Services</span>
+
+<div class="version">
+
+Marathon Digital Hub Admin Panel v1.0
+
+</div>
+
+</div>
+
+</body>
+
 </html>
