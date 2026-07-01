@@ -4,9 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deposit</title>
+<title>Deposit | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 
 <style>
 
@@ -18,71 +22,292 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#050816;
-color:white;
-padding-bottom:100px;
+
+background:#050B18;
+color:#fff;
+padding-bottom:90px;
 overflow-x:hidden;
+
 }
 
 body::before{
+
 content:"";
+
 position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
+
+left:-40%;
+top:-40%;
+
+width:180%;
+height:180%;
+
 background:
-radial-gradient(circle at 20% 20%, rgba(0,255,255,.18), transparent 30%),
-radial-gradient(circle at 80% 30%, rgba(255,0,255,.15), transparent 30%),
-radial-gradient(circle at 50% 90%, rgba(0,128,255,.15), transparent 35%);
+
+radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
+
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.16),transparent 40%),
+
+radial-gradient(circle at 25% 80%,rgba(170,0,255,.15),transparent 35%);
+
+animation:bgMove 18s linear infinite;
+
 z-index:-2;
+
 }
 
-body::after{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background-image:
-radial-gradient(rgba(0,200,255,.25) 1px, transparent 1px);
-background-size:18px 18px;
-z-index:-1;
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
+
 }
 
 .header{
-height:70px;
-background:#000;
-display:flex;
-justify-content:center;
-align-items:center;
-border-bottom:1px solid rgba(0,200,255,.3);
-}
 
-.header h1{
-color:#00c8ff;
-}
-
-.deposit-container{
-padding:15px;
-}
-
-.deposit-card{
-background:#02122b;
-border:2px solid rgba(0,200,255,.4);
-border-radius:25px;
 padding:20px;
-margin-bottom:20px;
+
 }
 
-.deposit-card h2{
-color:#00c8ff;
+.header h2{
+
+font-size:28px;
+
+}
+
+.header p{
+
+margin-top:5px;
+
+color:#9fb5d1;
+
+font-size:14px;
+
+}
+
+.wallet{
+
+margin:15px;
+
+background:#08142d;
+
+border-radius:18px;
+
+padding:20px;
+
+border:1px solid rgba(0,200,255,.15);
+
+}
+
+.wallet span{
+
+color:#9fb5d1;
+
+font-size:14px;
+
+}
+
+.wallet h1{
+
+margin-top:10px;
+
+font-size:30px;
+
+color:#00ff88;
+
+}
+
+.section{
+
+margin:15px;
+
+background:#08142d;
+
+border-radius:18px;
+
+padding:20px;
+
+border:1px solid rgba(0,200,255,.15);
+
+}
+
+.section h3{
+
 margin-bottom:15px;
+
+color:#00ff88;
+
 }
 
-.deposit-card p{
-line-height:1.8;
+.payment-card{
+
+background:#111f3d;
+
+padding:15px;
+
+border-radius:14px;
+
+margin-bottom:15px;
+
+}
+
+.payment-card p{
+
+margin:8px 0;
+
+font-size:15px;
+
+}
+
+.copyBtn{
+
+width:100%;
+
+height:48px;
+
+border:none;
+
+border-radius:12px;
+
+background:#00c8ff;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+margin-top:12px;
+
+}
+
+.methodButtons{
+
+display:flex;
+
+gap:10px;
+
+margin-top:15px;
+
+}
+
+.methodButtons button{
+
+flex:1;
+
+height:50px;
+
+border:none;
+
+border-radius:12px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+background:#111f3d;
+
+color:white;
+
+}
+
+.methodButtons button.active{
+
+background:#00ff88;
+
+color:#001018;
+
+}
+
+input{
+
+width:100%;
+
+height:50px;
+
+border:none;
+
+border-radius:12px;
+
+background:#111f3d;
+
+padding:15px;
+
+margin-top:12px;
+
+color:white;
+
+font-size:16px;
+
+outline:none;
+
+}
+
+.submitBtn{
+
+width:100%;
+
+height:55px;
+
+margin-top:18px;
+
+border:none;
+
+border-radius:14px;
+
+background:#00ff88;
+
+color:#001018;
+
+font-size:18px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.historyItem{
+
+background:#111f3d;
+
+padding:15px;
+
+border-radius:12px;
+
+margin-top:12px;
+
+}
+
+.status{
+
+margin-top:8px;
+
+font-weight:bold;
+
+}
+
+.pending{
+
+color:#ffcc00;
+
+}
+
+.approved{
+
+color:#00ff88;
+
+}
+
+.rejected{
+
+color:#ff4444;
+
 }
 
 </style>
@@ -93,112 +318,107 @@ line-height:1.8;
 
 <div class="header">
 
-<h1>Deposit Funds</h1>
+<h2>Deposit</h2>
+
+<p>Fund your Marathon wallet securely.</p>
 
 </div>
 
-<div class="deposit-container">
+<div class="wallet">
 
-<div class="deposit-card">
+<span>Wallet Balance</span>
 
-<h2>Deposit Instructions</h2>
+<h1 id="walletBalance">
 
-<p>
-1. Send money using the payment method below.
-</p>
+UGX 0
 
-<p>
-2. Upload your payment screenshot.
-</p>
-
-<p>
-3. Submit your deposit request.
-</p>
-
-<p>
-4. Admin will verify and credit your wallet.
-</p>
+</h1>
 
 </div>
-<!-- PAYMENT METHODS -->
 
-<div class="deposit-card">
+<div class="section">
 
-<h2>MTN Mobile Money</h2>
+<h3>Payment Details</h3>
 
-<p><strong>Name:</strong> Marathon Digital Hub</p>
+<div class="payment-card">
 
-<p><strong>Number:</strong> 0784010287</p>
+<p><b>MTN Account</b></p>
 
-<button class="action-btn">
-Copy MTN Number
+<p id="mtnName">Loading...</p>
+
+<p id="mtnNumber">Loading...</p>
+
+<button class="copyBtn" id="copyMTN">
+
+📋 Copy MTN Number
+
 </button>
 
 </div>
 
-<div class="deposit-card">
+<div class="payment-card">
 
-<h2>Airtel Money</h2>
+<p><b>Airtel Account</b></p>
 
-<p><strong>Name:</strong> Marathon Digital Hub</p>
+<p id="airtelName">Loading...</p>
 
-<p><strong>Number:</strong> +256 703 424180</p>
+<p id="airtelNumber">Loading...</p>
 
-<button class="action-btn">
-Copy Airtel Number
+<button class="copyBtn" id="copyAirtel">
+
+📋 Copy Airtel Number
+
 </button>
 
 </div>
 
-<style>
+</div>
 
-.action-btn{
-width:100%;
-margin-top:15px;
-padding:15px;
-border:none;
-border-radius:15px;
-background:linear-gradient(
-90deg,
-#00c8ff,
-#0066ff
-);
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
+<div class="section">
 
-.action-btn:hover{
-opacity:.9;
-}
+<h3>Make Deposit</h3>
 
-</style>
+<div id="depositMessage">
 
-  <!-- DEPOSIT FORM -->
+Loading...
 
-<div class="deposit-card">
+</div>
 
-<h2>Submit Deposit</h2>
+<button class="copyBtn" id="copyMessage">
 
-<p>Amount Deposited</p>
+📋 Copy Deposit Message
+
+</button>
+
+<div class="methodButtons">
+
+<button id="mtnMethod" class="active">
+
+MTN
+
+</button>
+
+<button id="airtelMethod">
+
+Airtel
+
+</button>
+
+</div>
 
 <input
 type="number"
-placeholder="Enter Amount"
-class="deposit-input">
-
-<br><br>
-
-<p>Upload Payment Screenshot</p>
+id="depositAmount"
+placeholder="Deposit Amount">
 
 <input
-type="file"
-class="deposit-input">
+type="text"
+id="transactionId"
+placeholder="Transaction ID">
 
-<br><br>
-
-<button class="submit-btn">
+<button
+class="submitBtn"
+id="submitDeposit">
 
 Submit Deposit
 
@@ -206,161 +426,500 @@ Submit Deposit
 
 </div>
 
-<!-- DEPOSIT HISTORY -->
+<div class="section">
 
-<div class="deposit-card">
+<h3>Deposit History</h3>
 
-<h2>Recent Deposits</h2>
+<div id="depositHistory">
 
-<div class="history-item">
-
-<span>UGX 50,000</span>
-
-<span style="color:orange;">
-Pending
-</span>
+Loading...
 
 </div>
 
-<div class="history-item">
+  </div><script>
 
-<span>UGX 100,000</span>
+const db = window.supabaseClient;
 
-<span style="color:lime;">
-Approved
-</span>
+let currentUser = null;
+let profile = null;
+let selectedMethod = "MTN";
+
+/* ===============================
+START
+=============================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+const { data:{ user } } = await db.auth.getUser();
+
+if(!user){
+
+window.location.href="login.html";
+return;
+
+}
+
+currentUser = user;
+
+await loadProfile();
+await loadPaymentSettings();
+await loadDepositHistory();
+
+});
+
+/* ===============================
+LOAD USER PROFILE
+=============================== */
+
+async function loadProfile(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error){
+
+console.log(error);
+return;
+
+}
+
+profile = data;
+
+document.getElementById("walletBalance").innerHTML =
+"UGX " + Number(data.wallet_balance).toLocaleString();
+
+document.getElementById("depositMessage").innerHTML =
+
+`
+<b>Name:</b> ${data.fullname}<br><br>
+
+<b>Phone:</b> ${data.phone}<br><br>
+
+<b>User ID:</b> ${currentUser.id}
+`;
+
+}
+
+/* ===============================
+LOAD PAYMENT SETTINGS
+=============================== */
+
+async function loadPaymentSettings(){
+
+const { data,error } = await db
+
+.from("payment_settings")
+
+.select("*")
+
+.eq("is_active",true);
+
+if(error){
+
+console.log(error);
+return;
+
+}
+
+data.forEach(item=>{
+
+if(item.method.toLowerCase()=="mtn"){
+
+document.getElementById("mtnName").innerHTML =
+item.account_name;
+
+document.getElementById("mtnNumber").innerHTML =
+item.phone_number;
+
+}
+
+if(item.method.toLowerCase()=="airtel"){
+
+document.getElementById("airtelName").innerHTML =
+item.account_name;
+
+document.getElementById("airtelNumber").innerHTML =
+item.phone_number;
+
+}
+
+});
+
+}
+
+/* ===============================
+COPY BUTTONS
+=============================== */
+
+document.getElementById("copyMTN").onclick = ()=>{
+
+navigator.clipboard.writeText(
+
+document.getElementById("mtnNumber").innerText
+
+);
+
+alert("MTN Number Copied");
+
+};
+
+document.getElementById("copyAirtel").onclick = ()=>{
+
+navigator.clipboard.writeText(
+
+document.getElementById("airtelNumber").innerText
+
+);
+
+alert("Airtel Number Copied");
+
+};
+
+document.getElementById("copyMessage").onclick = ()=>{
+
+navigator.clipboard.writeText(
+
+document.getElementById("depositMessage").innerText
+
+);
+
+alert("Deposit Message Copied");
+
+};
+
+/* ===============================
+PAYMENT METHOD
+=============================== */
+
+document.getElementById("mtnMethod").onclick = ()=>{
+
+selectedMethod="MTN";
+
+document.getElementById("mtnMethod").classList.add("active");
+document.getElementById("airtelMethod").classList.remove("active");
+
+};
+
+document.getElementById("airtelMethod").onclick = ()=>{
+
+selectedMethod="Airtel";
+
+document.getElementById("airtelMethod").classList.add("active");
+document.getElementById("mtnMethod").classList.remove("active");
+
+};
+
+  </script><script>
+
+/* =====================================
+SUBMIT DEPOSIT
+===================================== */
+
+document.getElementById("submitDeposit").onclick = async () => {
+
+const amount = document.getElementById("depositAmount").value.trim();
+const transactionId = document.getElementById("transactionId").value.trim();
+
+if(amount==""){
+
+alert("Enter Deposit Amount");
+return;
+
+}
+
+if(Number(amount)<=0){
+
+alert("Invalid Deposit Amount");
+return;
+
+}
+
+if(transactionId==""){
+
+alert("Enter Transaction ID");
+return;
+
+}
+
+/* Disable Button */
+
+const btn=document.getElementById("submitDeposit");
+
+btn.disabled=true;
+btn.innerHTML="Submitting...";
+
+/* Save Deposit */
+
+const { error } = await db
+
+.from("deposits")
+
+.insert({
+
+user_id:currentUser.id,
+
+amount:Number(amount),
+
+method:selectedMethod,
+
+transaction_id:transactionId,
+
+status:"pending"
+
+});
+
+btn.disabled=false;
+btn.innerHTML="Submit Deposit";
+
+if(error){
+
+alert(error.message);
+return;
+
+}
+
+/* Clear Inputs */
+
+document.getElementById("depositAmount").value="";
+document.getElementById("transactionId").value="";
+
+/* Reload History */
+
+await loadDepositHistory();
+
+alert("Deposit Submitted Successfully.\n\nWait for Admin Approval.");
+
+};
+
+/* =====================================
+LOAD DEPOSIT HISTORY
+===================================== */
+
+async function loadDepositHistory(){
+
+const { data,error } = await db
+
+.from("deposits")
+
+.select("*")
+
+.eq("user_id",currentUser.id)
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.log(error);
+return;
+
+}
+
+const history=document.getElementById("depositHistory");
+
+history.innerHTML="";
+
+if(data.length==0){
+
+history.innerHTML=`
+
+<div class="historyItem">
+
+No Deposits Yet
 
 </div>
 
-<div class="history-item">
+`;
 
-<span>UGX 25,000</span>
+return;
 
-<span style="color:red;">
-Rejected
-</span>
+}
+
+data.forEach(item=>{
+
+let statusClass="pending";
+
+if(item.status=="approved"){
+
+statusClass="approved";
+
+}
+
+if(item.status=="rejected"){
+
+statusClass="rejected";
+
+}
+
+history.innerHTML+=`
+
+<div class="historyItem">
+
+<b>
+
+UGX ${Number(item.amount).toLocaleString()}
+
+</b>
+
+<br><br>
+
+Payment Method:
+${item.method}
+
+<br>
+
+Transaction ID:
+${item.transaction_id}
+
+<br>
+
+<div class="status ${statusClass}">
+
+${item.status.toUpperCase()}
 
 </div>
 
+<br>
+
+${new Date(item.created_at).toLocaleString()}
+
 </div>
+
+`;
+
+});
+
+}
+
+  </script>
+
+  <!-- ===============================
+BOTTOM NAVIGATION
+=============================== -->
 
 <style>
 
-.deposit-input{
-width:100%;
-padding:15px;
-border:none;
-outline:none;
-border-radius:12px;
-background:#0d203d;
-color:white;
-}
+.bottom-nav{
 
-.submit-btn{
-width:100%;
-padding:15px;
-border:none;
-border-radius:15px;
-background:linear-gradient(
-90deg,
-#00c8ff,
-#0066ff
-);
-color:white;
-font-size:17px;
-font-weight:bold;
-cursor:pointer;
-}
+position:fixed;
 
-.history-item{
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:70px;
+
+background:#08142d;
+
+border-top:1px solid rgba(255,255,255,.08);
+
 display:flex;
-justify-content:space-between;
-padding:15px 0;
-border-bottom:1px solid rgba(255,255,255,.08);
+
+justify-content:space-around;
+
+align-items:center;
+
+z-index:999;
+
+backdrop-filter:blur(10px);
+
 }
 
-.history-item:last-child{
-border-bottom:none;
+.bottom-nav a{
+
+text-decoration:none;
+
+color:#cfd8ea;
+
+font-size:12px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+transition:.3s;
+
 }
 
-  </style>
+.bottom-nav a i{
 
-  <!-- FLOATING SUPPORT -->
+font-style:normal;
 
-<div class="support-btn"
-onclick="window.open('https://wa.me/256784010287')">
+font-size:24px;
 
-💬
+margin-bottom:4px;
 
-</div>
+}
 
-<!-- BOTTOM NAVIGATION -->
+.bottom-nav a.active{
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+.bottom-nav a:hover{
+
+color:#00ff88;
+
+}
+
+</style>
 
 <div class="bottom-nav">
 
 <a href="dashboard.html">
-🏠<br>Home
+
+<i>🏠</i>
+
+<span>Home</span>
+
 </a>
 
 <a href="machines.html">
-⚙️<br>Machines
+
+<i>⚙️</i>
+
+<span>Machines</span>
+
 </a>
 
-<a href="deposit.html" style="color:#00c8ff;">
-💳<br>Deposit
+<a href="deposit.html" class="active">
+
+<i>💳</i>
+
+<span>Deposit</span>
+
 </a>
 
 <a href="income.html">
-📈<br>Income
+
+<i>📈</i>
+
+<span>Income</span>
+
 </a>
 
-<a href="my.html">
-👤<br>My
+<a href="profile.html">
+
+<i>👤</i>
+
+<span>Profile</span>
+
 </a>
 
 </div>
-
-<style>
-
-.support-btn{
-position:fixed;
-right:20px;
-bottom:90px;
-width:60px;
-height:60px;
-background:#00c8ff;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:28px;
-cursor:pointer;
-box-shadow:0 0 20px rgba(0,200,255,.6);
-z-index:999;
-}
-
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:0;
-width:100%;
-height:75px;
-background:#000;
-border-top:1px solid rgba(0,200,255,.3);
-display:flex;
-justify-content:space-around;
-align-items:center;
-z-index:999;
-}
-
-.bottom-nav a{
-text-decoration:none;
-color:#aaa;
-font-size:13px;
-text-align:center;
-}
-
-</style>
 
 </body>
 
