@@ -1,45 +1,693 @@
-<!DOCTYPE html><html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Account - Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"><script src="assets/js/network.js" defer></script></head><body><canvas id="network"></canvas>
+<!DOCTYPE html>
+<html lang="en">
 
-<header class="topbar"><div class="logo-area">
-<h1>My Account</h1>
-</div></header><div class="card" style="margin:15px;text-align:center;"><div class="avatar" style="margin:auto;">
-MDH
-</div><br><h2>User Name</h2><p>ID: MDH001</p></div><div class="card" style="margin:15px;">
-<p><i class="fas fa-user"></i> Personal Information</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-lock"></i> Security Settings</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-wallet"></i> Deposit Records</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-money-bill-wave"></i> Withdrawal Records</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-users"></i> Team Records</p>
-</div><div class="card" style="margin:15px;">
-<p><i class="fas fa-headset"></i> Customer Service</p>
-</div><div class="card" style="margin:15px;">
-<a href="settings.html" style="color:white;text-decoration:none;">
-<i class="fas fa-gear"></i> Settings
-</a>
-</div><div style="padding:15px;"><button class="btn" style="width:100%;background:red;">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Profile | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:#050B18;
+color:white;
+padding-bottom:90px;
+overflow-x:hidden;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+left:-40%;
+top:-40%;
+
+width:180%;
+height:180%;
+
+background:
+
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
+
+radial-gradient(circle at 80% 20%,rgba(0,140,255,.18),transparent 35%),
+
+radial-gradient(circle at 60% 80%,rgba(0,255,120,.15),transparent 40%);
+
+animation:bgMove 20s linear infinite;
+
+z-index:-2;
+
+}
+
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
+
+}
+
+.header{
+
+padding:20px;
+
+}
+
+.header h2{
+
+font-size:28px;
+
+}
+
+.header p{
+
+margin-top:5px;
+
+color:#9fb5d1;
+
+}
+
+.profileCard{
+
+margin:15px;
+
+background:#08142d;
+
+border-radius:20px;
+
+padding:25px;
+
+text-align:center;
+
+border:1px solid rgba(0,200,255,.15);
+
+}
+
+.avatar{
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+background:#00ff88;
+
+color:#001018;
+
+font-size:38px;
+
+font-weight:bold;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+margin:auto;
+
+margin-bottom:15px;
+
+}
+
+.profileCard h2{
+
+margin-bottom:5px;
+
+}
+
+.profileCard p{
+
+color:#9fb5d1;
+
+}
+
+.section{
+
+margin:15px;
+
+background:#08142d;
+
+border-radius:18px;
+
+padding:20px;
+
+border:1px solid rgba(0,200,255,.15);
+
+}
+
+.section h3{
+
+margin-bottom:15px;
+
+color:#00ff88;
+
+}
+
+.item{
+
+margin-bottom:18px;
+
+}
+
+.item small{
+
+display:block;
+
+color:#9fb5d1;
+
+margin-bottom:5px;
+
+}
+
+.item span{
+
+font-size:17px;
+
+}
+
+.actionBtn{
+
+width:100%;
+
+height:52px;
+
+margin-top:15px;
+
+border:none;
+
+border-radius:14px;
+
+background:#00ff88;
+
+color:#001018;
+
+font-size:17px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.logoutBtn{
+
+background:#ff4444;
+
+color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>Profile</h2>
+
+<p>Manage your Marathon Digital Hub account.</p>
+
+</div>
+
+<div class="profileCard">
+
+<div class="avatar" id="avatar">
+
+U
+
+</div>
+
+<h2 id="fullName">
+
+Loading...
+
+</h2>
+
+<p id="email">
+
+Loading...
+
+</p>
+
+</div>
+
+<div class="section">
+
+<h3>Account Information</h3>
+
+<div class="item">
+
+<small>Phone Number</small>
+
+<span id="phone">
+
+Loading...
+
+</span>
+
+</div>
+
+<div class="item">
+
+<small>Wallet Balance</small>
+
+<span id="wallet">
+
+UGX 0
+
+</span>
+
+</div>
+
+<div class="item">
+
+<small>Referral Code</small>
+
+<span id="referralCode">
+
+Loading...
+
+</span>
+
+</div>
+
+<div class="item">
+
+<small>Referred By</small>
+
+<span id="referredBy">
+
+None
+
+</span>
+
+</div>
+
+<div class="item">
+
+<small>Account Status</small>
+
+<span id="accountStatus">
+
+Active
+
+</span>
+
+</div>
+
+<div class="item">
+
+<small>Member Since</small>
+
+<span id="createdDate">
+
+Loading...
+
+</span>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h3>Account Actions</h3>
+
+<button
+class="actionBtn"
+id="editProfile">
+
+Edit Profile
+
+</button>
+
+<button
+class="actionBtn"
+id="changePassword">
+
+Change Password
+
+</button>
+
+<button
+class="actionBtn logoutBtn"
+id="logout">
+
 Logout
-</button></div><nav class="nav"><a href="dashboard.html">
-<i class="fas fa-home"></i>
+
+</button>
+
+  </div><script>
+
+const db = window.supabaseClient;
+
+let currentUser = null;
+let profile = null;
+
+/* ===========================
+START
+=========================== */
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+
+const { data:{ user } } = await db.auth.getUser();
+
+if(!user){
+
+window.location.href="login.html";
+return;
+
+}
+
+currentUser=user;
+
+await loadProfile();
+
+});
+
+/* ===========================
+LOAD PROFILE
+=========================== */
+
+async function loadProfile(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error){
+
+console.log(error);
+return;
+
+}
+
+profile=data;
+
+/* Avatar */
+
+const initials=data.fullname
+.split(" ")
+.map(n=>n[0])
+.join("")
+.substring(0,2)
+.toUpperCase();
+
+document.getElementById("avatar").innerHTML=initials;
+
+/* Basic Details */
+
+document.getElementById("fullName").innerHTML=data.fullname;
+
+document.getElementById("email").innerHTML=data.email ?? "No Email";
+
+document.getElementById("phone").innerHTML=data.phone ?? "Not Set";
+
+document.getElementById("wallet").innerHTML=
+
+"UGX "+Number(data.wallet_balance).toLocaleString();
+
+document.getElementById("referralCode").innerHTML=
+
+data.referral_code ?? "Not Available";
+
+document.getElementById("referredBy").innerHTML=
+
+data.referred_by ?? "None";
+
+document.getElementById("accountStatus").innerHTML=
+
+data.account_status ?? "Active";
+
+document.getElementById("createdDate").innerHTML=
+
+new Date(data.created_at).toLocaleDateString();
+
+}
+
+/* ===========================
+EDIT PROFILE
+=========================== */
+
+document.getElementById("editProfile").onclick = async ()=>{
+
+const fullname=prompt(
+
+"Enter New Full Name",
+
+profile.fullname
+
+);
+
+if(fullname==null)return;
+
+const phone=prompt(
+
+"Enter Phone Number",
+
+profile.phone
+
+);
+
+if(phone==null)return;
+
+const { error } = await db
+
+.from("profiles")
+
+.update({
+
+fullname:fullname,
+
+phone:phone
+
+})
+
+.eq("id",currentUser.id);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+alert("Profile Updated Successfully");
+
+await loadProfile();
+
+};
+
+/* ===========================
+CHANGE PASSWORD
+=========================== */
+
+document.getElementById("changePassword").onclick = async ()=>{
+
+const password=prompt(
+
+"Enter New Password"
+
+);
+
+if(password==null)return;
+
+if(password.length<6){
+
+alert("Password must be at least 6 characters");
+
+return;
+
+}
+
+const { error } = await db.auth.updateUser({
+
+password:password
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+alert("Password Changed Successfully");
+
+};
+
+/* ===========================
+LOGOUT
+=========================== */
+
+document.getElementById("logout").onclick = async ()=>{
+
+if(!confirm("Logout from Marathon Digital Hub?")){
+
+return;
+
+}
+
+await db.auth.signOut();
+
+window.location.href="login.html";
+
+};
+
+  </script>
+
+  <!-- ===========================
+BOTTOM NAVIGATION
+=========================== -->
+
+<style>
+
+.bottom-nav{
+
+position:fixed;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:70px;
+
+background:#08142d;
+
+border-top:1px solid rgba(255,255,255,.08);
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+backdrop-filter:blur(10px);
+
+z-index:999;
+
+}
+
+.bottom-nav a{
+
+text-decoration:none;
+
+color:#cfd8ea;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+font-size:12px;
+
+transition:.3s;
+
+}
+
+.bottom-nav a i{
+
+font-style:normal;
+
+font-size:24px;
+
+margin-bottom:4px;
+
+}
+
+.bottom-nav a.active{
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+.bottom-nav a:hover{
+
+color:#00ff88;
+
+}
+
+</style>
+
+<div class="bottom-nav">
+
+<a href="dashboard.html">
+
+<i>🏠</i>
+
 <span>Home</span>
-</a><a href="machines.html">
-<i class="fas fa-microchip"></i>
+
+</a>
+
+<a href="machines.html">
+
+<i>⚙️</i>
+
 <span>Machines</span>
-</a><a href="wallet.html">
-<i class="fas fa-wallet"></i>
-<span>Wallet</span>
-</a><a href="team.html">
-<i class="fas fa-users"></i>
-<span>Team</span>
-</a><a href="profile.html" class="active">
-<i class="fas fa-user"></i>
-<span>My</span>
-</a></nav></body>
+
+</a>
+
+<a href="deposit.html">
+
+<i>💳</i>
+
+<span>Deposit</span>
+
+</a>
+
+<a href="income.html">
+
+<i>📈</i>
+
+<span>Income</span>
+
+</a>
+
+<a href="profile.html" class="active">
+
+<i>👤</i>
+
+<span>Profile</span>
+
+</a>
+
+</div>
+
+</body>
+
 </html>
