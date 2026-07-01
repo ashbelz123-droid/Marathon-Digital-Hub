@@ -4,37 +4,45 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Marathon Digital Hub | Machines</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Machines | Marathon Digital Hub</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase.js"></script>
 
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
 
-html{
-scroll-behavior:smooth;
+margin:0;
+
+padding:0;
+
+box-sizing:border-box;
+
+font-family:Arial,sans-serif;
+
 }
 
 body{
 
 background:#040817;
-color:#ffffff;
+
+color:#fff;
+
 overflow-x:hidden;
-min-height:100vh;
-position:relative;
-padding-bottom:110px;
+
+padding-bottom:100px;
 
 }
 
-/*==============================
-ANIMATED BACKGROUND
-==============================*/
+/* Background */
 
 body::before{
 
@@ -43,109 +51,56 @@ content:"";
 position:fixed;
 
 left:-30%;
+
 top:-30%;
 
 width:170%;
+
 height:170%;
 
 background:
 
 radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
 
-radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+radial-gradient(circle at 80% 15%,rgba(170,0,255,.18),transparent 35%),
 
-radial-gradient(circle at 70% 85%,rgba(0,255,180,.15),transparent 40%),
+radial-gradient(circle at 70% 85%,rgba(0,120,255,.18),transparent 40%),
 
-radial-gradient(circle at 25% 75%,rgba(0,180,255,.12),transparent 35%);
+radial-gradient(circle at 25% 75%,rgba(0,255,140,.15),transparent 35%);
 
 animation:bgMove 20s linear infinite;
 
-z-index:-5;
+z-index:-2;
 
 }
 
-body::after{
+@keyframes bgMove{
 
-content:"";
+0%{
 
-position:fixed;
-
-left:0;
-top:0;
-
-width:100%;
-height:100%;
-
-background-image:
-
-radial-gradient(rgba(0,200,255,.25) 1px,transparent 1px);
-
-background-size:22px 22px;
-
-animation:dotsMove 15s linear infinite;
-
-z-index:-4;
+transform:translateX(-3%);
 
 }
 
-/*==============================
-FLOATING PARTICLES
-==============================*/
+50%{
 
-.particles{
-
-position:fixed;
-
-left:0;
-top:0;
-
-width:100%;
-height:100%;
-
-pointer-events:none;
-
-overflow:hidden;
-
-z-index:-3;
+transform:translateX(3%);
 
 }
 
-.particles span{
+100%{
 
-position:absolute;
-
-bottom:-30px;
-
-width:6px;
-height:6px;
-
-background:#00c8ff;
-
-border-radius:50%;
-
-box-shadow:0 0 15px #00c8ff;
-
-opacity:.7;
-
-animation:floatUp linear infinite;
+transform:translateX(-3%);
 
 }
 
-.particles span:nth-child(1){left:5%;animation-duration:18s;}
-.particles span:nth-child(2){left:18%;animation-duration:23s;}
-.particles span:nth-child(3){left:32%;animation-duration:20s;}
-.particles span:nth-child(4){left:48%;animation-duration:16s;}
-.particles span:nth-child(5){left:64%;animation-duration:21s;}
-.particles span:nth-child(6){left:80%;animation-duration:18s;}
-.particles span:nth-child(7){left:94%;animation-duration:24s;}
+}
 
-/*==============================
-HEADER
-==============================*/
+/* Header */
 
 .header{
 
-height:72px;
+height:70px;
 
 display:flex;
 
@@ -153,7 +108,7 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:0 18px;
+padding:20px;
 
 }
 
@@ -173,232 +128,39 @@ background:linear-gradient(90deg,#00c8ff,#00ff88);
 
 .notify{
 
-width:48px;
-height:48px;
-
-border-radius:50%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-background:rgba(255,255,255,.05);
-
-border:1px solid rgba(0,200,255,.25);
-
-font-size:22px;
-
-position:relative;
-
-backdrop-filter:blur(15px);
+font-size:24px;
 
 }
 
-.notify-count{
+/* Wallet */
 
-position:absolute;
+.wallet{
 
-top:-3px;
-right:-3px;
-
-width:18px;
-height:18px;
-
-background:red;
-
-border-radius:50%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:10px;
-
-font-weight:bold;
-
-}
-
-/*==============================
-TITLE
-==============================*/
-
-.page-title{
-
-padding:0 20px 20px;
-
-}
-
-.page-title h1{
-
-font-size:30px;
-
-margin-bottom:8px;
-
-}
-
-.page-title p{
-
-color:#b7c7df;
-
-font-size:15px;
-
-line-height:1.6;
-
-}
-
-/*==============================
-ANIMATIONS
-==============================*/
-
-@keyframes bgMove{
-
-0%{
-transform:translateX(-3%) translateY(0);
-}
-
-50%{
-transform:translateX(3%) translateY(-2%);
-}
-
-100%{
-transform:translateX(-3%) translateY(0);
-}
-
-}
-
-@keyframes dotsMove{
-
-0%{
-transform:translateX(0);
-}
-
-100%{
-transform:translateX(-22px);
-}
-
-}
-
-@keyframes floatUp{
-
-0%{
-transform:translateY(0) scale(.3);
-opacity:0;
-}
-
-20%{
-opacity:1;
-}
-
-80%{
-opacity:1;
-}
-
-100%{
-transform:translateY(-120vh);
-opacity:0;
-}
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="particles">
-
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-
-</div>
-
-<div class="header">
-
-<div class="logo">
-
-MARATHON
-
-</div>
-
-<div class="notify">
-
-🔔
-
-<div class="notify-count">
-
-0
-
-</div>
-
-</div>
-
-</div>
-
-<div class="page-title">
-
-<h1>
-
-⚙️ Mining Machines
-
-</h1>
-
-<p>
-
-Choose your preferred mining machine series and start earning with Marathon Digital Hub.
-
-</p>
-
-</div>
-
-  <!-- ======================================
-WALLET CARD
-====================================== -->
-
-<style>
-
-.wallet-card{
-
-margin:0 20px 20px;
+margin:20px;
 
 padding:20px;
 
-border-radius:20px;
+border-radius:22px;
 
-background:rgba(8,20,45,.80);
+background:rgba(8,20,45,.75);
 
 border:1px solid rgba(0,200,255,.25);
 
 backdrop-filter:blur(15px);
 
-box-shadow:0 0 20px rgba(0,200,255,.12);
+}
+
+.wallet small{
+
+color:#b6c9e8;
 
 }
 
-.wallet-title{
+.wallet h2{
 
-font-size:14px;
+margin-top:10px;
 
-color:#9db4d6;
-
-margin-bottom:8px;
-
-}
-
-.wallet-balance{
-
-font-size:34px;
-
-font-weight:bold;
+font-size:35px;
 
 background:linear-gradient(90deg,#00c8ff,#00ff88);
 
@@ -406,49 +168,19 @@ background:linear-gradient(90deg,#00c8ff,#00ff88);
 
 -webkit-text-fill-color:transparent;
 
-margin-bottom:18px;
-
 }
 
-.wallet-buttons{
-
-display:flex;
-
-gap:12px;
-
-}
-
-.wallet-buttons button{
-
-flex:1;
-
-padding:13px;
-
-border:none;
-
-border-radius:14px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-background:linear-gradient(90deg,#00c8ff,#00ff88);
-
-color:#001018;
-
-}
+/* Series */
 
 .series-container{
 
 display:flex;
 
-overflow-x:auto;
-
 gap:10px;
 
-padding:0 20px 20px;
+overflow-x:auto;
 
-scrollbar-width:none;
+padding:0 20px 20px;
 
 }
 
@@ -464,262 +196,93 @@ padding:12px 20px;
 
 border-radius:30px;
 
-background:rgba(8,20,45,.80);
+background:#07152f;
 
-border:1px solid rgba(0,200,255,.20);
-
-white-space:nowrap;
+border:1px solid rgba(0,200,255,.25);
 
 cursor:pointer;
 
-font-weight:bold;
+white-space:nowrap;
 
-transition:.3s;
+font-size:14px;
 
 }
 
 .series.active{
 
-background:#00c8ff;
+background:linear-gradient(90deg,#00c8ff,#00ff88);
 
 color:#001018;
 
+font-weight:bold;
+
 }
 
-.machine-list{
+/* Machines */
+
+#machineContainer{
 
 padding:0 20px;
 
-display:flex;
-
-flex-direction:column;
+display:grid;
 
 gap:15px;
 
 }
 
-.machine-card{
-
-background:rgba(8,20,45,.82);
-
-border:1px solid rgba(0,200,255,.20);
-
-border-radius:18px;
-
-padding:18px;
-
-transition:.35s;
-
-}
-
-.machine-card:hover{
-
-transform:translateY(-4px);
-
-box-shadow:0 0 18px rgba(0,200,255,.18);
-
-}
-
-.machine-name{
-
-font-size:20px;
-
-font-weight:bold;
-
-color:#00ff88;
-
-margin-bottom:15px;
-
-}
-
-.machine-row{
-
-display:flex;
-
-justify-content:space-between;
-
-margin-bottom:10px;
-
-font-size:15px;
-
-}
-
-.machine-row span:first-child{
-
-color:#b8c8e6;
-
-}
-
-.machine-row span:last-child{
-
-font-weight:bold;
-
-}
-
-.buy-btn{
-
-margin-top:12px;
-
-width:100%;
-
-padding:13px;
-
-border:none;
-
-border-radius:14px;
-
-background:linear-gradient(90deg,#00c8ff,#00ff88);
-
-font-weight:bold;
-
-cursor:pointer;
-
-color:#001018;
-
-}
-
-.loading{
-
-text-align:center;
-
-padding:30px;
-
-font-size:18px;
-
-color:#00c8ff;
-
-}
-
 </style>
 
-<div class="wallet-card">
+</head>
 
-<div class="wallet-title">
+<body>
 
-Wallet Balance
+<div class="header">
+
+<div class="logo">
+
+MARATHON
 
 </div>
 
-<div
-class="wallet-balance"
-id="walletBalance">
+<div class="notify">
+
+🔔
+
+</div>
+
+</div>
+
+<div class="wallet">
+
+<small>Wallet Balance</small>
+
+<h2 id="walletBalance">
 
 UGX 0
 
-</div>
-
-<div class="wallet-buttons">
-
-<button onclick="location.href='deposit.html'">
-
-Deposit
-
-</button>
-
-<button onclick="location.href='withdraw.html'">
-
-Withdraw
-
-</button>
-
-</div>
-
-</div>
-
-<div class="series-container">
-
-<div class="series active">
-
-All
-
-</div>
-
-<div class="series">
-
-F Series
-
-</div>
-
-<div class="series">
-
-E Series
-
-</div>
-
-<div class="series">
-
-G Series
-
-</div>
-
-<div class="series">
-
-R Series
-
-</div>
-
-<div class="series">
-
-A Series
-
-</div>
+</h2>
 
 </div>
 
 <div
-id="machineContainer"
-class="machine-list">
-
-<div class="loading">
-
-Loading Machines...
+id="seriesContainer"
+class="series-container">
 
 </div>
 
-</div>
+<div
+id="machineContainer">
 
-  <!-- ======================================
-SUPABASE AUTH + LOAD MACHINES
-====================================== -->
+</div><script>
 
-<script>
+const db = window.supabaseClient;
 
-let currentUser=null;
-let currentSeries="ALL";
+let currentUser = null;
+let currentSeries = "ALL";
 
-const seriesButtons=document.querySelectorAll(".series");
+async function initializePage(){
 
-seriesButtons.forEach(btn=>{
-
-btn.onclick=()=>{
-
-seriesButtons.forEach(x=>x.classList.remove("active"));
-
-btn.classList.add("active");
-
-const txt=btn.innerText;
-
-if(txt==="All"){
-
-currentSeries="ALL";
-
-}else{
-
-currentSeries=txt.replace(" Series","");
-
-}
-
-loadMachines();
-
-};
-
-});
-
-async function startMachines(){
-
-const {data:{user}}=
-
-await supabase.auth.getUser();
+const { data:{ user } } = await db.auth.getUser();
 
 if(!user){
 
@@ -729,19 +292,23 @@ return;
 
 }
 
-currentUser=user;
+currentUser = user;
 
-loadWallet();
+await loadWallet();
 
-loadMachines();
+await loadSeries();
+
+await loadMachines("ALL");
 
 }
 
+/* ==========================
+LOAD WALLET
+========================== */
+
 async function loadWallet(){
 
-const {data}=
-
-await supabase
+const { data,error } = await db
 
 .from("profiles")
 
@@ -751,45 +318,111 @@ await supabase
 
 .single();
 
-if(data){
+if(error) return;
 
 document.getElementById("walletBalance").innerHTML=
 
-"UGX "+Number(data.wallet_balance).toLocaleString();
+"UGX " +
+
+Number(data.wallet_balance).toLocaleString();
 
 }
 
-}
+/* ==========================
+LOAD SERIES
+========================== */
 
-async function loadMachines(){
+async function loadSeries(){
 
-const container=document.getElementById("machineContainer");
+const container = document.getElementById("seriesContainer");
 
-container.innerHTML=`
+container.innerHTML="";
 
-<div class="loading">
+/* ALL BUTTON */
 
-Loading Machines...
+container.innerHTML += `
+
+<div class="series active"
+
+onclick="changeSeries('ALL',this)">
+
+All
 
 </div>
 
 `;
 
-let query=
-
-supabase
+const { data,error } = await db
 
 .from("machines")
 
+.select("series")
+
+.eq("status",true);
+
+if(error) return;
+
+const unique = [...new Set(data.map(x=>x.series))];
+
+unique.forEach(series=>{
+
+container.innerHTML += `
+
+<div class="series"
+
+onclick="changeSeries('${series}',this)">
+
+${series} Series
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ==========================
+CHANGE SERIES
+========================== */
+
+function changeSeries(series,button){
+
+currentSeries = series;
+
+document
+
+.querySelectorAll(".series")
+
+.forEach(x=>x.classList.remove("active"));
+
+button.classList.add("active");
+
+loadMachines(series);
+
+}
+
+</script><script>
+
+/* ==========================
+LOAD MACHINES
+========================== */
+
+async function loadMachines(series="ALL"){
+
+const container=document.getElementById("machineContainer");
+
+container.innerHTML="<div class='loading'>Loading Machines...</div>";
+
+let query=db
+.from("machines")
 .select("*")
-
 .eq("status",true)
-
 .order("price",{ascending:true});
 
-if(currentSeries!="ALL"){
+if(series!=="ALL"){
 
-query=query.eq("series",currentSeries);
+query=query.eq("series",series);
 
 }
 
@@ -797,15 +430,9 @@ const {data,error}=await query;
 
 if(error){
 
-container.innerHTML=`
+container.innerHTML="<div class='loading'>Failed to load machines.</div>";
 
-<div class="loading">
-
-Failed to load machines
-
-</div>
-
-`;
+console.log(error);
 
 return;
 
@@ -813,15 +440,7 @@ return;
 
 if(!data || data.length===0){
 
-container.innerHTML=`
-
-<div class="loading">
-
-No machines available
-
-</div>
-
-`;
+container.innerHTML="<div class='loading'>No Machines Found</div>";
 
 return;
 
@@ -835,52 +454,64 @@ container.innerHTML+=`
 
 <div class="machine-card">
 
-<div class="machine-name">
+<div class="machine-header">
+
+<div class="machine-title">
 
 ${machine.name}
 
 </div>
 
-<div class="machine-row">
+<div class="machine-series">
+
+${machine.series}
+
+</div>
+
+</div>
+
+<div class="machine-info">
+
+<div>
 
 <span>Price</span>
 
-<span>
+<strong>
 
 UGX ${Number(machine.price).toLocaleString()}
 
-</span>
+</strong>
 
 </div>
 
-<div class="machine-row">
+<div>
 
 <span>Total Return</span>
 
-<span>
+<strong>
 
 UGX ${Number(machine.total_return).toLocaleString()}
 
-</span>
+</strong>
 
 </div>
 
-<div class="machine-row">
+<div>
 
 <span>Duration</span>
 
-<span>
+<strong>
 
 ${machine.duration_days} Days
 
-</span>
+</strong>
+
+</div>
 
 </div>
 
 <button
-
-class="buy-btn"
-
+class="buyBtn"
 onclick="buyMachine('${machine.id}')">
 
 Buy Machine
@@ -895,19 +526,143 @@ Buy Machine
 
 }
 
-startMachines();
+/* START PAGE */
+
+initializePage();
 
 </script>
 
-  <!-- ======================================
-BUY MACHINE SYSTEM
-====================================== -->
+<style>
 
-<script>
+.loading{
+
+text-align:center;
+
+padding:30px;
+
+color:#00c8ff;
+
+font-size:18px;
+
+}
+
+.machine-card{
+
+background:rgba(8,20,45,.80);
+
+border:1px solid rgba(0,200,255,.25);
+
+border-radius:18px;
+
+padding:18px;
+
+margin-bottom:15px;
+
+backdrop-filter:blur(15px);
+
+box-shadow:0 0 18px rgba(0,200,255,.12);
+
+}
+
+.machine-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:15px;
+
+}
+
+.machine-title{
+
+font-size:20px;
+
+font-weight:bold;
+
+color:#00ff88;
+
+}
+
+.machine-series{
+
+padding:5px 12px;
+
+background:#00c8ff;
+
+color:#001018;
+
+border-radius:20px;
+
+font-size:12px;
+
+font-weight:bold;
+
+}
+
+.machine-info div{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:8px 0;
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.machine-info span{
+
+color:#b8c8e8;
+
+}
+
+.machine-info strong{
+
+color:#fff;
+
+}
+
+.buyBtn{
+
+width:100%;
+
+margin-top:15px;
+
+padding:13px;
+
+border:none;
+
+border-radius:14px;
+
+background:linear-gradient(90deg,#00c8ff,#00ff88);
+
+color:#001018;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+</style><script>
+
+/* ==========================
+BUY MACHINE
+========================== */
 
 async function buyMachine(machineId){
 
-if(!currentUser){
+try{
+
+/* Logged User */
+
+const { data:{ user } } = await db.auth.getUser();
+
+if(!user){
 
 alert("Please login first.");
 
@@ -915,16 +670,19 @@ return;
 
 }
 
-/* Get Machine */
+/* Machine */
 
-const { data: machine, error: machineError } =
-await supabase
+const { data:machine,error:machineError } = await db
+
 .from("machines")
+
 .select("*")
-.eq("id", machineId)
+
+.eq("id",machineId)
+
 .single();
 
-if(machineError || !machine){
+if(machineError){
 
 alert("Machine not found.");
 
@@ -932,84 +690,55 @@ return;
 
 }
 
-/* Get User Profile */
+/* Wallet */
 
-const { data: profile, error: profileError } =
-await supabase
+const { data:profile,error:profileError } = await db
+
 .from("profiles")
-.select("*")
-.eq("id", currentUser.id)
+
+.select("wallet_balance")
+
+.eq("id",user.id)
+
 .single();
 
 if(profileError){
 
-alert("Unable to load wallet.");
+alert("Wallet not found.");
 
 return;
 
 }
 
-/* Check Balance */
+const balance=Number(profile.wallet_balance);
 
-if(Number(profile.wallet_balance) < Number(machine.price)){
+const price=Number(machine.price);
 
-alert("Insufficient wallet balance.");
+if(balance<price){
 
-return;
-
-}
-
-/* Confirm Purchase */
-
-const confirmBuy = confirm(
-
-"Buy " + machine.name +
-
-"\n\nPrice: UGX " +
-
-Number(machine.price).toLocaleString()
-
-);
-
-if(!confirmBuy){
+alert("Insufficient Balance");
 
 return;
 
 }
 
-/* New Balance */
+/* Deduct Wallet */
 
-const newBalance =
+const newBalance=balance-price;
 
-Number(profile.wallet_balance) -
+const { error:updateError }=await db
 
-Number(machine.price);
-
-/* Expiry Date */
-
-const expiry = new Date();
-
-expiry.setDate(
-
-expiry.getDate() +
-
-Number(machine.duration_days)
-
-);
-
-/* Update Wallet */
-
-const { error: walletError } =
-await supabase
 .from("profiles")
+
 .update({
 
 wallet_balance:newBalance
 
 })
-.eq("id",currentUser.id);
 
-if(walletError){
+.eq("id",user.id);
+
+if(updateError){
 
 alert("Failed to update wallet.");
 
@@ -1019,16 +748,27 @@ return;
 
 /* Save Purchase */
 
-const { error: purchaseError } =
-await supabase
+const expiry=new Date();
+
+expiry.setDate(
+
+expiry.getDate()+
+
+Number(machine.duration_days)
+
+);
+
+const { error:purchaseError }=await db
+
 .from("user_machines")
+
 .insert({
 
-user_id:currentUser.id,
+user_id:user.id,
 
 machine_id:machine.id,
 
-amount_paid:machine.price,
+amount_paid:price,
 
 purchase_date:new Date(),
 
@@ -1046,94 +786,91 @@ return;
 
 }
 
-/* Refresh Wallet */
+/* Reload Wallet */
 
-document.getElementById("walletBalance").innerHTML =
-
-"UGX " +
-
-newBalance.toLocaleString();
+loadWallet();
 
 /* Success */
 
 alert(
 
-"✅ Purchase Successful!\n\n" +
-
-machine.name +
-
-" has been activated."
+"✅ Machine Purchased Successfully!"
 
 );
 
-/* Reload Machines */
+}catch(err){
 
-loadWallet();
-loadMachines();
+console.log(err);
+
+alert("Something went wrong.");
+
+}
 
 }
 
 </script>
 
-  <!-- ======================================
-ADMIN SUPPORT
-====================================== -->
+  <!-- ===========================
+SUCCESS POPUP
+=========================== -->
 
 <style>
 
-.support-button{
+#successPopup{
 
 position:fixed;
 
-right:20px;
+top:30px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+background:linear-gradient(90deg,#00c8ff,#00ff88);
+
+color:#001018;
+
+padding:15px 25px;
+
+border-radius:15px;
+
+font-weight:bold;
+
+display:none;
+
+z-index:9999;
+
+box-shadow:0 0 25px rgba(0,255,255,.35);
+
+}
+
+.support-btn{
+
+position:fixed;
 
 bottom:95px;
 
-width:65px;
+right:20px;
 
-height:65px;
+width:60px;
+
+height:60px;
 
 border-radius:50%;
 
-background:linear-gradient(135deg,#00c8ff,#00ff88);
+background:#00c8ff;
 
 display:flex;
 
-justify-content:center;
-
 align-items:center;
 
-font-size:30px;
+justify-content:center;
+
+font-size:28px;
 
 cursor:pointer;
 
-box-shadow:0 0 25px rgba(0,255,180,.35);
-
-animation:pulse 2s infinite;
-
-z-index:999;
-
-}
-
-@keyframes pulse{
-
-0%{
-
-transform:scale(1);
-
-}
-
-50%{
-
-transform:scale(1.08);
-
-}
-
-100%{
-
-transform:scale(1);
-
-}
+box-shadow:0 0 20px rgba(0,200,255,.35);
 
 }
 
@@ -1141,9 +878,9 @@ transform:scale(1);
 
 position:fixed;
 
-left:0;
-
 bottom:0;
+
+left:0;
 
 width:100%;
 
@@ -1159,17 +896,13 @@ align-items:center;
 
 border-top:1px solid rgba(0,200,255,.25);
 
-backdrop-filter:blur(20px);
-
-z-index:999;
-
 }
 
 .bottom-nav a{
 
 text-decoration:none;
 
-color:#c9d8ea;
+color:#b8c8e8;
 
 display:flex;
 
@@ -1179,33 +912,25 @@ align-items:center;
 
 font-size:13px;
 
-transition:.3s;
-
 }
 
 .bottom-nav a.active{
 
 color:#00c8ff;
 
-}
-
-.bottom-nav a:hover{
-
-transform:translateY(-4px);
-
-}
-
-.bottom-nav span{
-
-margin-top:4px;
+font-weight:bold;
 
 }
 
 </style>
 
-<div
+<div id="successPopup">
 
-class="support-button"
+✅ Machine Purchased Successfully
+
+</div>
+
+<div class="support-btn"
 
 onclick="location.href='support.html'">
 
@@ -1223,7 +948,9 @@ onclick="location.href='support.html'">
 
 </a>
 
-<a href="machines.html" class="active">
+<a href="machines.html"
+
+class="active">
 
 ⚙️
 
@@ -1256,6 +983,32 @@ onclick="location.href='support.html'">
 </a>
 
 </div>
+
+<script>
+
+function showSuccess(){
+
+const popup=document.getElementById("successPopup");
+
+popup.style.display="block";
+
+setTimeout(()=>{
+
+popup.style.display="none";
+
+},3000);
+
+}
+
+/* Replace alert() in buyMachine()
+
+with:
+
+showSuccess();
+
+*/
+
+</script>
 
 </body>
 
