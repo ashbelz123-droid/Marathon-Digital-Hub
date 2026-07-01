@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Admin Deposits | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050B18;
+color:white;
+}
+
+.header{
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.header h2{
+font-size:28px;
+}
+
+.backBtn{
+background:#00ff88;
+color:#001018;
+padding:10px 18px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+padding:20px;
+}
+
+.card{
+background:#08142d;
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(0,255,255,.15);
+}
+
+.card h3{
+font-size:14px;
+color:#9fb5d1;
+margin-bottom:10px;
+}
+
+.card h1{
+color:#00ff88;
+font-size:30px;
+}
+
+.tools{
+padding:20px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.tools input,
+.tools select{
+
+flex:1;
+min-width:180px;
+
+height:48px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+padding:0 15px;
+
+background:#08142d;
+
+color:white;
+
+}
+
+.tableBox{
+
+margin:20px;
+
+background:#08142d;
+
+border-radius:15px;
+
+overflow:hidden;
+
+}
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+}
+
+th{
+
+background:#111f3d;
+
+padding:15px;
+
+text-align:left;
+
+}
+
+td{
+
+padding:15px;
+
+border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.status{
+
+padding:5px 12px;
+
+border-radius:20px;
+
+font-size:12px;
+
+font-weight:bold;
+
+}
+
+.pending{
+
+background:#ffc107;
+
+color:#000;
+
+}
+
+.approved{
+
+background:#00c853;
+
+}
+
+.rejected{
+
+background:#ff3b30;
+
+}
+
+.actionBtn{
+
+border:none;
+
+padding:8px 15px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-weight:bold;
+
+margin-right:8px;
+
+}
+
+.approve{
+
+background:#00ff88;
+
+color:#001018;
+
+}
+
+.reject{
+
+background:#ff3b30;
+
+color:white;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>Deposit Management</h2>
+
+<a href="admin-dashboard.html" class="backBtn">
+
+⬅ Dashboard
+
+</a>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Pending</h3>
+
+<h1 id="pendingCount">0</h1>
+
+</div>
+
+<div class="card">
+
+<h3>Approved</h3>
+
+<h1 id="approvedCount">0</h1>
+
+</div>
+
+<div class="card">
+
+<h3>Rejected</h3>
+
+<h1 id="rejectedCount">0</h1>
+
+</div>
+
+<div class="card">
+
+<h3>Total Deposits</h3>
+
+<h1 id="totalCount">0</h1>
+
+</div>
+
+</div>
+
+<div class="tools">
+
+<input
+type="text"
+id="search"
+placeholder="Search user...">
+
+<select id="filter">
+
+<option value="all">All Deposits</option>
+
+<option value="pending">Pending</option>
+
+<option value="approved">Approved</option>
+
+<option value="rejected">Rejected</option>
+
+</select>
+
+</div>
+
+<div class="tableBox">
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>User</th>
+
+<th>Method</th>
+
+<th>Amount</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+<tbody id="depositTable">
+
+<tr>
+
+<td colspan="5" style="text-align:center">
+
+Loading deposits...
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+  </div><script>
+
+const db = window.supabaseClient;
+
+/* ==========================
+PROTECT PAGE
+========================== */
+
+if(localStorage.getItem("admin_logged_in")!="true"){
+
+window.location.href="admin-login.html";
+
+}
+
+/* ==========================
+LOAD DEPOSITS
+========================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+loadDeposits();
+
+});
+
+async function loadDeposits(){
+
+const {data,error}=await db
+
+.from("deposits")
+
+.select("*")
+
+.order("created_at",{ascending:false});
+
+const tbody=document.getElementById("depositTable");
+
+tbody.innerHTML="";
+
+if(error){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="5" style="text-align:center;color:red;">
+
+Failed to load deposits.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+/* Statistics */
+
+document.getElementById("totalCount").innerHTML=data.length;
+
+document.getElementById("pendingCount").innerHTML=
+
+data.filter(x=>x.status=="pending").length;
+
+document.getElementById("approvedCount").innerHTML=
+
+data.filter(x=>x.status=="approved").length;
+
+document.getElementById("rejectedCount").innerHTML=
+
+data.filter(x=>x.status=="rejected").length;
+
+/* Empty */
+
+if(data.length==0){
+
+tbody.innerHTML=`
+
+<tr>
+
+<td colspan="5" style="text-align:center">
+
+No deposits found.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+/* Table */
+
+data.forEach(item=>{
+
+tbody.innerHTML+=`
+
+<tr>
+
+<td>
+
+<b>${item.full_name||"Unknown"}</b><br>
+
+<small>${item.phone||""}</small>
+
+</td>
+
+<td>
+
+${item.method||"-"}
+
+</td>
+
+<td>
+
+UGX ${Number(item.amount).toLocaleString()}
+
+</td>
+
+<td>
+
+<span class="status ${item.status}">
+
+${item.status}
+
+</span>
+
+</td>
+
+<td>
+
+<button
+
+class="actionBtn approve"
+
+onclick="approveDeposit('${item.id}')">
+
+Approve
+
+</button>
+
+<button
+
+class="actionBtn reject"
+
+onclick="rejectDeposit('${item.id}')">
+
+Reject
+
+</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+/* ==========================
+SEARCH
+========================== */
+
+document.getElementById("search")
+
+.addEventListener("keyup",function(){
+
+let value=this.value.toLowerCase();
+
+let rows=document.querySelectorAll("#depositTable tr");
+
+rows.forEach(row=>{
+
+row.style.display=row.innerText.toLowerCase().includes(value)
+
+? ""
+
+: "none";
+
+});
+
+});
+
+/* ==========================
+FILTER
+========================== */
+
+document.getElementById("filter")
+
+.addEventListener("change",function(){
+
+let value=this.value;
+
+let rows=document.querySelectorAll("#depositTable tr");
+
+rows.forEach(row=>{
+
+if(value=="all"){
+
+row.style.display="";
+
+}else{
+
+row.style.display=
+
+row.innerText.toLowerCase().includes(value)
+
+? ""
+
+: "none";
+
+}
+
+});
+
+});
+
+  </script><script>
+
+/* ==========================
+APPROVE DEPOSIT
+========================== */
+
+async function approveDeposit(depositId){
+
+if(!confirm("Approve this deposit?")) return;
+
+const {data:deposit,error}=await db
+.from("deposits")
+.select("*")
+.eq("id",depositId)
+.single();
+
+if(error || !deposit){
+
+alert("Deposit not found.");
+
+return;
+
+}
+
+/* Already approved */
+
+if(deposit.status=="approved"){
+
+alert("Deposit already approved.");
+
+return;
+
+}
+
+/* Update deposit */
+
+await db
+
+.from("deposits")
+
+.update({
+
+status:"approved"
+
+})
+
+.eq("id",depositId);
+
+/* Get wallet */
+
+const {data:profile}=await db
+
+.from("profiles")
+
+.select("wallet")
+
+.eq("id",deposit.user_id)
+
+.single();
+
+const newBalance=
+
+Number(profile.wallet||0)+
+
+Number(deposit.amount);
+
+/* Update wallet */
+
+await db
+
+.from("profiles")
+
+.update({
+
+wallet:newBalance
+
+})
+
+.eq("id",deposit.user_id);
+
+/* Wallet transaction */
+
+await db
+
+.from("transactions")
+
+.insert({
+
+user_id:deposit.user_id,
+
+type:"Deposit",
+
+amount:deposit.amount,
+
+status:"Completed",
+
+description:"Deposit Approved"
+
+});
+
+/* User notification */
+
+await db
+
+.from("user_notifications")
+
+.insert({
+
+user_id:deposit.user_id,
+
+title:"Deposit Approved",
+
+message:`Your deposit of UGX ${deposit.amount} has been approved and added to your wallet.`,
+
+type:"success"
+
+});
+
+alert("Deposit approved successfully.");
+
+loadDeposits();
+
+}
+
+/* ==========================
+REJECT DEPOSIT
+========================== */
+
+async function rejectDeposit(depositId){
+
+if(!confirm("Reject this deposit?")) return;
+
+const {data:deposit,error}=await db
+
+.from("deposits")
+
+.select("*")
+
+.eq("id",depositId)
+
+.single();
+
+if(error || !deposit){
+
+alert("Deposit not found.");
+
+return;
+
+}
+
+await db
+
+.from("deposits")
+
+.update({
+
+status:"rejected"
+
+})
+
+.eq("id",depositId);
+
+/* Notify */
+
+await db
+
+.from("user_notifications")
+
+.insert({
+
+user_id:deposit.user_id,
+
+title:"Deposit Rejected",
+
+message:`Your deposit request of UGX ${deposit.amount} has been rejected.`,
+
+type:"error"
+
+});
+
+alert("Deposit rejected.");
+
+loadDeposits();
+
+}
+
+  </script>
