@@ -83,25 +83,13 @@ color:#9fb5d1;
 
 }
 
-.sectionTitle{
-
-margin:20px;
-
-margin-bottom:10px;
-
-font-size:18px;
-
-color:#00ff88;
-
-}
-
-.notifications{
+#notificationList{
 
 padding:15px;
 
 }
 
-.card{
+.notification{
 
 background:#08142d;
 
@@ -117,25 +105,25 @@ position:relative;
 
 }
 
-.card h3{
-
-margin-bottom:10px;
+.notification h3{
 
 font-size:18px;
 
+margin-bottom:8px;
+
 }
 
-.card p{
+.notification p{
+
+color:#d8e4f3;
 
 line-height:1.6;
 
-color:#d7e3f2;
-
-margin-bottom:12px;
+margin-bottom:10px;
 
 }
 
-.date{
+.time{
 
 font-size:12px;
 
@@ -203,9 +191,9 @@ width:12px;
 
 height:12px;
 
-background:#ff3b30;
-
 border-radius:50%;
+
+background:#ff3b30;
 
 }
 
@@ -223,331 +211,6 @@ color:#9fb5d1;
 
 }
 
-</style>
-
-</head>
-
-<body>
-
-<div class="header">
-
-<h2>Notifications</h2>
-
-<p>Your personal updates and platform announcements.</p>
-
-</div>
-
-<h3 class="sectionTitle">
-
-👤 Personal Notifications
-
-</h3>
-
-<div
-
-class="notifications"
-
-id="personalNotifications">
-
-<div class="empty">
-
-Loading...
-
-</div>
-
-</div>
-
-<h3 class="sectionTitle">
-
-📢 Platform Announcements
-
-</h3>
-
-<div
-
-class="notifications"
-
-id="globalNotifications">
-
-<div class="empty">
-
-Loading...
-
-</div>
-
-</div><script>
-
-const db = window.supabaseClient;
-
-let currentUser = null;
-
-/* ==========================
-START
-========================== */
-
-document.addEventListener("DOMContentLoaded", async ()=>{
-
-const { data:{ user } } = await db.auth.getUser();
-
-if(!user){
-
-window.location.href="login.html";
-return;
-
-}
-
-currentUser=user;
-
-await loadPersonalNotifications();
-
-await loadGlobalNotifications();
-
-await markNotificationsAsRead();
-
-});
-
-/* ==========================
-PERSONAL NOTIFICATIONS
-========================== */
-
-async function loadPersonalNotifications(){
-
-const { data,error } = await db
-
-.from("user_notifications")
-
-.select("*")
-
-.eq("user_id",currentUser.id)
-
-.order("created_at",{ascending:false});
-
-const container=document.getElementById("personalNotifications");
-
-container.innerHTML="";
-
-if(error){
-
-container.innerHTML='<div class="empty">Failed to load notifications.</div>';
-
-return;
-
-}
-
-if(data.length===0){
-
-container.innerHTML='
-
-<div class="empty">
-
-No personal notifications.
-
-</div>
-
-';
-
-return;
-
-}
-
-data.forEach(item=>{
-
-let badge="info";
-
-switch((item.type||"info").toLowerCase()){
-
-case "success":
-
-badge="success";
-
-break;
-
-case "warning":
-
-badge="warning";
-
-break;
-
-case "error":
-
-badge="error";
-
-break;
-
-case "promotion":
-
-badge="promotion";
-
-break;
-
-default:
-
-badge="info";
-
-}
-
-container.innerHTML+=`
-
-<div class="card">
-
-${!item.is_read?'<div class="unread"></div>':''}
-
-<span class="badge ${badge}">
-
-${item.type||"Info"}
-
-</span>
-
-<h3>${item.title}</h3>
-
-<p>${item.message}</p>
-
-<div class="date">
-
-${new Date(item.created_at).toLocaleString()}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-/* ==========================
-GLOBAL NOTIFICATIONS
-========================== */
-
-async function loadGlobalNotifications(){
-
-const { data,error } = await db
-
-.from("notifications")
-
-.select("*")
-
-.eq("is_active",true)
-
-.order("created_at",{ascending:false});
-
-const container=document.getElementById("globalNotifications");
-
-container.innerHTML="";
-
-if(error){
-
-container.innerHTML='<div class="empty">Failed to load announcements.</div>';
-
-return;
-
-}
-
-if(data.length===0){
-
-container.innerHTML='
-
-<div class="empty">
-
-No announcements available.
-
-</div>
-
-';
-
-return;
-
-}
-
-data.forEach(item=>{
-
-let badge="info";
-
-switch((item.type||"info").toLowerCase()){
-
-case "success":
-
-badge="success";
-
-break;
-
-case "warning":
-
-badge="warning";
-
-break;
-
-case "promotion":
-
-badge="promotion";
-
-break;
-
-default:
-
-badge="info";
-
-}
-
-container.innerHTML+=`
-
-<div class="card">
-
-<span class="badge ${badge}">
-
-${item.type||"Info"}
-
-</span>
-
-<h3>${item.title}</h3>
-
-<p>${item.message}</p>
-
-<div class="date">
-
-${new Date(item.created_at).toLocaleString()}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-/* ==========================
-MARK AS READ
-========================== */
-
-async function markNotificationsAsRead(){
-
-await db
-
-.from("user_notifications")
-
-.update({
-
-is_read:true
-
-})
-
-.eq("user_id",currentUser.id)
-
-.eq("is_read",false);
-
-}
-
-</script>
-
-  <!-- ==========================
-BOTTOM NAVIGATION
-========================== -->
-
-<style>
-
 .bottom-nav{
 
 position:fixed;
@@ -562,17 +225,13 @@ height:70px;
 
 background:#08142d;
 
-border-top:1px solid rgba(255,255,255,.08);
-
 display:flex;
 
 justify-content:space-around;
 
 align-items:center;
 
-backdrop-filter:blur(10px);
-
-z-index:999;
+border-top:1px solid rgba(255,255,255,.08);
 
 }
 
@@ -590,20 +249,6 @@ align-items:center;
 
 font-size:12px;
 
-transition:.3s;
-
-position:relative;
-
-}
-
-.bottom-nav a i{
-
-font-style:normal;
-
-font-size:24px;
-
-margin-bottom:4px;
-
 }
 
 .bottom-nav a.active{
@@ -614,45 +259,39 @@ font-weight:bold;
 
 }
 
-.bottom-nav a:hover{
+.bottom-nav i{
 
-color:#00ff88;
+font-style:normal;
 
-}
+font-size:24px;
 
-.notificationBadge{
-
-position:absolute;
-
-top:-2px;
-
-right:6px;
-
-background:#ff3b30;
-
-color:#fff;
-
-min-width:18px;
-
-height:18px;
-
-padding:0 5px;
-
-border-radius:50%;
-
-font-size:10px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-weight:bold;
+margin-bottom:4px;
 
 }
 
 </style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>Notifications</h2>
+
+<p>All your account activities and announcements.</p>
+
+</div>
+
+<div id="notificationList">
+
+<div class="empty">
+
+Loading notifications...
+
+</div>
+
+</div>
 
 <div class="bottom-nav">
 
@@ -696,8 +335,195 @@ font-weight:bold;
 
 </a>
 
+</div><script>
+
+const db = window.supabaseClient;
+
+let currentUser=null;
+
+document.addEventListener("DOMContentLoaded",async()=>{
+
+const {data:{user}}=await db.auth.getUser();
+
+if(!user){
+
+window.location.href="login.html";
+return;
+
+}
+
+currentUser=user;
+
+await loadNotifications();
+
+await markAsRead();
+
+});
+
+/* ===========================
+LOAD ALL NOTIFICATIONS
+=========================== */
+
+async function loadNotifications(){
+
+const container=document.getElementById("notificationList");
+
+container.innerHTML="<div class='empty'>Loading...</div>";
+
+/* PERSONAL */
+
+const {data:userData,error:userError}=await db
+
+.from("user_notifications")
+
+.select("*")
+
+.eq("user_id",currentUser.id);
+
+/* GLOBAL */
+
+const {data:globalData,error:globalError}=await db
+
+.from("notifications")
+
+.select("*")
+
+.eq("is_active",true);
+
+if(userError || globalError){
+
+container.innerHTML="<div class='empty'>Failed to load notifications.</div>";
+
+return;
+
+}
+
+/* Merge */
+
+let all=[];
+
+/* Personal */
+
+userData.forEach(n=>{
+
+all.push({
+
+title:n.title,
+
+message:n.message,
+
+type:n.type||"info",
+
+created_at:n.created_at,
+
+unread:!n.is_read
+
+});
+
+});
+
+/* Global */
+
+globalData.forEach(n=>{
+
+all.push({
+
+title:n.title,
+
+message:n.message,
+
+type:n.type||"info",
+
+created_at:n.created_at,
+
+unread:false
+
+});
+
+});
+
+/* Sort newest first */
+
+all.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+
+container.innerHTML="";
+
+if(all.length===0){
+
+container.innerHTML=`
+
+<div class="empty">
+
+No notifications available.
+
 </div>
+
+`;
+
+return;
+
+}
+
+all.forEach(item=>{
+
+let badge=item.type.toLowerCase();
+
+if(!["success","warning","error","promotion","info"].includes(badge)){
+
+badge="info";
+
+}
+
+container.innerHTML+=`
+
+<div class="notification">
+
+${item.unread?'<div class="unread"></div>':''}
+
+<div class="badge ${badge}">
+
+${badge.toUpperCase()}
+
+</div>
+
+<h3>${item.title}</h3>
+
+<p>${item.message}</p>
+
+<div class="time">
+
+${new Date(item.created_at).toLocaleString()}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ===========================
+MARK PERSONAL NOTIFICATIONS READ
+=========================== */
+
+async function markAsRead(){
+
+await db
+
+.from("user_notifications")
+
+.update({is_read:true})
+
+.eq("user_id",currentUser.id)
+
+.eq("is_read",false);
+
+}
+
+</script>
 
 </body>
 
-</html>
+  </html>
