@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html><html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
@@ -196,7 +197,7 @@ return;
 try{
 
 const { data, error } =
-await supabase.auth.signUp(}
+await supabaseClient.auth.signUp({
 email: email,
 password: password
 });
@@ -226,7 +227,7 @@ referral_code: referral
 if(profileError){
 throw profileError;
 }
-console.log(window.supabaseClient);
+
 document.getElementById("success").innerText =
 "Account Created Successfully";
 
@@ -243,10 +244,5 @@ err.message;
 
 });
 
-<script>
-alert("PAGE LOADED");
-console.log("PAGE LOADED");
-</script>
-<script>
-alert("HELLO");
-</script></html>
+</script></body>
+</html>
