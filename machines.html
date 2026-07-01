@@ -5,12 +5,14 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Machines | Marathon Digital Hub</title>
 
-<!-- Existing Supabase Config -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Your Existing Supabase File -->
 <script src="supabase-config.js"></script>
 
 <style>
@@ -24,18 +26,14 @@ font-family:Arial,sans-serif;
 
 body{
 
-background:#040817;
+background:#050B18;
 color:#fff;
 overflow-x:hidden;
 padding-bottom:90px;
-position:relative;
-min-height:100vh;
 
 }
 
-/* ==========================
-ANIMATED BACKGROUND
-========================== */
+/* Animated Background */
 
 body::before{
 
@@ -43,74 +41,41 @@ content:"";
 
 position:fixed;
 
-left:-30%;
-top:-30%;
+left:-40%;
+top:-40%;
 
-width:170%;
-height:170%;
+width:180%;
+height:180%;
 
 background:
 
-radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
 
-radial-gradient(circle at 80% 15%,rgba(170,0,255,.18),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,100,255,.18),transparent 35%),
 
-radial-gradient(circle at 70% 85%,rgba(0,120,255,.18),transparent 40%),
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.15),transparent 40%),
 
-radial-gradient(circle at 25% 75%,rgba(0,255,140,.15),transparent 35%);
+radial-gradient(circle at 20% 80%,rgba(140,0,255,.18),transparent 35%);
 
-animation:bgMove 20s linear infinite;
+animation:bgMove 18s linear infinite;
 
 z-index:-2;
 
 }
 
-body::after{
-
-content:"";
-
-position:fixed;
-
-left:0;
-top:0;
-
-width:100%;
-height:100%;
-
-background-image:
-
-radial-gradient(rgba(0,200,255,.25) 1px,transparent 1px);
-
-background-size:22px 22px;
-
-animation:gridMove 18s linear infinite;
-
-z-index:-1;
-
-}
-
 @keyframes bgMove{
 
-0%{transform:translateX(-3%);}
-50%{transform:translateX(3%);}
-100%{transform:translateX(-3%);}
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
 
 }
 
-@keyframes gridMove{
-
-0%{transform:translateX(0);}
-100%{transform:translateX(-22px);}
-
-}
-
-/* ==========================
-HEADER
-========================== */
+/* Header */
 
 .header{
 
-height:75px;
+height:70px;
 
 display:flex;
 
@@ -122,7 +87,7 @@ font-size:30px;
 
 font-weight:bold;
 
-background:linear-gradient(90deg,#00c8ff,#00ff88);
+background:linear-gradient(90deg,#00C8FF,#00FF88);
 
 -webkit-background-clip:text;
 
@@ -130,33 +95,29 @@ background:linear-gradient(90deg,#00c8ff,#00ff88);
 
 }
 
-.page-title{
+.subtitle{
 
 text-align:center;
 
-font-size:24px;
+font-size:22px;
 
 margin-top:8px;
 
 margin-bottom:25px;
 
-color:#ffffff;
-
 font-weight:bold;
 
 }
 
-/* ==========================
-SERIES
-========================== */
+/* Series Tabs */
 
-#seriesContainer{
+#seriesTabs{
 
 display:flex;
 
-gap:10px;
-
 overflow-x:auto;
+
+gap:10px;
 
 padding:0 15px 20px;
 
@@ -164,37 +125,33 @@ scrollbar-width:none;
 
 }
 
-#seriesContainer::-webkit-scrollbar{
+#seriesTabs::-webkit-scrollbar{
 
 display:none;
 
 }
 
-.series-btn{
+.tab{
 
 padding:12px 18px;
 
-background:#07152f;
+background:#0A1732;
 
 border:1px solid rgba(0,200,255,.25);
 
 border-radius:25px;
 
-color:#fff;
+white-space:nowrap;
 
 cursor:pointer;
 
-white-space:nowrap;
-
 transition:.3s;
-
-font-size:14px;
 
 }
 
-.series-btn.active{
+.tab.active{
 
-background:linear-gradient(90deg,#00c8ff,#00ff88);
+background:linear-gradient(90deg,#00C8FF,#00FF88);
 
 color:#001018;
 
@@ -202,13 +159,11 @@ font-weight:bold;
 
 }
 
-/* ==========================
-MACHINES
-========================== */
+/* Machine Area */
 
-#machineContainer{
+#machines{
 
-padding:0 15px 20px;
+padding:0 15px;
 
 display:flex;
 
@@ -220,13 +175,13 @@ gap:15px;
 
 .loading{
 
-padding:40px;
+padding:50px;
 
 text-align:center;
 
-font-size:18px;
+color:#00C8FF;
 
-color:#00c8ff;
+font-size:18px;
 
 }
 
@@ -242,17 +197,17 @@ MARATHON
 
 </div>
 
-<div class="page-title">
+<div class="subtitle">
 
 Machines
 
 </div>
 
-<div id="seriesContainer">
+<div id="seriesTabs">
 
 </div>
 
-<div id="machineContainer">
+<div id="machines">
 
 <div class="loading">
 
@@ -262,24 +217,25 @@ Loading Machines...
 
 </div><script>
 
-/* ==========================
+/* ===============================
 SUPABASE
-========================== */
+=============================== */
 
 const db = window.supabaseClient;
 
 let currentUser = null;
-let currentSeries = "ALL";
+let allMachines = [];
+let groupedMachines = {};
 
-/* ==========================
+/* ===============================
 START PAGE
-========================== */
+=============================== */
 
-document.addEventListener("DOMContentLoaded", async ()=>{
+document.addEventListener("DOMContentLoaded", async () => {
 
-const { data:{ user }, error } = await db.auth.getUser();
+const { data:{ user } } = await db.auth.getUser();
 
-if(error || !user){
+if(!user){
 
 window.location.href="login.html";
 
@@ -289,136 +245,185 @@ return;
 
 currentUser = user;
 
-await loadSeries();
-
-await loadMachines("ALL");
+await loadMachines();
 
 });
 
-/* ==========================
-LOAD SERIES
-========================== */
+/* ===============================
+LOAD MACHINES
+=============================== */
 
-async function loadSeries(){
+async function loadMachines(){
 
-const container=document.getElementById("seriesContainer");
+document.getElementById("machines").innerHTML=
+'<div class="loading">Loading Machines...</div>';
 
-container.innerHTML="";
-
-/* All Button */
-
-const allBtn=document.createElement("div");
-
-allBtn.className="series-btn active";
-
-allBtn.innerText="All";
-
-allBtn.onclick=()=>changeSeries("ALL",allBtn);
-
-container.appendChild(allBtn);
-
-/* Get Series */
-
-const {data,error}=await db
+const { data,error } = await db
 
 .from("machines")
 
-.select("series")
+.select("*")
 
 .eq("status",true)
 
-.order("series");
+.order("price",{ascending:true});
 
 if(error){
 
 console.log(error);
 
+document.getElementById("machines").innerHTML=
+'<div class="loading">Failed To Load Machines</div>';
+
 return;
 
 }
 
-/* Remove duplicates */
+allMachines = data;
 
-const unique=[...new Set(data.map(item=>item.series))];
+buildSeries();
 
-unique.forEach(series=>{
+showMachines("ALL");
+
+}
+
+/* ===============================
+BUILD SERIES TABS
+=============================== */
+
+function buildSeries(){
+
+const tabs=document.getElementById("seriesTabs");
+
+tabs.innerHTML="";
+
+groupedMachines={};
+
+/* ALL TAB */
+
+const all=document.createElement("div");
+
+all.className="tab active";
+
+all.innerText="All";
+
+all.onclick=function(){
+
+changeTab(this);
+
+showMachines("ALL");
+
+};
+
+tabs.appendChild(all);
+
+/* GROUP MACHINES */
+
+allMachines.forEach(machine=>{
+
+let series=machine.series;
+
+/* Remove numbers */
+
+series=series.replace(/[0-9]/g,"").trim();
+
+if(!groupedMachines[series]){
+
+groupedMachines[series]=[];
+
+}
+
+groupedMachines[series].push(machine);
+
+});
+
+/* CREATE TABS */
+
+Object.keys(groupedMachines).forEach(series=>{
 
 const btn=document.createElement("div");
 
-btn.className="series-btn";
+btn.className="tab";
 
 btn.innerText=series;
 
-btn.onclick=()=>changeSeries(series,btn);
+btn.onclick=function(){
 
-container.appendChild(btn);
+changeTab(this);
+
+showMachines(series);
+
+};
+
+tabs.appendChild(btn);
 
 });
 
 }
 
-/* ==========================
-CHANGE SERIES
-========================== */
+/* ===============================
+ACTIVE TAB
+=============================== */
 
-function changeSeries(series,button){
+function changeTab(tab){
 
-currentSeries=series;
+document.querySelectorAll(".tab")
 
-document.querySelectorAll(".series-btn")
+.forEach(t=>t.classList.remove("active"));
 
-.forEach(btn=>btn.classList.remove("active"));
-
-button.classList.add("active");
-
-loadMachines(series);
+tab.classList.add("active");
 
 }
 
 </script><script>
 
-/* ==========================
-LOAD MACHINES
-========================== */
+/* ===========================
+SHOW MACHINES
+=========================== */
 
-async function loadMachines(series="ALL"){
+function showMachines(series){
 
-const container=document.getElementById("machineContainer");
-
-container.innerHTML='<div class="loading">Loading Machines...</div>';
-
-let query=db
-.from("machines")
-.select("*")
-.eq("status",true)
-.order("price",{ascending:true});
-
-if(series!=="ALL"){
-query=query.eq("series",series);
-}
-
-const {data,error}=await query;
-
-if(error){
-console.log(error);
-container.innerHTML='<div class="loading">Failed to load machines.</div>';
-return;
-}
-
-if(!data || data.length===0){
-container.innerHTML='<div class="loading">No Machines Available</div>';
-return;
-}
+const container=document.getElementById("machines");
 
 container.innerHTML="";
 
-data.forEach(machine=>{
+/* Select machines */
+
+let machinesToShow=[];
+
+if(series==="ALL"){
+
+machinesToShow=allMachines;
+
+}else{
+
+machinesToShow=groupedMachines[series] || [];
+
+}
+
+/* Empty */
+
+if(machinesToShow.length===0){
+
+container.innerHTML=`
+<div class="loading">
+No Machines Available
+</div>
+`;
+
+return;
+
+}
+
+/* Cards */
+
+machinesToShow.forEach(machine=>{
 
 container.innerHTML+=`
 
 <div class="machine-card">
 
-<div class="top-row">
+<div class="machine-head">
 
 <h3>${machine.name}</h3>
 
@@ -426,36 +431,50 @@ container.innerHTML+=`
 
 </div>
 
-<div class="machine-info">
+<div class="machine-body">
 
-<div>
+<div class="row">
 
-<p>Price</p>
+<label>Price</label>
 
-<h4>UGX ${Number(machine.price).toLocaleString()}</h4>
+<strong>
 
-</div>
+UGX ${Number(machine.price).toLocaleString()}
 
-<div>
-
-<p>Total Return</p>
-
-<h4>UGX ${Number(machine.total_return).toLocaleString()}</h4>
+</strong>
 
 </div>
 
-<div>
+<div class="row">
 
-<p>Duration</p>
+<label>Total Return</label>
 
-<h4>${machine.duration_days} Days</h4>
+<strong>
+
+UGX ${Number(machine.total_return).toLocaleString()}
+
+</strong>
+
+</div>
+
+<div class="row">
+
+<label>Duration</label>
+
+<strong>
+
+${machine.duration_days} Days
+
+</strong>
 
 </div>
 
 </div>
 
 <button
+
 class="buy-btn"
+
 onclick="buyMachine('${machine.id}')">
 
 BUY MACHINE
@@ -478,17 +497,27 @@ BUY MACHINE
 
 background:#08142d;
 
-border:1px solid rgba(0,200,255,.25);
+border:1px solid rgba(0,200,255,.20);
 
 border-radius:18px;
 
 padding:18px;
 
-box-shadow:0 0 18px rgba(0,200,255,.08);
+margin-bottom:15px;
+
+transition:.3s;
 
 }
 
-.top-row{
+.machine-card:hover{
+
+border-color:#00c8ff;
+
+box-shadow:0 0 15px rgba(0,200,255,.15);
+
+}
+
+.machine-head{
 
 display:flex;
 
@@ -500,7 +529,7 @@ margin-bottom:15px;
 
 }
 
-.top-row h3{
+.machine-head h3{
 
 font-size:20px;
 
@@ -508,13 +537,13 @@ color:#00ff88;
 
 }
 
-.top-row span{
+.machine-head span{
 
 background:#00c8ff;
 
 color:#001018;
 
-padding:6px 12px;
+padding:5px 12px;
 
 border-radius:20px;
 
@@ -524,7 +553,7 @@ font-weight:bold;
 
 }
 
-.machine-info div{
+.machine-body .row{
 
 display:flex;
 
@@ -536,17 +565,15 @@ border-bottom:1px solid rgba(255,255,255,.08);
 
 }
 
-.machine-info p{
+.machine-body label{
 
 color:#9fb5d1;
 
 }
 
-.machine-info h4{
+.machine-body strong{
 
-font-size:16px;
-
-color:#fff;
+color:#ffffff;
 
 }
 
@@ -578,23 +605,23 @@ transition:.3s;
 
 .buy-btn:hover{
 
-opacity:.9;
+transform:scale(.98);
 
 }
 
 </style><script>
 
-/* ==========================
+/* ==========================================
 BUY MACHINE
-========================== */
+========================================== */
 
 async function buyMachine(machineId){
 
 try{
 
-/* Get Machine */
+/* Get machine */
 
-const { data:machine, error:machineError } = await db
+const { data:machine,error:machineError } = await db
 
 .from("machines")
 
@@ -612,9 +639,9 @@ return;
 
 }
 
-/* Get Wallet */
+/* Get user wallet */
 
-const { data:profile, error:profileError } = await db
+const { data:profile,error:profileError } = await db
 
 .from("profiles")
 
@@ -626,14 +653,13 @@ const { data:profile, error:profileError } = await db
 
 if(profileError){
 
-alert("Failed to load wallet.");
+alert("Unable to load wallet.");
 
 return;
 
 }
 
 const wallet=Number(profile.wallet_balance);
-
 const price=Number(machine.price);
 
 if(wallet<price){
@@ -644,7 +670,27 @@ return;
 
 }
 
-/* Update Wallet */
+/* Check if already purchased */
+
+const { data:existing } = await db
+
+.from("user_machines")
+
+.select("id")
+
+.eq("user_id",currentUser.id)
+
+.eq("machine_id",machineId);
+
+if(existing && existing.length>0){
+
+alert("You already own this machine.");
+
+return;
+
+}
+
+/* Update wallet */
 
 const { error:updateError } = await db
 
@@ -660,13 +706,15 @@ wallet_balance:wallet-price
 
 if(updateError){
 
+console.log(updateError);
+
 alert("Wallet update failed.");
 
 return;
 
 }
 
-/* Purchase */
+/* Expiry */
 
 const expiry=new Date();
 
@@ -677,6 +725,8 @@ expiry.getDate()+
 Number(machine.duration_days)
 
 );
+
+/* Save Purchase */
 
 const { error:purchaseError } = await db
 
@@ -712,13 +762,13 @@ return;
 
 alert("Machine Purchased Successfully!");
 
-loadMachines(currentSeries);
+await loadMachines();
 
 }catch(err){
 
 console.log(err);
 
-alert("Something went wrong.");
+alert("Unexpected Error");
 
 }
 
@@ -732,7 +782,7 @@ SUCCESS POPUP
 
 <div id="successPopup">
 
-✅ Machine Purchased Successfully
+Machine Purchased Successfully
 
 </div>
 
@@ -748,21 +798,21 @@ left:50%;
 
 transform:translateX(-50%);
 
+padding:15px 25px;
+
 background:linear-gradient(90deg,#00c8ff,#00ff88);
 
 color:#001018;
 
-padding:15px 30px;
+font-weight:bold;
 
 border-radius:12px;
-
-font-weight:bold;
 
 display:none;
 
 z-index:9999;
 
-box-shadow:0 0 20px rgba(0,255,255,.4);
+box-shadow:0 0 25px rgba(0,255,255,.35);
 
 }
 
@@ -782,7 +832,9 @@ width:100%;
 
 height:70px;
 
-background:#07152f;
+background:#08142d;
+
+border-top:1px solid rgba(0,200,255,.15);
 
 display:flex;
 
@@ -790,15 +842,15 @@ justify-content:space-around;
 
 align-items:center;
 
-border-top:1px solid rgba(0,200,255,.2);
-
 }
 
 .bottom-nav a{
 
 text-decoration:none;
 
-color:#c9d8f5;
+color:#c5d8ff;
+
+font-size:13px;
 
 display:flex;
 
@@ -806,7 +858,7 @@ flex-direction:column;
 
 align-items:center;
 
-font-size:13px;
+gap:4px;
 
 }
 
@@ -866,7 +918,9 @@ font-weight:bold;
 
 <script>
 
-/* Professional Success Popup */
+/* ==========================
+SUCCESS POPUP
+========================== */
 
 function showSuccess(){
 
@@ -881,16 +935,6 @@ popup.style.display="none";
 },2500);
 
 }
-
-/* Replace this in buyMachine():
-
-alert("Machine Purchased Successfully!");
-
-with
-
-showSuccess();
-
-*/
 
 </script>
 
