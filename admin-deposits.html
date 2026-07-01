@@ -4,10 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Admin Deposits | Marathon Digital Hub</title>
+<title>Deposit Management | Marathon Digital Hub</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
@@ -23,130 +22,173 @@ font-family:Arial,sans-serif;
 
 body{
 background:#050B18;
-color:white;
+color:#fff;
 }
 
 .header{
-padding:20px;
+
 display:flex;
 justify-content:space-between;
 align-items:center;
+
+padding:20px;
+
+background:#08142d;
+
 }
 
 .header h2{
+
 font-size:28px;
+
 }
 
 .backBtn{
+
 background:#00ff88;
+
 color:#001018;
+
 padding:10px 18px;
+
 border-radius:10px;
+
 text-decoration:none;
+
 font-weight:bold;
+
 }
 
-.cards{
+.summary{
+
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+
 gap:15px;
+
 padding:20px;
+
 }
 
 .card{
+
 background:#08142d;
+
 padding:20px;
+
 border-radius:15px;
-border:1px solid rgba(0,255,255,.15);
+
+border:1px solid rgba(255,255,255,.08);
+
 }
 
-.card h3{
-font-size:14px;
+.card h4{
+
 color:#9fb5d1;
+
 margin-bottom:10px;
+
 }
 
 .card h1{
+
+font-size:32px;
+
 color:#00ff88;
-font-size:30px;
+
 }
 
-.tools{
-padding:20px;
+.controls{
+
+padding:0 20px 20px;
+
 display:flex;
+
 gap:15px;
+
 flex-wrap:wrap;
+
 }
 
-.tools input,
-.tools select{
+.controls input,
+.controls select{
 
 flex:1;
-min-width:180px;
+
+min-width:220px;
 
 height:48px;
 
-border:none;
+background:#08142d;
 
-outline:none;
+border:none;
 
 border-radius:12px;
 
 padding:0 15px;
 
+color:#fff;
+
+outline:none;
+
+}
+
+.depositContainer{
+
+padding:20px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.depositCard{
+
 background:#08142d;
 
-color:white;
+border-radius:18px;
+
+padding:20px;
+
+border:1px solid rgba(255,255,255,.08);
 
 }
 
-.tableBox{
+.depositTop{
 
-margin:20px;
+display:flex;
 
-background:#08142d;
+justify-content:space-between;
 
-border-radius:15px;
+align-items:center;
 
-overflow:hidden;
-
-}
-
-table{
-
-width:100%;
-
-border-collapse:collapse;
+margin-bottom:15px;
 
 }
 
-th{
+.userName{
 
-background:#111f3d;
+font-size:20px;
 
-padding:15px;
-
-text-align:left;
-
-}
-
-td{
-
-padding:15px;
-
-border-bottom:1px solid rgba(255,255,255,.08);
+font-weight:bold;
 
 }
 
 .status{
 
-padding:5px 12px;
+padding:6px 15px;
 
 border-radius:20px;
 
 font-size:12px;
 
 font-weight:bold;
+
+text-transform:uppercase;
 
 }
 
@@ -170,23 +212,65 @@ background:#ff3b30;
 
 }
 
-.actionBtn{
+.info{
 
-border:none;
+display:grid;
 
-padding:8px 15px;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 
-border-radius:8px;
+gap:10px;
 
-cursor:pointer;
-
-font-weight:bold;
-
-margin-right:8px;
+margin-bottom:18px;
 
 }
 
-.approve{
+.info div{
+
+background:#111f3d;
+
+padding:12px;
+
+border-radius:10px;
+
+}
+
+.info span{
+
+display:block;
+
+color:#9fb5d1;
+
+font-size:12px;
+
+margin-bottom:5px;
+
+}
+
+.actions{
+
+display:flex;
+
+gap:10px;
+
+}
+
+.actions button{
+
+flex:1;
+
+height:45px;
+
+border:none;
+
+border-radius:10px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.approveBtn{
 
 background:#00ff88;
 
@@ -194,7 +278,7 @@ color:#001018;
 
 }
 
-.reject{
+.rejectBtn{
 
 background:#ff3b30;
 
@@ -220,11 +304,11 @@ color:white;
 
 </div>
 
-<div class="cards">
+<div class="summary">
 
 <div class="card">
 
-<h3>Pending</h3>
+<h4>Pending Deposits</h4>
 
 <h1 id="pendingCount">0</h1>
 
@@ -232,7 +316,7 @@ color:white;
 
 <div class="card">
 
-<h3>Approved</h3>
+<h4>Approved Deposits</h4>
 
 <h1 id="approvedCount">0</h1>
 
@@ -240,7 +324,7 @@ color:white;
 
 <div class="card">
 
-<h3>Rejected</h3>
+<h4>Rejected Deposits</h4>
 
 <h1 id="rejectedCount">0</h1>
 
@@ -248,7 +332,7 @@ color:white;
 
 <div class="card">
 
-<h3>Total Deposits</h3>
+<h4>Total Deposits</h4>
 
 <h1 id="totalCount">0</h1>
 
@@ -256,14 +340,14 @@ color:white;
 
 </div>
 
-<div class="tools">
+<div class="controls">
 
 <input
 type="text"
-id="search"
+id="searchInput"
 placeholder="Search user...">
 
-<select id="filter">
+<select id="statusFilter">
 
 <option value="all">All Deposits</option>
 
@@ -277,45 +361,11 @@ placeholder="Search user...">
 
 </div>
 
-<div class="tableBox">
+<div class="depositContainer" id="depositContainer">
 
-<table>
+<!-- Deposits will appear here -->
 
-<thead>
-
-<tr>
-
-<th>User</th>
-
-<th>Method</th>
-
-<th>Amount</th>
-
-<th>Status</th>
-
-<th>Action</th>
-
-</tr>
-
-</thead>
-
-<tbody id="depositTable">
-
-<tr>
-
-<td colspan="5" style="text-align:center">
-
-Loading deposits...
-
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-  </div><script>
+</div><script>
 
 const db = window.supabaseClient;
 
@@ -323,10 +373,8 @@ const db = window.supabaseClient;
 PROTECT PAGE
 ========================== */
 
-if(localStorage.getItem("admin_logged_in")!="true"){
-
-window.location.href="admin-login.html";
-
+if(localStorage.getItem("admin_logged_in")!=="true"){
+    window.location.href="admin-login.html";
 }
 
 /* ==========================
@@ -341,33 +389,34 @@ loadDeposits();
 
 async function loadDeposits(){
 
+const container=document.getElementById("depositContainer");
+
+container.innerHTML="Loading deposits...";
+
 const {data,error}=await db
 
 .from("deposits")
 
-.select("*")
+.select(`
+id,
+user_id,
+amount,
+method,
+status,
+created_at,
+profiles(
+fullname,
+phone
+)
+`)
 
 .order("created_at",{ascending:false});
 
-const tbody=document.getElementById("depositTable");
-
-tbody.innerHTML="";
-
 if(error){
 
-tbody.innerHTML=`
+container.innerHTML="Failed to load deposits.";
 
-<tr>
-
-<td colspan="5" style="text-align:center;color:red;">
-
-Failed to load deposits.
-
-</td>
-
-</tr>
-
-`;
+console.log(error);
 
 return;
 
@@ -379,81 +428,93 @@ document.getElementById("totalCount").innerHTML=data.length;
 
 document.getElementById("pendingCount").innerHTML=
 
-data.filter(x=>x.status=="pending").length;
+data.filter(x=>x.status==="pending").length;
 
 document.getElementById("approvedCount").innerHTML=
 
-data.filter(x=>x.status=="approved").length;
+data.filter(x=>x.status==="approved").length;
 
 document.getElementById("rejectedCount").innerHTML=
 
-data.filter(x=>x.status=="rejected").length;
+data.filter(x=>x.status==="rejected").length;
 
 /* Empty */
 
-if(data.length==0){
+if(data.length===0){
 
-tbody.innerHTML=`
-
-<tr>
-
-<td colspan="5" style="text-align:center">
-
-No deposits found.
-
-</td>
-
-</tr>
-
-`;
+container.innerHTML="<center>No deposits found.</center>";
 
 return;
 
 }
 
-/* Table */
+container.innerHTML="";
+
+/* Cards */
 
 data.forEach(item=>{
 
-tbody.innerHTML+=`
+container.innerHTML+=`
 
-<tr>
+<div class="depositCard">
 
-<td>
+<div class="depositTop">
 
-<b>${item.full_name||"Unknown"}</b><br>
+<div class="userName">
 
-<small>${item.phone||""}</small>
+${item.profiles?.fullname ?? "Unknown User"}
 
-</td>
+</div>
 
-<td>
-
-${item.method||"-"}
-
-</td>
-
-<td>
-
-UGX ${Number(item.amount).toLocaleString()}
-
-</td>
-
-<td>
-
-<span class="status ${item.status}">
+<div class="status ${item.status}">
 
 ${item.status}
 
-</span>
+</div>
 
-</td>
+</div>
 
-<td>
+<div class="info">
+
+<div>
+
+<span>Phone</span>
+
+${item.profiles?.phone ?? "-"}
+
+</div>
+
+<div>
+
+<span>Method</span>
+
+${item.method}
+
+</div>
+
+<div>
+
+<span>Amount</span>
+
+UGX ${Number(item.amount).toLocaleString()}
+
+</div>
+
+<div>
+
+<span>Date</span>
+
+${new Date(item.created_at).toLocaleString()}
+
+</div>
+
+</div>
+
+<div class="actions">
 
 <button
 
-class="actionBtn approve"
+class="approveBtn"
 
 onclick="approveDeposit('${item.id}')">
 
@@ -463,7 +524,7 @@ Approve
 
 <button
 
-class="actionBtn reject"
+class="rejectBtn"
 
 onclick="rejectDeposit('${item.id}')">
 
@@ -471,9 +532,9 @@ Reject
 
 </button>
 
-</td>
+</div>
 
-</tr>
+</div>
 
 `;
 
@@ -481,65 +542,7 @@ Reject
 
 }
 
-/* ==========================
-SEARCH
-========================== */
-
-document.getElementById("search")
-
-.addEventListener("keyup",function(){
-
-let value=this.value.toLowerCase();
-
-let rows=document.querySelectorAll("#depositTable tr");
-
-rows.forEach(row=>{
-
-row.style.display=row.innerText.toLowerCase().includes(value)
-
-? ""
-
-: "none";
-
-});
-
-});
-
-/* ==========================
-FILTER
-========================== */
-
-document.getElementById("filter")
-
-.addEventListener("change",function(){
-
-let value=this.value;
-
-let rows=document.querySelectorAll("#depositTable tr");
-
-rows.forEach(row=>{
-
-if(value=="all"){
-
-row.style.display="";
-
-}else{
-
-row.style.display=
-
-row.innerText.toLowerCase().includes(value)
-
-? ""
-
-: "none";
-
-}
-
-});
-
-});
-
-  </script><script>
+</script><script>
 
 /* ==========================
 APPROVE DEPOSIT
@@ -549,10 +552,16 @@ async function approveDeposit(depositId){
 
 if(!confirm("Approve this deposit?")) return;
 
+/* Get Deposit */
+
 const {data:deposit,error}=await db
+
 .from("deposits")
+
 .select("*")
+
 .eq("id",depositId)
+
 .single();
 
 if(error || !deposit){
@@ -563,17 +572,49 @@ return;
 
 }
 
-/* Already approved */
+/* Prevent Double Approval */
 
-if(deposit.status=="approved"){
+if(deposit.status==="approved"){
 
-alert("Deposit already approved.");
+alert("This deposit is already approved.");
 
 return;
 
 }
 
-/* Update deposit */
+/* Get User Wallet */
+
+const {data:profile}=await db
+
+.from("profiles")
+
+.select("wallet_balance")
+
+.eq("id",deposit.user_id)
+
+.single();
+
+const newBalance=
+
+Number(profile.wallet_balance||0)+
+
+Number(deposit.amount);
+
+/* Update Wallet */
+
+await db
+
+.from("profiles")
+
+.update({
+
+wallet_balance:newBalance
+
+})
+
+.eq("id",deposit.user_id);
+
+/* Update Deposit */
 
 await db
 
@@ -587,59 +628,7 @@ status:"approved"
 
 .eq("id",depositId);
 
-/* Get wallet */
-
-const {data:profile}=await db
-
-.from("profiles")
-
-.select("wallet")
-
-.eq("id",deposit.user_id)
-
-.single();
-
-const newBalance=
-
-Number(profile.wallet||0)+
-
-Number(deposit.amount);
-
-/* Update wallet */
-
-await db
-
-.from("profiles")
-
-.update({
-
-wallet:newBalance
-
-})
-
-.eq("id",deposit.user_id);
-
-/* Wallet transaction */
-
-await db
-
-.from("transactions")
-
-.insert({
-
-user_id:deposit.user_id,
-
-type:"Deposit",
-
-amount:deposit.amount,
-
-status:"Completed",
-
-description:"Deposit Approved"
-
-});
-
-/* User notification */
+/* Notify User */
 
 await db
 
@@ -651,13 +640,29 @@ user_id:deposit.user_id,
 
 title:"Deposit Approved",
 
-message:`Your deposit of UGX ${deposit.amount} has been approved and added to your wallet.`,
+message:`Your deposit of UGX ${Number(deposit.amount).toLocaleString()} has been approved and added to your wallet.`,
 
 type:"success"
 
 });
 
-alert("Deposit approved successfully.");
+/* Notify Admin */
+
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title:"Deposit Approved",
+
+message:`UGX ${Number(deposit.amount).toLocaleString()} approved.`,
+
+type:"success"
+
+});
+
+alert("Deposit Approved Successfully.");
 
 loadDeposits();
 
@@ -681,13 +686,15 @@ const {data:deposit,error}=await db
 
 .single();
 
-if(error || !deposit){
+if(error){
 
 alert("Deposit not found.");
 
 return;
 
 }
+
+/* Update Status */
 
 await db
 
@@ -701,7 +708,7 @@ status:"rejected"
 
 .eq("id",depositId);
 
-/* Notify */
+/* Notify User */
 
 await db
 
@@ -713,16 +720,140 @@ user_id:deposit.user_id,
 
 title:"Deposit Rejected",
 
-message:`Your deposit request of UGX ${deposit.amount} has been rejected.`,
+message:`Your deposit request of UGX ${Number(deposit.amount).toLocaleString()} was rejected.`,
 
 type:"error"
 
 });
 
-alert("Deposit rejected.");
+/* Notify Admin */
+
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title:"Deposit Rejected",
+
+message:`UGX ${Number(deposit.amount).toLocaleString()} rejected.`,
+
+type:"warning"
+
+});
+
+alert("Deposit Rejected.");
 
 loadDeposits();
 
 }
 
-  </script>
+</script><script>
+
+/* ==========================
+SEARCH
+========================== */
+
+document.getElementById("searchInput")
+
+.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+const cards=document.querySelectorAll(".depositCard");
+
+cards.forEach(card=>{
+
+card.style.display=
+
+card.innerText.toLowerCase().includes(value)
+
+? "block"
+
+: "none";
+
+});
+
+});
+
+/* ==========================
+STATUS FILTER
+========================== */
+
+document.getElementById("statusFilter")
+
+.addEventListener("change",function(){
+
+const value=this.value;
+
+const cards=document.querySelectorAll(".depositCard");
+
+cards.forEach(card=>{
+
+const status=card.querySelector(".status")
+
+.innerText
+
+.toLowerCase()
+
+.trim();
+
+if(value==="all"){
+
+card.style.display="block";
+
+}else{
+
+card.style.display=
+
+status===value
+
+? "block"
+
+: "none";
+
+}
+
+});
+
+});
+
+/* ==========================
+AUTO REFRESH
+========================== */
+
+setInterval(()=>{
+
+loadDeposits();
+
+},5000);
+
+/* ==========================
+DISABLE BUTTONS
+========================== */
+
+document.addEventListener("click",function(e){
+
+if(e.target.classList.contains("approveBtn") ||
+
+e.target.classList.contains("rejectBtn")){
+
+e.target.disabled=true;
+
+e.target.innerHTML="Processing...";
+
+}
+
+});
+
+/* ==========================
+PAGE READY
+========================== */
+
+console.log("Admin Deposit Page Ready.");
+
+</script>
+
+</body>
+
+</html>
