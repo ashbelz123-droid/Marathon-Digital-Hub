@@ -5,7 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Notifications | Marathon Digital Hub</title>
 
@@ -26,7 +26,6 @@ body{
 background:#050B18;
 color:#fff;
 padding-bottom:90px;
-overflow-x:hidden;
 
 }
 
@@ -46,11 +45,11 @@ background:
 
 radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
 
-radial-gradient(circle at 80% 20%,rgba(0,140,255,.18),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
 
 radial-gradient(circle at 60% 80%,rgba(0,255,120,.15),transparent 40%);
 
-animation:bgMove 20s linear infinite;
+animation:bgMove 18s linear infinite;
 
 z-index:-2;
 
@@ -84,6 +83,18 @@ color:#9fb5d1;
 
 }
 
+.sectionTitle{
+
+margin:20px;
+
+margin-bottom:10px;
+
+font-size:18px;
+
+color:#00ff88;
+
+}
+
 .notifications{
 
 padding:15px;
@@ -102,6 +113,34 @@ margin-bottom:15px;
 
 border:1px solid rgba(0,200,255,.15);
 
+position:relative;
+
+}
+
+.card h3{
+
+margin-bottom:10px;
+
+font-size:18px;
+
+}
+
+.card p{
+
+line-height:1.6;
+
+color:#d7e3f2;
+
+margin-bottom:12px;
+
+}
+
+.date{
+
+font-size:12px;
+
+color:#9fb5d1;
+
 }
 
 .badge{
@@ -112,7 +151,7 @@ padding:5px 12px;
 
 border-radius:20px;
 
-font-size:12px;
+font-size:11px;
 
 font-weight:bold;
 
@@ -120,51 +159,65 @@ margin-bottom:10px;
 
 }
 
-.info{
-
-background:#0099ff;
-
-}
-
 .success{
 
-background:#00cc66;
+background:#00c853;
 
 }
 
 .warning{
 
-background:#ff9900;
+background:#ff9800;
 
 color:#000;
 
 }
 
+.error{
+
+background:#ff3b30;
+
+}
+
+.info{
+
+background:#2196f3;
+
+}
+
 .promotion{
 
-background:#cc00ff;
+background:#9c27b0;
 
 }
 
-.card h3{
+.unread{
 
-margin-bottom:10px;
+position:absolute;
+
+right:15px;
+
+top:15px;
+
+width:12px;
+
+height:12px;
+
+background:#ff3b30;
+
+border-radius:50%;
 
 }
 
-.card p{
+.empty{
 
-line-height:1.6;
+background:#08142d;
 
-color:#d8e4f3;
+padding:25px;
 
-margin-bottom:12px;
+border-radius:18px;
 
-}
-
-.date{
-
-font-size:12px;
+text-align:center;
 
 color:#9fb5d1;
 
@@ -180,17 +233,47 @@ color:#9fb5d1;
 
 <h2>Notifications</h2>
 
-<p>Latest announcements from Marathon Digital Hub.</p>
+<p>Your personal updates and platform announcements.</p>
 
 </div>
+
+<h3 class="sectionTitle">
+
+👤 Personal Notifications
+
+</h3>
 
 <div
 
 class="notifications"
 
-id="notificationList">
+id="personalNotifications">
 
-Loading notifications...
+<div class="empty">
+
+Loading...
+
+</div>
+
+</div>
+
+<h3 class="sectionTitle">
+
+📢 Platform Announcements
+
+</h3>
+
+<div
+
+class="notifications"
+
+id="globalNotifications">
+
+<div class="empty">
+
+Loading...
+
+</div>
 
 </div><script>
 
@@ -198,9 +281,9 @@ const db = window.supabaseClient;
 
 let currentUser = null;
 
-/* ===========================
+/* ==========================
 START
-=========================== */
+========================== */
 
 document.addEventListener("DOMContentLoaded", async ()=>{
 
@@ -215,15 +298,129 @@ return;
 
 currentUser=user;
 
-await loadNotifications();
+await loadPersonalNotifications();
+
+await loadGlobalNotifications();
+
+await markNotificationsAsRead();
 
 });
 
-/* ===========================
-LOAD NOTIFICATIONS
-=========================== */
+/* ==========================
+PERSONAL NOTIFICATIONS
+========================== */
 
-async function loadNotifications(){
+async function loadPersonalNotifications(){
+
+const { data,error } = await db
+
+.from("user_notifications")
+
+.select("*")
+
+.eq("user_id",currentUser.id)
+
+.order("created_at",{ascending:false});
+
+const container=document.getElementById("personalNotifications");
+
+container.innerHTML="";
+
+if(error){
+
+container.innerHTML='<div class="empty">Failed to load notifications.</div>';
+
+return;
+
+}
+
+if(data.length===0){
+
+container.innerHTML='
+
+<div class="empty">
+
+No personal notifications.
+
+</div>
+
+';
+
+return;
+
+}
+
+data.forEach(item=>{
+
+let badge="info";
+
+switch((item.type||"info").toLowerCase()){
+
+case "success":
+
+badge="success";
+
+break;
+
+case "warning":
+
+badge="warning";
+
+break;
+
+case "error":
+
+badge="error";
+
+break;
+
+case "promotion":
+
+badge="promotion";
+
+break;
+
+default:
+
+badge="info";
+
+}
+
+container.innerHTML+=`
+
+<div class="card">
+
+${!item.is_read?'<div class="unread"></div>':''}
+
+<span class="badge ${badge}">
+
+${item.type||"Info"}
+
+</span>
+
+<h3>${item.title}</h3>
+
+<p>${item.message}</p>
+
+<div class="date">
+
+${new Date(item.created_at).toLocaleString()}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ==========================
+GLOBAL NOTIFICATIONS
+========================== */
+
+async function loadGlobalNotifications(){
 
 const { data,error } = await db
 
@@ -235,31 +432,29 @@ const { data,error } = await db
 
 .order("created_at",{ascending:false});
 
+const container=document.getElementById("globalNotifications");
+
+container.innerHTML="";
+
 if(error){
 
-console.log(error);
+container.innerHTML='<div class="empty">Failed to load announcements.</div>';
 
 return;
 
 }
 
-const container=document.getElementById("notificationList");
-
-container.innerHTML="";
-
 if(data.length===0){
 
-container.innerHTML=`
+container.innerHTML='
 
-<div class="card">
+<div class="empty">
 
-<h3>No Notifications</h3>
-
-<p>There are no announcements at the moment.</p>
+No announcements available.
 
 </div>
 
-`;
+';
 
 return;
 
@@ -269,9 +464,7 @@ data.forEach(item=>{
 
 let badge="info";
 
-if(item.type){
-
-switch(item.type.toLowerCase()){
+switch((item.type||"info").toLowerCase()){
 
 case "success":
 
@@ -297,29 +490,19 @@ badge="info";
 
 }
 
-}
-
 container.innerHTML+=`
 
 <div class="card">
 
 <span class="badge ${badge}">
 
-${item.type || "Info"}
+${item.type||"Info"}
 
 </span>
 
-<h3>
+<h3>${item.title}</h3>
 
-${item.title}
-
-</h3>
-
-<p>
-
-${item.message}
-
-</p>
+<p>${item.message}</p>
 
 <div class="date">
 
@@ -335,8 +518,31 @@ ${new Date(item.created_at).toLocaleString()}
 
 }
 
+/* ==========================
+MARK AS READ
+========================== */
+
+async function markNotificationsAsRead(){
+
+await db
+
+.from("user_notifications")
+
+.update({
+
+is_read:true
+
+})
+
+.eq("user_id",currentUser.id)
+
+.eq("is_read",false);
+
+}
+
 </script>
-<!-- ==========================
+
+  <!-- ==========================
 BOTTOM NAVIGATION
 ========================== -->
 
@@ -386,6 +592,8 @@ font-size:12px;
 
 transition:.3s;
 
+position:relative;
+
 }
 
 .bottom-nav a i{
@@ -409,6 +617,38 @@ font-weight:bold;
 .bottom-nav a:hover{
 
 color:#00ff88;
+
+}
+
+.notificationBadge{
+
+position:absolute;
+
+top:-2px;
+
+right:6px;
+
+background:#ff3b30;
+
+color:#fff;
+
+min-width:18px;
+
+height:18px;
+
+padding:0 5px;
+
+border-radius:50%;
+
+font-size:10px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-weight:bold;
 
 }
 
@@ -444,7 +684,7 @@ color:#00ff88;
 
 <i>🔔</i>
 
-<span>Alerts</span>
+<span>Notifications</span>
 
 </a>
 
