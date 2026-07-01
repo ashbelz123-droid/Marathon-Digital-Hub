@@ -4,9 +4,14 @@
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Marathon Digital Hub</title>
+<title>Dashboard | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
 
 <style>
 
@@ -19,18 +24,14 @@ font-family:Arial,sans-serif;
 
 body{
 
-background:#040817;
+background:#050B18;
 color:white;
 overflow-x:hidden;
-position:relative;
-min-height:100vh;
-padding-bottom:120px;
+padding-bottom:90px;
 
 }
 
-/* ===========================
-   ANIMATED BACKGROUND
-=========================== */
+/* Animated Background */
 
 body::before{
 
@@ -38,106 +39,41 @@ content:"";
 
 position:fixed;
 
-left:-30%;
-top:-30%;
+left:-40%;
+top:-40%;
 
-width:170%;
-height:170%;
+width:180%;
+height:180%;
 
 background:
 
 radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
 
-radial-gradient(circle at 80% 15%,rgba(170,0,255,.18),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
 
-radial-gradient(circle at 70% 85%,rgba(0,120,255,.18),transparent 40%),
+radial-gradient(circle at 70% 85%,rgba(0,255,120,.16),transparent 40%),
 
-radial-gradient(circle at 25% 75%,rgba(0,255,140,.15),transparent 35%);
+radial-gradient(circle at 25% 75%,rgba(180,0,255,.15),transparent 35%);
 
-animation:bgMove 22s linear infinite;
+animation:bgMove 18s linear infinite;
 
-z-index:-5;
-
-}
-
-body::after{
-
-content:"";
-
-position:fixed;
-
-left:0;
-top:0;
-
-width:100%;
-height:100%;
-
-background-image:
-
-radial-gradient(rgba(0,200,255,.28) 1px,transparent 1px);
-
-background-size:22px 22px;
-
-animation:dotsMove 15s linear infinite;
-
-z-index:-4;
+z-index:-2;
 
 }
 
-/* Floating Particles */
+@keyframes bgMove{
 
-.particles{
-
-position:fixed;
-
-left:0;
-top:0;
-
-width:100%;
-height:100%;
-
-pointer-events:none;
-
-overflow:hidden;
-
-z-index:-3;
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
 
 }
 
-.particles span{
-
-position:absolute;
-
-bottom:-20px;
-
-width:6px;
-height:6px;
-
-border-radius:50%;
-
-background:#00c8ff;
-
-box-shadow:0 0 15px #00c8ff;
-
-animation:floatUp linear infinite;
-
-opacity:.7;
-
-}
-
-.particles span:nth-child(1){left:5%;animation-duration:18s;}
-.particles span:nth-child(2){left:15%;animation-duration:24s;}
-.particles span:nth-child(3){left:30%;animation-duration:20s;}
-.particles span:nth-child(4){left:45%;animation-duration:17s;}
-.particles span:nth-child(5){left:60%;animation-duration:23s;}
-.particles span:nth-child(6){left:75%;animation-duration:21s;}
-.particles span:nth-child(7){left:90%;animation-duration:18s;}
-
-/* HEADER */
+/* Header */
 
 .header{
 
-height:75px;
+padding:18px;
 
 display:flex;
 
@@ -145,28 +81,33 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:0 20px;
+}
+
+.header h2{
+
+font-size:24px;
+
+margin-bottom:5px;
 
 }
 
-.logo{
+.header p{
 
-font-size:30px;
+font-size:14px;
 
-font-weight:bold;
-
-background:linear-gradient(90deg,#00c8ff,#00ff88);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
+color:#9fb5d1;
 
 }
 
-.notify{
+.notification{
 
-width:48px;
-height:48px;
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+background:#08142d;
 
 display:flex;
 
@@ -174,30 +115,26 @@ justify-content:center;
 
 align-items:center;
 
-border-radius:50%;
-
-background:rgba(255,255,255,.05);
-
-border:1px solid rgba(0,200,255,.25);
-
 font-size:22px;
 
 position:relative;
 
-backdrop-filter:blur(15px);
+cursor:pointer;
+
+border:1px solid rgba(0,200,255,.20);
 
 }
 
-.notify::after{
-
-content:"3";
+#notifyCount{
 
 position:absolute;
 
-right:-4px;
-top:-4px;
+right:3px;
+
+top:3px;
 
 width:18px;
+
 height:18px;
 
 background:red;
@@ -212,249 +149,53 @@ align-items:center;
 
 font-size:10px;
 
-}
-
-/* Greeting */
-
-.greeting{
-
-padding:0 20px 20px;
+font-weight:bold;
 
 }
 
-.greeting h1{
+/* Slider */
 
-font-size:32px;
+.slider{
 
-margin-bottom:8px;
+margin:15px;
 
-}
+height:190px;
 
-.greeting p{
+border-radius:20px;
 
-color:#b9c8e8;
+overflow:hidden;
 
-line-height:1.5;
-
-}
-
-/* ANIMATIONS */
-
-@keyframes bgMove{
-
-0%{
-transform:translateX(-3%) translateY(0);
-}
-
-50%{
-transform:translateX(3%) translateY(-2%);
-}
-
-100%{
-transform:translateX(-3%) translateY(0);
-}
+position:relative;
 
 }
 
-@keyframes dotsMove{
+.slider img{
 
-0%{
-transform:translateX(0);
-}
+width:100%;
 
-100%{
-transform:translateX(-22px);
-}
+height:100%;
+
+object-fit:cover;
 
 }
 
-@keyframes floatUp{
+.slider-title{
 
-0%{
-transform:translateY(0) scale(.3);
-opacity:0;
-}
+position:absolute;
 
-20%{
-opacity:1;
-}
+left:20px;
 
-80%{
-opacity:1;
-}
+bottom:20px;
 
-100%{
-transform:translateY(-120vh);
-opacity:0;
-}
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-<div class="particles">
-
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-<span></span>
-
-</div>
-
-<div class="header">
-
-<div class="logo">
-
-MARATHON
-
-</div>
-
-<div class="notify">
-
-🔔
-
-</div>
-
-</div>
-
-<div class="greeting">
-
-<h1>
-
-Good Morning 👋
-
-</h1>
-
-<p>
-
-Welcome back to Marathon Digital Hub.<br>
-
-Let's grow your digital income today.
-
-</p>
-
-</div>
-
-  <!-- ===========================
-     WALLET CARD
-=========================== -->
-
-<style>
-
-.wallet-card{
-
-margin:20px;
-
-padding:25px;
-
-background:rgba(8,20,45,.75);
-
-border:1px solid rgba(0,200,255,.35);
-
-backdrop-filter:blur(18px);
-
-border-radius:25px;
-
-box-shadow:
-
-0 0 35px rgba(0,200,255,.18);
-
-animation:walletGlow 4s infinite alternate;
-
-}
-
-.wallet-top{
-
-text-align:center;
-
-}
-
-.wallet-top small{
-
-color:#9cb6d9;
-
-font-size:15px;
-
-}
-
-.wallet-top h2{
-
-font-size:40px;
-
-margin-top:10px;
-
-background:linear-gradient(
-
-90deg,
-
-#00c8ff,
-
-#00ff88
-
-);
-
--webkit-background-clip:text;
-
--webkit-text-fill-color:transparent;
-
-}
-
-.wallet-buttons{
-
-display:flex;
-
-gap:15px;
-
-margin-top:25px;
-
-}
-
-.wallet-buttons button{
-
-flex:1;
-
-padding:15px;
-
-border:none;
-
-border-radius:16px;
-
-font-size:15px;
+font-size:22px;
 
 font-weight:bold;
 
-cursor:pointer;
-
-background:
-
-linear-gradient(
-
-90deg,
-
-#00c8ff,
-
-#00ff88
-
-);
-
-color:#001018;
-
-transition:.35s;
+text-shadow:0 0 8px black;
 
 }
 
-.wallet-buttons button:hover{
-
-transform:translateY(-5px);
-
-}
+/* Cards */
 
 .stats{
 
@@ -464,268 +205,41 @@ grid-template-columns:repeat(2,1fr);
 
 gap:15px;
 
-padding:0 20px 20px;
+padding:15px;
 
 }
 
-.stat{
+.card{
 
-background:rgba(8,20,45,.75);
+background:#08142d;
 
-border:1px solid rgba(0,200,255,.25);
+border-radius:18px;
 
-border-radius:20px;
+padding:18px;
 
-padding:20px;
-
-text-align:center;
-
-backdrop-filter:blur(15px);
-
-transition:.35s;
+border:1px solid rgba(0,200,255,.15);
 
 }
 
-.stat:hover{
+.card p{
 
-transform:translateY(-5px);
+font-size:13px;
 
-box-shadow:0 0 20px rgba(0,200,255,.25);
-
-}
-
-.stat h3{
-
-font-size:24px;
+color:#9fb5d1;
 
 margin-bottom:8px;
+
+}
+
+.card h2{
+
+font-size:22px;
 
 color:#00ff88;
 
 }
 
-.stat p{
-
-color:#bdd0ea;
-
-font-size:14px;
-
-}
-
-@keyframes walletGlow{
-
-from{
-
-box-shadow:
-
-0 0 20px rgba(0,200,255,.18);
-
-}
-
-to{
-
-box-shadow:
-
-0 0 40px rgba(0,255,180,.28);
-
-}
-
-}
-
-</style>
-
-<div class="wallet-card">
-
-<div class="wallet-top">
-
-<small>Total Wallet Balance</small>
-
-<h2 id="walletBalance">
-
-UGX 0.00
-
-</h2>
-
-</div>
-
-<div class="wallet-buttons">
-
-<button onclick="location.href='deposit.html'">
-
-💳 Deposit
-
-</button>
-
-<button onclick="location.href='withdraw.html'">
-
-💸 Withdraw
-
-</button>
-
-</div>
-
-</div>
-
-<div class="stats">
-
-<div class="stat">
-
-<h3 id="todayIncome">
-
-UGX 0
-
-</h3>
-
-<p>Today's Income</p>
-
-</div>
-
-<div class="stat">
-
-<h3 id="totalIncome">
-
-UGX 0
-
-</h3>
-
-<p>Total Income</p>
-
-</div>
-
-<div class="stat">
-
-<h3 id="activeMachines">
-
-0
-
-</h3>
-
-<p>Active Machines</p>
-
-</div>
-
-<div class="stat">
-
-<h3 id="refBonus">
-
-UGX 0
-
-</h3>
-
-<p>Referral Bonus</p>
-
-</div>
-
-</div>
-
-  <!-- ===========================
-     HERO SLIDER
-=========================== -->
-
-<style>
-
-.hero-slider{
-
-margin:20px;
-
-height:220px;
-
-position:relative;
-
-overflow:hidden;
-
-border-radius:25px;
-
-border:1px solid rgba(0,200,255,.30);
-
-box-shadow:0 0 25px rgba(0,200,255,.15);
-
-}
-
-.hero-slide{
-
-position:absolute;
-
-width:100%;
-height:100%;
-
-opacity:0;
-
-animation:slideShow 15s infinite;
-
-}
-
-.hero-slide:nth-child(1){
-
-animation-delay:0s;
-
-}
-
-.hero-slide:nth-child(2){
-
-animation-delay:5s;
-
-}
-
-.hero-slide:nth-child(3){
-
-animation-delay:10s;
-
-}
-
-.hero-slide img{
-
-width:100%;
-height:100%;
-object-fit:cover;
-
-}
-
-.hero-overlay{
-
-position:absolute;
-
-left:0;
-right:0;
-bottom:0;
-
-padding:20px;
-
-background:linear-gradient(transparent,rgba(0,0,0,.85));
-
-}
-
-.hero-overlay h2{
-
-color:#00c8ff;
-
-margin-bottom:8px;
-
-}
-
-.hero-overlay p{
-
-font-size:14px;
-
-color:#ddd;
-
-}
-
-@keyframes slideShow{
-
-0%{opacity:0;}
-
-5%{opacity:1;}
-
-30%{opacity:1;}
-
-35%{opacity:0;}
-
-100%{opacity:0;}
-
-}
-
-/* QUICK MENU */
+/* Quick Menu */
 
 .quick-menu{
 
@@ -733,101 +247,147 @@ display:grid;
 
 grid-template-columns:repeat(4,1fr);
 
-gap:15px;
+gap:12px;
 
-padding:0 20px 20px;
+padding:15px;
 
 }
 
-.quick-item{
+.quick{
 
-background:rgba(8,20,45,.75);
+background:#08142d;
 
-border:1px solid rgba(0,200,255,.25);
+border-radius:15px;
 
-border-radius:18px;
-
-padding:18px;
+padding:16px;
 
 text-align:center;
 
 cursor:pointer;
 
-transition:.35s;
-
-backdrop-filter:blur(12px);
+border:1px solid rgba(0,200,255,.15);
 
 }
 
-.quick-item:hover{
+.quick div{
 
-transform:translateY(-6px);
+font-size:26px;
 
-box-shadow:0 0 20px rgba(0,200,255,.25);
-
-}
-
-.quick-item .icon{
-
-font-size:28px;
-
-margin-bottom:10px;
+margin-bottom:8px;
 
 }
 
-.quick-item span{
-
-display:block;
+.quick span{
 
 font-size:13px;
-
-color:#d8e4f2;
 
 }
 
 </style>
 
-<div class="hero-slider">
+</head>
 
-<div class="hero-slide">
+<body>
 
-<img src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200">
+<div class="header">
 
-<div class="hero-overlay">
+<div>
 
-<h2>AI Mining</h2>
+<h2 id="userName">
 
-<p>Power your income with smart mining.</p>
+Loading...
+
+</h2>
+
+<p>
+
+Welcome Back To Marathon Digital Hub
+
+</p>
+
+</div>
+
+<div
+
+class="notification"
+
+onclick="location.href='notifications.html'">
+
+🔔
+
+<div id="notifyCount">
+
+0
 
 </div>
 
 </div>
 
-<div class="hero-slide">
+</div>
 
-<img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200">
+<div class="slider">
 
-<div class="hero-overlay">
+<img
 
-<h2>Crypto Investment</h2>
+id="sliderImage"
 
-<p>Build wealth with Marathon Digital Hub.</p>
+src="images/banner1.jpg">
+
+<div class="slider-title">
+
+MARATHON DIGITAL HUB
 
 </div>
 
 </div>
 
-<div class="hero-slide">
+<div class="stats">
 
-<img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476?w=1200">
+<div class="card">
 
-<div class="hero-overlay">
+<p>Wallet Balance</p>
 
-<h2>Invite Friends</h2>
+<h2 id="walletBalance">
 
-<p>Earn commissions from your team.</p>
+UGX 0
+
+</h2>
 
 </div>
+
+<div class="card">
+
+<p>Active Machines</p>
+
+<h2 id="activeMachines">
+
+0
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p>Total Deposits</p>
+
+<h2 id="totalDeposits">
+
+UGX 0
+
+</h2>
+
+</div>
+
+<div class="card">
+
+<p>Total Withdrawals</p>
+
+<h2 id="totalWithdrawals">
+
+UGX 0
+
+</h2>
 
 </div>
 
@@ -835,861 +395,504 @@ color:#d8e4f2;
 
 <div class="quick-menu">
 
-<div class="quick-item" onclick="location.href='machines.html'">
+<div class="quick"
 
-<div class="icon">⚙️</div>
+onclick="location.href='machines.html'">
+
+<div>⚙️</div>
 
 <span>Machines</span>
 
 </div>
 
-<div class="quick-item" onclick="location.href='income.html'">
+<div class="quick"
 
-<div class="icon">📈</div>
+onclick="location.href='deposit.html'">
+
+<div>💳</div>
+
+<span>Deposit</span>
+
+</div>
+
+<div class="quick"
+
+onclick="location.href='withdraw.html'">
+
+<div>💵</div>
+
+<span>Withdraw</span>
+
+</div>
+
+<div class="quick"
+
+onclick="location.href='income.html'">
+
+<div>📈</div>
 
 <span>Income</span>
 
 </div>
 
-<div class="quick-item" onclick="location.href='referrals.html'">
+   </div><script>
 
-<div class="icon">👥</div>
+/* ==========================================
+SUPABASE
+========================================== */
 
-<span>Referrals</span>
+const db = window.supabaseClient;
+
+let currentUser = null;
+
+/* ==========================================
+START DASHBOARD
+========================================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+const { data:{ user } } = await db.auth.getUser();
+
+/* Not logged in */
+
+if(!user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+currentUser = user;
+
+/* Load dashboard */
+
+await loadProfile();
+
+await loadWallet();
+
+await loadMachines();
+
+await loadDeposits();
+
+await loadWithdrawals();
+
+await loadNotifications();
+
+startSlider();
+
+});
+
+/* ==========================================
+PROFILE
+========================================== */
+
+async function loadProfile(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+document.getElementById("userName").innerHTML=
+
+"Welcome, "+data.fullname;
+
+}
+
+/* ==========================================
+WALLET
+========================================== */
+
+async function loadWallet(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("wallet_balance")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error)return;
+
+document.getElementById("walletBalance").innerHTML=
+
+"UGX "+Number(data.wallet_balance).toLocaleString();
+
+}
+
+/* ==========================================
+ACTIVE MACHINES
+========================================== */
+
+async function loadMachines(){
+
+const { data,error } = await db
+
+.from("user_machines")
+
+.select("*")
+
+.eq("user_id",currentUser.id)
+
+.eq("status","active");
+
+if(error)return;
+
+document.getElementById("activeMachines").innerHTML=
+
+data.length;
+
+}
+
+/* ==========================================
+TOTAL DEPOSITS
+========================================== */
+
+async function loadDeposits(){
+
+const { data,error } = await db
+
+.from("deposits")
+
+.select("amount")
+
+.eq("user_id",currentUser.id)
+
+.eq("status","approved");
+
+if(error)return;
+
+let total=0;
+
+data.forEach(item=>{
+
+total+=Number(item.amount);
+
+});
+
+document.getElementById("totalDeposits").innerHTML=
+
+"UGX "+total.toLocaleString();
+
+}
+
+/* ==========================================
+TOTAL WITHDRAWALS
+========================================== */
+
+async function loadWithdrawals(){
+
+const { data,error } = await db
+
+.from("withdrawals")
+
+.select("amount")
+
+.eq("user_id",currentUser.id)
+
+.eq("status","approved");
+
+if(error)return;
+
+let total=0;
+
+data.forEach(item=>{
+
+total+=Number(item.amount);
+
+});
+
+document.getElementById("totalWithdrawals").innerHTML=
+
+"UGX "+total.toLocaleString();
+
+}
+
+   </script>
+
+   <!-- =============================
+LATEST ANNOUNCEMENTS
+============================= -->
+
+<div style="padding:15px;">
+
+<h2 style="margin-bottom:15px;">
+Latest Announcements
+</h2>
+
+<div id="announcementList">
+
+<div style="
+background:#08142d;
+padding:18px;
+border-radius:15px;
+text-align:center;
+">
+
+Loading announcements...
 
 </div>
 
-<div class="quick-item" onclick="location.href='wallet.html'">
-
-<div class="icon">💰</div>
-
-<span>Wallet</span>
-
 </div>
 
 </div>
 
-  <!-- ===========================
-     AI MINING MACHINES
-=========================== -->
+<script>
 
-<style>
+/* ==========================
+LOCAL IMAGE SLIDER
+========================== */
 
-.section-title{
+const bannerImages=[
 
-margin:25px 20px 15px;
+"images/banner1.jpg",
+"images/banner2.jpg",
+"images/banner3.jpg",
+"images/banner4.jpg"
 
-font-size:24px;
+];
 
-font-weight:bold;
+let currentBanner=0;
 
-color:#00c8ff;
+function startSlider(){
 
-}
+setInterval(()=>{
 
-.machine-grid{
+currentBanner++;
 
-display:grid;
+if(currentBanner>=bannerImages.length){
 
-grid-template-columns:1fr;
-
-gap:18px;
-
-padding:0 20px;
-
-}
-
-.machine-card{
-
-background:rgba(8,20,45,.78);
-
-border:1px solid rgba(0,200,255,.25);
-
-border-radius:22px;
-
-overflow:hidden;
-
-backdrop-filter:blur(15px);
-
-box-shadow:0 0 20px rgba(0,200,255,.15);
-
-transition:.35s;
+currentBanner=0;
 
 }
 
-.machine-card:hover{
+document.getElementById("sliderImage").src=
 
-transform:translateY(-6px);
+bannerImages[currentBanner];
 
-box-shadow:0 0 30px rgba(0,255,255,.25);
+},4000);
 
 }
 
-.machine-card img{
+/* ==========================
+NOTIFICATION COUNT
+========================== */
+
+async function loadNotifications(){
+
+const { data,error } = await db
+
+.from("notifications")
+
+.select("*")
+
+.eq("is_active",true)
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+/* Count */
+
+document.getElementById("notifyCount").innerHTML=
+
+data.length;
+
+/* Latest */
+
+const container=document.getElementById("announcementList");
+
+container.innerHTML="";
+
+if(data.length===0){
+
+container.innerHTML=`
+
+<div style="
+background:#08142d;
+padding:18px;
+border-radius:15px;
+text-align:center;
+">
+
+No announcements available.
+
+</div>
+
+`;
+
+return;
+
+}
+
+/* Show only latest 4 */
+
+data.slice(0,4).forEach(item=>{
+
+container.innerHTML+=`
+
+<div onclick="location.href='notifications.html'"
+
+style="
+background:#08142d;
+padding:18px;
+border-radius:15px;
+margin-bottom:12px;
+cursor:pointer;
+border:1px solid rgba(0,200,255,.15);
+">
+
+<h3 style="
+margin-bottom:8px;
+color:#00ff88;
+">
+
+${item.title}
+
+</h3>
+
+<p style="color:#cdd8ef;">
+
+${item.message}
+
+</p>
+
+</div>
+
+`;
+
+});
+
+}
+
+</script>
+
+   <!-- ==========================
+MORE BUTTON
+========================== -->
+
+<div style="padding:0 15px 25px;">
+
+<button
+
+onclick="location.href='notifications.html'"
+
+style="
 
 width:100%;
-
-height:170px;
-
-object-fit:cover;
-
-}
-
-.machine-info{
-
-padding:18px;
-
-}
-
-.machine-info h3{
-
-font-size:22px;
-
-color:#00ff88;
-
-margin-bottom:10px;
-
-}
-
-.machine-info p{
-
-color:#d4ddee;
-
-font-size:14px;
-
-line-height:1.6;
-
-margin-bottom:6px;
-
-}
-
-.machine-btn{
-
-margin-top:15px;
-
-width:100%;
-
-padding:14px;
-
-border:none;
-
-border-radius:15px;
-
-background:linear-gradient(90deg,#00c8ff,#00ff88);
-
-color:#001018;
-
-font-size:15px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.machine-btn:hover{
-
-opacity:.9;
-
-}
-
-.daily-box{
-
-margin:20px;
-
-padding:20px;
-
-background:rgba(8,20,45,.75);
-
-border-radius:20px;
-
-border:1px solid rgba(0,200,255,.25);
-
-text-align:center;
-
-}
-
-.daily-box h2{
-
-color:#00ff88;
-
-margin-bottom:10px;
-
-}
-
-.daily-box p{
-
-color:#c8d6e8;
-
-}
-
-</style>
-
-<h2 class="section-title">
-
-🤖 AI Mining Machines
-
-</h2>
-
-<div class="machine-grid">
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200">
-
-<div class="machine-info">
-
-<h3>Starter Miner</h3>
-
-<p>Investment: UGX 50,000</p>
-
-<p>Daily Income: UGX 5,000</p>
-
-<p>Duration: 30 Days</p>
-
-<button class="machine-btn">
-
-Buy Machine
-
-</button>
-
-</div>
-
-</div>
-
-<div class="machine-card">
-
-<img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200">
-
-<div class="machine-info">
-
-<h3>Professional Miner</h3>
-
-<p>Investment: UGX 200,000</p>
-
-<p>Daily Income: UGX 22,000</p>
-
-<p>Duration: 45 Days</p>
-
-<button class="machine-btn">
-
-Buy Machine
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="daily-box">
-
-<h2>
-
-🎁 Daily Reward
-
-</h2>
-
-<p>
-
-Claim your daily bonus after every successful mining cycle.
-
-</p>
-
-</div>
-
-  <!-- =========================================
-MESSAGE CENTER
-========================================= -->
-
-<style>
-
-.message-center{
-
-margin:20px;
-
-}
-
-.message-card{
-
-background:rgba(8,20,45,.78);
-
-border:1px solid rgba(0,200,255,.25);
-
-border-radius:22px;
-
-overflow:hidden;
-
-backdrop-filter:blur(15px);
-
-}
-
-.message-item{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:18px;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-cursor:pointer;
-
-transition:.3s;
-
-}
-
-.message-item:last-child{
-
-border-bottom:none;
-
-}
-
-.message-item:hover{
-
-background:rgba(0,200,255,.08);
-
-}
-
-.message-left{
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-.message-icon{
-
-font-size:24px;
-
-}
-
-.arrow{
-
-color:#00c8ff;
-
-font-size:20px;
-
-}
-
-/* ANNOUNCEMENTS */
-
-.announcement-box{
-
-margin:20px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
-}
-
-.announcement{
-
-background:rgba(8,20,45,.78);
-
-border:1px solid rgba(0,200,255,.25);
-
-border-radius:22px;
-
-padding:20px;
-
-transition:.35s;
-
-}
-
-.announcement:hover{
-
-transform:translateY(-5px);
-
-box-shadow:0 0 20px rgba(0,200,255,.20);
-
-}
-
-.announcement h3{
-
-color:#00ff88;
-
-margin-bottom:10px;
-
-}
-
-.announcement p{
-
-color:#d4ddee;
-
-line-height:1.6;
-
-}
-
-.vip-card{
-
-margin:20px;
-
-padding:25px;
-
-border-radius:22px;
-
-background:
-
-linear-gradient(
-
-135deg,
-
-rgba(0,200,255,.25),
-
-rgba(0,255,170,.18)
-
-);
-
-border:1px solid rgba(0,255,255,.35);
-
-text-align:center;
-
-}
-
-.vip-card h2{
-
-margin-bottom:10px;
-
-color:#fff;
-
-}
-
-.vip-card p{
-
-color:#d8e5f3;
-
-margin-bottom:18px;
-
-}
-
-.vip-btn{
-
-padding:14px 30px;
-
-border:none;
-
-border-radius:15px;
-
-background:#00c8ff;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-</style>
-
-<h2 class="section-title">
-
-📢 Message Center
-
-</h2>
-
-<div class="message-center">
-
-<div class="message-card">
-
-<div class="message-item">
-
-<div class="message-left">
-
-<div class="message-icon">
-
-📋
-
-</div>
-
-<span>
-
-Member Guidelines
-
-</span>
-
-</div>
-
-<div class="arrow">
-
-›
-
-</div>
-
-</div>
-
-<div class="message-item">
-
-<div class="message-left">
-
-<div class="message-icon">
-
-💳
-
-</div>
-
-<span>
-
-Deposit Guide
-
-</span>
-
-</div>
-
-<div class="arrow">
-
-›
-
-</div>
-
-</div>
-
-<div class="message-item">
-
-<div class="message-left">
-
-<div class="message-icon">
-
-💸
-
-</div>
-
-<span>
-
-Withdrawal Guide
-
-</span>
-
-</div>
-
-<div class="arrow">
-
-›
-
-</div>
-
-</div>
-
-<div class="message-item">
-
-<div class="message-left">
-
-<div class="message-icon">
-
-🤖
-
-</div>
-
-<span>
-
-Mining Updates
-
-</span>
-
-</div>
-
-<div class="arrow">
-
-›
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<h2 class="section-title">
-
-📡 Latest Announcements
-
-</h2>
-
-<div class="announcement-box">
-
-<div class="announcement">
-
-<h3>
-
-🚀 Platform Online
-
-</h3>
-
-<p>
-
-All Marathon Digital Hub mining services are running normally.
-
-</p>
-
-</div>
-
-<div class="announcement">
-
-<h3>
-
-🎁 Referral Rewards
-
-</h3>
-
-<p>
-
-Invite friends and earn unlimited commissions every day.
-
-</p>
-
-</div>
-
-<div class="announcement">
-
-<h3>
-
-⚙️ New AI Machines
-
-</h3>
-
-<p>
-
-Brand new mining packages are now available for purchase.
-
-</p>
-
-</div>
-
-</div>
-
-<div class="vip-card">
-
-<h2>
-
-👑 Become a VIP Miner
-
-</h2>
-
-<p>
-
-Upgrade your mining level and unlock higher daily profits.
-
-</p>
-
-<button class="vip-btn">
-
-Upgrade Now
-
-</button>
-
-</div>
-
-  <!-- =====================================
-LIVE NEWS TICKER
-====================================== -->
-
-<style>
-
-.news-ticker{
-
-margin:20px;
 
 height:50px;
 
-overflow:hidden;
-
-border-radius:18px;
-
-background:rgba(8,20,45,.85);
-
-border:1px solid rgba(0,200,255,.25);
-
-display:flex;
-
-align-items:center;
-
-}
-
-.news-track{
-
-display:flex;
-
-white-space:nowrap;
-
-animation:ticker 20s linear infinite;
-
-font-weight:bold;
-
-color:#00ff88;
-
-}
-
-.news-track span{
-
-padding:0 60px;
-
-}
-
-@keyframes ticker{
-
-0%{
-
-transform:translateX(100%);
-
-}
-
-100%{
-
-transform:translateX(-100%);
-
-}
-
-}
-
-/* TOP EARNERS */
-
-.top-earners{
-
-margin:20px;
-
-padding:20px;
-
-background:rgba(8,20,45,.80);
-
-border-radius:22px;
-
-border:1px solid rgba(0,200,255,.25);
-
-}
-
-.top-earners h2{
-
-margin-bottom:15px;
-
-color:#00c8ff;
-
-}
-
-.earner{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:12px 0;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-}
-
-.earner:last-child{
-
 border:none;
 
-}
+border-radius:14px;
 
-.name{
+background:linear-gradient(90deg,#00C8FF,#00FF88);
 
-color:white;
-
-}
-
-.amount{
-
-color:#00ff88;
+font-size:16px;
 
 font-weight:bold;
 
-}
-
-/* SUPPORT */
-
-.support-btn{
-
-position:fixed;
-
-bottom:95px;
-
-right:20px;
-
-width:65px;
-
-height:65px;
-
-border-radius:50%;
-
-background:#00c853;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:30px;
-
-box-shadow:0 0 25px rgba(0,255,120,.45);
+color:#001018;
 
 cursor:pointer;
 
-animation:pulse 2s infinite;
+">
 
-z-index:999;
+View All Announcements
 
-}
+</button>
 
-@keyframes pulse{
+</div>
 
-0%{
+<!-- ==========================
+SUPPORT BUTTON
+========================== -->
 
-transform:scale(1);
+<div style="padding:0 15px 20px;">
 
-}
+<button
 
-50%{
+onclick="location.href='support.html'"
 
-transform:scale(1.12);
+style="
 
-}
+width:100%;
 
-100%{
+height:50px;
 
-transform:scale(1);
+border:none;
 
-}
+border-radius:14px;
 
-}
+background:#08142d;
 
-/* BOTTOM NAV */
+border:1px solid rgba(0,200,255,.20);
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+">
+
+💬 Contact Support
+
+</button>
+
+</div>
+
+<!-- ==========================
+BOTTOM NAVIGATION
+========================== -->
+
+<style>
 
 .bottom-nav{
 
 position:fixed;
 
-bottom:0;
-
 left:0;
+
+bottom:0;
 
 width:100%;
 
-height:75px;
+height:72px;
 
-background:#07152f;
+background:#08142d;
+
+border-top:1px solid rgba(0,200,255,.15);
 
 display:flex;
 
 justify-content:space-around;
 
 align-items:center;
-
-border-top:1px solid rgba(0,200,255,.25);
-
-backdrop-filter:blur(20px);
 
 z-index:999;
 
@@ -1699,7 +902,7 @@ z-index:999;
 
 text-decoration:none;
 
-color:#bcd3ea;
+color:#b8c8e8;
 
 display:flex;
 
@@ -1707,121 +910,35 @@ flex-direction:column;
 
 align-items:center;
 
-font-size:13px;
-
-transition:.3s;
+font-size:12px;
 
 }
 
-.bottom-nav a.active{
+.bottom-nav a i{
 
-color:#00c8ff;
-
-}
-
-.bottom-nav a:hover{
-
-transform:translateY(-4px);
-
-}
-
-.bottom-nav i{
+font-style:normal;
 
 font-size:24px;
 
-margin-bottom:5px;
+margin-bottom:4px;
+
+}
+
+.bottom-nav .active{
+
+color:#00FF88;
+
+font-weight:bold;
 
 }
 
 </style>
 
-<div class="news-ticker">
-
-<div class="news-track">
-
-<span>🚀 Marathon Digital Hub is paying successfully.</span>
-
-<span>🎁 Invite friends and earn unlimited bonuses.</span>
-
-<span>💰 New AI Mining Machines Available.</span>
-
-<span>🔥 Withdrawals processed within minutes.</span>
-
-</div>
-
-</div>
-
-<div class="top-earners">
-
-<h2>
-
-🏆 Today's Top Earners
-
-</h2>
-
-<div class="earner">
-
-<span class="name">
-
-👤 David
-
-</span>
-
-<span class="amount">
-
-UGX 420,000
-
-</span>
-
-</div>
-
-<div class="earner">
-
-<span class="name">
-
-👤 Sarah
-
-</span>
-
-<span class="amount">
-
-UGX 380,000
-
-</span>
-
-</div>
-
-<div class="earner">
-
-<span class="name">
-
-👤 Joseph
-
-</span>
-
-<span class="amount">
-
-UGX 315,000
-
-</span>
-
-</div>
-
-</div>
-
-<div class="support-btn"
-
-onclick="window.open('https://wa.me/256700000000')">
-
-💬
-
-</div>
-
 <div class="bottom-nav">
 
 <a href="dashboard.html" class="active">
 
-🏠
+<i>🏠</i>
 
 <span>Home</span>
 
@@ -1829,7 +946,7 @@ onclick="window.open('https://wa.me/256700000000')">
 
 <a href="machines.html">
 
-⚙️
+<i>⚙️</i>
 
 <span>Machines</span>
 
@@ -1837,7 +954,7 @@ onclick="window.open('https://wa.me/256700000000')">
 
 <a href="deposit.html">
 
-💳
+<i>💳</i>
 
 <span>Deposit</span>
 
@@ -1845,979 +962,22 @@ onclick="window.open('https://wa.me/256700000000')">
 
 <a href="income.html">
 
-📈
+<i>📈</i>
 
 <span>Income</span>
 
 </a>
 
-<a href="my.html">
+<a href="profile.html">
 
-👤
+<i>👤</i>
 
-<span>My</span>
+<span>Profile</span>
 
 </a>
 
 </div>
-
-  <!-- =====================================
-LIVE MARKET + VIP + MINING PROGRESS
-====================================== -->
-
-<style>
-
-/* LIVE MARKET */
-
-.market-box{
-
-margin:20px;
-
-padding:20px;
-
-background:rgba(8,20,45,.82);
-
-border-radius:22px;
-
-border:1px solid rgba(0,200,255,.25);
-
-}
-
-.market-box h2{
-
-color:#00c8ff;
-
-margin-bottom:18px;
-
-}
-
-.market-row{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:12px 0;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-}
-
-.market-row:last-child{
-
-border:none;
-
-}
-
-.coin{
-
-font-weight:bold;
-
-}
-
-.price{
-
-color:#00ff88;
-
-}
-
-/* MINING PROGRESS */
-
-.progress-card{
-
-margin:20px;
-
-padding:20px;
-
-background:rgba(8,20,45,.82);
-
-border-radius:22px;
-
-border:1px solid rgba(0,200,255,.25);
-
-}
-
-.progress-card h2{
-
-color:#00c8ff;
-
-margin-bottom:15px;
-
-}
-
-.progress-bar{
-
-width:100%;
-
-height:12px;
-
-background:#102847;
-
-border-radius:20px;
-
-overflow:hidden;
-
-margin:12px 0;
-
-}
-
-.progress-fill{
-
-width:68%;
-
-height:100%;
-
-background:linear-gradient(90deg,#00c8ff,#00ff88);
-
-animation:progressMove 3s ease-in-out infinite alternate;
-
-}
-
-@keyframes progressMove{
-
-from{
-
-width:68%;
-
-}
-
-to{
-
-width:74%;
-
-}
-
-}
-
-/* VIP */
-
-.vip-level{
-
-margin:20px;
-
-padding:25px;
-
-border-radius:22px;
-
-background:linear-gradient(135deg,#008cff,#00ffaa);
-
-color:#001018;
-
-text-align:center;
-
-box-shadow:0 0 30px rgba(0,255,255,.25);
-
-}
-
-.vip-level h2{
-
-font-size:28px;
-
-margin-bottom:10px;
-
-}
-
-.vip-level button{
-
-margin-top:18px;
-
-padding:14px 30px;
-
-border:none;
-
-border-radius:15px;
-
-background:white;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-/* POPUP BONUS */
-
-.bonus-popup{
-
-position:fixed;
-
-top:25px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-background:#00ff88;
-
-color:#001018;
-
-padding:15px 30px;
-
-border-radius:40px;
-
-font-weight:bold;
-
-box-shadow:0 0 25px rgba(0,255,150,.35);
-
-animation:bonusFade 6s infinite;
-
-z-index:9999;
-
-}
-
-@keyframes bonusFade{
-
-0%{
-
-opacity:0;
-
-top:-60px;
-
-}
-
-15%{
-
-opacity:1;
-
-top:25px;
-
-}
-
-70%{
-
-opacity:1;
-
-}
-
-100%{
-
-opacity:0;
-
-top:-60px;
-
-}
-
-}
-
-</style>
-
-<div class="bonus-popup">
-
-🎉 Daily Bonus Available!
-
-</div>
-
-<div class="market-box">
-
-<h2>
-
-🌍 Live Crypto Market
-
-</h2>
-
-<div class="market-row">
-
-<span class="coin">
-
-₿ Bitcoin
-
-</span>
-
-<span class="price">
-
-$108,450 ▲
-
-</span>
-
-</div>
-
-<div class="market-row">
-
-<span class="coin">
-
-⟠ Ethereum
-
-</span>
-
-<span class="price">
-
-$6,920 ▲
-
-</span>
-
-</div>
-
-<div class="market-row">
-
-<span class="coin">
-
-◎ Solana
-
-</span>
-
-<span class="price">
-
-$248 ▲
-
-</span>
-
-</div>
-
-<div class="market-row">
-
-<span class="coin">
-
-🟢 USDT
-
-</span>
-
-<span class="price">
-
-$1.00
-
-</span>
-
-</div>
-
-</div>
-
-<div class="progress-card">
-
-<h2>
-
-⚡ Mining Progress
-
-</h2>
-
-<p>
-
-Today's Mining Cycle
-
-</p>
-
-<div class="progress-bar">
-
-<div class="progress-fill">
-
-</div>
-
-</div>
-
-<p>
-
-68% Completed
-
-</p>
-
-</div>
-
-<div class="vip-level">
-
-<h2>
-
-👑 VIP LEVEL 1
-
-</h2>
-
-<p>
-
-Upgrade to VIP 2 and increase your daily mining income.
-
-</p>
-
-<button>
-
-Upgrade VIP
-
-</button>
-
-</div>
-
-  <!-- ===============================
-     LOAD USER DATA FROM SUPABASE
-================================ -->
-
-<script>
-
-async function loadDashboard(){
-
-try{
-
-const { data:{ user }, error } =
-await window.supabaseClient.auth.getUser();
-
-if(error || !user){
-
-window.location.href="login.html";
-return;
-
-}
-
-/* Load Profile */
-
-const { data: profile } =
-await window.supabaseClient
-
-.from("profiles")
-
-.select("*")
-
-.eq("id",user.id)
-
-.single();
-
-if(profile){
-
-document.querySelector(".greeting h1").innerHTML =
-"Welcome back 👋<br>"+profile.fullname;
-
-document.getElementById("walletBalance").innerHTML =
-"UGX "+Number(profile.wallet_balance).toLocaleString();
-
-}
-
-/* Deposits */
-
-const { data: deposits } =
-await window.supabaseClient
-
-.from("deposits")
-
-.select("amount")
-
-.eq("user_id",user.id)
-
-.eq("status","approved");
-
-let depositTotal=0;
-
-if(deposits){
-
-deposits.forEach(d=>{
-
-depositTotal+=Number(d.amount);
-
-});
-
-}
-
-/* Withdrawals */
-
-const { data: withdrawals } =
-await window.supabaseClient
-
-.from("withdrawals")
-
-.select("amount")
-
-.eq("user_id",user.id)
-
-.eq("status","approved");
-
-let withdrawTotal=0;
-
-if(withdrawals){
-
-withdrawals.forEach(w=>{
-
-withdrawTotal+=Number(w.amount);
-
-});
-
-}
-
-/* Active Machines */
-
-const { count: machines } =
-await window.supabaseClient
-
-.from("user_machines")
-
-.select("*",{count:"exact",head:true})
-
-.eq("user_id",user.id)
-
-.eq("status","active");
-
-/* Referrals */
-
-const { count: referrals } =
-await window.supabaseClient
-
-.from("referrals")
-
-.select("*",{count:"exact",head:true})
-
-.eq("referrer_id",user.id);
-
-/* Update Cards */
-
-if(document.getElementById("activeMachines"))
-
-document.getElementById("activeMachines").innerHTML=
-
-machines||0;
-
-if(document.getElementById("refBonus"))
-
-document.getElementById("refBonus").innerHTML=
-
-referrals||0;
-
-console.log("Dashboard Loaded");
-
-}catch(err){
-
-console.log(err);
-
-}
-
-}
-
-loadDashboard();
-
-  </script>
-
-  <!-- =====================================
-RECENT ACTIVITY
-====================================== -->
-
-<style>
-
-.activity-section{
-
-margin:20px;
-
-}
-
-.activity-card{
-
-background:rgba(8,20,45,.82);
-
-border:1px solid rgba(0,200,255,.25);
-
-border-radius:22px;
-
-padding:20px;
-
-backdrop-filter:blur(15px);
-
-}
-
-.activity-title{
-
-font-size:22px;
-
-color:#00c8ff;
-
-margin-bottom:15px;
-
-}
-
-.activity-item{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:15px 0;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-}
-
-.activity-item:last-child{
-
-border-bottom:none;
-
-}
-
-.activity-left{
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-.activity-icon{
-
-width:45px;
-
-height:45px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:rgba(0,200,255,.15);
-
-font-size:22px;
-
-}
-
-.activity-info h4{
-
-font-size:16px;
-
-margin-bottom:5px;
-
-}
-
-.activity-info p{
-
-font-size:13px;
-
-color:#9cb6d9;
-
-}
-
-.activity-amount{
-
-font-weight:bold;
-
-color:#00ff88;
-
-}
-
-</style>
-
-<div class="activity-section">
-
-<div class="activity-card">
-
-<div class="activity-title">
-
-📜 Recent Activity
-
-</div>
-
-<div id="recentActivity">
-
-<div class="activity-item">
-
-<div class="activity-left">
-
-<div class="activity-icon">
-
-⏳
-
-</div>
-
-<div class="activity-info">
-
-<h4>
-
-Loading...
-
-</h4>
-
-<p>
-
-Please wait...
-
-</p>
-
-</div>
-
-</div>
-
-<div class="activity-amount">
-
-...
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-async function loadRecentActivity(){
-
-const { data:{ user } } =
-await window.supabaseClient.auth.getUser();
-
-if(!user) return;
-
-const container =
-document.getElementById("recentActivity");
-
-container.innerHTML="";
-
-const { data } =
-await window.supabaseClient
-
-.from("deposits")
-
-.select("*")
-
-.eq("user_id",user.id)
-
-.order("created_at",{ascending:false})
-
-.limit(5);
-
-if(!data || data.length===0){
-
-container.innerHTML=`
-
-<div class="activity-item">
-
-<div class="activity-left">
-
-<div class="activity-icon">📭</div>
-
-<div class="activity-info">
-
-<h4>No Activity Yet</h4>
-
-<p>Your recent transactions will appear here.</p>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-return;
-
-}
-
-data.forEach(item=>{
-
-container.innerHTML += `
-
-<div class="activity-item">
-
-<div class="activity-left">
-
-<div class="activity-icon">
-
-💳
-
-</div>
-
-<div class="activity-info">
-
-<h4>
-
-Deposit
-
-</h4>
-
-<p>
-
-${item.status.toUpperCase()}
-
-</p>
-
-</div>
-
-</div>
-
-<div class="activity-amount">
-
-UGX ${Number(item.amount).toLocaleString()}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-loadRecentActivity();
-
-</script>
-
-  <!-- =====================================
-FINAL CONTROLS
-====================================== -->
-
-<style>
-
-.quick-footer{
-
-margin:20px;
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:15px;
-
-}
-
-.footer-btn{
-
-padding:18px;
-
-text-align:center;
-
-border-radius:18px;
-
-background:rgba(8,20,45,.82);
-
-border:1px solid rgba(0,200,255,.25);
-
-color:white;
-
-text-decoration:none;
-
-font-weight:bold;
-
-transition:.35s;
-
-}
-
-.footer-btn:hover{
-
-transform:translateY(-5px);
-
-box-shadow:0 0 20px rgba(0,200,255,.25);
-
-}
-
-.logout-btn{
-
-margin:20px;
-
-width:calc(100% - 40px);
-
-padding:18px;
-
-border:none;
-
-border-radius:18px;
-
-background:linear-gradient(90deg,#ff3b30,#ff6b6b);
-
-color:white;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.logout-btn:hover{
-
-opacity:.9;
-
-}
-
-.copyright{
-
-text-align:center;
-
-padding:20px;
-
-font-size:13px;
-
-color:#8aa3c5;
-
-margin-bottom:90px;
-
-}
-
-</style>
-
-<div class="quick-footer">
-
-<a href="profile.html" class="footer-btn">
-
-👤 Profile
-
-</a>
-
-<a href="settings.html" class="footer-btn">
-
-⚙️ Settings
-
-</a>
-
-<a href="transactions.html" class="footer-btn">
-
-📜 Transactions
-
-</a>
-
-<a href="support.html" class="footer-btn">
-
-💬 Support
-
-</a>
-
-</div>
-
-<button class="logout-btn" onclick="logoutUser()">
-
-🚪 Logout
-
-</button>
-
-<div class="copyright">
-
-© 2026 Marathon Digital Hub<br>
-
-Powering The Future Of Digital Mining
-
-</div>
-
-<script>
-
-async function logoutUser(){
-
-const ok = confirm("Are you sure you want to logout?");
-
-if(!ok) return;
-
-await window.supabaseClient.auth.signOut();
-
-window.location.href="login.html";
-
-}
-
-/* Refresh dashboard every 60 seconds */
-
-setInterval(function(){
-
-if(typeof loadDashboard==="function"){
-
-loadDashboard();
-
-}
-
-if(typeof loadRecentActivity==="function"){
-
-loadRecentActivity();
-
-}
-
-},60000);
-
-</script>
 
 </body>
-  </html>
+
+</html>
