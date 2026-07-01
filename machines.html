@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Machines Center</title>
+
+<title>Marathon Digital Hub | Machines</title>
 
 <style>
 
@@ -14,209 +17,873 @@ box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
 
-body{
-background:#020b1f;
-color:white;
-padding:15px;
+html{
+scroll-behavior:smooth;
 }
+
+body{
+
+background:#040817;
+color:#ffffff;
+overflow-x:hidden;
+min-height:100vh;
+position:relative;
+padding-bottom:110px;
+
+}
+
+/*==============================
+ANIMATED BACKGROUND
+==============================*/
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+left:-30%;
+top:-30%;
+
+width:170%;
+height:170%;
+
+background:
+
+radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
+
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+
+radial-gradient(circle at 70% 85%,rgba(0,255,180,.15),transparent 40%),
+
+radial-gradient(circle at 25% 75%,rgba(0,180,255,.12),transparent 35%);
+
+animation:bgMove 20s linear infinite;
+
+z-index:-5;
+
+}
+
+body::after{
+
+content:"";
+
+position:fixed;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+background-image:
+
+radial-gradient(rgba(0,200,255,.25) 1px,transparent 1px);
+
+background-size:22px 22px;
+
+animation:dotsMove 15s linear infinite;
+
+z-index:-4;
+
+}
+
+/*==============================
+FLOATING PARTICLES
+==============================*/
+
+.particles{
+
+position:fixed;
+
+left:0;
+top:0;
+
+width:100%;
+height:100%;
+
+pointer-events:none;
+
+overflow:hidden;
+
+z-index:-3;
+
+}
+
+.particles span{
+
+position:absolute;
+
+bottom:-30px;
+
+width:6px;
+height:6px;
+
+background:#00c8ff;
+
+border-radius:50%;
+
+box-shadow:0 0 15px #00c8ff;
+
+opacity:.7;
+
+animation:floatUp linear infinite;
+
+}
+
+.particles span:nth-child(1){left:5%;animation-duration:18s;}
+.particles span:nth-child(2){left:18%;animation-duration:23s;}
+.particles span:nth-child(3){left:32%;animation-duration:20s;}
+.particles span:nth-child(4){left:48%;animation-duration:16s;}
+.particles span:nth-child(5){left:64%;animation-duration:21s;}
+.particles span:nth-child(6){left:80%;animation-duration:18s;}
+.particles span:nth-child(7){left:94%;animation-duration:24s;}
+
+/*==============================
+HEADER
+==============================*/
 
 .header{
-text-align:center;
-margin-bottom:20px;
-}
 
-.header h1{
-color:#00c8ff;
-}
+height:72px;
 
-.balance-card{
-background:#03142f;
-padding:20px;
-border-radius:20px;
-margin-bottom:20px;
-border:1px solid #00c8ff;
-}
-
-.balance{
-font-size:30px;
-font-weight:bold;
-color:#00c8ff;
-}
-
-.machine-card{
-background:#03142f;
-padding:20px;
-border-radius:20px;
-margin-bottom:15px;
-border:1px solid rgba(0,200,255,.3);
-}
-
-.machine-name{
-font-size:24px;
-font-weight:bold;
-color:#00c8ff;
-margin-bottom:10px;
-}
-
-.machine-row{
 display:flex;
+
 justify-content:space-between;
-margin:8px 0;
+
+align-items:center;
+
+padding:0 18px;
+
 }
 
-.buy-btn{
-width:100%;
-padding:15px;
-margin-top:15px;
-border:none;
-border-radius:12px;
-background:#00c8ff;
-color:#000;
+.logo{
+
+font-size:28px;
+
 font-weight:bold;
-font-size:16px;
-cursor:pointer;
+
+background:linear-gradient(90deg,#00c8ff,#00ff88);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
 }
 
-.buy-btn:hover{
-opacity:.9;
+.notify{
+
+width:48px;
+height:48px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:rgba(255,255,255,.05);
+
+border:1px solid rgba(0,200,255,.25);
+
+font-size:22px;
+
+position:relative;
+
+backdrop-filter:blur(15px);
+
+}
+
+.notify-count{
+
+position:absolute;
+
+top:-3px;
+right:-3px;
+
+width:18px;
+height:18px;
+
+background:red;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:10px;
+
+font-weight:bold;
+
+}
+
+/*==============================
+TITLE
+==============================*/
+
+.page-title{
+
+padding:0 20px 20px;
+
+}
+
+.page-title h1{
+
+font-size:30px;
+
+margin-bottom:8px;
+
+}
+
+.page-title p{
+
+color:#b7c7df;
+
+font-size:15px;
+
+line-height:1.6;
+
+}
+
+/*==============================
+ANIMATIONS
+==============================*/
+
+@keyframes bgMove{
+
+0%{
+transform:translateX(-3%) translateY(0);
+}
+
+50%{
+transform:translateX(3%) translateY(-2%);
+}
+
+100%{
+transform:translateX(-3%) translateY(0);
+}
+
+}
+
+@keyframes dotsMove{
+
+0%{
+transform:translateX(0);
+}
+
+100%{
+transform:translateX(-22px);
+}
+
+}
+
+@keyframes floatUp{
+
+0%{
+transform:translateY(0) scale(.3);
+opacity:0;
+}
+
+20%{
+opacity:1;
+}
+
+80%{
+opacity:1;
+}
+
+100%{
+transform:translateY(-120vh);
+opacity:0;
+}
+
 }
 
 </style>
+
 </head>
 
 <body>
 
+<div class="particles">
+
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+<span></span>
+
+</div>
+
 <div class="header">
-<h1>Machines Center</h1>
+
+<div class="logo">
+
+MARATHON
+
 </div>
 
-<div class="balance-card">
+<div class="notify">
 
-<div class="balance">
-UGX <span id="wallet">1000000</span>
+🔔
+
+<div class="notify-count">
+
+0
+
 </div>
+
+</div>
+
+</div>
+
+<div class="page-title">
+
+<h1>
+
+⚙️ Mining Machines
+
+</h1>
 
 <p>
-Owned Machines:
-<span id="owned">0</span>
+
+Choose your preferred mining machine series and start earning with Marathon Digital Hub.
+
 </p>
 
 </div>
 
-<div id="machines"></div>
+  <!-- ======================================
+WALLET CARD
+====================================== -->
+
+<style>
+
+.wallet-card{
+
+margin:0 20px 20px;
+
+padding:20px;
+
+border-radius:20px;
+
+background:rgba(8,20,45,.80);
+
+border:1px solid rgba(0,200,255,.25);
+
+backdrop-filter:blur(15px);
+
+box-shadow:0 0 20px rgba(0,200,255,.12);
+
+}
+
+.wallet-title{
+
+font-size:14px;
+
+color:#9db4d6;
+
+margin-bottom:8px;
+
+}
+
+.wallet-balance{
+
+font-size:34px;
+
+font-weight:bold;
+
+background:linear-gradient(90deg,#00c8ff,#00ff88);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+margin-bottom:18px;
+
+}
+
+.wallet-buttons{
+
+display:flex;
+
+gap:12px;
+
+}
+
+.wallet-buttons button{
+
+flex:1;
+
+padding:13px;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+background:linear-gradient(90deg,#00c8ff,#00ff88);
+
+color:#001018;
+
+}
+
+.series-container{
+
+display:flex;
+
+overflow-x:auto;
+
+gap:10px;
+
+padding:0 20px 20px;
+
+scrollbar-width:none;
+
+}
+
+.series-container::-webkit-scrollbar{
+
+display:none;
+
+}
+
+.series{
+
+padding:12px 20px;
+
+border-radius:30px;
+
+background:rgba(8,20,45,.80);
+
+border:1px solid rgba(0,200,255,.20);
+
+white-space:nowrap;
+
+cursor:pointer;
+
+font-weight:bold;
+
+transition:.3s;
+
+}
+
+.series.active{
+
+background:#00c8ff;
+
+color:#001018;
+
+}
+
+.machine-list{
+
+padding:0 20px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.machine-card{
+
+background:rgba(8,20,45,.82);
+
+border:1px solid rgba(0,200,255,.20);
+
+border-radius:18px;
+
+padding:18px;
+
+transition:.35s;
+
+}
+
+.machine-card:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 0 18px rgba(0,200,255,.18);
+
+}
+
+.machine-name{
+
+font-size:20px;
+
+font-weight:bold;
+
+color:#00ff88;
+
+margin-bottom:15px;
+
+}
+
+.machine-row{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-bottom:10px;
+
+font-size:15px;
+
+}
+
+.machine-row span:first-child{
+
+color:#b8c8e6;
+
+}
+
+.machine-row span:last-child{
+
+font-weight:bold;
+
+}
+
+.buy-btn{
+
+margin-top:12px;
+
+width:100%;
+
+padding:13px;
+
+border:none;
+
+border-radius:14px;
+
+background:linear-gradient(90deg,#00c8ff,#00ff88);
+
+font-weight:bold;
+
+cursor:pointer;
+
+color:#001018;
+
+}
+
+.loading{
+
+text-align:center;
+
+padding:30px;
+
+font-size:18px;
+
+color:#00c8ff;
+
+}
+
+</style>
+
+<div class="wallet-card">
+
+<div class="wallet-title">
+
+Wallet Balance
+
+</div>
+
+<div
+class="wallet-balance"
+id="walletBalance">
+
+UGX 0
+
+</div>
+
+<div class="wallet-buttons">
+
+<button onclick="location.href='deposit.html'">
+
+Deposit
+
+</button>
+
+<button onclick="location.href='withdraw.html'">
+
+Withdraw
+
+</button>
+
+</div>
+
+</div>
+
+<div class="series-container">
+
+<div class="series active">
+
+All
+
+</div>
+
+<div class="series">
+
+F Series
+
+</div>
+
+<div class="series">
+
+E Series
+
+</div>
+
+<div class="series">
+
+G Series
+
+</div>
+
+<div class="series">
+
+R Series
+
+</div>
+
+<div class="series">
+
+A Series
+
+</div>
+
+</div>
+
+<div
+id="machineContainer"
+class="machine-list">
+
+<div class="loading">
+
+Loading Machines...
+
+</div>
+
+</div>
+
+  <!-- ======================================
+SUPABASE AUTH + LOAD MACHINES
+====================================== -->
 
 <script>
 
-let wallet = 1000000;
-let owned = 0;
+let currentUser=null;
+let currentSeries="ALL";
 
-const machines = [
+const seriesButtons=document.querySelectorAll(".series");
 
-{
-name:"VIP1",
-price:18000,
-income:40000,
-days:20
-},
+seriesButtons.forEach(btn=>{
 
-{
-name:"VIP2",
-price:36000,
-income:79200,
-days:20
-},
+btn.onclick=()=>{
 
-{
-name:"B1",
-price:30000,
-income:50000,
-days:20
-},
+seriesButtons.forEach(x=>x.classList.remove("active"));
 
-{
-name:"B2",
-price:70000,
-income:133000,
-days:20
-},
+btn.classList.add("active");
 
-{
-name:"D1",
-price:120000,
-income:1350000,
-days:100
-},
+const txt=btn.innerText;
 
-{
-name:"D2",
-price:200000,
-income:2450000,
-days:100
-},
+if(txt==="All"){
 
-{
-name:"R1",
-price:57000,
-income:142000,
-days:120
-},
+currentSeries="ALL";
 
-{
-name:"R2",
-price:68500,
-income:171250,
-days:120
+}else{
+
+currentSeries=txt.replace(" Series","");
+
 }
 
-];
+loadMachines();
 
-const container =
-document.getElementById("machines");
+};
 
-machines.forEach(machine=>{
+});
 
-const daily =
-Math.floor(
-machine.income /
-machine.days
-);
+async function startMachines(){
 
-container.innerHTML += `
+const {data:{user}}=
+
+await supabase.auth.getUser();
+
+if(!user){
+
+location.href="login.html";
+
+return;
+
+}
+
+currentUser=user;
+
+loadWallet();
+
+loadMachines();
+
+}
+
+async function loadWallet(){
+
+const {data}=
+
+await supabase
+
+.from("profiles")
+
+.select("wallet_balance")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(data){
+
+document.getElementById("walletBalance").innerHTML=
+
+"UGX "+Number(data.wallet_balance).toLocaleString();
+
+}
+
+}
+
+async function loadMachines(){
+
+const container=document.getElementById("machineContainer");
+
+container.innerHTML=`
+
+<div class="loading">
+
+Loading Machines...
+
+</div>
+
+`;
+
+let query=
+
+supabase
+
+.from("machines")
+
+.select("*")
+
+.eq("status",true)
+
+.order("price",{ascending:true});
+
+if(currentSeries!="ALL"){
+
+query=query.eq("series",currentSeries);
+
+}
+
+const {data,error}=await query;
+
+if(error){
+
+container.innerHTML=`
+
+<div class="loading">
+
+Failed to load machines
+
+</div>
+
+`;
+
+return;
+
+}
+
+if(!data || data.length===0){
+
+container.innerHTML=`
+
+<div class="loading">
+
+No machines available
+
+</div>
+
+`;
+
+return;
+
+}
+
+container.innerHTML="";
+
+data.forEach(machine=>{
+
+container.innerHTML+=`
 
 <div class="machine-card">
 
 <div class="machine-name">
+
 ${machine.name}
+
 </div>
 
 <div class="machine-row">
+
 <span>Price</span>
-<span>UGX ${machine.price.toLocaleString()}</span>
+
+<span>
+
+UGX ${Number(machine.price).toLocaleString()}
+
+</span>
+
 </div>
 
 <div class="machine-row">
+
 <span>Total Return</span>
-<span>UGX ${machine.income.toLocaleString()}</span>
+
+<span>
+
+UGX ${Number(machine.total_return).toLocaleString()}
+
+</span>
+
 </div>
 
 <div class="machine-row">
+
 <span>Duration</span>
-<span>${machine.days} Days</span>
-</div>
 
-<div class="machine-row">
-<span>Daily Income</span>
-<span>UGX ${daily.toLocaleString()}</span>
+<span>
+
+${machine.duration_days} Days
+
+</span>
+
 </div>
 
 <button
-class="buy-btn"
-onclick="buyMachine(
-${machine.price},
-'${machine.name}'
-)">
 
-BUY NOW
+class="buy-btn"
+
+onclick="buyMachine('${machine.id}')">
+
+Buy Machine
 
 </button>
 
@@ -226,46 +893,370 @@ BUY NOW
 
 });
 
-function buyMachine(price,name){
-
-const ok = confirm(
-`Buy ${name} for UGX ${price.toLocaleString()} ?`
-);
-
-if(!ok){
-return;
 }
 
-if(wallet < price){
+startMachines();
 
-alert(
-"Insufficient Balance"
-);
+</script>
+
+  <!-- ======================================
+BUY MACHINE SYSTEM
+====================================== -->
+
+<script>
+
+async function buyMachine(machineId){
+
+if(!currentUser){
+
+alert("Please login first.");
 
 return;
+
 }
 
-wallet -= price;
-owned++;
+/* Get Machine */
 
-document.getElementById(
-"wallet"
-).innerText =
-wallet.toLocaleString();
+const { data: machine, error: machineError } =
+await supabase
+.from("machines")
+.select("*")
+.eq("id", machineId)
+.single();
 
-document.getElementById(
-"owned"
-).innerText =
-owned;
+if(machineError || !machine){
+
+alert("Machine not found.");
+
+return;
+
+}
+
+/* Get User Profile */
+
+const { data: profile, error: profileError } =
+await supabase
+.from("profiles")
+.select("*")
+.eq("id", currentUser.id)
+.single();
+
+if(profileError){
+
+alert("Unable to load wallet.");
+
+return;
+
+}
+
+/* Check Balance */
+
+if(Number(profile.wallet_balance) < Number(machine.price)){
+
+alert("Insufficient wallet balance.");
+
+return;
+
+}
+
+/* Confirm Purchase */
+
+const confirmBuy = confirm(
+
+"Buy " + machine.name +
+
+"\n\nPrice: UGX " +
+
+Number(machine.price).toLocaleString()
+
+);
+
+if(!confirmBuy){
+
+return;
+
+}
+
+/* New Balance */
+
+const newBalance =
+
+Number(profile.wallet_balance) -
+
+Number(machine.price);
+
+/* Expiry Date */
+
+const expiry = new Date();
+
+expiry.setDate(
+
+expiry.getDate() +
+
+Number(machine.duration_days)
+
+);
+
+/* Update Wallet */
+
+const { error: walletError } =
+await supabase
+.from("profiles")
+.update({
+
+wallet_balance:newBalance
+
+})
+.eq("id",currentUser.id);
+
+if(walletError){
+
+alert("Failed to update wallet.");
+
+return;
+
+}
+
+/* Save Purchase */
+
+const { error: purchaseError } =
+await supabase
+.from("user_machines")
+.insert({
+
+user_id:currentUser.id,
+
+machine_id:machine.id,
+
+amount_paid:machine.price,
+
+purchase_date:new Date(),
+
+expiry_date:expiry,
+
+status:"active"
+
+});
+
+if(purchaseError){
+
+alert("Purchase failed.");
+
+return;
+
+}
+
+/* Refresh Wallet */
+
+document.getElementById("walletBalance").innerHTML =
+
+"UGX " +
+
+newBalance.toLocaleString();
+
+/* Success */
 
 alert(
-name +
-" purchased successfully"
+
+"✅ Purchase Successful!\n\n" +
+
+machine.name +
+
+" has been activated."
+
 );
+
+/* Reload Machines */
+
+loadWallet();
+loadMachines();
 
 }
 
 </script>
 
+  <!-- ======================================
+ADMIN SUPPORT
+====================================== -->
+
+<style>
+
+.support-button{
+
+position:fixed;
+
+right:20px;
+
+bottom:95px;
+
+width:65px;
+
+height:65px;
+
+border-radius:50%;
+
+background:linear-gradient(135deg,#00c8ff,#00ff88);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:30px;
+
+cursor:pointer;
+
+box-shadow:0 0 25px rgba(0,255,180,.35);
+
+animation:pulse 2s infinite;
+
+z-index:999;
+
+}
+
+@keyframes pulse{
+
+0%{
+
+transform:scale(1);
+
+}
+
+50%{
+
+transform:scale(1.08);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
+
+.bottom-nav{
+
+position:fixed;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:75px;
+
+background:#07152f;
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+border-top:1px solid rgba(0,200,255,.25);
+
+backdrop-filter:blur(20px);
+
+z-index:999;
+
+}
+
+.bottom-nav a{
+
+text-decoration:none;
+
+color:#c9d8ea;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+font-size:13px;
+
+transition:.3s;
+
+}
+
+.bottom-nav a.active{
+
+color:#00c8ff;
+
+}
+
+.bottom-nav a:hover{
+
+transform:translateY(-4px);
+
+}
+
+.bottom-nav span{
+
+margin-top:4px;
+
+}
+
+</style>
+
+<div
+
+class="support-button"
+
+onclick="location.href='support.html'">
+
+💬
+
+</div>
+
+<div class="bottom-nav">
+
+<a href="dashboard.html">
+
+🏠
+
+<span>Home</span>
+
+</a>
+
+<a href="machines.html" class="active">
+
+⚙️
+
+<span>Machines</span>
+
+</a>
+
+<a href="deposit.html">
+
+💳
+
+<span>Deposit</span>
+
+</a>
+
+<a href="income.html">
+
+📈
+
+<span>Income</span>
+
+</a>
+
+<a href="my.html">
+
+👤
+
+<span>My</span>
+
+</a>
+
+</div>
+
 </body>
+
 </html>
