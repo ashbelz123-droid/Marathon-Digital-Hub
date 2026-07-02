@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Referral | Marathon Digital Hub</title>
+
+<link rel="stylesheet" href="referral.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+</head>
+
+<body>
+
+<div class="heroBackground">
+
+<canvas id="waveCanvas"></canvas>
+
+</div>
+
+<div class="container">
+
+<!-- ==========================
+HEADER
+========================== -->
+
+<header class="header">
+
+<button
+class="backButton"
+onclick="history.back()">
+
+←
+
+</button>
+
+<div>
+
+<h2>
+
+Referral Program
+
+</h2>
+
+<p>
+
+Invite friends and earn rewards
+
+</p>
+
+</div>
+
+</header>
+
+<!-- ==========================
+REFERRAL HERO
+========================== -->
+
+<section class="heroCard">
+
+<h1>
+
+👥 Invite Friends
+
+</h1>
+
+<p>
+
+Share your referral link with friends.
+
+When they purchase an <strong>R-Series Machine</strong>,
+you automatically receive
+<strong>15 Raffle Chances</strong>.
+
+</p>
+
+</section>
+
+<!-- ==========================
+STATISTICS
+========================== -->
+
+<section class="statsGrid">
+
+<div class="glassCard">
+
+<p>
+
+Total Referrals
+
+</p>
+
+<h2 id="totalReferrals">
+
+0
+
+</h2>
+
+</div>
+
+<div class="glassCard">
+
+<p>
+
+Active Referrals
+
+</p>
+
+<h2 id="activeReferrals">
+
+0
+
+</h2>
+
+</div>
+
+<div class="glassCard">
+
+<p>
+
+Referral Earnings
+
+</p>
+
+<h2 id="referralIncome">
+
+UGX 0
+
+</h2>
+
+</div>
+
+<div class="glassCard">
+
+<p>
+
+Raffle Chances
+
+</p>
+
+<h2 id="raffleChances">
+
+0
+
+</h2>
+
+</div>
+
+</section>
+
+<!-- ==========================
+MY REFERRAL LINK
+========================== -->
+
+<section class="glassSection">
+
+<h3>
+
+🔗 My Referral Link
+
+</h3>
+
+<div class="referralBox">
+
+<input
+type="text"
+id="referralLink"
+readonly>
+
+<button
+id="copyReferral">
+
+Copy
+
+</button>
+
+</div>
+
+<button
+id="shareReferral"
+class="shareButton">
+
+Share Referral Link
+
+</button>
+
+  </section><!-- ==========================
+REFERRAL REWARDS
+========================== -->
+
+<section class="glassSection">
+
+<h3>
+
+🎁 Referral Rewards
+
+</h3>
+
+<div class="rewardCard">
+
+<div class="rewardIcon">
+
+🎟️
+
+</div>
+
+<div class="rewardInfo">
+
+<h4>
+
+15 Raffle Chances
+
+</h4>
+
+<p>
+
+When your referred member purchases
+an R-Series Machine.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="rewardCard">
+
+<div class="rewardIcon">
+
+💰
+
+</div>
+
+<div class="rewardInfo">
+
+<h4>
+
+Referral Commission
+
+</h4>
+
+<p>
+
+Referral income is automatically
+credited to your account.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================
+MY REFERRALS
+========================== -->
+
+<section class="glassSection">
+
+<div class="sectionHeader">
+
+<h3>
+
+👥 My Referrals
+
+</h3>
+
+<span id="referralCount">
+
+0
+
+</span>
+
+</div>
+
+<div id="referralList">
+
+<div class="loadingCard">
+
+No referrals yet.
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================
+TOP REFERRERS
+========================== -->
+
+<section class="glassSection">
+
+<div class="sectionHeader">
+
+<h3>
+
+🏆 Top Referrers
+
+</h3>
+
+</div>
+
+<div id="leaderboard">
+
+<div class="loadingCard">
+
+Leaderboard will appear here.
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================
+REFERRAL NOTICE
+========================== -->
+
+<section class="glassSection">
+
+<h3>
+
+📢 Important Notice
+
+</h3>
+
+<p>
+
+Invite your friends using your personal referral link.
+
+Whenever a referred member purchases an
+<strong>R-Series Machine</strong>,
+you automatically receive
+<strong>15 Raffle Chances</strong>.
+
+Your raffle chances are added automatically,
+so there is nothing else you need to do.
+
+</p>
+
+</section>
+
+<!-- ==========================
+BOTTOM NAVIGATION
+========================== -->
+
+<nav class="bottomNav">
+
+<a href="dashboard.html">
+
+🏠
+
+<span>
+
+Home
+
+</span>
+
+</a>
+
+<a href="machines.html">
+
+⚙️
+
+<span>
+
+Machines
+
+</span>
+
+</a>
+
+<a href="referral.html" class="active">
+
+👥
+
+<span>
+
+Referral
+
+</span>
+
+</a>
+
+<a href="income.html">
+
+📈
+
+<span>
+
+Income
+
+</span>
+
+</a>
+
+<a href="profile.html">
+
+👤
+
+<span>
+
+Profile
+
+</span>
+
+</a>
+
+</nav>
+
+<script src="referral.js"></script>
+
+</div>
+
+</body>
+
+  </html>
