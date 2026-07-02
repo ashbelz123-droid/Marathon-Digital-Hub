@@ -5,12 +5,36 @@ const ticketId = localStorage.getItem("selectedTicket");
 let currentTicket = null;
 
 /* ==========================
-LOAD CHAT
+PAGE LOAD
 ========================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    loadChat();
+    if (!ticketId) {
+        alert("No ticket selected.");
+        history.back();
+        return;
+    }
+
+    loadConversation();
+
+    document
+        .getElementById("sendBtn")
+        .addEventListener("click", sendReply);
+
+    document
+        .getElementById("replyInput")
+        .addEventListener("keypress", function (e) {
+
+            if (e.key === "Enter") {
+
+                e.preventDefault();
+
+                sendReply();
+
+            }
+
+        });
 
 });
 
@@ -18,32 +42,22 @@ document.addEventListener("DOMContentLoaded", () => {
 LOAD CONVERSATION
 ========================== */
 
-async function loadChat(){
-
-    if(!ticketId){
-
-        alert("No ticket selected.");
-
-        history.back();
-
-        return;
-
-    }
+async function loadConversation() {
 
     const { data, error } = await db
 
-    .from("support_messages")
+        .from("support_messages")
 
-    .select(`
-        *,
-        profiles(fullname)
-    `)
+        .select(`
+            *,
+            profiles(fullname)
+        `)
 
-    .eq("id", ticketId)
+        .eq("id", ticketId)
 
-    .single();
+        .single();
 
-    if(error){
+    if (error) {
 
         console.log(error);
 
@@ -57,15 +71,13 @@ async function loadChat(){
 
     await db
 
-    .from("support_messages")
+        .from("support_messages")
 
-    .update({
+        .update({
+            status: "read"
+        })
 
-        status:"read"
-
-    })
-
-    .eq("id",ticketId);
+        .eq("id", ticketId);
 
     /* HEADER */
 
@@ -84,6 +96,7 @@ async function loadChat(){
     chat.innerHTML = "";
 
     chat.innerHTML += `
+
         <div class="user-message">
 
             ${data.message}
@@ -95,23 +108,24 @@ async function loadChat(){
             </div>
 
         </div>
+
     `;
 
-    if(data.admin_reply){
+    if (data.admin_reply && data.admin_reply !== "") {
 
         chat.innerHTML += `
 
-        <div class="admin-message">
+            <div class="admin-message">
 
-            ${data.admin_reply}
+                ${data.admin_reply}
 
-            <div class="message-time">
+                <div class="message-time">
 
-                Admin Reply
+                    Admin Reply
+
+                </div>
 
             </div>
-
-        </div>
 
         `;
 
@@ -120,93 +134,79 @@ async function loadChat(){
     chat.scrollTop = chat.scrollHeight;
 
 }
-
 /* ==========================
 SEND REPLY
 ========================== */
 
-document
-.getElementById("sendBtn")
-.addEventListener("click", sendReply);
+async function sendReply() {
 
-document
-.getElementById("replyInput")
-.addEventListener("keypress", function(e){
+    const input = document.getElementById("replyInput");
 
-    if(e.key==="Enter"){
+    const reply = input.value.trim();
 
-        e.preventDefault();
-
-        sendReply();
-
-    }
-
-});
-
-async function sendReply(){
-
-    const input=document.getElementById("replyInput");
-
-    const reply=input.value.trim();
-
-    if(reply===""){
-
-        alert("Type your reply.");
-
+    if (reply === "") {
+        alert("Please type a reply.");
         return;
-
     }
 
-    /* UPDATE TICKET */
+    document.getElementById("sendBtn").disabled = true;
+
+    /* UPDATE SUPPORT TICKET */
 
     const { error } = await db
 
-    .from("support_messages")
+        .from("support_messages")
 
-    .update({
+        .update({
 
-        admin_reply: reply,
+            admin_reply: reply,
 
-        status:"closed"
+            status: "closed"
 
-    })
+        })
 
-    .eq("id",ticketId);
+        .eq("id", ticketId);
 
-    if(error){
+    if (error) {
 
         console.log(error);
 
         alert("Failed to send reply.");
 
+        document.getElementById("sendBtn").disabled = false;
+
         return;
 
     }
 
-    /* USER NOTIFICATION */
+    /* SEND USER NOTIFICATION */
 
     await db
 
-    .from("user_notifications")
+        .from("user_notifications")
 
-    .insert({
+        .insert({
 
-        user_id: currentTicket.user_id,
+            user_id: currentTicket.user_id,
 
-        title:"Support Reply",
+            title: "Support Reply",
 
-        message: reply,
+            message: reply,
 
-        type:"support",
+            type: "support",
 
-        is_read:false
+            is_read: false,
 
-    });
+            created_at: new Date().toISOString()
 
-    input.value="";
+        });
 
-    loadChat();
+    input.value = "";
+
+    document.getElementById("sendBtn").disabled = false;
+
+    await loadConversation();
 
     alert("Reply sent successfully.");
 
-                    }
+            }
