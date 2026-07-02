@@ -5,44 +5,40 @@ const ticketId = localStorage.getItem("selectedTicket");
 let currentTicket = null;
 
 /* ==========================
+BACK BUTTON
+========================== */
+
+document.getElementById("backBtn").onclick = () => {
+
+    window.location.href = "admin-support.html";
+
+};
+
+/* ==========================
 PAGE LOAD
 ========================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
     if (!ticketId) {
-        alert("No ticket selected.");
-        history.back();
+
+        alert("No chat selected.");
+
+        window.location.href = "admin-support.html";
+
         return;
+
     }
 
-    loadConversation();
-
-    document
-        .getElementById("sendBtn")
-        .addEventListener("click", sendReply);
-
-    document
-        .getElementById("replyInput")
-        .addEventListener("keypress", function (e) {
-
-            if (e.key === "Enter") {
-
-                e.preventDefault();
-
-                sendReply();
-
-            }
-
-        });
+    loadChat();
 
 });
 
 /* ==========================
-LOAD CONVERSATION
+LOAD CHAT
 ========================== */
 
-async function loadConversation() {
+async function loadChat() {
 
     const { data, error } = await db
 
@@ -81,17 +77,17 @@ async function loadConversation() {
 
     /* HEADER */
 
-    document.getElementById("userName").innerHTML =
+    document.getElementById("userName").textContent =
         data.profiles?.fullname || "Unknown User";
 
-    document.getElementById("avatar").innerHTML =
+    document.getElementById("avatar").textContent =
         (data.profiles?.fullname || "U")
         .charAt(0)
         .toUpperCase();
 
     /* CHAT */
 
-    const chat = document.getElementById("chatBox");
+    const chat = document.getElementById("chatContainer");
 
     chat.innerHTML = "";
 
@@ -111,7 +107,7 @@ async function loadConversation() {
 
     `;
 
-    if (data.admin_reply && data.admin_reply !== "") {
+    if (data.admin_reply) {
 
         chat.innerHTML += `
 
@@ -121,7 +117,7 @@ async function loadConversation() {
 
                 <div class="message-time">
 
-                    Admin Reply
+                    Admin
 
                 </div>
 
@@ -134,24 +130,46 @@ async function loadConversation() {
     chat.scrollTop = chat.scrollHeight;
 
 }
+
 /* ==========================
 SEND REPLY
 ========================== */
 
-async function sendReply() {
+document
+.getElementById("sendBtn")
+.addEventListener("click", sendReply);
 
-    const input = document.getElementById("replyInput");
+document
+.getElementById("replyInput")
+.addEventListener("keypress", function(e){
 
-    const reply = input.value.trim();
+    if(e.key==="Enter"){
 
-    if (reply === "") {
-        alert("Please type a reply.");
-        return;
+        e.preventDefault();
+
+        sendReply();
+
     }
 
-    document.getElementById("sendBtn").disabled = true;
+});
 
-    /* UPDATE SUPPORT TICKET */
+async function sendReply(){
+
+    const input=document.getElementById("replyInput");
+
+    const reply=input.value.trim();
+
+    if(reply===""){
+
+        alert("Please type a reply.");
+
+        return;
+
+    }
+
+    document.getElementById("sendBtn").disabled=true;
+
+    /* UPDATE SUPPORT MESSAGE */
 
     const { error } = await db
 
@@ -167,19 +185,19 @@ async function sendReply() {
 
         .eq("id", ticketId);
 
-    if (error) {
+    if(error){
 
         console.log(error);
 
         alert("Failed to send reply.");
 
-        document.getElementById("sendBtn").disabled = false;
+        document.getElementById("sendBtn").disabled=false;
 
         return;
 
     }
 
-    /* SEND USER NOTIFICATION */
+    /* CREATE USER NOTIFICATION */
 
     await db
 
@@ -201,12 +219,18 @@ async function sendReply() {
 
         });
 
-    input.value = "";
+    input.value="";
 
-    document.getElementById("sendBtn").disabled = false;
+    document.getElementById("sendBtn").disabled=false;
 
-    await loadConversation();
+    await loadChat();
 
     alert("Reply sent successfully.");
 
-            }
+}
+
+/* ==========================
+AUTO REFRESH
+========================== */
+
+setInterval(loadChat,10000);
