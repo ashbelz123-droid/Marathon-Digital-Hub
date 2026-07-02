@@ -6,9 +6,9 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+content="width=device-width,initial-scale=1.0">
 
-<title>Marathon Digital Hub</title>
+<title>Dashboard | Marathon Digital Hub</title>
 
 <link rel="stylesheet"
 href="dashboard.css">
@@ -21,51 +21,53 @@ href="dashboard.css">
 
 <body>
 
-<div id="app">
+<!-- =====================================
+BACKGROUND
+===================================== -->
 
-<!-- ===========================
+<div class="heroBackground">
+
+<canvas id="waveCanvas"></canvas>
+
+</div>
+
+<div class="page">
+
+<!-- =====================================
 HEADER
-=========================== -->
+===================================== -->
 
-<header class="topbar">
+<header class="header">
 
-<div class="logo">
+<div class="headerLeft">
 
-<h2>
-
-MARATHON
-
-</h2>
-
-<span>
-
-Digital Hub
-
-</span>
-
-</div>
-
-<div class="profileBox">
-
-<div class="avatar">
-
-👤
-
-</div>
-
-<div>
-
-<h4 id="userName">
+<h2 id="userName">
 
 Loading...
 
-</h4>
+</h2>
 
 <p>
 
-Investor
+Welcome Back To Marathon Digital Hub
 
 </p>
+
+</div>
+
+<div class="headerRight">
+
+<div
+class="notificationBell"
+onclick="location.href='notifications.html'">
+
+🔔
+
+<span id="notifyCount">
+
+0
+
+</span>
 
 </div>
 
@@ -73,63 +75,83 @@ Investor
 
 </header>
 
-<!-- ===========================
+<!-- =====================================
 HERO SECTION
-=========================== -->
+===================================== -->
 
 <section class="hero">
 
-<canvas id="waveCanvas"></canvas>
-
-<div class="heroOverlay">
+<div class="heroContent">
 
 <div class="heroText">
 
 <h1>
 
-Crypto Mining
+CRYPTO
 
 <br>
 
-Investment Platform
+MINING
 
 </h1>
 
 <p>
 
-Build your future with secure digital mining investments.
+Secure Digital Investment Platform
 
 </p>
 
+<div class="walletGlass">
+
+<h4>
+
+Wallet Balance
+
+</h4>
+
+<h2 id="walletBalance">
+
+UGX 0
+
+</h2>
+
 </div>
 
-<div class="heroMining">
+</div>
 
-<div class="btc">
+<div class="heroImage">
+
+<div class="miningRig">
+
+<div class="gpu gpu1"></div>
+
+<div class="gpu gpu2"></div>
+
+<div class="gpu gpu3"></div>
+
+</div>
+
+<div class="coin btc">
 
 ₿
 
 </div>
 
-<div class="eth">
+<div class="coin eth">
 
 Ξ
 
 </div>
 
-<div class="usdt">
+<div class="coin usdt">
 
 ₮
 
 </div>
 
-<div class="rig">
+<div class="coin sol">
 
-<div class="gpu"></div>
-
-<div class="gpu"></div>
-
-<div class="gpu"></div>
+◎
 
 </div>
 
@@ -137,29 +159,31 @@ Build your future with secure digital mining investments.
 
 </div>
 
-</section>
-
-   <!-- ===========================
-LIVE CRYPTO TICKER
-=========================== -->
+   </section><!-- =====================================
+LIVE CRYPTO MARKET
+===================================== -->
 
 <section class="cryptoTicker">
 
-<div class="tickerTrack" id="tickerTrack">
+<div class="ticker">
 
-Loading crypto market...
+<div id="cryptoTicker">
+
+Loading live crypto market...
+
+</div>
 
 </div>
 
 </section>
 
-<!-- ===========================
+<!-- =====================================
 ANNOUNCEMENT
-=========================== -->
+===================================== -->
 
-<section class="announcementCard">
+<section class="glassCard announcementCard">
 
-<div class="titleRow">
+<div class="cardHeader">
 
 <h3>
 
@@ -167,23 +191,33 @@ ANNOUNCEMENT
 
 </h3>
 
+<a href="notifications.html">
+
+View All
+
+</a>
+
 </div>
 
-<p id="announcementText">
+<div id="announcementList">
 
-Loading announcement...
+<div class="loadingCard">
 
-</p>
+Loading announcements...
+
+</div>
+
+</div>
 
 </section>
 
-<!-- ===========================
+<!-- =====================================
 NOTIFICATIONS
-=========================== -->
+===================================== -->
 
-<section class="notificationCard">
+<section class="glassCard notificationCard">
 
-<div class="titleRow">
+<div class="cardHeader">
 
 <h3>
 
@@ -191,7 +225,7 @@ NOTIFICATIONS
 
 </h3>
 
-<span id="notificationCount">
+<span id="notificationBadge">
 
 0
 
@@ -201,87 +235,101 @@ NOTIFICATIONS
 
 <div id="notificationList">
 
+<div class="loadingCard">
+
 Loading notifications...
 
 </div>
 
-</section>
-
-<!-- ===========================
-WALLET
-=========================== -->
-
-<section class="walletCard">
-
-<div class="walletHeader">
-
-<h3>
-
-Wallet Balance
-
-</h3>
-
 </div>
 
-<h1 id="walletBalance">
+</section>
 
-UGX 0
+<!-- =====================================
+STATISTICS
+===================================== -->
 
-</h1>
+<section class="statsGrid">
+
+<div class="glassCard statCard">
 
 <p>
 
-Available Balance
+Wallet Balance
 
 </p>
 
+<h2 id="walletBalanceCard">
+
+UGX 0
+
+</h2>
+
+</div>
+
+<div class="glassCard statCard">
+
+<p>
+
+Active Machines
+
+</p>
+
+<h2 id="activeMachines">
+
+0
+
+</h2>
+
+</div>
+
+<div class="glassCard statCard">
+
+<p>
+
+Total Deposits
+
+</p>
+
+<h2 id="totalDeposits">
+
+UGX 0
+
+</h2>
+
+</div>
+
+<div class="glassCard statCard">
+
+<p>
+
+Total Withdrawals
+
+</p>
+
+<h2 id="totalWithdrawals">
+
+UGX 0
+
+</h2>
+
+</div>
+
 </section>
 
-<!-- ===========================
+<!-- =====================================
 QUICK ACTIONS
-=========================== -->
+===================================== -->
 
-<section class="quickActions">
+<section class="quickMenu">
 
-<a href="deposit.html" class="action">
+<a href="machines.html" class="quickItem">
 
-💳
-
-<span>
-
-Deposit
-
-</span>
-
-</a>
-
-<a href="withdraw.html" class="action">
-
-💸
-
-<span>
-
-Withdraw
-
-</span>
-
-</a>
-
-<a href="wallet.html" class="action">
-
-👛
-
-<span>
-
-Wallet
-
-</span>
-
-</a>
-
-<a href="machines.html" class="action">
+<div>
 
 ⚙️
+
+</div>
 
 <span>
 
@@ -291,15 +339,239 @@ Machines
 
 </a>
 
-</section>
+<a href="deposit.html" class="quickItem">
 
-<!-- Remaining dashboard continues in Part 3 -->
+<div>
 
-<!-- Remaining sections continue in Part 2 -->
-
-<script src="dashboard.js"></script>
+💳
 
 </div>
+
+<span>
+
+Deposit
+
+</span>
+
+</a>
+
+<a href="withdraw.html" class="quickItem">
+
+<div>
+
+💵
+
+</div>
+
+<span>
+
+Withdraw
+
+</span>
+
+</a>
+
+<a href="income.html" class="quickItem">
+
+<div>
+
+📈
+
+</div>
+
+<span>
+
+Income
+
+</span>
+
+</a>
+
+   </section><!-- =====================================
+MY MINING MACHINES
+===================================== -->
+
+<section class="glassCard machineSection">
+
+<div class="cardHeader">
+
+<h3>
+
+⛏️ My Mining Machines
+
+</h3>
+
+<a href="machines.html">
+
+View All
+
+</a>
+
+</div>
+
+<div id="machineContainer">
+
+<div class="loadingCard">
+
+Loading your mining machines...
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================
+RECENT TRANSACTIONS
+===================================== -->
+
+<section class="glassCard transactionSection">
+
+<div class="cardHeader">
+
+<h3>
+
+📜 Recent Transactions
+
+</h3>
+
+<a href="transactions.html">
+
+View All
+
+</a>
+
+</div>
+
+<div id="recentTransactions">
+
+<div class="loadingCard">
+
+Loading transactions...
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================
+FLOATING SUPPORT BUTTON
+===================================== -->
+
+<a
+href="support.html"
+class="floatingSupport">
+
+💬
+
+</a>
+
+<!-- =====================================
+BOTTOM NAVIGATION
+===================================== -->
+
+<nav class="bottomNav">
+
+<a
+href="dashboard.html"
+class="active">
+
+<div>
+
+🏠
+
+</div>
+
+<span>
+
+Home
+
+</span>
+
+</a>
+
+<a
+href="machines.html">
+
+<div>
+
+⚙️
+
+</div>
+
+<span>
+
+Machines
+
+</span>
+
+</a>
+
+<a
+href="deposit.html">
+
+<div>
+
+💳
+
+</div>
+
+<span>
+
+Deposit
+
+</span>
+
+</a>
+
+<a
+href="income.html">
+
+<div>
+
+📈
+
+</div>
+
+<span>
+
+Income
+
+</span>
+
+</a>
+
+<a
+href="profile.html">
+
+<div>
+
+👤
+
+</div>
+
+<span>
+
+Profile
+
+</span>
+
+</a>
+
+   </nav><!-- =====================================
+FOOTER SPACE
+===================================== -->
+
+<div class="bottomSpacer"></div>
+
+</div>
+
+<!-- =====================================
+DASHBOARD SCRIPT
+===================================== -->
+
+<script src="dashboard.js"></script>
 
 </body>
 
