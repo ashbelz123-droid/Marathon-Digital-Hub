@@ -4,9 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Admin Chat</title>
+<title>Support Chat</title>
 
 <link rel="stylesheet" href="admin-chat.css">
 
@@ -17,24 +17,35 @@
 
 <body>
 
+<!-- HEADER -->
+
 <div class="chat-header">
 
-<button class="back-btn"
+<button
+class="back-btn"
 onclick="history.back()">
 
 ←
 
 </button>
 
-<div class="user-details">
+<div class="user-info">
 
-<h2 id="userName">
+<div class="avatar" id="avatar">
+
+U
+
+</div>
+
+<div>
+
+<h3 id="userName">
 
 Loading...
 
-</h2>
+</h3>
 
-<p id="userStatus">
+<p id="chatStatus">
 
 Support Conversation
 
@@ -44,8 +55,13 @@ Support Conversation
 
 </div>
 
-<div id="chatMessages"
-class="chat-messages">
+</div>
+
+<!-- CHAT -->
+
+<div
+id="chatBox"
+class="chat-box">
 
 <div class="loading">
 
@@ -55,14 +71,20 @@ Loading conversation...
 
 </div>
 
-<div class="chat-footer">
+<!-- REPLY -->
+
+<div class="reply-box">
 
 <input
+
 type="text"
+
 id="replyInput"
+
 placeholder="Type your reply...">
 
 <button
+
 id="sendBtn">
 
 Send
@@ -75,4 +97,4 @@ Send
 
 </body>
 
-  </html>
+</html>
