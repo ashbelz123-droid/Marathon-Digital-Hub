@@ -5,12 +5,11 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Payment Settings</title>
+<title>Admin Payment Settings</title>
 
-<link rel="stylesheet" href="payment-settings.css">
+<link rel="stylesheet" href="admin-payment-settings.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -20,76 +19,46 @@ content="width=device-width,initial-scale=1.0">
 
 <body>
 
-<!-- HEADER -->
-
 <header class="header">
 
-<button
-class="backBtn"
-onclick="history.back()">
+<button class="backBtn" onclick="history.back()">
 
 ←
 
 </button>
 
-<h2>
-
-Payment Settings
-
-</h2>
+<h2>Payment Settings</h2>
 
 </header>
-
-<!-- CONTENT -->
 
 <div class="container">
 
 <div class="card">
 
-<h3>
+<h3>Mobile Money Settings</h3>
 
-Mobile Money
-
-</h3>
-
-<label>
-
-Method
-
-</label>
+<label>Payment Method</label>
 
 <input
 type="text"
 id="method"
 placeholder="MTN Mobile Money">
 
-<label>
-
-Account Name
-
-</label>
+<label>Account Name</label>
 
 <input
 type="text"
 id="accountName"
 placeholder="Account Name">
 
-<label>
-
-Phone Number
-
-</label>
+<label>Phone Number</label>
 
 <input
 type="text"
 id="phoneNumber"
 placeholder="+2567XXXXXXXX">
 
-<label>
-
-Instructions
-
-</label>
+<label>Instructions</label>
 
 <textarea
 id="instructions"
@@ -98,11 +67,7 @@ placeholder="Deposit instructions..."></textarea>
 
 <div class="switchBox">
 
-<label>
-
-Active
-
-</label>
+<span>Enable Payment Method</span>
 
 <input
 type="checkbox"
@@ -110,24 +75,20 @@ id="isActive">
 
 </div>
 
-<button
-id="saveBtn">
+<button id="saveBtn">
 
 Save Settings
 
 </button>
 
-<div
-id="statusMessage">
+<div id="statusMessage"></div>
 
 </div>
 
 </div>
 
-</div>
-
-<script src="payment-settings.js"></script>
+<script src="admin-payment-settings.js"></script>
 
 </body>
 
-  </html>
+</html>
