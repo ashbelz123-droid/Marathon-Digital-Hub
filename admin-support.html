@@ -4,10 +4,9 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Support Chats</title>
+<title>Support Chat</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
@@ -25,149 +24,127 @@ body{
 
 background:#050B18;
 color:white;
+display:flex;
+flex-direction:column;
+height:100vh;
 
 }
+
+/* Header */
 
 .header{
 
-padding:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-}
-
-.header h1{
-
-font-size:34px;
-
-}
-
-.menu{
-
-font-size:28px;
-cursor:pointer;
-
-}
-
-.searchBox{
-
-padding:0 20px 20px;
-
-}
-
-.searchBox input{
-
-width:100%;
-height:55px;
-border:none;
-outline:none;
-background:#111f3d;
-border-radius:30px;
-padding:0 20px;
-color:white;
-font-size:16px;
-
-}
-
-.chatList{
-
-padding-bottom:120px;
-
-}
-
-.chatCard{
-
-display:flex;
-align-items:center;
-padding:15px 20px;
-cursor:pointer;
-transition:.2s;
-border-bottom:1px solid rgba(255,255,255,.05);
-
-}
-
-.chatCard:hover{
-
+height:70px;
 background:#08142d;
+display:flex;
+align-items:center;
+padding:15px;
+
+}
+
+.back{
+
+font-size:24px;
+cursor:pointer;
+margin-right:15px;
 
 }
 
 .avatar{
 
-width:58px;
-height:58px;
+width:45px;
+height:45px;
 border-radius:50%;
 background:#00ff88;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:22px;
-font-weight:bold;
 color:#001018;
-margin-right:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+margin-right:12px;
 
 }
 
-.chatBody{
-
-flex:1;
-
-}
-
-.chatName{
+.userInfo h3{
 
 font-size:18px;
-font-weight:bold;
 
 }
 
-.lastMessage{
-
-margin-top:5px;
-font-size:14px;
-color:#9fb5d1;
-overflow:hidden;
-white-space:nowrap;
-text-overflow:ellipsis;
-
-}
-
-.chatRight{
-
-text-align:right;
-
-}
-
-.chatTime{
+.userInfo p{
 
 font-size:13px;
 color:#9fb5d1;
-margin-bottom:8px;
 
 }
 
-.unread{
+/* Messages */
 
-min-width:24px;
-height:24px;
+.messages{
+
+flex:1;
+overflow-y:auto;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:12px;
+
+}
+
+.userMessage{
+
+align-self:flex-start;
+background:#111f3d;
+padding:12px;
+border-radius:15px;
+max-width:80%;
+
+}
+
+.adminMessage{
+
+align-self:flex-end;
 background:#00ff88;
 color:#001018;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:12px;
-font-weight:bold;
-margin-left:auto;
+padding:12px;
+border-radius:15px;
+max-width:80%;
 
 }
 
-.empty{
+/* Bottom */
 
-padding:60px 20px;
-text-align:center;
-color:#9fb5d1;
+.footer{
+
+background:#08142d;
+padding:10px;
+display:flex;
+gap:10px;
+
+}
+
+.footer input{
+
+flex:1;
+height:50px;
+border:none;
+outline:none;
+border-radius:25px;
+padding:0 18px;
+background:#111f3d;
+color:white;
+
+}
+
+.footer button{
+
+width:90px;
+border:none;
+border-radius:25px;
+background:#00ff88;
+color:#001018;
+font-weight:bold;
+cursor:pointer;
 
 }
 
@@ -179,289 +156,195 @@ color:#9fb5d1;
 
 <div class="header">
 
-<h1>Support</h1>
+<div class="back"
+onclick="history.back()">
 
-<div class="menu">
-
-⋮
-
-</div>
+←
 
 </div>
 
-<div class="searchBox">
+<div class="avatar"
+id="avatar">
 
-<input
+U
 
-type="text"
+</div>
 
-id="search"
+<div class="userInfo">
 
-placeholder="Search user...">
+<h3 id="userName">
+
+Loading...
+
+</h3>
+
+<p>
+
+Support Conversation
+
+</p>
+
+</div>
 
 </div>
 
 <div
-
-class="chatList"
-
-id="chatList">
-
-<div class="empty">
-
-Loading conversations...
+class="messages"
+id="messages">
 
 </div>
 
-  </div><script>
+<div class="footer">
+
+<input
+type="text"
+id="reply"
+placeholder="Type your reply...">
+
+<button
+onclick="sendReply()">
+
+Send
+
+</button>
+
+</div><script>
 
 const db = window.supabaseClient;
 
-let conversations=[];
+const userId = localStorage.getItem("support_user");
 
 /* ==========================
-LOAD CHATS
+LOAD CHAT
 ========================== */
 
-document.addEventListener("DOMContentLoaded",()=>{
-
-loadChats();
-
+document.addEventListener("DOMContentLoaded", () => {
+    loadChat();
 });
 
-async function loadChats(){
+async function loadChat(){
 
-const list=document.getElementById("chatList");
+    if(!userId){
+        alert("No user selected.");
+        history.back();
+        return;
+    }
+
+    const { data, error } = await db
+    .from("support_messages")
+    .select(`
+        id,
+        user_id,
+        message,
+        admin_reply,
+        created_at,
+        profiles(fullname)
+    `)
+    .eq("user_id", userId)
+    .order("created_at",{ascending:true});
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    if(data.length===0){
+        return;
+    }
+
+    document.getElementById("userName").innerText =
+        data[0].profiles?.fullname || "Unknown User";
+
+    document.getElementById("avatar").innerText =
+        (data[0].profiles?.fullname || "U")
+        .charAt(0)
+        .toUpperCase();
+
+    const box = document.getElementById("messages");
+
+    box.innerHTML="";
+
+    data.forEach(chat=>{
+
+        box.innerHTML += `
+            <div class="userMessage">
+                ${chat.message}
+            </div>
+        `;
+
+        if(chat.admin_reply){
+
+            box.innerHTML += `
+                <div class="adminMessage">
+                    ${chat.admin_reply}
+                </div>
+            `;
+
+        }
+
+    });
+
+    box.scrollTop = box.scrollHeight;
+
+}
+
+  </script><script>
+
+/* ==========================
+SEND REPLY
+========================== */
+
+async function sendReply(){
+
+const reply=document.getElementById("reply").value.trim();
+
+if(reply===""){
+
+alert("Type a reply first.");
+
+return;
+
+}
+
+/* Get latest open support message */
 
 const {data,error}=await db
 
 .from("support_messages")
 
-.select(`
-id,
-user_id,
-message,
-status,
-created_at,
-profiles(
-fullname
-)
-`)
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.log(error);
-
-list.innerHTML="<div class='empty'>Failed to load conversations.</div>";
-
-return;
-
-}
-
-/* ONE CHAT PER USER */
-
-const unique={};
-
-data.forEach(item=>{
-
-if(!unique[item.user_id]){
-
-unique[item.user_id]=item;
-
-}
-
-});
-
-conversations=Object.values(unique);
-
-renderChats(conversations);
-
-}
-
-/* ==========================
-SHOW CHATS
-========================== */
-
-function renderChats(rows){
-
-const list=document.getElementById("chatList");
-
-list.innerHTML="";
-
-if(rows.length===0){
-
-list.innerHTML="<div class='empty'>No conversations found.</div>";
-
-return;
-
-}
-
-rows.forEach(chat=>{
-
-const first=
-
-(chat.profiles?.fullname || "U")
-
-.charAt(0)
-
-.toUpperCase();
-
-const time=
-
-new Date(chat.created_at)
-
-.toLocaleTimeString([],{
-
-hour:"2-digit",
-
-minute:"2-digit"
-
-});
-
-list.innerHTML+=`
-
-<div class="chatCard"
-
-onclick="openChat('${chat.user_id}')">
-
-<div class="avatar">
-
-${first}
-
-</div>
-
-<div class="chatBody">
-
-<div class="chatName">
-
-${chat.profiles?.fullname || "Unknown User"}
-
-</div>
-
-<div class="lastMessage">
-
-${chat.message}
-
-</div>
-
-</div>
-
-<div class="chatRight">
-
-<div class="chatTime">
-
-${time}
-
-</div>
-
-${chat.status==="open"
-
-?'<div class="unread">1</div>'
-
-:''}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-
-/* ==========================
-SEARCH
-========================== */
-
-document
-
-.getElementById("search")
-
-.addEventListener("keyup",function(){
-
-const value=this.value.toLowerCase();
-
-const filtered=conversations.filter(chat=>
-
-(chat.profiles?.fullname || "")
-
-.toLowerCase()
-
-.includes(value)
-
-||
-
-(chat.message || "")
-
-.toLowerCase()
-
-.includes(value)
-
-);
-
-renderChats(filtered);
-
-});
-
-/* ==========================
-OPEN CHAT
-========================== */
-
-function openChat(userId){
-
-localStorage.setItem("support_user",userId);
-
-window.location.href="admin-chat.html";
-
-}
-
-  </script><!-- Add before </body> -->
-
-<script>
-
-const db = window.supabaseClient;
-
-let selectedChat = null;
-
-/* Open Chat */
-
-async function openChat(chatId){
-
-selectedChat = chatId;
-
-const { data, error } = await db
-.from("support_messages")
 .select("*")
-.eq("id", chatId)
+
+.eq("user_id",userId)
+
+.order("created_at",{ascending:false})
+
+.limit(1)
+
 .single();
 
 if(error){
+
 console.log(error);
+
 return;
+
 }
 
-const reply = prompt(
-"User Message:\n\n" +
-data.message +
-"\n\nType your reply:"
-);
+/* Save admin reply */
 
-if(reply==null || reply.trim()==""){
-return;
-}
+const {error:updateError}=await db
 
-/* Save Reply */
-
-const { error:updateError } = await db
 .from("support_messages")
+
 .update({
-admin_reply: reply,
+
+admin_reply:reply,
+
 status:"closed"
+
 })
-.eq("id",chatId);
+
+.eq("id",data.id);
 
 if(updateError){
 
@@ -473,27 +356,33 @@ return;
 
 }
 
-/* Notify User */
+/* Notify user */
 
 await db
+
 .from("user_notifications")
+
 .insert({
 
-user_id:data.user_id,
+user_id:userId,
 
 title:"Support Reply",
 
 message:reply,
 
-type:"support"
+type:"support",
+
+is_read:false
 
 });
 
-/* Refresh */
+/* Clear input */
 
-alert("Reply sent successfully.");
+document.getElementById("reply").value="";
 
-loadChats();
+/* Reload conversation */
+
+loadChat();
 
 }
 
