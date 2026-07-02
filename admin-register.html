@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Register</title>
+
+<link rel="stylesheet" href="admin-register.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+</head>
+
+<body>
+
+<div class="register-container">
+
+<div class="register-card">
+
+<h2>Admin Registration</h2>
+
+<p>Create a new administrator account</p>
+
+<input
+type="text"
+id="fullname"
+placeholder="Full Name"
+required>
+
+<input
+type="email"
+id="email"
+placeholder="Email Address"
+required>
+
+<input
+type="password"
+id="password"
+placeholder="Password"
+required>
+
+<select id="role">
+
+<option value="admin">Administrator</option>
+
+<option value="manager">Manager</option>
+
+</select>
+
+<button id="registerBtn">
+
+Register Admin
+
+</button>
+
+<div id="statusMessage"></div>
+
+</div>
+
+</div>
+
+<script src="admin-register.js"></script>
+
+</body>
+
+  </html>
