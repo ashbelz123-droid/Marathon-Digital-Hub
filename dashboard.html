@@ -9,136 +9,343 @@
 
 <title>Dashboard | Marathon Digital Hub</title>
 
-<link rel="stylesheet" href="dashboard.css">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:#050B18;
+color:white;
+overflow-x:hidden;
+padding-bottom:90px;
+
+}
+
+/* Animated Background */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+left:-40%;
+top:-40%;
+
+width:180%;
+height:180%;
+
+background:
+
+radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
+
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+
+radial-gradient(circle at 70% 85%,rgba(0,255,120,.16),transparent 40%),
+
+radial-gradient(circle at 25% 75%,rgba(180,0,255,.15),transparent 35%);
+
+animation:bgMove 18s linear infinite;
+
+z-index:-2;
+
+}
+
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
+
+}
+
+/* Header */
+
+.header{
+
+padding:18px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.header h2{
+
+font-size:24px;
+
+margin-bottom:5px;
+
+}
+
+.header p{
+
+font-size:14px;
+
+color:#9fb5d1;
+
+}
+
+.notification{
+
+width:50px;
+
+height:50px;
+
+border-radius:50%;
+
+background:#08142d;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:22px;
+
+position:relative;
+
+cursor:pointer;
+
+border:1px solid rgba(0,200,255,.20);
+
+}
+
+#notifyCount{
+
+position:absolute;
+
+right:3px;
+
+top:3px;
+
+width:18px;
+
+height:18px;
+
+background:red;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:10px;
+
+font-weight:bold;
+
+}
+
+/* Slider */
+
+.slider{
+
+margin:15px;
+
+height:190px;
+
+border-radius:20px;
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.slider img{
+
+width:100%;
+
+height:100%;
+
+object-fit:cover;
+
+}
+
+.slider-title{
+
+position:absolute;
+
+left:20px;
+
+bottom:20px;
+
+font-size:22px;
+
+font-weight:bold;
+
+text-shadow:0 0 8px black;
+
+}
+
+/* Cards */
+
+.stats{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+padding:15px;
+
+}
+
+.card{
+
+background:#08142d;
+
+border-radius:18px;
+
+padding:18px;
+
+border:1px solid rgba(0,200,255,.15);
+
+}
+
+.card p{
+
+font-size:13px;
+
+color:#9fb5d1;
+
+margin-bottom:8px;
+
+}
+
+.card h2{
+
+font-size:22px;
+
+color:#00ff88;
+
+}
+
+/* Quick Menu */
+
+.quick-menu{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:12px;
+
+padding:15px;
+
+}
+
+.quick{
+
+background:#08142d;
+
+border-radius:15px;
+
+padding:16px;
+
+text-align:center;
+
+cursor:pointer;
+
+border:1px solid rgba(0,200,255,.15);
+
+}
+
+.quick div{
+
+font-size:26px;
+
+margin-bottom:8px;
+
+}
+
+.quick span{
+
+font-size:13px;
+
+}
+
+</style>
 
 </head>
 
 <body>
 
-<!-- ===========================
-BACKGROUND
-=========================== -->
+<div class="header">
 
-<div class="heroBackground">
-    <canvas id="waveCanvas"></canvas>
-</div>
+<div>
 
-<div class="container">
+<h2 id="userName">
 
-<!-- ===========================
-HEADER
-=========================== -->
-
-<header class="header">
-
-<div class="headerLeft">
-
-<h2>
-
-Marathon Digital Hub
+Loading...
 
 </h2>
 
-<p id="userName">
+<p>
 
-Loading...
+Welcome Back To Marathon Digital Hub
 
 </p>
 
 </div>
 
-<div class="headerRight">
+<div
 
-<div class="notificationButton"
+class="notification"
+
 onclick="location.href='notifications.html'">
 
 🔔
 
-<span id="notifyCount">
+<div id="notifyCount">
 
 0
 
-</span>
-
 </div>
-
-</div>
-
-</header>
-
-<!-- ===========================
-HERO AREA
-=========================== -->
-
-<section class="hero">
-
-<div class="heroContent">
-
-<div class="heroText">
-
-<h1>
-
-Crypto Mining Investment
-
-</h1>
-
-<p>
-
-Grow your wealth with secure AI-powered crypto mining.
-
-</p>
-
-</div>
-
-<div class="heroMining">
-
-<div class="rig">
-
-<div class="gpu"></div>
-
-<div class="gpu"></div>
-
-<div class="gpu"></div>
-
-</div>
-
-<div class="coin btc">₿</div>
-<div class="coin eth">Ξ</div>
-<div class="coin usdt">₮</div>
-<div class="coin sol">◎</div>
 
 </div>
 
 </div>
 
-<div class="cryptoTicker">
+<div class="slider">
 
-<div id="tickerText">
+<img
 
-Loading crypto market...
+id="sliderImage"
+
+src="images/banner1.jpg">
+
+<div class="slider-title">
+
+MARATHON DIGITAL HUB
 
 </div>
 
 </div>
 
-</section>
+<div class="stats">
 
-<!-- ===========================
-TOP STATISTICS
-=========================== -->
+<div class="card">
 
-<section class="statsGrid">
-
-<div class="glassCard">
-
-<p>
-
-Wallet Balance
-
-</p>
+<p>Wallet Balance</p>
 
 <h2 id="walletBalance">
 
@@ -148,29 +355,9 @@ UGX 0
 
 </div>
 
-<div class="glassCard">
+<div class="card">
 
-<p>
-
-Today's Earnings
-
-</p>
-
-<h2 id="todayIncome">
-
-UGX 0
-
-</h2>
-
-</div>
-
-<div class="glassCard">
-
-<p>
-
-Active Machines
-
-</p>
+<p>Active Machines</p>
 
 <h2 id="activeMachines">
 
@@ -180,15 +367,11 @@ Active Machines
 
 </div>
 
-<div class="glassCard">
+<div class="card">
 
-<p>
+<p>Total Deposits</p>
 
-Team Income
-
-</p>
-
-<h2 id="teamIncome">
+<h2 id="totalDeposits">
 
 UGX 0
 
@@ -196,71 +379,272 @@ UGX 0
 
 </div>
 
-</section>
+<div class="card">
 
-<!-- ===========================
-QUICK MENU
-=========================== -->
+<p>Total Withdrawals</p>
 
-<section class="quickMenu">
+<h2 id="totalWithdrawals">
 
-<a href="deposit.html" class="quickItem">
+UGX 0
 
-💳
-
-<span>Deposit</span>
-
-</a>
-
-<a href="withdraw.html" class="quickItem">
-
-💵
-
-<span>Withdraw</span>
-
-</a>
-
-<a href="machines.html" class="quickItem">
-
-⚙️
-
-<span>Machines</span>
-
-</a>
-
-<a href="income.html" class="quickItem">
-
-📈
-
-<span>Income</span>
-
-</a>
-
-   </section><!-- ===========================
-ANNOUNCEMENTS
-=========================== -->
-
-<section class="glassSection">
-
-<div class="sectionHeader">
-
-<h3>
-
-📢 Latest Announcements
-
-</h3>
-
-<a href="notifications.html">
-
-More
-
-</a>
+</h2>
 
 </div>
 
+</div>
+
+<div class="quick-menu">
+
+<div class="quick"
+
+onclick="location.href='machines.html'">
+
+<div>⚙️</div>
+
+<span>Machines</span>
+
+</div>
+
+<div class="quick"
+
+onclick="location.href='deposit.html'">
+
+<div>💳</div>
+
+<span>Deposit</span>
+
+</div>
+
+<div class="quick"
+
+onclick="location.href='withdraw.html'">
+
+<div>💵</div>
+
+<span>Withdraw</span>
+
+</div>
+
+<div class="quick"
+
+onclick="location.href='income.html'">
+
+<div>📈</div>
+
+<span>Income</span>
+
+</div>
+
+   </div><script>
+
+/* ==========================================
+SUPABASE
+========================================== */
+
+const db = window.supabaseClient;
+
+let currentUser = null;
+
+/* ==========================================
+START DASHBOARD
+========================================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+const { data:{ user } } = await db.auth.getUser();
+
+/* Not logged in */
+
+if(!user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+currentUser = user;
+
+/* Load dashboard */
+
+await loadProfile();
+
+await loadWallet();
+
+await loadMachines();
+
+await loadDeposits();
+
+await loadWithdrawals();
+
+await loadNotifications();
+
+startSlider();
+
+});
+
+/* ==========================================
+PROFILE
+========================================== */
+
+async function loadProfile(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+document.getElementById("userName").innerHTML=
+
+"Welcome, "+data.fullname;
+
+}
+
+/* ==========================================
+WALLET
+========================================== */
+
+async function loadWallet(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("wallet_balance")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error)return;
+
+document.getElementById("walletBalance").innerHTML=
+
+"UGX "+Number(data.wallet_balance).toLocaleString();
+
+}
+
+/* ==========================================
+ACTIVE MACHINES
+========================================== */
+
+async function loadMachines(){
+
+const { data,error } = await db
+
+.from("user_machines")
+
+.select("*")
+
+.eq("user_id",currentUser.id)
+
+.eq("status","active");
+
+if(error)return;
+
+document.getElementById("activeMachines").innerHTML=
+
+data.length;
+
+}
+
+/* ==========================================
+TOTAL DEPOSITS
+========================================== */
+
+async function loadDeposits(){
+
+const { data,error } = await db
+
+.from("deposits")
+
+.select("amount")
+
+.eq("user_id",currentUser.id)
+
+.eq("status","approved");
+
+if(error)return;
+
+let total=0;
+
+data.forEach(item=>{
+
+total+=Number(item.amount);
+
+});
+
+document.getElementById("totalDeposits").innerHTML=
+
+"UGX "+total.toLocaleString();
+
+}
+
+/* ==========================================
+TOTAL WITHDRAWALS
+========================================== */
+
+async function loadWithdrawals(){
+
+const { data,error } = await db
+
+.from("withdrawals")
+
+.select("amount")
+
+.eq("user_id",currentUser.id)
+
+.eq("status","approved");
+
+if(error)return;
+
+let total=0;
+
+data.forEach(item=>{
+
+total+=Number(item.amount);
+
+});
+
+document.getElementById("totalWithdrawals").innerHTML=
+
+"UGX "+total.toLocaleString();
+
+}
+
+   </script>
+
+   <!-- =============================
+LATEST ANNOUNCEMENTS
+============================= -->
+
+<div style="padding:15px;">
+
+<h2 style="margin-bottom:15px;">
+Latest Announcements
+</h2>
+
 <div id="announcementList">
 
-<div class="announcementCard">
+<div style="
+background:#08142d;
+padding:18px;
+border-radius:15px;
+text-align:center;
+">
 
 Loading announcements...
 
@@ -268,214 +652,332 @@ Loading announcements...
 
 </div>
 
-</section>
+</div>
 
-<!-- ===========================
-NOTIFICATIONS
-=========================== -->
+<script>
 
-<section class="glassSection">
+/* ==========================
+LOCAL IMAGE SLIDER
+========================== */
 
-<div class="sectionHeader">
+const bannerImages=[
 
-<h3>
+"images/banner1.jpg",
+"images/banner2.jpg",
+"images/banner3.jpg",
+"images/banner4.jpg"
 
-🔔 Notifications
+];
+
+let currentBanner=0;
+
+function startSlider(){
+
+setInterval(()=>{
+
+currentBanner++;
+
+if(currentBanner>=bannerImages.length){
+
+currentBanner=0;
+
+}
+
+document.getElementById("sliderImage").src=
+
+bannerImages[currentBanner];
+
+},4000);
+
+}
+
+/* ==========================
+NOTIFICATION COUNT
+========================== */
+
+async function loadNotifications(){
+
+const { data,error } = await db
+
+.from("notifications")
+
+.select("*")
+
+.eq("is_active",true)
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+/* Count */
+
+document.getElementById("notifyCount").innerHTML=
+
+data.length;
+
+/* Latest */
+
+const container=document.getElementById("announcementList");
+
+container.innerHTML="";
+
+if(data.length===0){
+
+container.innerHTML=`
+
+<div style="
+background:#08142d;
+padding:18px;
+border-radius:15px;
+text-align:center;
+">
+
+No announcements available.
+
+</div>
+
+`;
+
+return;
+
+}
+
+/* Show only latest 4 */
+
+data.slice(0,4).forEach(item=>{
+
+container.innerHTML+=`
+
+<div onclick="location.href='notifications.html'"
+
+style="
+background:#08142d;
+padding:18px;
+border-radius:15px;
+margin-bottom:12px;
+cursor:pointer;
+border:1px solid rgba(0,200,255,.15);
+">
+
+<h3 style="
+margin-bottom:8px;
+color:#00ff88;
+">
+
+${item.title}
 
 </h3>
 
-<span id="notificationBadge">
+<p style="color:#cdd8ef;">
 
-0
+${item.message}
 
-</span>
-
-</div>
-
-<div id="notificationList">
-
-<div class="notificationCard">
-
-Loading notifications...
+</p>
 
 </div>
 
-</div>
+`;
 
-</section>
+});
 
-<!-- ===========================
-MY MINING MACHINES
-=========================== -->
+}
 
-<section class="glassSection">
+</script>
 
-<div class="sectionHeader">
+   <!-- ==========================
+MORE BUTTON
+========================== -->
 
-<h3>
+<div style="padding:0 15px 25px;">
 
-⛏️ My Mining Machines
+<button
 
-</h3>
+onclick="location.href='notifications.html'"
 
-<a href="machines.html">
+style="
 
-View All
+width:100%;
 
-</a>
+height:50px;
 
-</div>
+border:none;
 
-<div id="machineContainer">
+border-radius:14px;
 
-<div class="machineCard">
+background:linear-gradient(90deg,#00C8FF,#00FF88);
 
-Loading mining machines...
+font-size:16px;
 
-</div>
+font-weight:bold;
 
-</div>
+color:#001018;
 
-</section>
+cursor:pointer;
 
-<!-- ===========================
-RECENT TRANSACTIONS
-=========================== -->
+">
 
-<section class="glassSection">
+View All Announcements
 
-<div class="sectionHeader">
-
-<h3>
-
-📜 Recent Transactions
-
-</h3>
-
-<a href="transactions.html">
-
-View All
-
-</a>
+</button>
 
 </div>
 
-<div id="transactionContainer">
+<!-- ==========================
+SUPPORT BUTTON
+========================== -->
 
-<div class="transactionCard">
+<div style="padding:0 15px 20px;">
 
-Loading transactions...
+<button
+
+onclick="location.href='support.html'"
+
+style="
+
+width:100%;
+
+height:50px;
+
+border:none;
+
+border-radius:14px;
+
+background:#08142d;
+
+border:1px solid rgba(0,200,255,.20);
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
+">
+
+💬 Contact Support
+
+</button>
 
 </div>
 
-</div>
-
-</section>
-
-<!-- ===========================
-FLOATING SUPPORT
-=========================== -->
-
-<a
-href="support.html"
-class="supportButton">
-
-💬
-
-</a>
-
-<!-- ===========================
+<!-- ==========================
 BOTTOM NAVIGATION
-=========================== -->
+========================== -->
 
-<nav class="bottomNav">
+<style>
+
+.bottom-nav{
+
+position:fixed;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:72px;
+
+background:#08142d;
+
+border-top:1px solid rgba(0,200,255,.15);
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+z-index:999;
+
+}
+
+.bottom-nav a{
+
+text-decoration:none;
+
+color:#b8c8e8;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+font-size:12px;
+
+}
+
+.bottom-nav a i{
+
+font-style:normal;
+
+font-size:24px;
+
+margin-bottom:4px;
+
+}
+
+.bottom-nav .active{
+
+color:#00FF88;
+
+font-weight:bold;
+
+}
+
+</style>
+
+<div class="bottom-nav">
 
 <a href="dashboard.html" class="active">
 
-<div>
+<i>🏠</i>
 
-🏠
-
-</div>
-
-<span>
-
-Home
-
-</span>
+<span>Home</span>
 
 </a>
 
 <a href="machines.html">
 
-<div>
+<i>⚙️</i>
 
-⚙️
-
-</div>
-
-<span>
-
-Machines
-
-</span>
+<span>Machines</span>
 
 </a>
 
 <a href="deposit.html">
 
-<div>
+<i>💳</i>
 
-💳
-
-</div>
-
-<span>
-
-Deposit
-
-</span>
+<span>Deposit</span>
 
 </a>
 
 <a href="income.html">
 
-<div>
+<i>📈</i>
 
-📈
-
-</div>
-
-<span>
-
-Income
-
-</span>
+<span>Income</span>
 
 </a>
 
 <a href="profile.html">
 
-<div>
+<i>👤</i>
 
-👤
-
-</div>
-
-<span>
-
-Profile
-
-</span>
+<span>Profile</span>
 
 </a>
-
-</nav>
-
-<script src="dashboard.js"></script>
 
 </div>
 
 </body>
 
-   </html>
+    </html>
