@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>User Management | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050B18;
+color:#fff;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+background:#08142d;
+}
+
+.header h2{
+font-size:28px;
+}
+
+.backBtn{
+background:#00ff88;
+color:#001018;
+padding:10px 18px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.summary{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+padding:20px;
+}
+
+.card{
+background:#08142d;
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.card h4{
+color:#9fb5d1;
+margin-bottom:10px;
+}
+
+.card h1{
+font-size:32px;
+color:#00ff88;
+}
+
+.controls{
+padding:0 20px 20px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.controls input,
+.controls select{
+flex:1;
+min-width:220px;
+height:48px;
+background:#08142d;
+border:none;
+border-radius:12px;
+padding:0 15px;
+color:#fff;
+outline:none;
+}
+
+.userContainer{
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.userCard{
+background:#08142d;
+border-radius:18px;
+padding:20px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.userTop{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.userName{
+font-size:20px;
+font-weight:bold;
+}
+
+.status{
+padding:6px 15px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+text-transform:uppercase;
+}
+
+.active{
+background:#00c853;
+}
+
+.suspended{
+background:#ff3b30;
+}
+
+.info{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+margin-bottom:18px;
+}
+
+.info div{
+background:#111f3d;
+padding:12px;
+border-radius:10px;
+}
+
+.info span{
+display:block;
+color:#9fb5d1;
+font-size:12px;
+margin-bottom:5px;
+}
+
+.actions{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.actions button{
+height:45px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.viewBtn{
+background:#00bcd4;
+color:white;
+}
+
+.editBtn{
+background:#ffc107;
+color:#000;
+}
+
+.suspendBtn{
+background:#ff3b30;
+color:white;
+}
+
+.activateBtn{
+background:#00ff88;
+color:#001018;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>User Management</h2>
+
+<a href="admin-dashboard.html" class="backBtn">
+
+⬅ Dashboard
+
+</a>
+
+</div>
+
+<div class="summary">
+
+<div class="card">
+<h4>Total Users</h4>
+<h1 id="totalUsers">0</h1>
+</div>
+
+<div class="card">
+<h4>Active Users</h4>
+<h1 id="activeUsers">0</h1>
+</div>
+
+<div class="card">
+<h4>Suspended Users</h4>
+<h1 id="suspendedUsers">0</h1>
+</div>
+
+<div class="card">
+<h4>New Users</h4>
+<h1 id="newUsers">0</h1>
+</div>
+
+</div>
+
+<div class="controls">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search by name, phone or email...">
+
+<select id="statusFilter">
+
+<option value="all">All Users</option>
+<option value="active">Active</option>
+<option value="suspended">Suspended</option>
+
+</select>
+
+</div>
+
+<div class="userContainer" id="userContainer">
+
+<!-- Users will load here -->
+
+  </div><script>
+
+const db = window.supabaseClient;
+
+/* ==========================
+PROTECT PAGE
+========================== */
+
+if(localStorage.getItem("admin_logged_in")!=="true"){
+    window.location.href="admin-login.html";
+}
+
+/* ==========================
+LOAD USERS
+========================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+loadUsers();
+
+});
+
+async function loadUsers(){
+
+const container=document.getElementById("userContainer");
+
+container.innerHTML="<center>Loading users...</center>";
+
+const {data,error}=await db
+
+.from("profiles")
+
+.select("*")
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+container.innerHTML="<center>Failed to load users.</center>";
+
+console.log(error);
+
+return;
+
+}
+
+/* Dashboard Cards */
+
+document.getElementById("totalUsers").innerHTML=data.length;
+
+document.getElementById("activeUsers").innerHTML=
+
+data.filter(x=>x.account_status==="active").length;
+
+document.getElementById("suspendedUsers").innerHTML=
+
+data.filter(x=>x.account_status==="suspended").length;
+
+const today=new Date().toDateString();
+
+document.getElementById("newUsers").innerHTML=
+
+data.filter(x=>new Date(x.created_at).toDateString()===today).length;
+
+container.innerHTML="";
+
+if(data.length===0){
+
+container.innerHTML="<center>No users found.</center>";
+
+return;
+
+}
+
+/* User Cards */
+
+data.forEach(user=>{
+
+container.innerHTML+=`
+
+<div class="userCard">
+
+<div class="userTop">
+
+<div class="userName">
+
+${user.fullname}
+
+</div>
+
+<div class="status ${user.account_status}">
+
+${user.account_status}
+
+</div>
+
+</div>
+
+<div class="info">
+
+<div>
+
+<span>Phone</span>
+
+${user.phone || "-"}
+
+</div>
+
+<div>
+
+<span>Email</span>
+
+${user.email || "-"}
+
+</div>
+
+<div>
+
+<span>Wallet</span>
+
+UGX ${Number(user.wallet_balance||0).toLocaleString()}
+
+</div>
+
+<div>
+
+<span>Joined</span>
+
+${new Date(user.created_at).toLocaleDateString()}
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+
+class="viewBtn"
+
+onclick="viewUser('${user.id}')">
+
+View
+
+</button>
+
+<button
+
+class="editBtn"
+
+onclick="editUser('${user.id}')">
+
+Edit
+
+</button>
+
+<button
+
+class="suspendBtn"
+
+onclick="suspendUser('${user.id}')">
+
+Suspend
+
+</button>
+
+<button
+
+class="activateBtn"
+
+onclick="activateUser('${user.id}')">
+
+Activate
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+    </script><script>
+
+/* ==========================
+VIEW USER
+========================== */
+
+async function viewUser(userId){
+
+localStorage.setItem("selectedUser",userId);
+
+window.location.href="admin-user-profile.html";
+
+}
+
+/* ==========================
+EDIT USER
+========================== */
+
+async function editUser(userId){
+
+localStorage.setItem("editUser",userId);
+
+window.location.href="admin-edit-user.html";
+
+}
+
+/* ==========================
+SUSPEND USER
+========================== */
+
+async function suspendUser(userId){
+
+if(!confirm("Suspend this user?")) return;
+
+const {error}=await db
+
+.from("profiles")
+
+.update({
+
+account_status:"suspended"
+
+})
+
+.eq("id",userId);
+
+if(error){
+
+alert("Failed to suspend user.");
+
+console.log(error);
+
+return;
+
+}
+
+/* Admin Notification */
+
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title:"User Suspended",
+
+message:"A user account has been suspended.",
+
+type:"warning"
+
+});
+
+alert("User suspended successfully.");
+
+loadUsers();
+
+}
+
+/* ==========================
+ACTIVATE USER
+========================== */
+
+async function activateUser(userId){
+
+if(!confirm("Activate this user?")) return;
+
+const {error}=await db
+
+.from("profiles")
+
+.update({
+
+account_status:"active"
+
+})
+
+.eq("id",userId);
+
+if(error){
+
+alert("Failed to activate user.");
+
+console.log(error);
+
+return;
+
+}
+
+/* Admin Notification */
+
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title:"User Activated",
+
+message:"A user account has been activated.",
+
+type:"success"
+
+});
+
+alert("User activated successfully.");
+
+loadUsers();
+
+}
+
+    </script><script>
+
+/* ==========================
+LIVE SEARCH
+========================== */
+
+document.getElementById("searchInput")
+
+.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+const cards=document.querySelectorAll(".userCard");
+
+cards.forEach(card=>{
+
+card.style.display=
+
+card.innerText.toLowerCase().includes(value)
+
+? "block"
+
+: "none";
+
+});
+
+});
+
+/* ==========================
+STATUS FILTER
+========================== */
+
+document.getElementById("statusFilter")
+
+.addEventListener("change",function(){
+
+const value=this.value;
+
+const cards=document.querySelectorAll(".userCard");
+
+cards.forEach(card=>{
+
+const status=card.querySelector(".status")
+
+.innerText
+
+.toLowerCase()
+
+.trim();
+
+if(value==="all"){
+
+card.style.display="block";
+
+}else{
+
+card.style.display=
+
+status===value
+
+? "block"
+
+: "none";
+
+}
+
+});
+
+});
+
+/* ==========================
+AUTO REFRESH
+========================== */
+
+setInterval(()=>{
+
+loadUsers();
+
+},5000);
+
+/* ==========================
+DISABLE BUTTONS
+========================== */
+
+document.addEventListener("click",function(e){
+
+if(
+
+e.target.classList.contains("viewBtn") ||
+
+e.target.classList.contains("editBtn") ||
+
+e.target.classList.contains("suspendBtn") ||
+
+e.target.classList.contains("activateBtn")
+
+){
+
+e.target.disabled=true;
+
+setTimeout(()=>{
+
+e.target.disabled=false;
+
+},1500);
+
+}
+
+});
+
+/* ==========================
+READY
+========================== */
+
+console.log("User Management Ready");
+
+</script>
+
+</body>
+
+</html>
