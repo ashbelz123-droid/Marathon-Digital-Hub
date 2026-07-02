@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Payment Settings</title>
+
+<link rel="stylesheet" href="payment-settings.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+
+<button
+class="backBtn"
+onclick="history.back()">
+
+←
+
+</button>
+
+<h2>
+
+Payment Settings
+
+</h2>
+
+</header>
+
+<!-- CONTENT -->
+
+<div class="container">
+
+<div class="card">
+
+<h3>
+
+Mobile Money
+
+</h3>
+
+<label>
+
+Method
+
+</label>
+
+<input
+type="text"
+id="method"
+placeholder="MTN Mobile Money">
+
+<label>
+
+Account Name
+
+</label>
+
+<input
+type="text"
+id="accountName"
+placeholder="Account Name">
+
+<label>
+
+Phone Number
+
+</label>
+
+<input
+type="text"
+id="phoneNumber"
+placeholder="+2567XXXXXXXX">
+
+<label>
+
+Instructions
+
+</label>
+
+<textarea
+id="instructions"
+rows="5"
+placeholder="Deposit instructions..."></textarea>
+
+<div class="switchBox">
+
+<label>
+
+Active
+
+</label>
+
+<input
+type="checkbox"
+id="isActive">
+
+</div>
+
+<button
+id="saveBtn">
+
+Save Settings
+
+</button>
+
+<div
+id="statusMessage">
+
+</div>
+
+</div>
+
+</div>
+
+<script src="payment-settings.js"></script>
+
+</body>
+
+  </html>
