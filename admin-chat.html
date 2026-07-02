@@ -4,13 +4,16 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Support Chat</title>
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<title>Admin Chat</title>
 
 <link rel="stylesheet" href="admin-chat.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
 
 </head>
@@ -19,17 +22,15 @@
 
 <!-- HEADER -->
 
-<div class="chat-header">
+<header class="chat-header">
 
-<button
-class="back-btn"
-onclick="history.back()">
+<button id="backBtn">
 
 ←
 
 </button>
 
-<div class="user-info">
+<div class="user-box">
 
 <div class="avatar" id="avatar">
 
@@ -37,17 +38,17 @@ U
 
 </div>
 
-<div>
+<div class="user-details">
 
-<h3 id="userName">
+<h2 id="userName">
 
 Loading...
 
-</h3>
+</h2>
 
 <p id="chatStatus">
 
-Support Conversation
+Support Chat
 
 </p>
 
@@ -55,25 +56,25 @@ Support Conversation
 
 </div>
 
-</div>
+</header>
 
 <!-- CHAT -->
 
-<div
-id="chatBox"
-class="chat-box">
+<main
+class="chat-container"
+id="chatContainer">
 
 <div class="loading">
 
-Loading conversation...
+Loading messages...
 
 </div>
 
-</div>
+</main>
 
-<!-- REPLY -->
+<!-- FOOTER -->
 
-<div class="reply-box">
+<footer class="chat-footer">
 
 <input
 
@@ -91,7 +92,7 @@ Send
 
 </button>
 
-</div>
+</footer>
 
 <script src="admin-chat.js"></script>
 
