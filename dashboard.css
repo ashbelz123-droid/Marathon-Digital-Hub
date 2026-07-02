@@ -1,0 +1,766 @@
+/* ===================================
+RESET
+=================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+background:linear-gradient(180deg,#0c1735,#08142d,#0d2044);
+
+color:#fff;
+
+overflow-x:hidden;
+
+min-height:100vh;
+
+}
+
+/* ===================================
+BACKGROUND
+=================================== */
+
+.heroBackground{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:360px;
+
+overflow:hidden;
+
+z-index:-1;
+
+}
+
+#waveCanvas{
+
+width:100%;
+
+height:100%;
+
+display:block;
+
+}
+
+/* ===================================
+MAIN PAGE
+=================================== */
+
+.page{
+
+width:100%;
+
+max-width:1300px;
+
+margin:auto;
+
+padding:20px;
+
+}
+
+/* ===================================
+HEADER
+=================================== */
+
+.header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.headerLeft h2{
+
+font-size:28px;
+
+font-weight:bold;
+
+margin-bottom:6px;
+
+}
+
+.headerLeft p{
+
+font-size:14px;
+
+opacity:.85;
+
+}
+
+.notificationBell{
+
+width:55px;
+
+height:55px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:24px;
+
+position:relative;
+
+cursor:pointer;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+-webkit-backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+}
+
+.notificationBell span{
+
+position:absolute;
+
+top:6px;
+
+right:6px;
+
+background:#ff2f5b;
+
+color:#fff;
+
+width:18px;
+
+height:18px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:10px;
+
+font-weight:bold;
+
+}
+
+/* ===================================
+HERO
+=================================== */
+
+.hero{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:30px;
+
+margin-top:10px;
+
+margin-bottom:25px;
+
+padding:30px;
+
+border-radius:28px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+-webkit-backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.15);
+
+box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+  }/* ===================================
+LIVE CRYPTO TICKER
+=================================== */
+
+.cryptoTicker{
+
+margin-bottom:20px;
+
+overflow:hidden;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+-webkit-backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+}
+
+.ticker{
+
+height:50px;
+
+display:flex;
+
+align-items:center;
+
+overflow:hidden;
+
+padding:0 15px;
+
+}
+
+#cryptoTicker{
+
+white-space:nowrap;
+
+font-size:15px;
+
+font-weight:bold;
+
+animation:tickerMove 30s linear infinite;
+
+}
+
+@keyframes tickerMove{
+
+0%{transform:translateX(100%);}
+100%{transform:translateX(-100%);}
+
+}
+
+/* ===================================
+GLASS CARDS
+=================================== */
+
+.glassCard{
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+-webkit-backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:22px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+box-shadow:0 12px 30px rgba(0,0,0,.20);
+
+transition:.35s;
+
+}
+
+.glassCard:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 18px 40px rgba(0,0,0,.30);
+
+}
+
+/* ===================================
+CARD HEADER
+=================================== */
+
+.cardHeader{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+
+}
+
+.cardHeader h3{
+
+font-size:18px;
+
+}
+
+.cardHeader a{
+
+color:#00ffd5;
+
+text-decoration:none;
+
+font-size:14px;
+
+}
+
+/* ===================================
+ANNOUNCEMENT & NOTIFICATION
+=================================== */
+
+.loadingCard{
+
+padding:18px;
+
+border-radius:15px;
+
+background:rgba(255,255,255,.06);
+
+border:1px solid rgba(255,255,255,.10);
+
+text-align:center;
+
+color:#c8d3ea;
+
+}
+
+#notificationBadge{
+
+background:#ff2f5b;
+
+padding:4px 10px;
+
+border-radius:20px;
+
+font-size:12px;
+
+font-weight:bold;
+
+}
+
+/* ===================================
+STATISTICS
+=================================== */
+
+.statsGrid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:18px;
+
+margin-bottom:20px;
+
+}
+
+.statCard{
+
+text-align:center;
+
+}
+
+.statCard p{
+
+font-size:14px;
+
+opacity:.85;
+
+margin-bottom:10px;
+
+}
+
+.statCard h2{
+
+font-size:24px;
+
+color:#00ff88;
+
+}
+
+/* ===================================
+QUICK MENU
+=================================== */
+
+.quickMenu{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:15px;
+
+margin-bottom:25px;
+
+}
+
+.quickItem{
+
+text-decoration:none;
+
+color:white;
+
+text-align:center;
+
+padding:20px 10px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+-webkit-backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+transition:.3s;
+
+}
+
+.quickItem:hover{
+
+transform:translateY(-5px);
+
+}
+
+.quickItem div{
+
+font-size:28px;
+
+margin-bottom:8px;
+
+}
+
+.quickItem span{
+
+font-size:13px;
+
+  }/* ===================================
+MINING RIG
+=================================== */
+
+.heroContent{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:30px;
+
+}
+
+.heroText{
+
+flex:1;
+
+}
+
+.heroText h1{
+
+font-size:42px;
+
+line-height:1.1;
+
+margin-bottom:15px;
+
+}
+
+.heroText p{
+
+font-size:15px;
+
+opacity:.9;
+
+margin-bottom:20px;
+
+}
+
+.walletPreview{
+
+padding:18px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+display:inline-block;
+
+}
+
+.walletPreview h4{
+
+font-size:14px;
+
+margin-bottom:8px;
+
+}
+
+.walletPreview h2{
+
+color:#00ff88;
+
+font-size:28px;
+
+}
+
+.heroImage{
+
+position:relative;
+
+width:280px;
+
+height:220px;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+}
+
+.miningRig{
+
+width:180px;
+
+padding:15px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.10);
+
+border:1px solid rgba(255,255,255,.18);
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.gpu{
+
+height:24px;
+
+border-radius:8px;
+
+background:linear-gradient(90deg,#00d4ff,#00ff88,#9b5cff);
+
+animation:gpuGlow 2s infinite alternate;
+
+}
+
+@keyframes gpuGlow{
+
+from{opacity:.6;}
+to{opacity:1;}
+
+}
+
+/* ===================================
+FLOATING COINS
+=================================== */
+
+.coin{
+
+position:absolute;
+
+width:48px;
+
+height:48px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:24px;
+
+font-weight:bold;
+
+background:rgba(255,255,255,.12);
+
+backdrop-filter:blur(10px);
+
+animation:floatCoin 5s ease-in-out infinite;
+
+}
+
+.btc{top:5px;left:10px;color:#ffb000;}
+.eth{top:20px;right:5px;color:#7b8cff;}
+.usdt{bottom:15px;left:20px;color:#00ff88;}
+.sol{bottom:5px;right:20px;color:#ff66ff;}
+
+@keyframes floatCoin{
+
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-12px);}
+
+}
+
+/* ===================================
+SUPPORT BUTTON
+=================================== */
+
+.floatingSupport{
+
+position:fixed;
+
+right:20px;
+
+bottom:95px;
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:28px;
+
+text-decoration:none;
+
+background:linear-gradient(135deg,#00d4ff,#00ff88);
+
+color:#001018;
+
+box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+z-index:999;
+
+}
+
+/* ===================================
+BOTTOM NAVIGATION
+=================================== */
+
+.bottomNav{
+
+position:fixed;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:75px;
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+background:rgba(8,20,45,.90);
+
+backdrop-filter:blur(20px);
+
+border-top:1px solid rgba(255,255,255,.12);
+
+z-index:1000;
+
+}
+
+.bottomNav a{
+
+text-decoration:none;
+
+color:#cfd8ec;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+font-size:12px;
+
+}
+
+.bottomNav a div{
+
+font-size:24px;
+
+margin-bottom:4px;
+
+}
+
+.bottomNav .active{
+
+color:#00ff88;
+
+}
+
+/* ===================================
+RESPONSIVE
+=================================== */
+
+@media(max-width:768px){
+
+.heroContent{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.heroText h1{
+
+font-size:34px;
+
+}
+
+.heroImage{
+
+width:100%;
+
+}
+
+.quickMenu{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+.statsGrid{
+
+grid-template-columns:1fr;
+
+}
+
+  }
