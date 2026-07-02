@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Chat</title>
+
+<link rel="stylesheet" href="admin-chat.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+</head>
+
+<body>
+
+<div class="chat-header">
+
+<button class="back-btn"
+onclick="history.back()">
+
+←
+
+</button>
+
+<div class="user-details">
+
+<h2 id="userName">
+
+Loading...
+
+</h2>
+
+<p id="userStatus">
+
+Support Conversation
+
+</p>
+
+</div>
+
+</div>
+
+<div id="chatMessages"
+class="chat-messages">
+
+<div class="loading">
+
+Loading conversation...
+
+</div>
+
+</div>
+
+<div class="chat-footer">
+
+<input
+type="text"
+id="replyInput"
+placeholder="Type your reply...">
+
+<button
+id="sendBtn">
+
+Send
+
+</button>
+
+</div>
+
+<script src="admin-chat.js"></script>
+
+</body>
+
+  </html>
