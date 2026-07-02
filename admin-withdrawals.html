@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Withdrawal Management | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050B18;
+color:#fff;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+background:#08142d;
+}
+
+.header h2{
+font-size:28px;
+}
+
+.backBtn{
+background:#00ff88;
+color:#001018;
+padding:10px 18px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.summary{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+padding:20px;
+}
+
+.card{
+background:#08142d;
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.card h4{
+color:#9fb5d1;
+margin-bottom:10px;
+}
+
+.card h1{
+font-size:32px;
+color:#00ff88;
+}
+
+.controls{
+padding:0 20px 20px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.controls input,
+.controls select{
+flex:1;
+min-width:220px;
+height:48px;
+background:#08142d;
+border:none;
+border-radius:12px;
+padding:0 15px;
+color:white;
+outline:none;
+}
+
+.withdrawContainer{
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.withdrawCard{
+background:#08142d;
+border-radius:18px;
+padding:20px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.withdrawTop{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.userName{
+font-size:20px;
+font-weight:bold;
+}
+
+.status{
+padding:6px 15px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+text-transform:uppercase;
+}
+
+.pending{
+background:#ffc107;
+color:#000;
+}
+
+.approved{
+background:#00c853;
+}
+
+.rejected{
+background:#ff3b30;
+}
+
+.info{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+margin-bottom:18px;
+}
+
+.info div{
+background:#111f3d;
+padding:12px;
+border-radius:10px;
+}
+
+.info span{
+display:block;
+color:#9fb5d1;
+font-size:12px;
+margin-bottom:5px;
+}
+
+.actions{
+display:flex;
+gap:10px;
+}
+
+.actions button{
+flex:1;
+height:45px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.approveBtn{
+background:#00ff88;
+color:#001018;
+}
+
+.rejectBtn{
+background:#ff3b30;
+color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>Withdrawal Management</h2>
+
+<a href="admin-dashboard.html" class="backBtn">
+
+⬅ Dashboard
+
+</a>
+
+</div>
+
+<div class="summary">
+
+<div class="card">
+<h4>Pending Withdrawals</h4>
+<h1 id="pendingCount">0</h1>
+</div>
+
+<div class="card">
+<h4>Approved Withdrawals</h4>
+<h1 id="approvedCount">0</h1>
+</div>
+
+<div class="card">
+<h4>Rejected Withdrawals</h4>
+<h1 id="rejectedCount">0</h1>
+</div>
+
+<div class="card">
+<h4>Total Withdrawals</h4>
+<h1 id="totalCount">0</h1>
+</div>
+
+</div>
+
+<div class="controls">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search user...">
+
+<select id="statusFilter">
+
+<option value="all">All Withdrawals</option>
+<option value="pending">Pending</option>
+<option value="approved">Approved</option>
+<option value="rejected">Rejected</option>
+
+</select>
+
+</div>
+
+<div class="withdrawContainer" id="withdrawContainer">
+
+<!-- Withdrawals will load here -->
+
+  </div><script>
+
+const db = window.supabaseClient;
+
+/* ==========================
+PROTECT PAGE
+========================== */
+
+if(localStorage.getItem("admin_logged_in")!=="true"){
+    window.location.href="admin-login.html";
+}
+
+/* ==========================
+LOAD WITHDRAWALS
+========================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+loadWithdrawals();
+
+});
+
+async function loadWithdrawals(){
+
+const container=document.getElementById("withdrawContainer");
+
+container.innerHTML="<center>Loading withdrawals...</center>";
+
+const {data,error}=await db
+
+.from("withdrawals")
+
+.select(`
+id,
+user_id,
+amount,
+method,
+phone_number,
+status,
+created_at,
+profiles(
+fullname,
+phone
+)
+`)
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+container.innerHTML="<center>Failed to load withdrawals.</center>";
+
+console.log(error);
+
+return;
+
+}
+
+/* Dashboard Cards */
+
+document.getElementById("totalCount").innerHTML=data.length;
+
+document.getElementById("pendingCount").innerHTML=
+
+data.filter(x=>x.status==="pending").length;
+
+document.getElementById("approvedCount").innerHTML=
+
+data.filter(x=>x.status==="approved").length;
+
+document.getElementById("rejectedCount").innerHTML=
+
+data.filter(x=>x.status==="rejected").length;
+
+container.innerHTML="";
+
+if(data.length===0){
+
+container.innerHTML="<center>No withdrawal requests found.</center>";
+
+return;
+
+}
+
+data.forEach(item=>{
+
+container.innerHTML+=`
+
+<div class="withdrawCard">
+
+<div class="withdrawTop">
+
+<div class="userName">
+
+${item.profiles?.fullname ?? "Unknown User"}
+
+</div>
+
+<div class="status ${item.status}">
+
+${item.status}
+
+</div>
+
+</div>
+
+<div class="info">
+
+<div>
+
+<span>Phone</span>
+
+${item.phone_number}
+
+</div>
+
+<div>
+
+<span>Method</span>
+
+${item.method}
+
+</div>
+
+<div>
+
+<span>Amount</span>
+
+UGX ${Number(item.amount).toLocaleString()}
+
+</div>
+
+<div>
+
+<span>Date</span>
+
+${new Date(item.created_at).toLocaleString()}
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+
+class="approveBtn"
+
+onclick="approveWithdrawal('${item.id}')">
+
+Approve
+
+</button>
+
+<button
+
+class="rejectBtn"
+
+onclick="rejectWithdrawal('${item.id}')">
+
+Reject
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+  </script><script>
+
+/* ==========================
+APPROVE WITHDRAWAL
+========================== */
+
+async function approveWithdrawal(withdrawId){
+
+if(!confirm("Approve this withdrawal?")) return;
+
+const {data:withdraw,error}=await db
+
+.from("withdrawals")
+
+.select("*")
+
+.eq("id",withdrawId)
+
+.single();
+
+if(error || !withdraw){
+
+alert("Withdrawal not found.");
+
+return;
+
+}
+
+if(withdraw.status==="approved"){
+
+alert("Withdrawal already approved.");
+
+return;
+
+}
+
+/* Get Wallet */
+
+const {data:profile}=await db
+
+.from("profiles")
+
+.select("wallet_balance")
+
+.eq("id",withdraw.user_id)
+
+.single();
+
+const currentBalance=Number(profile.wallet_balance||0);
+
+/* Prevent Negative Balance */
+
+if(currentBalance<Number(withdraw.amount)){
+
+alert("User has insufficient wallet balance.");
+
+return;
+
+}
+
+const newBalance=currentBalance-Number(withdraw.amount);
+
+/* Update Wallet */
+
+await db
+
+.from("profiles")
+
+.update({
+
+wallet_balance:newBalance
+
+})
+
+.eq("id",withdraw.user_id);
+
+/* Update Withdrawal */
+
+await db
+
+.from("withdrawals")
+
+.update({
+
+status:"approved"
+
+})
+
+.eq("id",withdrawId);
+
+/* Notify User */
+
+await db
+
+.from("user_notifications")
+
+.insert({
+
+user_id:withdraw.user_id,
+
+title:"Withdrawal Approved",
+
+message:`Your withdrawal of UGX ${Number(withdraw.amount).toLocaleString()} has been approved.`,
+
+type:"success"
+
+});
+
+/* Notify Admin */
+
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title:"Withdrawal Approved",
+
+message:`UGX ${Number(withdraw.amount).toLocaleString()} withdrawal approved.`,
+
+type:"success"
+
+});
+
+alert("Withdrawal Approved Successfully.");
+
+loadWithdrawals();
+
+}
+
+/* ==========================
+REJECT WITHDRAWAL
+========================== */
+
+async function rejectWithdrawal(withdrawId){
+
+if(!confirm("Reject this withdrawal?")) return;
+
+const {data:withdraw,error}=await db
+
+.from("withdrawals")
+
+.select("*")
+
+.eq("id",withdrawId)
+
+.single();
+
+if(error){
+
+alert("Withdrawal not found.");
+
+return;
+
+}
+
+/* Update Status */
+
+await db
+
+.from("withdrawals")
+
+.update({
+
+status:"rejected"
+
+})
+
+.eq("id",withdrawId);
+
+/* Notify User */
+
+await db
+
+.from("user_notifications")
+
+.insert({
+
+user_id:withdraw.user_id,
+
+title:"Withdrawal Rejected",
+
+message:`Your withdrawal request of UGX ${Number(withdraw.amount).toLocaleString()} has been rejected.`,
+
+type:"error"
+
+});
+
+/* Notify Admin */
+
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title:"Withdrawal Rejected",
+
+message:`UGX ${Number(withdraw.amount).toLocaleString()} withdrawal rejected.`,
+
+type:"warning"
+
+});
+
+alert("Withdrawal Rejected.");
+
+loadWithdrawals();
+
+}
+
+  </script><script>
+
+/* ==========================
+LIVE SEARCH
+========================== */
+
+document.getElementById("searchInput")
+
+.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+const cards=document.querySelectorAll(".withdrawCard");
+
+cards.forEach(card=>{
+
+card.style.display=
+
+card.innerText.toLowerCase().includes(value)
+
+? "block"
+
+: "none";
+
+});
+
+});
+
+/* ==========================
+STATUS FILTER
+========================== */
+
+document.getElementById("statusFilter")
+
+.addEventListener("change",function(){
+
+const value=this.value;
+
+const cards=document.querySelectorAll(".withdrawCard");
+
+cards.forEach(card=>{
+
+const status=card.querySelector(".status")
+
+.innerText
+
+.toLowerCase()
+
+.trim();
+
+if(value==="all"){
+
+card.style.display="block";
+
+}else{
+
+card.style.display=
+
+status===value
+
+? "block"
+
+: "none";
+
+}
+
+});
+
+});
+
+/* ==========================
+AUTO REFRESH
+========================== */
+
+setInterval(()=>{
+
+loadWithdrawals();
+
+},5000);
+
+/* ==========================
+PROCESS BUTTONS
+========================== */
+
+document.addEventListener("click",function(e){
+
+if(
+
+e.target.classList.contains("approveBtn") ||
+
+e.target.classList.contains("rejectBtn")
+
+){
+
+e.target.disabled=true;
+
+e.target.innerHTML="Processing...";
+
+}
+
+});
+
+console.log("Withdrawal Management Ready");
+
+</script>
+
+</body>
+
+</html>
