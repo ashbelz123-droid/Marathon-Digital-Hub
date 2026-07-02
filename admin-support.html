@@ -4,9 +4,10 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>Admin Support | Marathon Digital Hub</title>
+<title>Support Chats</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
@@ -24,212 +25,124 @@ body{
 
 background:#050B18;
 color:white;
-height:100vh;
-overflow:hidden;
 
 }
 
-.wrapper{
-
-display:flex;
-height:100vh;
-
-}
-
-/* LEFT SIDE */
-
-.sidebar{
-
-width:340px;
-background:#08142d;
-border-right:1px solid rgba(255,255,255,.08);
-display:flex;
-flex-direction:column;
-
-}
-
-.sidebarHeader{
+.header{
 
 padding:20px;
-font-size:22px;
+font-size:34px;
 font-weight:bold;
-background:#111f3d;
 
 }
 
 .search{
 
-padding:15px;
+padding:0 20px 20px;
 
 }
 
 .search input{
 
 width:100%;
-height:45px;
+height:55px;
+background:#111f3d;
 border:none;
 outline:none;
-border-radius:10px;
-padding:0 15px;
-background:#111f3d;
+border-radius:30px;
+padding:0 20px;
 color:white;
+font-size:16px;
 
 }
 
 .chatList{
 
-flex:1;
-overflow:auto;
+padding-bottom:80px;
 
 }
 
-.chatItem{
+.chat{
 
 display:flex;
 align-items:center;
-padding:15px;
-cursor:pointer;
+padding:15px 20px;
 border-bottom:1px solid rgba(255,255,255,.05);
+cursor:pointer;
 
 }
 
-.chatItem:hover{
+.chat:hover{
 
-background:#111f3d;
+background:#08142d;
 
 }
 
 .avatar{
 
-width:50px;
-height:50px;
+width:60px;
+height:60px;
 border-radius:50%;
 background:#00ff88;
-color:#001018;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
+font-size:24px;
 font-weight:bold;
-font-size:20px;
+color:#001018;
 margin-right:15px;
 
 }
 
-.chatInfo{
+.details{
 
 flex:1;
 
 }
 
-.chatInfo h4{
+.details h3{
 
-margin-bottom:5px;
+font-size:18px;
+margin-bottom:6px;
 
 }
 
-.chatInfo p{
+.details p{
+
+color:#9fb5d1;
+font-size:14px;
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+
+}
+
+.right{
+
+text-align:right;
+
+}
+
+.time{
 
 font-size:13px;
 color:#9fb5d1;
+margin-bottom:8px;
 
 }
 
 .badge{
 
-background:red;
-padding:4px 8px;
-border-radius:20px;
-font-size:12px;
-
-}
-
-/* RIGHT SIDE */
-
-.chatArea{
-
-flex:1;
-display:flex;
-flex-direction:column;
-
-}
-
-.chatHeader{
-
-height:70px;
-background:#08142d;
-display:flex;
+display:inline-flex;
 align-items:center;
-padding:20px;
-font-size:20px;
-font-weight:bold;
-border-bottom:1px solid rgba(255,255,255,.08);
-
-}
-
-.messages{
-
-flex:1;
-overflow:auto;
-padding:20px;
-background:#050B18;
-
-}
-
-.message{
-
-max-width:70%;
-padding:12px;
-margin-bottom:15px;
-border-radius:12px;
-
-}
-
-.user{
-
-background:#111f3d;
-align-self:flex-start;
-
-}
-
-.admin{
-
+justify-content:center;
+width:24px;
+height:24px;
 background:#00ff88;
 color:#001018;
-margin-left:auto;
-
-}
-
-.replyBox{
-
-padding:15px;
-background:#08142d;
-display:flex;
-gap:10px;
-
-}
-
-.replyBox input{
-
-flex:1;
-height:50px;
-border:none;
-outline:none;
-border-radius:10px;
-padding:0 15px;
-background:#111f3d;
-color:white;
-
-}
-
-.replyBox button{
-
-width:120px;
-border:none;
-border-radius:10px;
-background:#00ff88;
-color:#001018;
+border-radius:50%;
+font-size:12px;
 font-weight:bold;
-cursor:pointer;
 
 }
 
@@ -239,11 +152,7 @@ cursor:pointer;
 
 <body>
 
-<div class="wrapper">
-
-<div class="sidebar">
-
-<div class="sidebarHeader">
+<div class="header">
 
 Support Chats
 
@@ -252,12 +161,9 @@ Support Chats
 <div class="search">
 
 <input
-
 type="text"
-
-placeholder="Search user..."
-
-id="searchUser">
+id="searchUser"
+placeholder="Search...">
 
 </div>
 
@@ -267,21 +173,326 @@ class="chatList"
 
 id="chatList">
 
-<!-- Chats -->
+<!-- Chats load here -->
+
+</div><script>
+
+const db = window.supabaseClient;
+
+let chats=[];
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+loadChats();
+
+});
+
+/* ==========================
+LOAD CHATS
+========================== */
+
+async function loadChats(){
+
+const list=document.getElementById("chatList");
+
+list.innerHTML="<center style='padding:20px;'>Loading...</center>";
+
+const {data,error}=await db
+
+.from("support_messages")
+
+.select(`
+id,
+user_id,
+message,
+status,
+created_at,
+profiles(
+fullname
+)
+`)
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.log(error);
+
+list.innerHTML="<center style='padding:20px;'>Failed to load chats.</center>";
+
+return;
+
+}
+
+chats=data;
+
+renderChats(chats);
+
+}
+
+/* ==========================
+RENDER CHAT LIST
+========================== */
+
+function renderChats(data){
+
+const list=document.getElementById("chatList");
+
+list.innerHTML="";
+
+if(data.length===0){
+
+list.innerHTML="<center style='padding:30px;'>No chats available.</center>";
+
+return;
+
+}
+
+data.forEach(chat=>{
+
+const firstLetter=
+
+(chat.profiles?.fullname || "U")
+
+.charAt(0)
+
+.toUpperCase();
+
+const time=new Date(chat.created_at)
+
+.toLocaleTimeString([],{
+
+hour:"2-digit",
+
+minute:"2-digit"
+
+});
+
+list.innerHTML+=`
+
+<div class="chat"
+
+onclick="openConversation('${chat.id}')">
+
+<div class="avatar">
+
+${firstLetter}
+
+</div>
+
+<div class="details">
+
+<h3>
+
+${chat.profiles?.fullname || "Unknown User"}
+
+</h3>
+
+<p>
+
+${chat.message}
+
+</p>
+
+</div>
+
+<div class="right">
+
+<div class="time">
+
+${time}
+
+</div>
+
+${
+chat.status==="open"
+
+?
+
+'<div class="badge">New</div>'
+
+:
+
+''
+
+}
 
 </div>
 
 </div>
 
-<div class="chatArea">
+`;
+
+});
+
+}
+
+/* ==========================
+SEARCH
+========================== */
+
+document
+
+.getElementById("searchUser")
+
+.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+const filtered=chats.filter(chat=>
+
+(chat.profiles?.fullname || "")
+
+.toLowerCase()
+
+.includes(value)
+
+||
+
+(chat.message || "")
+
+.toLowerCase()
+
+.includes(value)
+
+);
+
+renderChats(filtered);
+
+});
+
+  </script><script>
+
+/* ==========================
+OPEN CONVERSATION
+========================== */
+
+function openConversation(chatId){
+
+localStorage.setItem("selectedSupportChat",chatId);
+
+window.location.href="admin-chat.html";
+
+}
+
+</script>
+
+---
+
+Create a new file: "admin-chat.html"
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Support Chat</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+body{
+
+margin:0;
+background:#050B18;
+font-family:Arial,sans-serif;
+color:white;
+
+}
+
+.header{
+
+height:70px;
+background:#08142d;
+display:flex;
+align-items:center;
+padding:0 20px;
+font-size:20px;
+font-weight:bold;
+
+}
+
+.messages{
+
+height:calc(100vh - 140px);
+overflow:auto;
+padding:20px;
+display:flex;
+flex-direction:column;
+
+}
+
+.user{
+
+background:#111f3d;
+padding:12px;
+border-radius:12px;
+margin-bottom:12px;
+max-width:80%;
+
+}
+
+.admin{
+
+background:#00ff88;
+color:#001018;
+padding:12px;
+border-radius:12px;
+margin-bottom:12px;
+margin-left:auto;
+max-width:80%;
+
+}
+
+.footer{
+
+height:70px;
+background:#08142d;
+display:flex;
+padding:10px;
+gap:10px;
+
+}
+
+.footer input{
+
+flex:1;
+border:none;
+outline:none;
+border-radius:25px;
+padding:0 15px;
+background:#111f3d;
+color:white;
+
+}
+
+.footer button{
+
+width:100px;
+border:none;
+border-radius:25px;
+background:#00ff88;
+font-weight:bold;
+
+}
+
+</style>
+
+</head>
+
+<body>
 
 <div
 
-class="chatHeader"
+class="header"
 
-id="chatHeader">
+id="chatName">
 
-Select a conversation
+Loading...
 
 </div>
 
@@ -291,19 +502,15 @@ class="messages"
 
 id="messages">
 
-<!-- Messages -->
-
 </div>
 
-<div class="replyBox">
+<div class="footer">
 
 <input
 
-type="text"
+id="reply"
 
-id="replyMessage"
-
-placeholder="Type your reply...">
+placeholder="Type reply...">
 
 <button
 
@@ -315,426 +522,59 @@ Send
 
 </div>
 
-</div>
+<script>
 
-  </div><script>
+const db=window.supabaseClient;
 
-const db = window.supabaseClient;
+const chatId=
 
-let selectedUser=null;
+localStorage.getItem("selectedSupportChat");
 
-/* ==========================
-PROTECT PAGE
-========================== */
+loadConversation();
 
-if(localStorage.getItem("admin_logged_in")!=="true"){
+async function loadConversation(){
 
-window.location.href="admin-login.html";
-
-}
-
-/* ==========================
-LOAD CONVERSATIONS
-========================== */
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-loadChats();
-
-});
-
-async function loadChats(){
-
-const list=document.getElementById("chatList");
-
-list.innerHTML="Loading...";
-
-const {data,error}=await db
+const {data}=await db
 
 .from("support_messages")
 
 .select(`
-id,
-user_id,
-message,
-admin_reply,
-status,
-created_at,
-profiles(
-fullname,
-phone
-)
+*,
+profiles(fullname)
 `)
 
-.order("created_at",{ascending:false});
-
-if(error){
-
-list.innerHTML="Failed to load chats.";
-
-console.log(error);
-
-return;
-
-}
-
-list.innerHTML="";
-
-if(data.length===0){
-
-list.innerHTML="<center>No support messages.</center>";
-
-return;
-
-}
-
-data.forEach(chat=>{
-
-list.innerHTML+=`
-
-<div
-
-class="chatItem"
-
-onclick="openChat('${chat.id}')">
-
-<div class="avatar">
-
-${chat.profiles?.fullname?.charAt(0).toUpperCase() || "U"}
-
-</div>
-
-<div class="chatInfo">
-
-<h4>
-
-${chat.profiles?.fullname || "Unknown User"}
-
-</h4>
-
-<p>
-
-${chat.message || "No message"}
-
-</p>
-
-</div>
-
-${chat.status==="open"
-
-?'<span class="badge">New</span>'
-
-:''}
-
-</div>
-
-`;
-
-});
-
-}
-
-/* ==========================
-OPEN CHAT
-========================== */
-
-async function openChat(id){
-
-selectedUser=id;
-
-const {data,error}=await db
-
-.from("support_messages")
-
-.select(`
-id,
-message,
-admin_reply,
-profiles(
-fullname
-)
-`)
-
-.eq("id",id)
+.eq("id",chatId)
 
 .single();
 
-if(error){
+document.getElementById("chatName").innerHTML=
 
-console.log(error);
+data.profiles.fullname;
 
-return;
+document.getElementById("messages").innerHTML=`
 
-}
-
-document.getElementById("chatHeader").innerHTML=
-
-data.profiles?.fullname || "User";
-
-const messages=document.getElementById("messages");
-
-messages.innerHTML="";
-
-messages.innerHTML+=`
-
-<div class="message user">
+<div class="user">
 
 ${data.message}
 
 </div>
 
-`;
+${data.admin_reply ?
 
-if(data.admin_reply){
-
-messages.innerHTML+=`
-
-<div class="message admin">
+`<div class="admin">
 
 ${data.admin_reply}
 
-</div>
+</div>`
+
+:""}
 
 `;
 
 }
-
-messages.scrollTop=messages.scrollHeight;
-
-}
-
-  </script><script>
-
-/* ==========================
-SEND REPLY
-========================== */
-
-async function sendReply(){
-
-if(!selectedUser){
-
-alert("Select a conversation first.");
-
-return;
-
-}
-
-const reply=document.getElementById("replyMessage").value.trim();
-
-if(reply===""){
-
-alert("Enter your reply.");
-
-return;
-
-}
-
-/* Get Conversation */
-
-const {data:chat,error}=await db
-
-.from("support_messages")
-
-.select("*")
-
-.eq("id",selectedUser)
-
-.single();
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-/* Save Reply */
-
-const {error:updateError}=await db
-
-.from("support_messages")
-
-.update({
-
-admin_reply:reply,
-
-status:"closed"
-
-})
-
-.eq("id",selectedUser);
-
-if(updateError){
-
-alert("Failed to send reply.");
-
-console.log(updateError);
-
-return;
-
-}
-
-/* Notify User */
-
-await db
-
-.from("user_notifications")
-
-.insert({
-
-user_id:chat.user_id,
-
-title:"Support Reply",
-
-message:"Our support team has replied to your message.",
-
-type:"info"
-
-});
-
-/* Admin Notification */
-
-await db
-
-.from("admin_notifications")
-
-.insert({
-
-title:"Support Reply Sent",
-
-message:"Support reply sent successfully.",
-
-type:"success"
-
-});
-
-/* Show Reply */
-
-const messages=document.getElementById("messages");
-
-messages.innerHTML+=`
-
-<div class="message admin">
-
-${reply}
-
-</div>
-
-`;
-
-messages.scrollTop=messages.scrollHeight;
-
-document.getElementById("replyMessage").value="";
-
-loadChats();
-
-}
-
-  </script><script>
-
-/* ==========================
-LIVE SEARCH
-========================== */
-
-document.getElementById("searchUser")
-
-.addEventListener("keyup",function(){
-
-const value=this.value.toLowerCase();
-
-const chats=document.querySelectorAll(".chatItem");
-
-chats.forEach(chat=>{
-
-chat.style.display=
-
-chat.innerText.toLowerCase().includes(value)
-
-? "flex"
-
-: "none";
-
-});
-
-});
-
-/* ==========================
-AUTO SCROLL
-========================== */
-
-function scrollBottom(){
-
-const box=document.getElementById("messages");
-
-box.scrollTop=box.scrollHeight;
-
-}
-
-/* Scroll whenever chat changes */
-
-const oldOpenChat=openChat;
-
-openChat=async function(id){
-
-await oldOpenChat(id);
-
-scrollBottom();
-
-};
-
-/* ==========================
-ENTER TO SEND
-========================== */
-
-document
-
-.getElementById("replyMessage")
-
-.addEventListener("keypress",function(e){
-
-if(e.key==="Enter"){
-
-e.preventDefault();
-
-sendReply();
-
-}
-
-});
-
-/* ==========================
-CHAT STATUS COLORS
-========================== */
-
-function updateChatStatus(){
-
-document.querySelectorAll(".badge").forEach(badge=>{
-
-if(badge.innerText==="New"){
-
-badge.style.background="#ff3b30";
-
-}else{
-
-badge.style.background="#00c853";
-
-}
-
-});
-
-}
-
-updateChatStatus();
-
-/* ==========================
-READY
-========================== */
-
-console.log("WhatsApp Support Ready");
 
 </script>
 
 </body>
 
-</html>
+  </html>
