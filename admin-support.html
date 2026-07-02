@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Admin Support | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:#050B18;
+color:white;
+height:100vh;
+overflow:hidden;
+
+}
+
+.wrapper{
+
+display:flex;
+height:100vh;
+
+}
+
+/* LEFT SIDE */
+
+.sidebar{
+
+width:340px;
+background:#08142d;
+border-right:1px solid rgba(255,255,255,.08);
+display:flex;
+flex-direction:column;
+
+}
+
+.sidebarHeader{
+
+padding:20px;
+font-size:22px;
+font-weight:bold;
+background:#111f3d;
+
+}
+
+.search{
+
+padding:15px;
+
+}
+
+.search input{
+
+width:100%;
+height:45px;
+border:none;
+outline:none;
+border-radius:10px;
+padding:0 15px;
+background:#111f3d;
+color:white;
+
+}
+
+.chatList{
+
+flex:1;
+overflow:auto;
+
+}
+
+.chatItem{
+
+display:flex;
+align-items:center;
+padding:15px;
+cursor:pointer;
+border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.chatItem:hover{
+
+background:#111f3d;
+
+}
+
+.avatar{
+
+width:50px;
+height:50px;
+border-radius:50%;
+background:#00ff88;
+color:#001018;
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:bold;
+font-size:20px;
+margin-right:15px;
+
+}
+
+.chatInfo{
+
+flex:1;
+
+}
+
+.chatInfo h4{
+
+margin-bottom:5px;
+
+}
+
+.chatInfo p{
+
+font-size:13px;
+color:#9fb5d1;
+
+}
+
+.badge{
+
+background:red;
+padding:4px 8px;
+border-radius:20px;
+font-size:12px;
+
+}
+
+/* RIGHT SIDE */
+
+.chatArea{
+
+flex:1;
+display:flex;
+flex-direction:column;
+
+}
+
+.chatHeader{
+
+height:70px;
+background:#08142d;
+display:flex;
+align-items:center;
+padding:20px;
+font-size:20px;
+font-weight:bold;
+border-bottom:1px solid rgba(255,255,255,.08);
+
+}
+
+.messages{
+
+flex:1;
+overflow:auto;
+padding:20px;
+background:#050B18;
+
+}
+
+.message{
+
+max-width:70%;
+padding:12px;
+margin-bottom:15px;
+border-radius:12px;
+
+}
+
+.user{
+
+background:#111f3d;
+align-self:flex-start;
+
+}
+
+.admin{
+
+background:#00ff88;
+color:#001018;
+margin-left:auto;
+
+}
+
+.replyBox{
+
+padding:15px;
+background:#08142d;
+display:flex;
+gap:10px;
+
+}
+
+.replyBox input{
+
+flex:1;
+height:50px;
+border:none;
+outline:none;
+border-radius:10px;
+padding:0 15px;
+background:#111f3d;
+color:white;
+
+}
+
+.replyBox button{
+
+width:120px;
+border:none;
+border-radius:10px;
+background:#00ff88;
+color:#001018;
+font-weight:bold;
+cursor:pointer;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="wrapper">
+
+<div class="sidebar">
+
+<div class="sidebarHeader">
+
+Support Chats
+
+</div>
+
+<div class="search">
+
+<input
+
+type="text"
+
+placeholder="Search user..."
+
+id="searchUser">
+
+</div>
+
+<div
+
+class="chatList"
+
+id="chatList">
+
+<!-- Chats -->
+
+</div>
+
+</div>
+
+<div class="chatArea">
+
+<div
+
+class="chatHeader"
+
+id="chatHeader">
+
+Select a conversation
+
+</div>
+
+<div
+
+class="messages"
+
+id="messages">
+
+<!-- Messages -->
+
+</div>
+
+<div class="replyBox">
+
+<input
+
+type="text"
+
+id="replyMessage"
+
+placeholder="Type your reply...">
+
+<button
+
+onclick="sendReply()">
+
+Send
+
+</button>
+
+</div>
+
+</div>
+
+  </div><script>
+
+const db = window.supabaseClient;
+
+let selectedUser=null;
+
+/* ==========================
+PROTECT PAGE
+========================== */
+
+if(localStorage.getItem("admin_logged_in")!=="true"){
+
+window.location.href="admin-login.html";
+
+}
+
+/* ==========================
+LOAD CONVERSATIONS
+========================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+loadChats();
+
+});
+
+async function loadChats(){
+
+const list=document.getElementById("chatList");
+
+list.innerHTML="Loading...";
+
+const {data,error}=await db
+
+.from("support_messages")
+
+.select(`
+id,
+user_id,
+message,
+admin_reply,
+status,
+created_at,
+profiles(
+fullname,
+phone
+)
+`)
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+list.innerHTML="Failed to load chats.";
+
+console.log(error);
+
+return;
+
+}
+
+list.innerHTML="";
+
+if(data.length===0){
+
+list.innerHTML="<center>No support messages.</center>";
+
+return;
+
+}
+
+data.forEach(chat=>{
+
+list.innerHTML+=`
+
+<div
+
+class="chatItem"
+
+onclick="openChat('${chat.id}')">
+
+<div class="avatar">
+
+${chat.profiles?.fullname?.charAt(0).toUpperCase() || "U"}
+
+</div>
+
+<div class="chatInfo">
+
+<h4>
+
+${chat.profiles?.fullname || "Unknown User"}
+
+</h4>
+
+<p>
+
+${chat.message || "No message"}
+
+</p>
+
+</div>
+
+${chat.status==="open"
+
+?'<span class="badge">New</span>'
+
+:''}
+
+</div>
+
+`;
+
+});
+
+}
+
+/* ==========================
+OPEN CHAT
+========================== */
+
+async function openChat(id){
+
+selectedUser=id;
+
+const {data,error}=await db
+
+.from("support_messages")
+
+.select(`
+id,
+message,
+admin_reply,
+profiles(
+fullname
+)
+`)
+
+.eq("id",id)
+
+.single();
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+document.getElementById("chatHeader").innerHTML=
+
+data.profiles?.fullname || "User";
+
+const messages=document.getElementById("messages");
+
+messages.innerHTML="";
+
+messages.innerHTML+=`
+
+<div class="message user">
+
+${data.message}
+
+</div>
+
+`;
+
+if(data.admin_reply){
+
+messages.innerHTML+=`
+
+<div class="message admin">
+
+${data.admin_reply}
+
+</div>
+
+`;
+
+}
+
+messages.scrollTop=messages.scrollHeight;
+
+}
+
+  </script><script>
+
+/* ==========================
+SEND REPLY
+========================== */
+
+async function sendReply(){
+
+if(!selectedUser){
+
+alert("Select a conversation first.");
+
+return;
+
+}
+
+const reply=document.getElementById("replyMessage").value.trim();
+
+if(reply===""){
+
+alert("Enter your reply.");
+
+return;
+
+}
+
+/* Get Conversation */
+
+const {data:chat,error}=await db
+
+.from("support_messages")
+
+.select("*")
+
+.eq("id",selectedUser)
+
+.single();
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+/* Save Reply */
+
+const {error:updateError}=await db
+
+.from("support_messages")
+
+.update({
+
+admin_reply:reply,
+
+status:"closed"
+
+})
+
+.eq("id",selectedUser);
+
+if(updateError){
+
+alert("Failed to send reply.");
+
+console.log(updateError);
+
+return;
+
+}
+
+/* Notify User */
+
+await db
+
+.from("user_notifications")
+
+.insert({
+
+user_id:chat.user_id,
+
+title:"Support Reply",
+
+message:"Our support team has replied to your message.",
+
+type:"info"
+
+});
+
+/* Admin Notification */
+
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title:"Support Reply Sent",
+
+message:"Support reply sent successfully.",
+
+type:"success"
+
+});
+
+/* Show Reply */
+
+const messages=document.getElementById("messages");
+
+messages.innerHTML+=`
+
+<div class="message admin">
+
+${reply}
+
+</div>
+
+`;
+
+messages.scrollTop=messages.scrollHeight;
+
+document.getElementById("replyMessage").value="";
+
+loadChats();
+
+}
+
+  </script><script>
+
+/* ==========================
+LIVE SEARCH
+========================== */
+
+document.getElementById("searchUser")
+
+.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+const chats=document.querySelectorAll(".chatItem");
+
+chats.forEach(chat=>{
+
+chat.style.display=
+
+chat.innerText.toLowerCase().includes(value)
+
+? "flex"
+
+: "none";
+
+});
+
+});
+
+/* ==========================
+AUTO SCROLL
+========================== */
+
+function scrollBottom(){
+
+const box=document.getElementById("messages");
+
+box.scrollTop=box.scrollHeight;
+
+}
+
+/* Scroll whenever chat changes */
+
+const oldOpenChat=openChat;
+
+openChat=async function(id){
+
+await oldOpenChat(id);
+
+scrollBottom();
+
+};
+
+/* ==========================
+ENTER TO SEND
+========================== */
+
+document
+
+.getElementById("replyMessage")
+
+.addEventListener("keypress",function(e){
+
+if(e.key==="Enter"){
+
+e.preventDefault();
+
+sendReply();
+
+}
+
+});
+
+/* ==========================
+CHAT STATUS COLORS
+========================== */
+
+function updateChatStatus(){
+
+document.querySelectorAll(".badge").forEach(badge=>{
+
+if(badge.innerText==="New"){
+
+badge.style.background="#ff3b30";
+
+}else{
+
+badge.style.background="#00c853";
+
+}
+
+});
+
+}
+
+updateChatStatus();
+
+/* ==========================
+READY
+========================== */
+
+console.log("WhatsApp Support Ready");
+
+</script>
+
+</body>
+
+</html>
