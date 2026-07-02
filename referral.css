@@ -1,0 +1,855 @@
+/* =====================================
+RESET
+===================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:#08142d;
+
+color:#ffffff;
+
+overflow-x:hidden;
+
+min-height:100vh;
+
+}
+
+/* =====================================
+BACKGROUND
+===================================== */
+
+.heroBackground{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:320px;
+
+overflow:hidden;
+
+z-index:-1;
+
+background:linear-gradient(
+135deg,
+#08142d,
+#0d2147,
+#10264d
+);
+
+}
+
+#waveCanvas{
+
+width:100%;
+
+height:100%;
+
+display:block;
+
+}
+
+/* =====================================
+CONTAINER
+===================================== */
+
+.container{
+
+max-width:1200px;
+
+margin:auto;
+
+padding:18px;
+
+padding-bottom:100px;
+
+}
+
+/* =====================================
+HEADER
+===================================== */
+
+.header{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+margin-bottom:25px;
+
+}
+
+.backButton{
+
+width:48px;
+
+height:48px;
+
+border:none;
+
+border-radius:50%;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+color:#ffffff;
+
+font-size:22px;
+
+cursor:pointer;
+
+}
+
+.header h2{
+
+font-size:28px;
+
+margin-bottom:5px;
+
+}
+
+.header p{
+
+font-size:14px;
+
+color:#d7e2f5;
+
+}
+
+/* =====================================
+HERO CARD
+===================================== */
+
+.heroCard{
+
+padding:25px;
+
+border-radius:22px;
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(20px);
+
+border:1px solid rgba(255,255,255,.15);
+
+margin-bottom:22px;
+
+}
+
+.heroCard h1{
+
+font-size:34px;
+
+margin-bottom:12px;
+
+}
+
+.heroCard p{
+
+font-size:15px;
+
+line-height:1.7;
+
+color:#dce5f7;
+
+}
+
+/* =====================================
+STATISTICS
+===================================== */
+
+.statsGrid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+margin-bottom:22px;
+
+}
+
+.glassCard{
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:20px;
+
+padding:20px;
+
+text-align:center;
+
+transition:.3s;
+
+}
+
+.glassCard:hover{
+
+transform:translateY(-4px);
+
+}
+
+.glassCard p{
+
+font-size:13px;
+
+color:#dce5f7;
+
+margin-bottom:10px;
+
+}
+
+.glassCard h2{
+
+font-size:24px;
+
+color:#00ff88;
+
+}
+
+/* =====================================
+GLASS SECTION
+===================================== */
+
+.glassSection{
+
+background:rgba(255,255,255,.08);
+
+backdrop-filter:blur(18px);
+
+border:1px solid rgba(255,255,255,.15);
+
+border-radius:22px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+}
+
+.glassSection h3{
+
+margin-bottom:15px;
+
+font-size:18px;
+
+}
+
+/* =====================================
+REFERRAL LINK
+===================================== */
+
+.referralBox{
+
+display:flex;
+
+gap:10px;
+
+margin-bottom:15px;
+
+}
+
+.referralBox input{
+
+flex:1;
+
+height:48px;
+
+padding:0 15px;
+
+border:none;
+
+border-radius:12px;
+
+background:rgba(255,255,255,.06);
+
+color:white;
+
+outline:none;
+
+}
+
+.referralBox button{
+
+width:100px;
+
+border:none;
+
+border-radius:12px;
+
+background:#00d4ff;
+
+color:#001018;
+
+font-weight:bold;
+
+cursor:pointer;
+
+}
+
+.shareButton{
+
+width:100%;
+
+height:50px;
+
+border:none;
+
+border-radius:14px;
+
+background:linear-gradient(
+90deg,
+#00d4ff,
+#00ff88
+);
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+color:#001018;
+
+                }/* =====================================
+REWARD CARDS
+===================================== */
+
+.rewardCard{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+padding:16px;
+
+margin-bottom:15px;
+
+border-radius:16px;
+
+background:rgba(255,255,255,.06);
+
+border:1px solid rgba(255,255,255,.10);
+
+transition:.3s;
+
+}
+
+.rewardCard:hover{
+
+transform:translateY(-3px);
+
+background:rgba(255,255,255,.10);
+
+}
+
+.rewardIcon{
+
+width:55px;
+
+height:55px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:28px;
+
+background:linear-gradient(135deg,#00d4ff,#00ff88);
+
+color:#001018;
+
+font-weight:bold;
+
+}
+
+.rewardInfo h4{
+
+font-size:17px;
+
+margin-bottom:6px;
+
+}
+
+.rewardInfo p{
+
+font-size:13px;
+
+color:#d7e2f5;
+
+line-height:1.5;
+
+}
+
+/* =====================================
+SECTION HEADER
+===================================== */
+
+.sectionHeader{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:15px;
+
+}
+
+.sectionHeader span{
+
+background:#00ff88;
+
+color:#001018;
+
+padding:5px 12px;
+
+border-radius:30px;
+
+font-size:12px;
+
+font-weight:bold;
+
+}
+
+/* =====================================
+LIST CARDS
+===================================== */
+
+.loadingCard{
+
+padding:18px;
+
+border-radius:15px;
+
+background:rgba(255,255,255,.06);
+
+border:1px solid rgba(255,255,255,.10);
+
+margin-bottom:12px;
+
+color:#dce5f7;
+
+text-align:center;
+
+}
+
+.referralItem{
+
+padding:15px;
+
+border-radius:15px;
+
+background:rgba(255,255,255,.06);
+
+border:1px solid rgba(255,255,255,.10);
+
+margin-bottom:12px;
+
+}
+
+.referralItem h4{
+
+margin-bottom:6px;
+
+font-size:16px;
+
+}
+
+.referralItem p{
+
+font-size:13px;
+
+color:#dce5f7;
+
+}
+
+.leaderItem{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:15px;
+
+margin-bottom:12px;
+
+border-radius:15px;
+
+background:rgba(255,255,255,.06);
+
+border:1px solid rgba(255,255,255,.10);
+
+}
+
+.leaderRank{
+
+font-size:22px;
+
+font-weight:bold;
+
+color:#FFD700;
+
+}
+
+.leaderName{
+
+flex:1;
+
+margin-left:15px;
+
+font-size:15px;
+
+}
+
+.leaderCount{
+
+font-size:14px;
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+/* =====================================
+NOTICE
+===================================== */
+
+.glassSection p{
+
+line-height:1.7;
+
+font-size:14px;
+
+color:#dce5f7;
+
+}
+
+/* =====================================
+BOTTOM NAVIGATION
+===================================== */
+
+.bottomNav{
+
+position:fixed;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:75px;
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+background:rgba(8,20,45,.92);
+
+backdrop-filter:blur(20px);
+
+border-top:1px solid rgba(255,255,255,.12);
+
+z-index:999;
+
+}
+
+.bottomNav a{
+
+text-decoration:none;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+color:#cfd8ec;
+
+font-size:12px;
+
+}
+
+.bottomNav a.active{
+
+color:#00ff88;
+
+font-weight:bold;
+
+}
+
+/* =====================================
+RESPONSIVE
+===================================== */
+
+@media(max-width:768px){
+
+.statsGrid{
+
+grid-template-columns:1fr;
+
+}
+
+.heroCard h1{
+
+font-size:28px;
+
+}
+
+.referralBox{
+
+flex-direction:column;
+
+}
+
+.referralBox button{
+
+width:100%;
+
+height:48px;
+
+}
+
+.rewardCard{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+  }/* =====================================
+FLOATING SUPPORT BUTTON
+===================================== */
+
+.supportButton{
+
+position:fixed;
+
+right:18px;
+
+bottom:90px;
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:28px;
+
+text-decoration:none;
+
+color:#ffffff;
+
+background:linear-gradient(135deg,#00d4ff,#00ff88);
+
+box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+animation:supportPulse 2s infinite;
+
+z-index:1000;
+
+}
+
+@keyframes supportPulse{
+
+0%{
+
+transform:scale(1);
+
+}
+
+50%{
+
+transform:scale(1.08);
+
+}
+
+100%{
+
+transform:scale(1);
+
+}
+
+}
+
+/* =====================================
+SCROLL BAR
+===================================== */
+
+::-webkit-scrollbar{
+
+width:8px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#08142d;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#00d4ff;
+
+border-radius:20px;
+
+}
+
+/* =====================================
+SMOOTH ANIMATIONS
+===================================== */
+
+.heroCard,
+.glassCard,
+.glassSection{
+
+animation:fadeUp .5s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+/* =====================================
+RESPONSIVE SMALL DEVICES
+===================================== */
+
+@media(max-width:480px){
+
+.container{
+
+padding:15px;
+
+}
+
+.header{
+
+gap:10px;
+
+}
+
+.header h2{
+
+font-size:22px;
+
+}
+
+.heroCard{
+
+padding:18px;
+
+}
+
+.heroCard h1{
+
+font-size:24px;
+
+}
+
+.heroCard p{
+
+font-size:13px;
+
+}
+
+.rewardIcon{
+
+width:48px;
+
+height:48px;
+
+font-size:24px;
+
+}
+
+.bottomNav{
+
+height:70px;
+
+}
+
+.bottomNav a{
+
+font-size:11px;
+
+}
+
+.supportButton{
+
+width:55px;
+
+height:55px;
+
+font-size:24px;
+
+right:15px;
+
+bottom:85px;
+
+}
+
+}
+
+/* =====================================
+END OF referral.css
+===================================== */
