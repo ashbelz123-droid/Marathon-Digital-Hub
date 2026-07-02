@@ -5,51 +5,46 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Dashboard | Marathon Digital Hub</title>
 
-<link rel="stylesheet"
-href="dashboard.css">
+<link rel="stylesheet" href="dashboard.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase-config.js"></script>
 
 </head>
 
 <body>
 
-<!-- =====================================
+<!-- ===========================
 BACKGROUND
-===================================== -->
+=========================== -->
 
 <div class="heroBackground">
-
-<canvas id="waveCanvas"></canvas>
-
+    <canvas id="waveCanvas"></canvas>
 </div>
 
-<div class="page">
+<div class="container">
 
-<!-- =====================================
+<!-- ===========================
 HEADER
-===================================== -->
+=========================== -->
 
 <header class="header">
 
 <div class="headerLeft">
 
-<h2 id="userName">
+<h2>
 
-Loading...
+Marathon Digital Hub
 
 </h2>
 
-<p>
+<p id="userName">
 
-Welcome Back To Marathon Digital Hub
+Loading...
 
 </p>
 
@@ -57,8 +52,7 @@ Welcome Back To Marathon Digital Hub
 
 <div class="headerRight">
 
-<div
-class="notificationBell"
+<div class="notificationButton"
 onclick="location.href='notifications.html'">
 
 🔔
@@ -75,9 +69,9 @@ onclick="location.href='notifications.html'">
 
 </header>
 
-<!-- =====================================
-HERO SECTION
-===================================== -->
+<!-- ===========================
+HERO AREA
+=========================== -->
 
 <section class="hero">
 
@@ -87,27 +81,64 @@ HERO SECTION
 
 <h1>
 
-CRYPTO
-
-<br>
-
-MINING
+Crypto Mining Investment
 
 </h1>
 
 <p>
 
-Secure Digital Investment Platform
+Grow your wealth with secure AI-powered crypto mining.
 
 </p>
 
-<div class="walletGlass">
+</div>
 
-<h4>
+<div class="heroMining">
+
+<div class="rig">
+
+<div class="gpu"></div>
+
+<div class="gpu"></div>
+
+<div class="gpu"></div>
+
+</div>
+
+<div class="coin btc">₿</div>
+<div class="coin eth">Ξ</div>
+<div class="coin usdt">₮</div>
+<div class="coin sol">◎</div>
+
+</div>
+
+</div>
+
+<div class="cryptoTicker">
+
+<div id="tickerText">
+
+Loading crypto market...
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===========================
+TOP STATISTICS
+=========================== -->
+
+<section class="statsGrid">
+
+<div class="glassCard">
+
+<p>
 
 Wallet Balance
 
-</h4>
+</p>
 
 <h2 id="walletBalance">
 
@@ -117,83 +148,111 @@ UGX 0
 
 </div>
 
-</div>
+<div class="glassCard">
 
-<div class="heroImage">
+<p>
 
-<div class="miningRig">
+Today's Earnings
 
-<div class="gpu gpu1"></div>
+</p>
 
-<div class="gpu gpu2"></div>
+<h2 id="todayIncome">
 
-<div class="gpu gpu3"></div>
+UGX 0
 
-</div>
-
-<div class="coin btc">
-
-₿
+</h2>
 
 </div>
 
-<div class="coin eth">
+<div class="glassCard">
 
-Ξ
+<p>
 
-</div>
+Active Machines
 
-<div class="coin usdt">
+</p>
 
-₮
+<h2 id="activeMachines">
 
-</div>
+0
 
-<div class="coin sol">
-
-◎
+</h2>
 
 </div>
 
-</div>
+<div class="glassCard">
 
-</div>
+<p>
 
-   </section><!-- =====================================
-LIVE CRYPTO MARKET
-===================================== -->
+Team Income
 
-<section class="cryptoTicker">
+</p>
 
-<div class="ticker">
+<h2 id="teamIncome">
 
-<div id="cryptoTicker">
+UGX 0
 
-Loading live crypto market...
-
-</div>
+</h2>
 
 </div>
 
 </section>
 
-<!-- =====================================
-ANNOUNCEMENT
-===================================== -->
+<!-- ===========================
+QUICK MENU
+=========================== -->
 
-<section class="glassCard announcementCard">
+<section class="quickMenu">
 
-<div class="cardHeader">
+<a href="deposit.html" class="quickItem">
+
+💳
+
+<span>Deposit</span>
+
+</a>
+
+<a href="withdraw.html" class="quickItem">
+
+💵
+
+<span>Withdraw</span>
+
+</a>
+
+<a href="machines.html" class="quickItem">
+
+⚙️
+
+<span>Machines</span>
+
+</a>
+
+<a href="income.html" class="quickItem">
+
+📈
+
+<span>Income</span>
+
+</a>
+
+   </section><!-- ===========================
+ANNOUNCEMENTS
+=========================== -->
+
+<section class="glassSection">
+
+<div class="sectionHeader">
 
 <h3>
 
-📢 Latest Announcement
+📢 Latest Announcements
 
 </h3>
 
 <a href="notifications.html">
 
-View All
+More
 
 </a>
 
@@ -201,7 +260,7 @@ View All
 
 <div id="announcementList">
 
-<div class="loadingCard">
+<div class="announcementCard">
 
 Loading announcements...
 
@@ -211,13 +270,13 @@ Loading announcements...
 
 </section>
 
-<!-- =====================================
+<!-- ===========================
 NOTIFICATIONS
-===================================== -->
+=========================== -->
 
-<section class="glassCard notificationCard">
+<section class="glassSection">
 
-<div class="cardHeader">
+<div class="sectionHeader">
 
 <h3>
 
@@ -235,7 +294,7 @@ NOTIFICATIONS
 
 <div id="notificationList">
 
-<div class="loadingCard">
+<div class="notificationCard">
 
 Loading notifications...
 
@@ -245,155 +304,13 @@ Loading notifications...
 
 </section>
 
-<!-- =====================================
-STATISTICS
-===================================== -->
-
-<section class="statsGrid">
-
-<div class="glassCard statCard">
-
-<p>
-
-Wallet Balance
-
-</p>
-
-<h2 id="walletBalanceCard">
-
-UGX 0
-
-</h2>
-
-</div>
-
-<div class="glassCard statCard">
-
-<p>
-
-Active Machines
-
-</p>
-
-<h2 id="activeMachines">
-
-0
-
-</h2>
-
-</div>
-
-<div class="glassCard statCard">
-
-<p>
-
-Total Deposits
-
-</p>
-
-<h2 id="totalDeposits">
-
-UGX 0
-
-</h2>
-
-</div>
-
-<div class="glassCard statCard">
-
-<p>
-
-Total Withdrawals
-
-</p>
-
-<h2 id="totalWithdrawals">
-
-UGX 0
-
-</h2>
-
-</div>
-
-</section>
-
-<!-- =====================================
-QUICK ACTIONS
-===================================== -->
-
-<section class="quickMenu">
-
-<a href="machines.html" class="quickItem">
-
-<div>
-
-⚙️
-
-</div>
-
-<span>
-
-Machines
-
-</span>
-
-</a>
-
-<a href="deposit.html" class="quickItem">
-
-<div>
-
-💳
-
-</div>
-
-<span>
-
-Deposit
-
-</span>
-
-</a>
-
-<a href="withdraw.html" class="quickItem">
-
-<div>
-
-💵
-
-</div>
-
-<span>
-
-Withdraw
-
-</span>
-
-</a>
-
-<a href="income.html" class="quickItem">
-
-<div>
-
-📈
-
-</div>
-
-<span>
-
-Income
-
-</span>
-
-</a>
-
-   </section><!-- =====================================
+<!-- ===========================
 MY MINING MACHINES
-===================================== -->
+=========================== -->
 
-<section class="glassCard machineSection">
+<section class="glassSection">
 
-<div class="cardHeader">
+<div class="sectionHeader">
 
 <h3>
 
@@ -411,9 +328,9 @@ View All
 
 <div id="machineContainer">
 
-<div class="loadingCard">
+<div class="machineCard">
 
-Loading your mining machines...
+Loading mining machines...
 
 </div>
 
@@ -421,13 +338,13 @@ Loading your mining machines...
 
 </section>
 
-<!-- =====================================
+<!-- ===========================
 RECENT TRANSACTIONS
-===================================== -->
+=========================== -->
 
-<section class="glassCard transactionSection">
+<section class="glassSection">
 
-<div class="cardHeader">
+<div class="sectionHeader">
 
 <h3>
 
@@ -443,9 +360,9 @@ View All
 
 </div>
 
-<div id="recentTransactions">
+<div id="transactionContainer">
 
-<div class="loadingCard">
+<div class="transactionCard">
 
 Loading transactions...
 
@@ -455,27 +372,25 @@ Loading transactions...
 
 </section>
 
-<!-- =====================================
-FLOATING SUPPORT BUTTON
-===================================== -->
+<!-- ===========================
+FLOATING SUPPORT
+=========================== -->
 
 <a
 href="support.html"
-class="floatingSupport">
+class="supportButton">
 
 💬
 
 </a>
 
-<!-- =====================================
+<!-- ===========================
 BOTTOM NAVIGATION
-===================================== -->
+=========================== -->
 
 <nav class="bottomNav">
 
-<a
-href="dashboard.html"
-class="active">
+<a href="dashboard.html" class="active">
 
 <div>
 
@@ -491,8 +406,7 @@ Home
 
 </a>
 
-<a
-href="machines.html">
+<a href="machines.html">
 
 <div>
 
@@ -508,8 +422,7 @@ Machines
 
 </a>
 
-<a
-href="deposit.html">
+<a href="deposit.html">
 
 <div>
 
@@ -525,8 +438,7 @@ Deposit
 
 </a>
 
-<a
-href="income.html">
+<a href="income.html">
 
 <div>
 
@@ -542,8 +454,7 @@ Income
 
 </a>
 
-<a
-href="profile.html">
+<a href="profile.html">
 
 <div>
 
@@ -559,19 +470,11 @@ Profile
 
 </a>
 
-   </nav><!-- =====================================
-FOOTER SPACE
-===================================== -->
-
-<div class="bottomSpacer"></div>
-
-</div>
-
-<!-- =====================================
-DASHBOARD SCRIPT
-===================================== -->
+</nav>
 
 <script src="dashboard.js"></script>
+
+</div>
 
 </body>
 
