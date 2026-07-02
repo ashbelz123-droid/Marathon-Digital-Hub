@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Machine Management | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#050B18;
+color:#fff;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px;
+background:#08142d;
+}
+
+.header h2{
+font-size:28px;
+}
+
+.backBtn{
+background:#00ff88;
+color:#001018;
+padding:10px 18px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.summary{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+padding:20px;
+}
+
+.card{
+background:#08142d;
+padding:20px;
+border-radius:15px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.card h4{
+color:#9fb5d1;
+margin-bottom:10px;
+}
+
+.card h1{
+font-size:32px;
+color:#00ff88;
+}
+
+.formBox{
+margin:20px;
+background:#08142d;
+padding:20px;
+border-radius:18px;
+}
+
+.formBox h3{
+margin-bottom:20px;
+}
+
+.formGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:15px;
+}
+
+.formGrid input,
+.formGrid select{
+height:48px;
+border:none;
+outline:none;
+border-radius:10px;
+padding:0 15px;
+background:#111f3d;
+color:#fff;
+}
+
+.addBtn{
+margin-top:20px;
+width:100%;
+height:50px;
+border:none;
+border-radius:10px;
+background:#00ff88;
+color:#001018;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.machineContainer{
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.machineCard{
+background:#08142d;
+padding:20px;
+border-radius:18px;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.machineTop{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.machineName{
+font-size:20px;
+font-weight:bold;
+}
+
+.status{
+padding:6px 14px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.active{
+background:#00c853;
+}
+
+.disabled{
+background:#ff3b30;
+}
+
+.info{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:10px;
+margin-bottom:20px;
+}
+
+.info div{
+background:#111f3d;
+padding:12px;
+border-radius:10px;
+}
+
+.info span{
+display:block;
+font-size:12px;
+color:#9fb5d1;
+margin-bottom:5px;
+}
+
+.actions{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.actions button{
+height:45px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.editBtn{
+background:#ffc107;
+color:#000;
+}
+
+.deleteBtn{
+background:#ff3b30;
+color:#fff;
+}
+
+.enableBtn{
+background:#00ff88;
+color:#001018;
+}
+
+.disableBtn{
+background:#555;
+color:#fff;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h2>Machine Management</h2>
+
+<a href="admin-dashboard.html" class="backBtn">
+
+⬅ Dashboard
+
+</a>
+
+</div>
+
+<div class="summary">
+
+<div class="card">
+<h4>Total Machines</h4>
+<h1 id="totalMachines">0</h1>
+</div>
+
+<div class="card">
+<h4>Active Machines</h4>
+<h1 id="activeMachines">0</h1>
+</div>
+
+<div class="card">
+<h4>Disabled Machines</h4>
+<h1 id="disabledMachines">0</h1>
+</div>
+
+<div class="card">
+<h4>Total Sales</h4>
+<h1 id="totalSales">0</h1>
+</div>
+
+</div>
+
+<div class="formBox">
+
+<h3>Add New Machine</h3>
+
+<div class="formGrid">
+
+<input type="text" id="machineName" placeholder="Machine Name">
+
+<input type="text" id="machineSeries" placeholder="Machine Series">
+
+<input type="number" id="machinePrice" placeholder="Price">
+
+<input type="number" id="machineReturn" placeholder="Total Return">
+
+<input type="number" id="machineDuration" placeholder="Duration (Days)">
+
+<input type="text" id="machineImage" placeholder="Image URL">
+
+<select id="machineStatus">
+
+<option value="true">Active</option>
+
+<option value="false">Disabled</option>
+
+</select>
+
+</div>
+
+<button class="addBtn" onclick="addMachine()">
+
+➕ Add Machine
+
+</button>
+
+</div>
+
+<div class="machineContainer" id="machineContainer">
+
+<!-- Machines will appear here -->
+
+  </div><script>
+
+const db = window.supabaseClient;
+
+/* ==========================
+PROTECT PAGE
+========================== */
+
+if(localStorage.getItem("admin_logged_in")!=="true"){
+    window.location.href="admin-login.html";
+}
+
+/* ==========================
+LOAD MACHINES
+========================== */
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+loadMachines();
+
+});
+
+async function loadMachines(){
+
+const container=document.getElementById("machineContainer");
+
+container.innerHTML="<center>Loading machines...</center>";
+
+const {data,error}=await db
+
+.from("machines")
+
+.select("*")
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+container.innerHTML="<center>Failed to load machines.</center>";
+
+console.log(error);
+
+return;
+
+}
+
+/* Dashboard Cards */
+
+document.getElementById("totalMachines").innerHTML=data.length;
+
+document.getElementById("activeMachines").innerHTML=
+
+data.filter(x=>x.status===true).length;
+
+document.getElementById("disabledMachines").innerHTML=
+
+data.filter(x=>x.status===false).length;
+
+document.getElementById("totalSales").innerHTML="0";
+
+container.innerHTML="";
+
+if(data.length===0){
+
+container.innerHTML="<center>No machines found.</center>";
+
+return;
+
+}
+
+/* Machine Cards */
+
+data.forEach(machine=>{
+
+container.innerHTML+=`
+
+<div class="machineCard">
+
+<div class="machineTop">
+
+<div class="machineName">
+
+${machine.name}
+
+</div>
+
+<div class="status ${machine.status ? 'active':'disabled'}">
+
+${machine.status ? 'ACTIVE':'DISABLED'}
+
+</div>
+
+</div>
+
+<div class="info">
+
+<div>
+
+<span>Series</span>
+
+${machine.series || "-"}
+
+</div>
+
+<div>
+
+<span>Price</span>
+
+UGX ${Number(machine.price).toLocaleString()}
+
+</div>
+
+<div>
+
+<span>Total Return</span>
+
+UGX ${Number(machine.total_return).toLocaleString()}
+
+</div>
+
+<div>
+
+<span>Duration</span>
+
+${machine.duration_days} Days
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button
+
+class="editBtn"
+
+onclick="editMachine('${machine.id}')">
+
+Edit
+
+</button>
+
+<button
+
+class="deleteBtn"
+
+onclick="deleteMachine('${machine.id}')">
+
+Delete
+
+</button>
+
+<button
+
+class="enableBtn"
+
+onclick="enableMachine('${machine.id}')">
+
+Enable
+
+</button>
+
+<button
+
+class="disableBtn"
+
+onclick="disableMachine('${machine.id}')">
+
+Disable
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+  </script><script>
+
+/* ==========================
+ADD MACHINE
+========================== */
+
+async function addMachine(){
+
+const name=document.getElementById("machineName").value.trim();
+const series=document.getElementById("machineSeries").value.trim();
+const price=document.getElementById("machinePrice").value;
+const totalReturn=document.getElementById("machineReturn").value;
+const duration=document.getElementById("machineDuration").value;
+const image=document.getElementById("machineImage").value.trim();
+const status=document.getElementById("machineStatus").value==="true";
+
+if(
+!name||
+!price||
+!totalReturn||
+!duration
+){
+alert("Please fill all required fields.");
+return;
+}
+
+const {error}=await db
+
+.from("machines")
+
+.insert({
+
+name:name,
+
+series:series,
+
+price:price,
+
+total_return:totalReturn,
+
+duration_days:duration,
+
+image_url:image,
+
+status:status
+
+});
+
+if(error){
+
+alert("Failed to add machine.");
+
+console.log(error);
+
+return;
+
+}
+
+alert("Machine added successfully.");
+
+/* Clear Form */
+
+document.getElementById("machineName").value="";
+document.getElementById("machineSeries").value="";
+document.getElementById("machinePrice").value="";
+document.getElementById("machineReturn").value="";
+document.getElementById("machineDuration").value="";
+document.getElementById("machineImage").value="";
+
+loadMachines();
+
+}
+
+/* ==========================
+DELETE MACHINE
+========================== */
+
+async function deleteMachine(id){
+
+if(!confirm("Delete this machine?")) return;
+
+const {error}=await db
+
+.from("machines")
+
+.delete()
+
+.eq("id",id);
+
+if(error){
+
+alert("Failed to delete machine.");
+
+return;
+
+}
+
+alert("Machine deleted.");
+
+loadMachines();
+
+}
+
+/* ==========================
+ENABLE MACHINE
+========================== */
+
+async function enableMachine(id){
+
+await db
+
+.from("machines")
+
+.update({
+
+status:true
+
+})
+
+.eq("id",id);
+
+loadMachines();
+
+}
+
+/* ==========================
+DISABLE MACHINE
+========================== */
+
+async function disableMachine(id){
+
+await db
+
+.from("machines")
+
+.update({
+
+status:false
+
+})
+
+.eq("id",id);
+
+loadMachines();
+
+}
+
+/* ==========================
+EDIT MACHINE
+========================== */
+
+function editMachine(id){
+
+localStorage.setItem("editMachine",id);
+
+window.location.href="admin-edit-machine.html";
+
+}
+
+  </script><script>
+
+/* ==========================
+LIVE SEARCH
+========================== */
+
+document.getElementById("machineName")
+
+.addEventListener("keyup",function(){
+
+const value=this.value.toLowerCase();
+
+const cards=document.querySelectorAll(".machineCard");
+
+cards.forEach(card=>{
+
+card.style.display=
+
+card.innerText.toLowerCase().includes(value)
+
+? "block"
+
+: "none";
+
+});
+
+});
+
+/* ==========================
+STATUS FILTER
+========================== */
+
+/* Add this select just above machineContainer if you haven't */
+
+const filter=document.createElement("select");
+
+filter.id="machineFilter";
+
+filter.innerHTML=`
+<option value="all">All Machines</option>
+<option value="active">Active</option>
+<option value="disabled">Disabled</option>
+`;
+
+filter.style.margin="20px";
+filter.style.height="45px";
+filter.style.background="#08142d";
+filter.style.color="#fff";
+filter.style.border="none";
+filter.style.borderRadius="10px";
+filter.style.padding="0 15px";
+
+document.querySelector(".formBox").after(filter);
+
+document.getElementById("machineFilter")
+
+.addEventListener("change",function(){
+
+const value=this.value;
+
+const cards=document.querySelectorAll(".machineCard");
+
+cards.forEach(card=>{
+
+const status=card.querySelector(".status")
+
+.innerText
+
+.toLowerCase()
+
+.trim();
+
+if(value==="all"){
+
+card.style.display="block";
+
+}else{
+
+card.style.display=
+
+status===value
+
+? "block"
+
+: "none";
+
+}
+
+});
+
+});
+
+/* ==========================
+BUTTON PROTECTION
+========================== */
+
+document.addEventListener("click",function(e){
+
+if(
+
+e.target.classList.contains("addBtn") ||
+
+e.target.classList.contains("editBtn") ||
+
+e.target.classList.contains("deleteBtn") ||
+
+e.target.classList.contains("enableBtn") ||
+
+e.target.classList.contains("disableBtn")
+
+){
+
+e.target.disabled=true;
+
+setTimeout(()=>{
+
+e.target.disabled=false;
+
+},1500);
+
+}
+
+});
+
+/* ==========================
+READY
+========================== */
+
+console.log("Machine Management Ready");
+
+</script>
+
+</body>
+
+</html>
