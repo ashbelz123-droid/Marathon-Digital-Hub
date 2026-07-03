@@ -5,12 +5,11 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Marathon Digital Hub | Dashboard V3</title>
+<title>Dashboard | Marathon Digital Hub</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase-config.js"></script>
 
 <style>
@@ -22,16 +21,30 @@ box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
 
+:root{
+
+--bg:#050B18;
+--card:#08142d;
+--primary:#00C8FF;
+--success:#00FF88;
+--text:#ffffff;
+--muted:#9fb5d1;
+--danger:#ff4444;
+
+}
+
 html{
+
 scroll-behavior:smooth;
+
 }
 
 body{
 
-background:#050B18;
-color:#fff;
+background:var(--bg);
+color:var(--text);
 overflow-x:hidden;
-padding-bottom:95px;
+padding-bottom:90px;
 
 }
 
@@ -40,26 +53,20 @@ padding-bottom:95px;
 body::before{
 
 content:"";
-
 position:fixed;
-
 left:-40%;
 top:-40%;
-
 width:180%;
 height:180%;
 
 background:
 
-radial-gradient(circle at 10% 20%,rgba(0,255,255,.16),transparent 35%),
+radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+radial-gradient(circle at 70% 85%,rgba(0,255,120,.15),transparent 40%),
+radial-gradient(circle at 25% 75%,rgba(180,0,255,.15),transparent 35%);
 
-radial-gradient(circle at 85% 25%,rgba(0,120,255,.18),transparent 35%),
-
-radial-gradient(circle at 75% 80%,rgba(0,255,120,.14),transparent 40%),
-
-radial-gradient(circle at 20% 80%,rgba(180,0,255,.14),transparent 35%);
-
-animation:bgMove 20s linear infinite;
+animation:bgMove 18s linear infinite;
 
 z-index:-2;
 
@@ -69,72 +76,72 @@ z-index:-2;
 
 0%{
 
-transform:translateX(-2%) translateY(0);
+transform:translateX(-2%);
 
 }
 
 50%{
 
-transform:translateX(2%) translateY(1%);
+transform:translateX(2%);
 
 }
 
 100%{
 
-transform:translateX(-2%) translateY(0);
+transform:translateX(-2%);
 
 }
 
 }
 
-/* Floating Glow */
+/* Scrollbar */
 
-body::after{
+::-webkit-scrollbar{
 
-content:"";
-
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:100%;
-
-pointer-events:none;
-
-background:linear-gradient(180deg,
-rgba(0,255,255,.02),
-transparent,
-rgba(0,255,136,.03));
-
-animation:glowMove 8s infinite;
+width:6px;
 
 }
 
-@keyframes glowMove{
+::-webkit-scrollbar-thumb{
 
-0%{
-
-opacity:.4;
+background:var(--primary);
+border-radius:20px;
 
 }
 
-50%{
+/* Glass Effect */
+
+.glass{
+
+background:rgba(8,20,45,.88);
+backdrop-filter:blur(12px);
+border:1px solid rgba(0,200,255,.15);
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+}
+
+/* Fade Animation */
+
+.fade-up{
+
+opacity:0;
+transform:translateY(20px);
+animation:fadeUp .6s ease forwards;
+
+}
+
+@keyframes fadeUp{
+
+to{
 
 opacity:1;
+transform:translateY(0);
 
 }
 
-100%{
-
-opacity:.4;
-
-}
-
-/* HEADER */
+}/* ==========================================
+HEADER
+========================================== */
 
 .header{
 
@@ -162,7 +169,7 @@ margin-bottom:5px;
 
 font-size:14px;
 
-color:#9fb5d1;
+color:var(--muted);
 
 }
 
@@ -172,8 +179,6 @@ width:52px;
 
 height:52px;
 
-background:#08142d;
-
 border-radius:50%;
 
 display:flex;
@@ -182,15 +187,15 @@ justify-content:center;
 
 align-items:center;
 
-position:relative;
+background:var(--card);
 
-font-size:22px;
+border:1px solid rgba(0,200,255,.20);
 
 cursor:pointer;
 
-border:1px solid rgba(0,200,255,.2);
+position:relative;
 
-transition:.35s;
+transition:.3s;
 
 }
 
@@ -214,9 +219,9 @@ width:18px;
 
 height:18px;
 
-background:red;
-
 border-radius:50%;
+
+background:#ff2d55;
 
 display:flex;
 
@@ -229,15 +234,16 @@ font-size:10px;
 font-weight:bold;
 
 }
-  /* ======================================
+
+/* ==========================================
 PREMIUM BANNER
-====================================== */
+========================================== */
 
 .slider{
 
 margin:15px;
 
-height:210px;
+height:220px;
 
 border-radius:22px;
 
@@ -245,9 +251,11 @@ overflow:hidden;
 
 position:relative;
 
-border:1px solid rgba(0,200,255,.20);
+background:var(--card);
 
-box-shadow:0 10px 30px rgba(0,0,0,.35);
+border:1px solid rgba(0,200,255,.15);
+
+box-shadow:0 10px 30px rgba(0,0,0,.30);
 
 }
 
@@ -259,7 +267,13 @@ height:100%;
 
 object-fit:cover;
 
-transition:transform 1s ease,opacity .8s ease;
+transition:opacity .8s ease,transform 6s linear;
+
+}
+
+.slider:hover img{
+
+transform:scale(1.08);
 
 }
 
@@ -275,7 +289,7 @@ bottom:0;
 
 width:100%;
 
-height:45%;
+height:70%;
 
 background:linear-gradient(transparent,rgba(5,11,24,.95));
 
@@ -287,37 +301,209 @@ position:absolute;
 
 left:20px;
 
-bottom:22px;
-
-z-index:2;
+bottom:38px;
 
 font-size:24px;
 
 font-weight:bold;
 
+color:#fff;
+
+z-index:2;
+
 text-shadow:0 0 10px #000;
 
 }
 
-.slider-sub{
+.slider-subtitle{
 
 position:absolute;
 
 left:20px;
 
-bottom:5px;
+bottom:18px;
+
+font-size:14px;
+
+color:#dbe9ff;
 
 z-index:2;
 
-font-size:13px;
+}
 
-color:#d8e8ff;
+.slider-live{
+
+position:absolute;
+
+top:15px;
+
+right:15px;
+
+padding:6px 12px;
+
+border-radius:30px;
+
+background:rgba(0,255,136,.15);
+
+color:var(--success);
+
+font-size:12px;
+
+font-weight:bold;
+
+border:1px solid rgba(0,255,136,.25);
+
+z-index:2;
+
+animation:pulse 2s infinite;
 
 }
 
-/* ======================================
-STATS CARDS
-====================================== */
+@keyframes pulse{
+
+0%{
+
+box-shadow:0 0 0 0 rgba(0,255,136,.45);
+
+}
+
+70%{
+
+box-shadow:0 0 0 12px rgba(0,255,136,0);
+
+}
+
+100%{
+
+box-shadow:0 0 0 0 rgba(0,255,136,0);
+
+}
+
+  }</style>
+
+</head>
+
+<body>
+
+<!-- ==========================================
+HEADER
+========================================== -->
+
+<div class="header fade-up">
+
+<div>
+
+<h2 id="userName">
+
+Loading...
+
+</h2>
+
+<p>
+
+Welcome Back To Marathon Digital Hub
+
+</p>
+
+</div>
+
+<div
+class="notification"
+onclick="location.href='notifications.html'">
+
+🔔
+
+<div id="notifyCount">
+
+0
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================================
+PREMIUM BANNER
+========================================== -->
+
+<div class="slider glass fade-up">
+
+<img
+id="sliderImage"
+src=""
+alt="Crypto Mining Banner">
+
+<div class="slider-live">
+
+● LIVE
+
+</div>
+
+<div class="slider-title">
+
+MARATHON DIGITAL HUB
+
+</div>
+
+<div class="slider-subtitle">
+
+Secure • Reliable • Professional Crypto Mining
+
+</div>
+
+</div>
+
+<!-- ==========================================
+LIVE MARKET SECTION
+========================================== -->
+
+<div style="padding:15px;">
+
+<div class="glass"
+style="
+padding:18px;
+border-radius:18px;
+">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+">
+
+<h2>
+
+📈 Live Crypto Market
+
+</h2>
+
+<span style="
+color:var(--success);
+font-size:13px;
+font-weight:bold;
+">
+
+LIVE
+
+</span>
+
+</div>
+
+<div id="cryptoTicker">
+
+Loading market...
+
+</div>
+
+</div>
+
+</div><!-- ==========================================
+DASHBOARD STATISTICS
+========================================== -->
+
+<style>
 
 .stats{
 
@@ -333,17 +519,49 @@ padding:15px;
 
 .card{
 
-background:rgba(8,20,45,.92);
+background:rgba(8,20,45,.88);
 
 backdrop-filter:blur(12px);
+
+border:1px solid rgba(0,200,255,.15);
 
 border-radius:18px;
 
 padding:18px;
 
-border:1px solid rgba(0,200,255,.15);
-
 transition:.35s;
+
+cursor:pointer;
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.card::before{
+
+content:"";
+
+position:absolute;
+
+top:0;
+
+left:-100%;
+
+width:100%;
+
+height:100%;
+
+background:linear-gradient(90deg,transparent,rgba(255,255,255,.08),transparent);
+
+transition:.7s;
+
+}
+
+.card:hover::before{
+
+left:100%;
 
 }
 
@@ -359,23 +577,23 @@ box-shadow:0 0 25px rgba(0,255,255,.18);
 
 font-size:13px;
 
-color:#9fb5d1;
+color:var(--muted);
 
-margin-bottom:8px;
+margin-bottom:10px;
 
 }
 
 .card h2{
 
-font-size:23px;
+font-size:24px;
 
-color:#00FF88;
+color:var(--success);
 
 }
 
-/* ======================================
+/* ==========================================
 QUICK MENU
-====================================== */
+========================================== */
 
 .quick-menu{
 
@@ -391,7 +609,9 @@ padding:15px;
 
 .quick{
 
-background:#08142d;
+background:rgba(8,20,45,.88);
+
+backdrop-filter:blur(12px);
 
 border-radius:16px;
 
@@ -399,9 +619,9 @@ padding:16px;
 
 text-align:center;
 
-cursor:pointer;
-
 border:1px solid rgba(0,200,255,.15);
+
+cursor:pointer;
 
 transition:.3s;
 
@@ -411,7 +631,9 @@ transition:.3s;
 
 transform:translateY(-5px);
 
-background:#0c1b3f;
+background:#0b1c40;
+
+box-shadow:0 0 20px rgba(0,255,255,.18);
 
 }
 
@@ -433,181 +655,7 @@ color:#fff;
 
 </style>
 
-</head>
-
-<body>
-
-<!-- ======================================
-HEADER
-====================================== -->
-
-<div class="header">
-
-<div>
-
-<h2 id="userName">
-
-Loading...
-
-</h2>
-
-<p>
-
-Welcome Back To Marathon Digital Hub
-
-</p>
-
-</div>
-
-<div
-
-class="notification"
-
-onclick="location.href='notifications.html'">
-
-🔔
-
-<div id="notifyCount">
-
-0
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ======================================
-PREMIUM BANNER
-====================================== -->
-
-<div class="slider">
-
-<img id="sliderImage">
-
-<div class="slider-title">
-
-MARATHON DIGITAL HUB
-
-</div>
-
-<div class="slider-sub">
-
-Professional Crypto Mining Platform
-
-</div>
-
-</div>
-<!-- ======================================
-LIVE MARKET CARD
-====================================== -->
-
-<div style="padding:15px;">
-
-<div style="
-background:#08142d;
-border-radius:18px;
-padding:18px;
-border:1px solid rgba(0,200,255,.18);
-margin-bottom:15px;
-">
-
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:12px;
-">
-
-<h3 style="font-size:18px;">
-
-📈 Live Crypto Market
-
-</h3>
-
-<span style="
-color:#00FF88;
-font-size:13px;
-">
-
-● LIVE
-
-</span>
-
-</div>
-
-<div id="cryptoTicker">
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-border-bottom:1px solid rgba(255,255,255,.08);
-">
-
-<span>BTC/USDT</span>
-
-<b id="btcPrice">$0.00</b>
-
-<span id="btcChange">0%</span>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-border-bottom:1px solid rgba(255,255,255,.08);
-">
-
-<span>ETH/USDT</span>
-
-<b id="ethPrice">$0.00</b>
-
-<span id="ethChange">0%</span>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-border-bottom:1px solid rgba(255,255,255,.08);
-">
-
-<span>SOL/USDT</span>
-
-<b id="solPrice">$0.00</b>
-
-<span id="solChange">0%</span>
-
-</div>
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px 0;
-">
-
-<span>DOGE/USDT</span>
-
-<b id="dogePrice">$0.00</b>
-
-<span id="dogeChange">0%</span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ======================================
-STATISTICS
-====================================== -->
-
-<div class="stats">
+<div class="stats fade-up">
 
 <div class="card">
 
@@ -659,13 +707,11 @@ UGX 0
 
 </div>
 
-<!-- ======================================
-QUICK MENU
-====================================== -->
+<div class="quick-menu fade-up">
 
-<div class="quick-menu">
+<div class="quick"
 
-<div class="quick" onclick="location.href='machines.html'">
+onclick="location.href='machines.html'">
 
 <div>⚙️</div>
 
@@ -673,7 +719,9 @@ QUICK MENU
 
 </div>
 
-<div class="quick" onclick="location.href='deposit.html'">
+<div class="quick"
+
+onclick="location.href='deposit.html'">
 
 <div>💳</div>
 
@@ -681,7 +729,9 @@ QUICK MENU
 
 </div>
 
-<div class="quick" onclick="location.href='withdraw.html'">
+<div class="quick"
+
+onclick="location.href='withdraw.html'">
 
 <div>💵</div>
 
@@ -689,7 +739,9 @@ QUICK MENU
 
 </div>
 
-<div class="quick" onclick="location.href='income.html'">
+<div class="quick"
+
+onclick="location.href='income.html'">
 
 <div>📈</div>
 
@@ -697,1049 +749,168 @@ QUICK MENU
 
 </div>
 
-</div>
-
-<script>
-
-/* ======================================
-SUPABASE
-====================================== */
-
-const db = window.supabaseClient;
-
-let currentUser = null;
-
-/* ======================================
-BINANCE LIVE MARKET
-====================================== */
-
-const marketSymbols = [
-"BTCUSDT",
-"ETHUSDT",
-"SOLUSDT",
-"DOGEUSDT"
-];
-/* ======================================
-LOAD BINANCE LIVE MARKET
-====================================== */
-
-async function loadMarket(){
-
-for(const symbol of marketSymbols){
-
-try{
-
-const response=await fetch(
-
-`https://data-api.binance.vision/api/v3/ticker/24hr?symbol=${symbol}`
-
-);
-
-const data=await response.json();
-
-const coin=symbol.replace("USDT","").toLowerCase();
-
-const price=document.getElementById(`${coin}Price`);
-
-const change=document.getElementById(`${coin}Change`);
-
-if(price){
-
-price.innerHTML="$"+Number(data.lastPrice).toLocaleString();
-
-}
-
-if(change){
-
-const percent=Number(data.priceChangePercent);
-
-change.innerHTML=percent.toFixed(2)+"%";
-
-change.style.fontWeight="bold";
-
-change.style.color=percent>=0?"#00FF88":"#ff4444";
-
-}
-
-}catch(err){
-
-console.log("Market Error:",err);
-
-}
-
-}
-
-}
-
-/* Refresh every 10 seconds */
-
-loadMarket();
-
-setInterval(loadMarket,10000);
-
-/* ======================================
-START DASHBOARD
-====================================== */
-
-document.addEventListener("DOMContentLoaded",async()=>{
-
-const {data:{user}}=await db.auth.getUser();
-
-if(!user){
-
-window.location.href="login.html";
-
-return;
-
-}
-
-currentUser=user;
-
-/* Load Dashboard */
-
-await loadProfile();
-
-await loadWallet();
-
-await loadMachines();
-
-await loadDeposits();
-
-await loadWithdrawals();
-
-await loadNotifications();
-
-/* Start Banner */
-
-startSlider();
-
-});
-  /* ======================================
-PROFESSIONAL BANNER IMAGES
-====================================== */
-
-const bannerImages=[
-
-"https://images.pexels.com/photos/844124/pexels-photo-844124.jpeg",
-
-"https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg",
-
-"https://images.pexels.com/photos/6771985/pexels-photo-6771985.jpeg",
-
-"https://images.pexels.com/photos/7567443/pexels-photo-7567443.jpeg",
-
-"https://images.pexels.com/photos/844127/pexels-photo-844127.jpeg"
-
-];
-
-let currentBanner=0;
-
-/* ======================================
-AUTO IMAGE SLIDER
-====================================== */
-
-function startSlider(){
-
-const slider=document.getElementById("sliderImage");
-
-slider.src=bannerImages[0];
-
-setInterval(()=>{
-
-slider.style.opacity="0";
-
-slider.style.transform="scale(1.08)";
-
-setTimeout(()=>{
-
-currentBanner++;
-
-if(currentBanner>=bannerImages.length){
-
-currentBanner=0;
-
-}
-
-slider.src=bannerImages[currentBanner];
-
-slider.style.opacity="1";
-
-slider.style.transform="scale(1)";
-
-},500);
-
-},4000);
-
-}
-
-/* ======================================
-PROFILE
-====================================== */
-
-async function loadProfile(){
-
-const {data,error}=await db
-
-.from("profiles")
-
-.select("*")
-
-.eq("id",currentUser.id)
-
-.single();
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-document.getElementById("userName").innerHTML=
-
-"Welcome, "+data.fullname;
-
-}
-
-/* ======================================
-WALLET
-====================================== */
-
-async function loadWallet(){
-
-const {data,error}=await db
-
-.from("profiles")
-
-.select("wallet_balance")
-
-.eq("id",currentUser.id)
-
-.single();
-
-if(error)return;
-
-document.getElementById("walletBalance").innerHTML=
-
-"UGX "+Number(data.wallet_balance).toLocaleString();
-
-  }
-  /* ======================================
-ACTIVE MACHINES
-====================================== */
-
-async function loadMachines(){
-
-const {data,error}=await db
-
-.from("user_machines")
-
-.select("*")
-
-.eq("user_id",currentUser.id)
-
-.eq("status","active");
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-animateValue(
-
-"activeMachines",
-
-0,
-
-data.length,
-
-1000
-
-);
-
-}
-
-/* ======================================
-TOTAL DEPOSITS
-====================================== */
-
-async function loadDeposits(){
-
-const {data,error}=await db
-
-.from("deposits")
-
-.select("amount")
-
-.eq("user_id",currentUser.id)
-
-.eq("status","approved");
-
-if(error)return;
-
-let total=0;
-
-data.forEach(item=>{
-
-total+=Number(item.amount);
-
-});
-
-document.getElementById("totalDeposits").innerHTML=
-
-"UGX "+total.toLocaleString();
-
-}
-
-/* ======================================
-TOTAL WITHDRAWALS
-====================================== */
-
-async function loadWithdrawals(){
-
-const {data,error}=await db
-
-.from("withdrawals")
-
-.select("amount")
-
-.eq("user_id",currentUser.id)
-
-.eq("status","approved");
-
-if(error)return;
-
-let total=0;
-
-data.forEach(item=>{
-
-total+=Number(item.amount);
-
-});
-
-document.getElementById("totalWithdrawals").innerHTML=
-
-"UGX "+total.toLocaleString();
-
-}
-
-/* ======================================
-PREMIUM COUNTER ANIMATION
-====================================== */
-
-function animateValue(id,start,end,duration){
-
-const element=document.getElementById(id);
-
-const range=end-start;
-
-const stepTime=Math.abs(Math.floor(duration/Math.max(range,1)));
-
-let current=start;
-
-const timer=setInterval(()=>{
-
-current++;
-
-element.innerHTML=current;
-
-if(current>=end){
-
-clearInterval(timer);
-
-}
-
-},stepTime);
-
-}
-
-/* ======================================
-AUTO REFRESH DASHBOARD
-====================================== */
-
-setInterval(async()=>{
-
-if(currentUser){
-
-await loadWallet();
-
-await loadMachines();
-
-await loadDeposits();
-
-await loadWithdrawals();
-
-}
-
-},30000);
-  /* ======================================
-LOAD NOTIFICATIONS
-====================================== */
-
-async function loadNotifications(){
-
-const {data,error}=await db
-
-.from("notifications")
-
-.select("*")
-
-.eq("is_active",true)
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-/* Notification Count */
-
-document.getElementById("notifyCount").innerHTML=data.length;
-
-/* Announcement Container */
-
-const container=document.getElementById("announcementList");
-
-if(!container)return;
-
-container.innerHTML="";
-
-if(data.length===0){
-
-container.innerHTML=`
-
-<div style="
-background:#08142d;
-padding:18px;
-border-radius:15px;
-text-align:center;
-border:1px solid rgba(0,200,255,.15);
-">
-
-No announcements available.
-
-</div>
-
-`;
-
-return;
-
-}
-
-/* Latest 5 Announcements */
-
-data.slice(0,5).forEach((item,index)=>{
-
-container.innerHTML+=`
-
-<div
-onclick="location.href='notifications.html'"
-
-style="
-background:#08142d;
-padding:18px;
-margin-bottom:12px;
-border-radius:16px;
-border:1px solid rgba(0,200,255,.15);
-cursor:pointer;
-opacity:0;
-transform:translateY(20px);
-animation:fadeCard .5s ease forwards;
-animation-delay:${index*0.15}s;
-">
-
-<h3 style="
-color:#00FF88;
-margin-bottom:8px;
-">
-
-${item.title}
-
-</h3>
-
-<p style="
-color:#d8e4ff;
-line-height:1.5;
-">
-
-${item.message}
-
-</p>
-
-</div>
-
-`;
-
-});
-
-}
-
-/* ======================================
-REFRESH NOTIFICATIONS
-====================================== */
-
-setInterval(()=>{
-
-if(currentUser){
-
-loadNotifications();
-
-}
-
-},30000);
-
-/* ======================================
-CARD FADE ANIMATION
-====================================== */
-
-const style=document.createElement("style");
-
-style.innerHTML=`
-
-@keyframes fadeCard{
-
-from{
-
-opacity:0;
-
-transform:translateY(20px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-`;
-
-document.head.appendChild(style);
-  <!-- ======================================
-LIVE MARKET CHART
-====================================== -->
-
-<div style="padding:15px;">
-
-<div style="
-background:#08142d;
-border-radius:18px;
-padding:15px;
-border:1px solid rgba(0,200,255,.15);
-">
-
-<h2 style="
-margin-bottom:15px;
-color:#ffffff;
-">
-
-📈 BTC/USDT Live Chart
-
-</h2>
-
-<div id="tradingview_chart"
-style="
-width:100%;
-height:420px;
-border-radius:12px;
-overflow:hidden;
-">
-
-</div>
-
-</div>
-
-</div>
-
-<!-- TradingView Library -->
-
-<script src="https://s3.tradingview.com/tv.js"></script>
-
-<script>
-
-/* ======================================
-TRADINGVIEW LIVE CHART
-====================================== */
-
-new TradingView.widget({
-
-"container_id":"tradingview_chart",
-
-"width":"100%",
-
-"height":420,
-
-"symbol":"BINANCE:BTCUSDT",
-
-"interval":"60",
-
-"timezone":"Etc/UTC",
-
-"theme":"dark",
-
-"style":"1",
-
-"locale":"en",
-
-"toolbar_bg":"#08142d",
-
-"enable_publishing":false,
-
-"hide_top_toolbar":false,
-
-"hide_side_toolbar":false,
-
-"allow_symbol_change":true,
-
-"save_image":false,
-
-"studies":[
-
-"RSI@tv-basicstudies",
-
-"MACD@tv-basicstudies"
-
-]
-
-});
-
-/* ======================================
-AUTO CHANGE MARKET
-====================================== */
-
-const tradingPairs=[
-
-"BINANCE:BTCUSDT",
-
-"BINANCE:ETHUSDT",
-
-"BINANCE:SOLUSDT",
-
-"BINANCE:DOGEUSDT"
-
-];
-
-let pairIndex=0;
-
-setInterval(()=>{
-
-pairIndex++;
-
-if(pairIndex>=tradingPairs.length){
-
-pairIndex=0;
-
-}
-
-document.getElementById("tradingview_chart").innerHTML="";
-
-new TradingView.widget({
-
-"container_id":"tradingview_chart",
-
-"width":"100%",
-
-"height":420,
-
-"symbol":tradingPairs[pairIndex],
-
-"interval":"60",
-
-"theme":"dark",
-
-"style":"1",
-
-"locale":"en",
-
-"timezone":"Etc/UTC",
-
-"toolbar_bg":"#08142d",
-
-"enable_publishing":false,
-
-"allow_symbol_change":true,
-
-"save_image":false
-
-});
-
-},30000);
-
-</script>
-<!-- ======================================
-FLOATING SUPPORT BUTTON
-====================================== -->
+</div><!-- ==========================================
+LIVE ANNOUNCEMENTS
+========================================== -->
 
 <style>
 
-.support-float{
+.announcement-section{
 
-position:fixed;
+padding:15px;
 
-right:18px;
+}
 
-bottom:90px;
-
-width:62px;
-
-height:62px;
-
-border-radius:50%;
-
-background:linear-gradient(135deg,#00C8FF,#00FF88);
+.announcement-header{
 
 display:flex;
 
-justify-content:center;
+justify-content:space-between;
 
 align-items:center;
 
-font-size:30px;
-
-cursor:pointer;
-
-z-index:9999;
-
-color:#001018;
-
-box-shadow:0 0 25px rgba(0,255,255,.45);
-
-animation:supportPulse 2s infinite;
-
-transition:.3s;
+margin-bottom:15px;
 
 }
 
-.support-float:hover{
+.live-badge{
 
-transform:scale(1.1) rotate(8deg);
+padding:5px 12px;
 
-box-shadow:0 0 35px rgba(0,255,255,.75);
+background:rgba(0,255,136,.12);
 
-}
+color:#00FF88;
 
-@keyframes supportPulse{
+border:1px solid rgba(0,255,136,.25);
 
-0%{
-
-box-shadow:0 0 0 0 rgba(0,255,255,.6);
-
-}
-
-70%{
-
-box-shadow:0 0 0 20px rgba(0,255,255,0);
-
-}
-
-100%{
-
-box-shadow:0 0 0 0 rgba(0,255,255,0);
-
-}
-
-}
-
-/* ======================================
-BOTTOM NAVIGATION
-====================================== */
-
-.bottom-nav{
-
-position:fixed;
-
-bottom:0;
-
-left:0;
-
-width:100%;
-
-height:74px;
-
-background:#08142d;
-
-border-top:1px solid rgba(0,200,255,.18);
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-z-index:999;
-
-backdrop-filter:blur(12px);
-
-}
-
-.bottom-nav a{
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-justify-content:center;
-
-text-decoration:none;
-
-color:#b9c7dd;
+border-radius:30px;
 
 font-size:12px;
 
+font-weight:bold;
+
+animation:pulse 2s infinite;
+
+}
+
+.announcement-card{
+
+background:rgba(8,20,45,.88);
+
+backdrop-filter:blur(12px);
+
+border:1px solid rgba(0,200,255,.15);
+
+border-left:4px solid #00FF88;
+
+border-radius:18px;
+
+padding:18px;
+
+margin-bottom:15px;
+
+cursor:pointer;
+
 transition:.3s;
 
 }
 
-.bottom-nav a i{
+.announcement-card:hover{
 
-font-style:normal;
+transform:translateY(-4px);
 
-font-size:24px;
-
-margin-bottom:4px;
-
-transition:.3s;
+box-shadow:0 0 20px rgba(0,255,255,.20);
 
 }
 
-.bottom-nav a:hover{
+.announcement-top{
 
-color:#00FF88;
+display:flex;
 
-transform:translateY(-3px);
+justify-content:space-between;
 
-}
+align-items:center;
 
-.bottom-nav a:hover i{
-
-transform:scale(1.15);
+margin-bottom:10px;
 
 }
 
-.bottom-nav .active{
+.announcement-title{
 
-color:#00FF88;
+font-size:17px;
 
 font-weight:bold;
 
+color:#00FF88;
+
 }
 
-.bottom-nav .active i{
+.announcement-time{
 
-text-shadow:0 0 15px #00FF88;
+font-size:11px;
+
+color:#9fb5d1;
+
+}
+
+.announcement-message{
+
+color:#d8e8ff;
+
+font-size:14px;
+
+line-height:1.6;
 
 }
 
 </style>
 
-<div
+<div class="announcement-section fade-up">
 
-class="support-float"
+<div class="announcement-header">
 
-onclick="location.href='support.html'"
+<h2>
 
-title="Support">
+📢 Live Announcements
 
-💬
+</h2>
 
-</div>
+<div class="live-badge">
 
-<div class="bottom-nav">
-
-<a href="dashboard.html" class="active">
-
-<i>🏠</i>
-
-<span>Home</span>
-
-</a>
-
-<a href="machines.html">
-
-<i>⚙️</i>
-
-<span>Machines</span>
-
-</a>
-
-<a href="deposit.html">
-
-<i>💳</i>
-
-<span>Deposit</span>
-
-</a>
-
-<a href="income.html">
-
-<i>📈</i>
-
-<span>Income</span>
-
-</a>
-
-<a href="profile.html">
-
-<i>👤</i>
-
-<span>Profile</span>
-
-</a>
+● LIVE
 
 </div>
 
-<script>
+</div>
 
-/* ======================================
-BOTTOM NAVIGATION EFFECT
-====================================== */
+<div id="announcementList">
 
-document.querySelectorAll(".bottom-nav a").forEach(link=>{
+<div class="announcement-card">
 
-link.addEventListener("click",()=>{
+<div class="announcement-top">
 
-document.querySelectorAll(".bottom-nav a")
+<div class="announcement-title">
 
-.forEach(item=>item.classList.remove("active"));
+Loading...
 
-link.classList.add("active");
+</div>
 
-});
+<div class="announcement-time">
 
-});
+Please wait
 
-/* ======================================
-PREMIUM CARD ANIMATION
-====================================== */
+</div>
 
-window.addEventListener("load",()=>{
+</div>
 
-document.querySelectorAll(".card,.quick,.slider").forEach((item,index)=>{
+<div class="announcement-message">
 
-item.style.opacity="0";
+Fetching latest announcements...
 
-item.style.transform="translateY(25px)";
+</div>
 
-setTimeout(()=>{
+</div>
 
-item.style.transition=".6s";
+</div>
 
-item.style.opacity="1";
-
-item.style.transform="translateY(0)";
-
-},index*120);
-
-});
-
-});
-  /* ======================================
-PREMIUM PAGE LOADER
-====================================== */
-
-window.addEventListener("load",()=>{
-
-document.body.style.opacity="0";
-
-document.body.style.transition="opacity .8s ease";
-
-setTimeout(()=>{
-
-document.body.style.opacity="1";
-
-},100);
-
-});
-
-/* ======================================
-AUTO REFRESH
-====================================== */
-
-setInterval(async()=>{
-
-if(currentUser){
-
-await loadWallet();
-
-await loadMachines();
-
-await loadDeposits();
-
-await loadWithdrawals();
-
-await loadNotifications();
-
-await loadMarket();
-
-}
-
-},30000);
-
-/* ======================================
-PRELOAD BANNER IMAGES
-====================================== */
-
-bannerImages.forEach(img=>{
-
-const image=new Image();
-
-image.src=img;
-
-});
-
-/* ======================================
-ONLINE STATUS
-====================================== */
-
-window.addEventListener("online",()=>{
-
-console.log("Connected");
-
-loadMarket();
-
-});
-
-window.addEventListener("offline",()=>{
-
-console.log("Offline");
-
-});
-
-/* ======================================
-CONSOLE MESSAGE
-====================================== */
-
-console.clear();
-
-console.log("%cMARATHON DIGITAL HUB",
-"color:#00FF88;font-size:24px;font-weight:bold;");
-
-console.log("%cDashboard V3 Loaded Successfully",
-"color:#00C8FF;font-size:15px;");
-
-console.log("%cPowered by Supabase + Binance Public API",
-"color:#ffffff;font-size:13px;");
-
-/* ======================================
-END OF DASHBOARD
-====================================== */
-
-</script>
-
-</body>
-
-</html>
+</div>
