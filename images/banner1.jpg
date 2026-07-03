@@ -1,6 +1,1 @@
-const bannerImages = [
 "https://your-domain.com/banner1.jpg",
-"https://your-domain.com/banner2.jpg",
-"https://your-domain.com/banner3.jpg",
-"https://your-domain.com/banner4.jpg"
-];
