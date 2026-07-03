@@ -4,34 +4,41 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Dashboard | Marathon Digital Hub</title>
 
+<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase-config.js"></script>
 
 <style>
 
+/* ===============================
+RESET
+=============================== */
+
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
 }
 
 body{
-
-background:#050B18;
-color:white;
-overflow-x:hidden;
-padding-bottom:90px;
-
+    background:#050B18;
+    color:#fff;
+    overflow-x:hidden;
+    padding-bottom:90px;
 }
 
-/* Animated Background */
+/* ===============================
+ANIMATED BACKGROUND
+=============================== */
 
 body::before{
 
@@ -63,13 +70,23 @@ z-index:-2;
 
 @keyframes bgMove{
 
-0%{transform:translateX(-2%);}
-50%{transform:translateX(2%);}
-100%{transform:translateX(-2%);}
+0%{
+transform:translateX(-2%);
+}
+
+50%{
+transform:translateX(2%);
+}
+
+100%{
+transform:translateX(-2%);
+}
 
 }
 
-/* Header */
+/* ===============================
+HEADER
+=============================== */
 
 .header{
 
@@ -99,6 +116,10 @@ color:#9fb5d1;
 
 }
 
+/* ===============================
+NOTIFICATION
+=============================== */
+
 .notification{
 
 width:50px;
@@ -117,11 +138,21 @@ align-items:center;
 
 font-size:22px;
 
-position:relative;
-
 cursor:pointer;
 
+position:relative;
+
 border:1px solid rgba(0,200,255,.20);
+
+transition:.3s;
+
+}
+
+.notification:hover{
+
+transform:scale(1.08);
+
+box-shadow:0 0 15px rgba(0,200,255,.35);
 
 }
 
@@ -151,9 +182,13 @@ font-size:10px;
 
 font-weight:bold;
 
+color:#fff;
+
 }
 
-/* Slider */
+/* ===============================
+SLIDER
+=============================== */
 
 .slider{
 
@@ -167,6 +202,10 @@ overflow:hidden;
 
 position:relative;
 
+border:1px solid rgba(0,200,255,.15);
+
+box-shadow:0 0 20px rgba(0,200,255,.08);
+
 }
 
 .slider img{
@@ -176,6 +215,8 @@ width:100%;
 height:100%;
 
 object-fit:cover;
+
+transition:opacity .8s ease-in-out;
 
 }
 
@@ -191,11 +232,13 @@ font-size:22px;
 
 font-weight:bold;
 
-text-shadow:0 0 8px black;
+text-shadow:0 0 10px #000;
 
 }
 
-/* Cards */
+/* ===============================
+STATS CARDS
+=============================== */
 
 .stats{
 
@@ -219,6 +262,16 @@ padding:18px;
 
 border:1px solid rgba(0,200,255,.15);
 
+transition:.3s;
+
+}
+
+.card:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 0 18px rgba(0,200,255,.18);
+
 }
 
 .card p{
@@ -235,11 +288,13 @@ margin-bottom:8px;
 
 font-size:22px;
 
-color:#00ff88;
+color:#00FF88;
 
 }
 
-/* Quick Menu */
+/* ===============================
+QUICK MENU
+=============================== */
 
 .quick-menu{
 
@@ -267,6 +322,16 @@ cursor:pointer;
 
 border:1px solid rgba(0,200,255,.15);
 
+transition:.3s;
+
+}
+
+.quick:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 0 15px rgba(0,200,255,.20);
+
 }
 
 .quick div{
@@ -289,49 +354,45 @@ font-size:13px;
 
 <body>
 
+<!-- ===============================
+HEADER
+=============================== -->
+
 <div class="header">
 
 <div>
 
 <h2 id="userName">
-
 Loading...
-
 </h2>
 
 <p>
-
 Welcome Back To Marathon Digital Hub
-
 </p>
 
 </div>
 
 <div
-
 class="notification"
-
 onclick="location.href='notifications.html'">
 
 🔔
 
 <div id="notifyCount">
-
 0
-
 </div>
 
 </div>
 
-</div>
+</div><!-- ===============================
+BANNER SLIDER
+=============================== -->
 
 <div class="slider">
 
 <img
-
 id="sliderImage"
-
-src="images/banner1.jpg">
+src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200&auto=format&fit=crop">
 
 <div class="slider-title">
 
@@ -340,6 +401,10 @@ MARATHON DIGITAL HUB
 </div>
 
 </div>
+
+<!-- ===============================
+STATISTICS
+=============================== -->
 
 <div class="stats">
 
@@ -393,10 +458,13 @@ UGX 0
 
 </div>
 
+<!-- ===============================
+QUICK MENU
+=============================== -->
+
 <div class="quick-menu">
 
 <div class="quick"
-
 onclick="location.href='machines.html'">
 
 <div>⚙️</div>
@@ -406,7 +474,6 @@ onclick="location.href='machines.html'">
 </div>
 
 <div class="quick"
-
 onclick="location.href='deposit.html'">
 
 <div>💳</div>
@@ -416,7 +483,6 @@ onclick="location.href='deposit.html'">
 </div>
 
 <div class="quick"
-
 onclick="location.href='withdraw.html'">
 
 <div>💵</div>
@@ -426,7 +492,6 @@ onclick="location.href='withdraw.html'">
 </div>
 
 <div class="quick"
-
 onclick="location.href='income.html'">
 
 <div>📈</div>
@@ -435,7 +500,9 @@ onclick="location.href='income.html'">
 
 </div>
 
-   </div><script>
+</div>
+
+<script>
 
 /* ==========================================
 SUPABASE
@@ -449,11 +516,9 @@ let currentUser = null;
 START DASHBOARD
 ========================================== */
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", async()=>{
 
 const { data:{ user } } = await db.auth.getUser();
-
-/* Not logged in */
 
 if(!user){
 
@@ -463,9 +528,7 @@ return;
 
 }
 
-currentUser = user;
-
-/* Load dashboard */
+currentUser=user;
 
 await loadProfile();
 
@@ -481,8 +544,9 @@ await loadNotifications();
 
 startSlider();
 
-});
+startCryptoMarket();
 
+});
 /* ==========================================
 PROFILE
 ========================================== */
@@ -529,7 +593,13 @@ const { data,error } = await db
 
 .single();
 
-if(error)return;
+if(error){
+
+console.log(error);
+
+return;
+
+}
 
 document.getElementById("walletBalance").innerHTML=
 
@@ -553,7 +623,13 @@ const { data,error } = await db
 
 .eq("status","active");
 
-if(error)return;
+if(error){
+
+console.log(error);
+
+return;
+
+}
 
 document.getElementById("activeMachines").innerHTML=
 
@@ -577,7 +653,13 @@ const { data,error } = await db
 
 .eq("status","approved");
 
-if(error)return;
+if(error){
+
+console.log(error);
+
+return;
+
+}
 
 let total=0;
 
@@ -609,7 +691,13 @@ const { data,error } = await db
 
 .eq("status","approved");
 
-if(error)return;
+if(error){
+
+console.log(error);
+
+return;
+
+}
 
 let total=0;
 
@@ -625,11 +713,10 @@ document.getElementById("totalWithdrawals").innerHTML=
 
 }
 
-   </script>
-
-   <!-- =============================
+</script>
+<!-- ==========================================
 LATEST ANNOUNCEMENTS
-============================= -->
+========================================== -->
 
 <div style="padding:15px;">
 
@@ -644,6 +731,7 @@ background:#08142d;
 padding:18px;
 border-radius:15px;
 text-align:center;
+border:1px solid rgba(0,200,255,.15);
 ">
 
 Loading announcements...
@@ -656,20 +744,27 @@ Loading announcements...
 
 <script>
 
-/* ==========================
-LOCAL IMAGE SLIDER
-========================== */
+/* ==========================================
+BANNER IMAGES
+========================================== */
 
-const bannerImages=[
+const bannerImages = [
 
-"images/banner1.jpg",
-"images/banner2.jpg",
-"images/banner3.jpg",
-"images/banner4.jpg"
+"https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1639762681057-408e52192e55?w=1200&auto=format&fit=crop",
+
+"https://images.unsplash.com/photo-1640161704729-cbe966a08476?w=1200&auto=format&fit=crop"
 
 ];
 
-let currentBanner=0;
+let currentBanner = 0;
+
+/* ==========================================
+AUTO SLIDER
+========================================== */
 
 function startSlider(){
 
@@ -683,17 +778,25 @@ currentBanner=0;
 
 }
 
-document.getElementById("sliderImage").src=
+const img=document.getElementById("sliderImage");
 
-bannerImages[currentBanner];
+img.style.opacity="0";
+
+setTimeout(()=>{
+
+img.src=bannerImages[currentBanner];
+
+img.style.opacity="1";
+
+},400);
 
 },4000);
 
 }
 
-/* ==========================
-NOTIFICATION COUNT
-========================== */
+/* ==========================================
+LOAD NOTIFICATIONS
+========================================== */
 
 async function loadNotifications(){
 
@@ -715,13 +818,7 @@ return;
 
 }
 
-/* Count */
-
-document.getElementById("notifyCount").innerHTML=
-
-data.length;
-
-/* Latest */
+document.getElementById("notifyCount").innerHTML=data.length;
 
 const container=document.getElementById("announcementList");
 
@@ -747,8 +844,9 @@ No announcements available.
 return;
 
 }
-
-/* Show only latest 4 */
+/* ==========================================
+SHOW LATEST ANNOUNCEMENTS
+========================================== */
 
 data.slice(0,4).forEach(item=>{
 
@@ -763,11 +861,12 @@ border-radius:15px;
 margin-bottom:12px;
 cursor:pointer;
 border:1px solid rgba(0,200,255,.15);
+transition:.3s;
 ">
 
 <h3 style="
 margin-bottom:8px;
-color:#00ff88;
+color:#00FF88;
 ">
 
 ${item.title}
@@ -788,11 +887,153 @@ ${item.message}
 
 }
 
+/* ==========================================
+LIVE CRYPTO MARKET
+========================================== */
+
+const cryptoData=[
+
+{
+coin:"₿ Bitcoin",
+price:"$118,420",
+change:"+2.45%",
+color:"#00FF88"
+},
+
+{
+coin:"Ξ Ethereum",
+price:"$4,180",
+change:"+1.28%",
+color:"#00FF88"
+},
+
+{
+coin:"◎ Solana",
+price:"$212",
+change:"-0.64%",
+color:"#ff4d4d"
+},
+
+{
+coin:"Ð Dogecoin",
+price:"$0.18",
+change:"+3.18%",
+color:"#00FF88"
+}
+
+];
+
+let cryptoIndex=0;
+
+function startCryptoMarket(){
+
+const coin=document.getElementById("cryptoCoin");
+
+const price=document.getElementById("cryptoPrice");
+
+const change=document.getElementById("cryptoChange");
+
+function update(){
+
+coin.style.opacity="0";
+
+price.style.opacity="0";
+
+change.style.opacity="0";
+
+setTimeout(()=>{
+
+const item=cryptoData[cryptoIndex];
+
+coin.innerHTML=item.coin;
+
+price.innerHTML=item.price;
+
+change.innerHTML=item.change;
+
+change.style.color=item.color;
+
+coin.style.opacity="1";
+
+price.style.opacity="1";
+
+change.style.opacity="1";
+
+cryptoIndex++;
+
+if(cryptoIndex>=cryptoData.length){
+
+cryptoIndex=0;
+
+}
+
+},300);
+
+}
+
+update();
+
+setInterval(update,3500);
+
+}
+
 </script>
 
-   <!-- ==========================
-MORE BUTTON
-========================== -->
+<!-- ==========================================
+LIVE CRYPTO MARKET
+========================================== -->
+
+<div style="padding:0 15px 20px;">
+
+<div style="
+background:#08142d;
+border-radius:16px;
+padding:18px;
+border:1px solid rgba(0,200,255,.20);
+">
+
+<h2 style="
+margin-bottom:15px;
+font-size:18px;
+">
+
+📊 Live Crypto Market
+
+</h2>
+
+<h3 id="cryptoCoin"
+style="transition:.3s;">
+
+₿ Bitcoin
+
+</h3>
+
+<h2 id="cryptoPrice"
+style="
+color:#00FF88;
+margin:8px 0;
+transition:.3s;
+">
+
+$118,420
+
+</h2>
+
+<p id="cryptoChange"
+style="
+font-weight:bold;
+transition:.3s;
+">
+
++2.45%
+
+</p>
+
+</div>
+
+</div><!-- ==========================================
+VIEW ALL ANNOUNCEMENTS BUTTON
+========================================== -->
 
 <div style="padding:0 15px 25px;">
 
@@ -820,6 +1061,8 @@ color:#001018;
 
 cursor:pointer;
 
+transition:.3s;
+
 ">
 
 View All Announcements
@@ -828,47 +1071,95 @@ View All Announcements
 
 </div>
 
-<!-- ==========================
-SUPPORT BUTTON
-========================== -->
+<!-- ==========================================
+FLOATING SUPPORT BUTTON
+========================================== -->
 
-<div style="padding:0 15px 20px;">
+<style>
 
-<button
+.support-float{
 
-onclick="location.href='support.html'"
+position:fixed;
 
-style="
+right:20px;
 
-width:100%;
+bottom:90px;
 
-height:50px;
+width:60px;
 
-border:none;
+height:60px;
 
-border-radius:14px;
+border-radius:50%;
 
-background:#08142d;
+background:linear-gradient(135deg,#00C8FF,#00FF88);
 
-border:1px solid rgba(0,200,255,.20);
+display:flex;
 
-color:white;
+justify-content:center;
 
-font-size:16px;
+align-items:center;
+
+font-size:28px;
+
+color:#001018;
 
 cursor:pointer;
 
-">
+z-index:1001;
 
-💬 Contact Support
+box-shadow:0 0 20px rgba(0,200,255,.45);
 
-</button>
+animation:supportPulse 2s infinite;
 
-</div>
+transition:.3s;
 
-<!-- ==========================
+}
+
+.support-float:hover{
+
+transform:scale(1.08);
+
+}
+
+@keyframes supportPulse{
+
+0%{
+
+box-shadow:0 0 0 0 rgba(0,200,255,.60);
+
+}
+
+70%{
+
+box-shadow:0 0 0 18px rgba(0,200,255,0);
+
+}
+
+100%{
+
+box-shadow:0 0 0 0 rgba(0,200,255,0);
+
+}
+
+}
+
+</style>
+
+<div
+
+class="support-float"
+
+onclick="location.href='support.html'"
+
+title="Contact Support"
+
+>
+
+💬
+
+</div><!-- ==========================================
 BOTTOM NAVIGATION
-========================== -->
+========================================== -->
 
 <style>
 
@@ -896,6 +1187,8 @@ align-items:center;
 
 z-index:999;
 
+backdrop-filter:blur(10px);
+
 }
 
 .bottom-nav a{
@@ -910,7 +1203,11 @@ flex-direction:column;
 
 align-items:center;
 
+justify-content:center;
+
 font-size:12px;
+
+transition:.3s;
 
 }
 
@@ -922,6 +1219,22 @@ font-size:24px;
 
 margin-bottom:4px;
 
+transition:.3s;
+
+}
+
+.bottom-nav a:hover{
+
+color:#00FF88;
+
+transform:translateY(-3px);
+
+}
+
+.bottom-nav a:hover i{
+
+transform:scale(1.15);
+
 }
 
 .bottom-nav .active{
@@ -929,6 +1242,12 @@ margin-bottom:4px;
 color:#00FF88;
 
 font-weight:bold;
+
+}
+
+.bottom-nav .active i{
+
+text-shadow:0 0 10px rgba(0,255,136,.6);
 
 }
 
@@ -978,6 +1297,232 @@ font-weight:bold;
 
 </div>
 
+<script>
+
+/* ==========================================
+BOTTOM NAVIGATION ANIMATION
+========================================== */
+
+document.querySelectorAll(".bottom-nav a").forEach(link=>{
+
+link.addEventListener("click",()=>{
+
+document
+
+.querySelectorAll(".bottom-nav a")
+
+.forEach(item=>item.classList.remove("active"));
+
+link.classList.add("active");
+
+});
+
+});/* ==========================================
+PREMIUM DASHBOARD ANIMATIONS
+========================================== */
+
+window.addEventListener("load",()=>{
+
+document.querySelectorAll(".card,.quick,.slider").forEach((el,index)=>{
+
+el.style.opacity="0";
+
+el.style.transform="translateY(25px)";
+
+setTimeout(()=>{
+
+el.style.transition="all .6s ease";
+
+el.style.opacity="1";
+
+el.style.transform="translateY(0)";
+
+},index*120);
+
+});
+
+});
+
+/* ==========================================
+BANNER PREMIUM ANIMATION
+========================================== */
+
+setInterval(()=>{
+
+const banner=document.getElementById("sliderImage");
+
+if(!banner)return;
+
+banner.style.transform="scale(1.08)";
+
+setTimeout(()=>{
+
+banner.style.transform="scale(1)";
+
+},3500);
+
+},4000);
+
+/* ==========================================
+LIVE MARKET BLINK EFFECT
+========================================== */
+
+setInterval(()=>{
+
+const price=document.getElementById("cryptoPrice");
+
+if(!price)return;
+
+price.style.textShadow="0 0 18px #00FF88";
+
+setTimeout(()=>{
+
+price.style.textShadow="none";
+
+},700);
+
+},3500);
+
+/* ==========================================
+FLOATING SUPPORT GLOW
+========================================== */
+
+setInterval(()=>{
+
+const support=document.querySelector(".support-float");
+
+if(!support)return;
+
+support.style.boxShadow="0 0 35px rgba(0,255,136,.8)";
+
+setTimeout(()=>{
+
+support.style.boxShadow="0 0 20px rgba(0,200,255,.45)";
+
+},800);
+
+},2500);
+
+/* ==========================================
+CARD HOVER EFFECT
+========================================== */
+
+document.querySelectorAll(".card").forEach(card=>{
+
+card.addEventListener("mouseenter",()=>{
+
+card.style.transform="translateY(-5px) scale(1.02)";
+
+});
+
+card.addEventListener("mouseleave",()=>{
+
+card.style.transform="translateY(0) scale(1)";
+
+});
+
+});
+
+/* ==========================================
+QUICK MENU EFFECT
+========================================== */
+
+document.querySelectorAll(".quick").forEach(item=>{
+
+item.addEventListener("mouseenter",()=>{
+
+item.style.background="#0b1d3d";
+
+});
+
+item.addEventListener("mouseleave",()=>{
+
+item.style.background="#08142d";
+
+});
+
+});/* ==========================================
+PREMIUM LOADING EFFECT
+========================================== */
+
+window.addEventListener("load",()=>{
+
+document.body.style.opacity="0";
+
+document.body.style.transition="opacity .8s";
+
+setTimeout(()=>{
+
+document.body.style.opacity="1";
+
+},100);
+
+});
+
+/* ==========================================
+ONLINE / OFFLINE STATUS
+========================================== */
+
+function updateConnectionStatus(){
+
+if(navigator.onLine){
+
+console.log("Dashboard Online");
+
+}else{
+
+alert("No Internet Connection");
+
+}
+
+}
+
+window.addEventListener("online",updateConnectionStatus);
+
+window.addEventListener("offline",updateConnectionStatus);
+
+/* ==========================================
+AUTO REFRESH WALLET & NOTIFICATIONS
+========================================== */
+
+setInterval(async()=>{
+
+if(currentUser){
+
+await loadWallet();
+
+await loadNotifications();
+
+}
+
+},30000);
+
+/* ==========================================
+PRELOAD BANNER IMAGES
+========================================== */
+
+bannerImages.forEach(url=>{
+
+const img=new Image();
+
+img.src=url;
+
+});
+
+/* ==========================================
+CONSOLE MESSAGE
+========================================== */
+
+console.log("%cMarathon Digital Hub","color:#00FF88;font-size:22px;font-weight:bold;");
+
+console.log("%cDashboard Version 2.0 Loaded Successfully","color:#00C8FF;font-size:14px;");
+
+/* ==========================================
+END OF SCRIPT
+========================================== */
+
+</script>
+
 </body>
 
-    </html>
+   </html>
