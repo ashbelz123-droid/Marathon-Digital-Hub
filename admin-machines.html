@@ -4,7 +4,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Admin Machines | Marathon Digital Hub</title>
@@ -12,7 +11,6 @@
 <link rel="stylesheet" href="admin-machines.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase-config.js"></script>
 
 </head>
@@ -21,7 +19,7 @@
 
 <div class="container">
 
-<header>
+<header class="topHeader">
 
 <div>
 
@@ -31,9 +29,9 @@
 
 </div>
 
-<button id="addMachineBtn">
+<button id="openForm">
 
-+ Add Machine
+➕ Add Machine
 
 </button>
 
@@ -41,37 +39,34 @@
 
 <section class="stats">
 
-<div class="card">
-
+<div class="statCard">
 <h2 id="totalMachines">0</h2>
-
 <p>Total Machines</p>
-
 </div>
 
-<div class="card">
-
+<div class="statCard">
 <h2 id="activeMachines">0</h2>
-
 <p>Active</p>
-
 </div>
 
-<div class="card">
-
+<div class="statCard">
 <h2 id="disabledMachines">0</h2>
-
 <p>Disabled</p>
-
 </div>
 
-<div class="card">
-
+<div class="statCard">
 <h2 id="vipMachines">0</h2>
-
 <p>VIP</p>
-
 </div>
+
+</section>
+
+<section class="searchSection">
+
+<input
+type="text"
+id="searchMachine"
+placeholder="Search machine...">
 
 </section>
 
@@ -79,7 +74,11 @@
 class="machineForm"
 id="machineForm">
 
-<h2>Add Machine</h2>
+<h2 id="formTitle">
+
+Add Machine
+
+</h2>
 
 <input
 type="text"
@@ -89,7 +88,7 @@ placeholder="Machine Name">
 <input
 type="text"
 id="machineSeries"
-placeholder="Series">
+placeholder="Machine Series">
 
 <input
 type="number"
@@ -104,64 +103,178 @@ placeholder="Total Return">
 <input
 type="number"
 id="machineDuration"
-placeholder="Duration">
-
-<select id="machineStatus">
+placeholder="Duration (Days)"><select id="machineStatus">
 
 <option value="true">
 
-Active
+🟢 Active
 
 </option>
 
 <option value="false">
 
-Disabled
+🔴 Disabled
 
 </option>
 
 </select>
 
-<label class="vipBox">
+<label class="vipRow">
 
 <input
+
 type="checkbox"
+
 id="machineVIP">
 
-VIP Machine
+<span>VIP Machine</span>
 
 </label>
 
+<div class="uploadArea">
+
 <input
+
 type="file"
+
 id="machineImage"
-accept="image/*">
 
-<img id="previewImage">
+accept="image/*"
 
-<button id="saveMachine">
+hidden>
 
-Save Machine
+<label
+
+for="machineImage"
+
+class="uploadButton">
+
+📷 Choose Machine Image
+
+</label>
+
+<img
+
+id="previewImage"
+
+alt="Machine Preview">
+
+</div>
+
+<div class="formButtons">
+
+<button
+
+id="saveMachine"
+
+type="button">
+
+💾 Save Machine
 
 </button>
 
-</section>
+<button
 
-<section class="searchBar">
+id="cancelMachine"
 
-<input
+type="button">
 
-type="text"
+✖ Cancel
 
-id="searchMachine"
+</button>
 
-placeholder="Search machines...">
-
-</section>
-
-<section id="machineList">
+</div>
 
 </section>
+
+<!-- ==========================
+MACHINE LIST
+========================== -->
+
+<section>
+
+<h2 class="sectionTitle">
+
+Mining Machines
+
+</h2>
+
+<div
+
+id="machineList"
+
+class="machineGrid">
+
+<!--
+Machine cards from Supabase
+will appear here automatically.
+-->
+
+</div>
+
+  </section>
+  
+  <!-- ==========================
+SUCCESS MESSAGE
+========================== -->
+
+<div id="successMessage" class="popup">
+
+<div class="popupContent">
+
+<h2>Success</h2>
+
+<p id="popupText">
+
+Operation completed successfully.
+
+</p>
+
+<button id="closePopup">
+
+OK
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ==========================
+DELETE CONFIRMATION
+========================== -->
+
+<div id="deleteModal" class="popup">
+
+<div class="popupContent">
+
+<h2>Delete Machine</h2>
+
+<p>
+
+Are you sure you want to delete this machine?
+
+</p>
+
+<div class="popupButtons">
+
+<button id="confirmDelete">
+
+Delete
+
+</button>
+
+<button id="cancelDelete">
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
+
+</div>
 
 </div>
 
