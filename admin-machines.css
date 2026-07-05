@@ -1,7 +1,7 @@
-/*==========================================
+/*=========================================
 MARATHON DIGITAL HUB
 ADMIN MACHINES
-==========================================*/
+=========================================*/
 
 *{
     margin:0;
@@ -12,19 +12,19 @@ ADMIN MACHINES
 
 :root{
 
-    --bg:#071325;
-    --card:#102344;
-    --card2:#18345F;
+    --bg:#081321;
+    --card:#10253F;
+    --card2:#173659;
 
     --primary:#00D084;
     --primaryHover:#00B873;
 
     --blue:#2F80ED;
     --red:#E53935;
-    --orange:#F9A826;
+    --orange:#F5A623;
 
     --white:#FFFFFF;
-    --text:#C6D3F0;
+    --text:#B8C7E0;
 
     --border:rgba(255,255,255,.08);
 
@@ -40,22 +40,18 @@ body{
 
 }
 
-/*=========================
-PAGE
-=========================*/
-
 .page{
 
     max-width:1500px;
 
     margin:auto;
 
-    padding:25px;
+    padding:30px;
 
 }
 
 /*=========================
-TOP BAR
+HEADER
 =========================*/
 
 .topBar{
@@ -66,9 +62,9 @@ TOP BAR
 
     align-items:center;
 
-    gap:20px;
-
     flex-wrap:wrap;
+
+    gap:20px;
 
     margin-bottom:30px;
 
@@ -76,7 +72,7 @@ TOP BAR
 
 .topBar h1{
 
-    font-size:36px;
+    font-size:34px;
 
     margin-bottom:8px;
 
@@ -88,15 +84,11 @@ TOP BAR
 
 }
 
-/*=========================
-BUTTONS
-=========================*/
-
 .primaryBtn{
 
     background:var(--primary);
 
-    color:#071325;
+    color:#081321;
 
     border:none;
 
@@ -117,8 +109,6 @@ BUTTONS
 .primaryBtn:hover{
 
     background:var(--primaryHover);
-
-    transform:translateY(-2px);
 
 }
 
@@ -148,21 +138,11 @@ STATISTICS
 
     padding:25px;
 
-    transition:.3s;
-
-}
-
-.statCard:hover{
-
-    transform:translateY(-4px);
-
 }
 
 .statCard span{
 
     color:var(--text);
-
-    font-size:15px;
 
 }
 
@@ -170,7 +150,7 @@ STATISTICS
 
     margin-top:12px;
 
-    font-size:38px;
+    font-size:36px;
 
     color:var(--primary);
 
@@ -180,13 +160,13 @@ STATISTICS
 SEARCH
 =========================*/
 
-.searchArea{
+.searchBox{
 
     margin-bottom:30px;
 
 }
 
-.searchArea input{
+.searchBox input{
 
     width:100%;
 
@@ -200,15 +180,15 @@ SEARCH
 
     padding:18px;
 
-    font-size:16px;
-
     outline:none;
+
+    font-size:16px;
 
 }
 
-.searchArea input::placeholder{
+.searchBox input::placeholder{
 
-    color:#9CB3DD;
+    color:#9FB2CF;
 
 }
 
@@ -222,7 +202,7 @@ FORM
 
     border:1px solid var(--border);
 
-    border-radius:22px;
+    border-radius:20px;
 
     padding:30px;
 
@@ -268,9 +248,9 @@ FORM
 
     color:white;
 
-    cursor:pointer;
-
     font-size:20px;
+
+    cursor:pointer;
 
 }
 
@@ -284,7 +264,7 @@ FORM
 
 }
 
-.formGroup{
+.inputGroup{
 
     display:flex;
 
@@ -292,21 +272,17 @@ FORM
 
 }
 
-.formGroup label{
+.inputGroup label{
 
     margin-bottom:8px;
-
-    font-size:14px;
 
     color:var(--text);
 
 }
 
-.formGroup input,
+.inputGroup input,
 
-.formGroup select{
-
-    width:100%;
+.inputGroup select{
 
     background:var(--card2);
 
@@ -318,57 +294,71 @@ FORM
 
     padding:15px;
 
-    font-size:15px;
-
     outline:none;
 
-        }
+    font-size:15px;
 
-    /*=========================================
-IMAGE UPLOAD
+}
+
+/*=========================================
+UPLOAD SECTION
 =========================================*/
+
+.uploadArea{
+
+    margin-top:25px;
+
+}
+
+.uploadButton{
+
+    display:inline-block;
+
+    background:var(--primary);
+
+    color:#081321;
+
+    padding:14px 22px;
+
+    border-radius:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.uploadButton:hover{
+
+    background:var(--primaryHover);
+
+}
 
 .previewImage{
 
+    display:none;
+
     width:100%;
 
-    height:240px;
+    max-height:250px;
 
     object-fit:cover;
 
-    margin-top:15px;
+    margin-top:20px;
 
-    border-radius:16px;
-
-    display:none;
+    border-radius:18px;
 
     border:2px solid var(--border);
 
 }
 
-input[type="file"]{
+/*=========================================
+VIP
+=========================================*/
 
-    width:100%;
-
-    background:var(--card2);
-
-    color:white;
-
-    border:1px solid var(--border);
-
-    border-radius:14px;
-
-    padding:12px;
-
-    cursor:pointer;
-
-}
-
-/*=========================
-VIP CHECKBOX
-=========================*/
-
-.checkboxRow{
+.vipRow{
 
     display:flex;
 
@@ -376,11 +366,13 @@ VIP CHECKBOX
 
     gap:12px;
 
-    margin:25px 0;
+    margin-top:25px;
+
+    margin-bottom:30px;
 
 }
 
-.checkboxRow input{
+.vipRow input{
 
     width:20px;
 
@@ -390,25 +382,23 @@ VIP CHECKBOX
 
 }
 
-.checkboxRow label{
+.vipRow label{
 
-    color:var(--text);
+    color:var(--white);
 
-    font-size:15px;
+    font-size:16px;
 
 }
 
-/*=========================
+/*=========================================
 FORM BUTTONS
-=========================*/
+=========================================*/
 
-.buttonRow{
+.formButtons{
 
     display:flex;
 
     gap:15px;
-
-    margin-top:20px;
 
 }
 
@@ -418,19 +408,21 @@ FORM BUTTONS
 
     background:var(--primary);
 
-    color:#071325;
+    color:#081321;
 
     border:none;
 
-    border-radius:14px;
+    padding:15px;
 
-    padding:16px;
+    border-radius:14px;
 
     font-size:16px;
 
     font-weight:bold;
 
     cursor:pointer;
+
+    transition:.3s;
 
 }
 
@@ -444,33 +436,35 @@ FORM BUTTONS
 
     flex:1;
 
-    background:#64748B;
+    background:#4B5563;
 
     color:white;
 
     border:none;
 
-    border-radius:14px;
+    padding:15px;
 
-    padding:16px;
+    border-radius:14px;
 
     font-size:16px;
 
     cursor:pointer;
 
+    transition:.3s;
+
 }
 
 .cancelBtn:hover{
 
-    background:#4B5563;
+    background:#374151;
 
 }
 
-/*=========================
-SECTION HEADER
-=========================*/
+/*=========================================
+LIST HEADER
+=========================================*/
 
-.sectionHeader{
+.listHeader{
 
     display:flex;
 
@@ -478,49 +472,49 @@ SECTION HEADER
 
     align-items:center;
 
-    margin-bottom:25px;
+    margin-bottom:20px;
 
 }
 
-.sectionHeader h2{
+.listHeader h2{
 
-    font-size:30px;
+    font-size:28px;
 
 }
 
-.sectionHeader span{
+.listHeader span{
 
     color:var(--text);
 
 }
 
-/*=========================
+/*=========================================
 MACHINE GRID
-=========================*/
+=========================================*/
 
 .machinesGrid{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+    grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
 
     gap:25px;
 
 }
 
-/*=========================
-MACHINE CARD
-=========================*/
+/*=========================================
+CARD
+=========================================*/
 
 .machineCard{
 
     background:var(--card);
 
-    border-radius:22px;
+    border:1px solid var(--border);
+
+    border-radius:20px;
 
     overflow:hidden;
-
-    border:1px solid var(--border);
 
     transition:.3s;
 
@@ -528,7 +522,7 @@ MACHINE CARD
 
 .machineCard:hover{
 
-    transform:translateY(-6px);
+    transform:translateY(-5px);
 
 }
 
@@ -544,17 +538,17 @@ MACHINE CARD
 
 .machineContent{
 
-    padding:22px;
+    padding:20px;
 
 }
 
 .machineContent h3{
 
-    font-size:24px;
-
-    margin-bottom:15px;
+    margin-bottom:18px;
 
     color:var(--primary);
+
+    font-size:24px;
 
 }
 
@@ -576,25 +570,25 @@ MACHINE CARD
 
 }
 
-/*=========================
+/*=========================================
 BADGES
-=========================*/
+=========================================*/
 
 .badgeRow{
 
     display:flex;
 
-    gap:10px;
-
     flex-wrap:wrap;
 
-    margin:18px 0;
+    gap:10px;
+
+    margin:20px 0;
 
 }
 
 .badge{
 
-    padding:7px 14px;
+    padding:6px 14px;
 
     border-radius:30px;
 
@@ -608,7 +602,7 @@ BADGES
 
     background:var(--primary);
 
-    color:#071325;
+    color:#081321;
 
 }
 
@@ -624,13 +618,13 @@ BADGES
 
     background:var(--orange);
 
-    color:#071325;
+    color:#081321;
 
 }
 
-/*=========================
+/*=========================================
 CARD BUTTONS
-=========================*/
+=========================================*/
 
 .cardActions{
 
@@ -638,9 +632,7 @@ CARD BUTTONS
 
     grid-template-columns:repeat(2,1fr);
 
-    gap:12px;
-
-    margin-top:20px;
+    gap:10px;
 
 }
 
@@ -650,13 +642,13 @@ CARD BUTTONS
 
     border-radius:12px;
 
-    padding:13px;
+    padding:12px;
 
-    font-size:14px;
+    cursor:pointer;
 
     font-weight:bold;
 
-    cursor:pointer;
+    font-size:14px;
 
 }
 
@@ -680,7 +672,7 @@ CARD BUTTONS
 
     background:var(--primary);
 
-    color:#071325;
+    color:#081321;
 
 }
 
@@ -702,15 +694,13 @@ DELETE MODAL
 
     inset:0;
 
+    background:rgba(0,0,0,.75);
+
     display:flex;
 
     justify-content:center;
 
     align-items:center;
-
-    background:rgba(0,0,0,.75);
-
-    backdrop-filter:blur(4px);
 
     z-index:9999;
 
@@ -722,7 +712,7 @@ DELETE MODAL
 
 }
 
-.modalCard{
+.modalBox{
 
     width:90%;
 
@@ -732,17 +722,17 @@ DELETE MODAL
 
     border:1px solid var(--border);
 
-    border-radius:22px;
+    border-radius:20px;
 
     padding:30px;
 
     text-align:center;
 
-    animation:pop .25s ease;
+    animation:popup .25s ease;
 
 }
 
-@keyframes pop{
+@keyframes popup{
 
     from{
 
@@ -762,15 +752,15 @@ DELETE MODAL
 
 }
 
-.modalCard h2{
-
-    font-size:28px;
+.modalBox h2{
 
     margin-bottom:15px;
 
+    font-size:28px;
+
 }
 
-.modalCard p{
+.modalBox p{
 
     color:var(--text);
 
@@ -789,78 +779,40 @@ DELETE MODAL
 }
 
 /*=========================================
-TOAST
-=========================================*/
-
-.toast{
-
-    position:fixed;
-
-    top:30px;
-
-    right:30px;
-
-    background:var(--primary);
-
-    color:#071325;
-
-    padding:16px 24px;
-
-    border-radius:14px;
-
-    font-weight:bold;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.35);
-
-    transform:translateX(150%);
-
-    transition:.35s;
-
-    z-index:10000;
-
-}
-
-.toast.show{
-
-    transform:translateX(0);
-
-}
-
-/*=========================================
 LOADING
 =========================================*/
 
-.loadingScreen{
+.loading{
 
     position:fixed;
 
     inset:0;
 
+    background:rgba(8,19,33,.92);
+
     display:flex;
+
+    flex-direction:column;
 
     justify-content:center;
 
     align-items:center;
 
-    flex-direction:column;
-
-    background:rgba(7,19,37,.95);
-
-    z-index:10001;
+    z-index:10000;
 
 }
 
-.loadingScreen.hidden{
+.loading.hidden{
 
     display:none;
 
 }
 
-.spinner{
+.loader{
 
-    width:65px;
+    width:60px;
 
-    height:65px;
+    height:60px;
 
     border:6px solid rgba(255,255,255,.15);
 
@@ -874,7 +826,7 @@ LOADING
 
 @keyframes spin{
 
-    to{
+    100%{
 
         transform:rotate(360deg);
 
@@ -882,13 +834,53 @@ LOADING
 
 }
 
-.loadingScreen p{
+.loading p{
 
     margin-top:20px;
+
+    color:white;
 
     font-size:18px;
 
     font-weight:bold;
+
+}
+
+/*=========================================
+TOAST
+=========================================*/
+
+.toast{
+
+    position:fixed;
+
+    top:25px;
+
+    right:25px;
+
+    background:var(--primary);
+
+    color:#081321;
+
+    padding:16px 22px;
+
+    border-radius:14px;
+
+    font-weight:bold;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+
+    transform:translateX(150%);
+
+    transition:.35s;
+
+    z-index:10001;
+
+}
+
+.toast.show{
+
+    transform:translateX(0);
 
 }
 
@@ -906,7 +898,7 @@ EMPTY STATE
 
     border-radius:20px;
 
-    padding:60px 25px;
+    padding:70px 30px;
 
     text-align:center;
 
@@ -914,9 +906,9 @@ EMPTY STATE
 
 .emptyState h2{
 
-    margin-bottom:12px;
-
     font-size:30px;
+
+    margin-bottom:15px;
 
 }
 
@@ -936,17 +928,17 @@ SCROLLBAR
 
 }
 
+::-webkit-scrollbar-track{
+
+    background:var(--bg);
+
+}
+
 ::-webkit-scrollbar-thumb{
 
     background:var(--primary);
 
     border-radius:20px;
-
-}
-
-::-webkit-scrollbar-track{
-
-    background:var(--bg);
 
 }
 
@@ -974,7 +966,7 @@ RESPONSIVE
 
     .page{
 
-        padding:15px;
+        padding:18px;
 
     }
 
@@ -998,7 +990,7 @@ RESPONSIVE
 
     }
 
-    .buttonRow{
+    .formButtons{
 
         flex-direction:column;
 
@@ -1022,20 +1014,14 @@ RESPONSIVE
 
     }
 
-    .primaryBtn{
-
-        width:100%;
-
-    }
-
     .toast{
 
-        right:15px;
-
         left:15px;
+
+        right:15px;
 
         top:15px;
 
     }
 
-    }
+        }
