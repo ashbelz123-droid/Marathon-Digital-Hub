@@ -6,11 +6,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Machine Management</title>
+<title>Machine Management | Marathon Digital Hub</title>
 
 <link rel="stylesheet" href="admin-machines.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
 
 </head>
 
@@ -18,247 +19,307 @@
 
 <div class="page">
 
-    <!-- HEADER -->
+    <!-- ==========================
+         HEADER
+    =========================== -->
 
-    <div class="header">
+    <header class="topBar">
 
         <div>
 
             <h1>Machine Management</h1>
 
-            <p>Manage all mining machines</p>
+            <p>
+                Create, edit and manage all mining machines.
+            </p>
 
         </div>
 
-        <button id="openFormBtn" class="primaryBtn">
-            ➕ Add Machine
+        <button id="addMachineBtn" class="primaryBtn">
+
+            + Add Machine
+
         </button>
 
-    </div>
+    </header>
 
-    <!-- STATISTICS -->
+    <!-- ==========================
+         DASHBOARD CARDS
+    =========================== -->
 
-    <div class="statsGrid">
+    <section class="statsGrid">
 
         <div class="statCard">
-            <h2 id="totalMachines">0</h2>
+
             <span>Total Machines</span>
+
+            <h2 id="totalMachines">0</h2>
+
         </div>
 
         <div class="statCard">
-            <h2 id="activeMachines">0</h2>
+
             <span>Active</span>
+
+            <h2 id="activeMachines">0</h2>
+
         </div>
 
         <div class="statCard">
-            <h2 id="disabledMachines">0</h2>
+
             <span>Disabled</span>
+
+            <h2 id="disabledMachines">0</h2>
+
         </div>
 
         <div class="statCard">
-            <h2 id="vipMachines">0</h2>
+
             <span>VIP</span>
+
+            <h2 id="vipMachines">0</h2>
+
         </div>
 
-    </div>
+    </section>
 
-      <!-- SEARCH -->
+    <!-- ==========================
+         SEARCH
+    =========================== -->
 
-    <div class="searchSection">
+    <section class="searchArea">
 
         <input
+            id="searchInput"
             type="text"
-            id="searchMachine"
-            placeholder="Search machines...">
+            placeholder="Search machine by name or series...">
 
-    </div>
+    </section>
 
-    <!-- ADD / EDIT MACHINE FORM -->
+        <!-- ==========================
+         ADD / EDIT MACHINE FORM
+    =========================== -->
 
-    <div class="machineForm" id="machineForm">
+    <section id="machineForm" class="machineForm hidden">
 
-        <h2 id="formTitle">Add New Machine</h2>
+        <div class="formHeader">
 
-        <div class="grid2">
-
-            <input
-                type="text"
-                id="machineName"
-                placeholder="Machine Name">
-
-            <input
-                type="text"
-                id="machineSeries"
-                placeholder="Machine Series">
-
-            <input
-                type="number"
-                id="machinePrice"
-                placeholder="Price">
-
-            <input
-                type="number"
-                id="machineReturn"
-                placeholder="Total Return">
-
-            <input
-                type="number"
-                id="machineDuration"
-                placeholder="Duration (Days)">
-
-            <select id="machineStatus">
-
-                <option value="true">Active</option>
-
-                <option value="false">Disabled</option>
-
-            </select>
-
-        </div>
-
-        <!-- IMAGE -->
-
-        <div class="uploadSection">
-
-            <label
-                for="machineImage"
-                class="uploadBtn">
-
-                📷 Upload Machine Image
-
-            </label>
-
-            <input
-                type="file"
-                id="machineImage"
-                accept="image/*"
-                hidden>
-
-            <img
-                id="previewImage"
-                src=""
-                alt="Preview">
-
-        </div>
-
-        <!-- VIP -->
-
-        <div class="vipRow">
-
-            <input
-                type="checkbox"
-                id="machineVIP">
-
-            <label for="machineVIP">
-
-                VIP Machine
-
-            </label>
-
-        </div>
-
-        <!-- BUTTONS -->
-
-        <div class="formActions">
+            <h2 id="formTitle">
+                Add New Machine
+            </h2>
 
             <button
-                id="saveMachine"
-                class="successBtn">
-
-                💾 Save Machine
-
-            </button>
-
-            <button
+                id="closeFormBtn"
                 type="button"
-                id="cancelMachine"
-                class="secondaryBtn">
+                class="closeBtn">
 
-                Cancel
-
-            </button>
-
-        </div>
-
-              </div>
-
-      <!-- MACHINES -->
-
-    <h2 class="sectionTitle">
-        Mining Machines
-    </h2>
-
-    <div
-        id="machineList"
-        class="machineGrid">
-
-        <!-- JavaScript loads machine cards here -->
-
-    </div>
-
-</div>
-
-<!-- SUCCESS POPUP -->
-
-<div
-    class="popup"
-    id="successPopup">
-
-    <div class="popupBox">
-
-        <div class="popupIcon">✅</div>
-
-        <h2>Success</h2>
-
-        <p id="successMessage">
-            Operation completed successfully.
-        </p>
-
-        <div class="popupButtons">
-
-            <button
-                id="closeSuccess"
-                class="successBtn">
-
-                OK
+                ✕
 
             </button>
 
         </div>
 
-    </div>
+        <form id="machineFormElement">
+
+            <div class="formGrid">
+
+                <div class="formGroup">
+
+                    <label>Machine Name</label>
+
+                    <input
+                        type="text"
+                        id="machineName"
+                        required
+                        placeholder="Example: Antminer S21">
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Series</label>
+
+                    <input
+                        type="text"
+                        id="machineSeries"
+                        placeholder="Example: S21 Series">
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Price (UGX)</label>
+
+                    <input
+                        type="number"
+                        id="machinePrice"
+                        min="0"
+                        required>
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Total Return (UGX)</label>
+
+                    <input
+                        type="number"
+                        id="machineReturn"
+                        min="0"
+                        required>
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Duration (Days)</label>
+
+                    <input
+                        type="number"
+                        id="machineDuration"
+                        min="1"
+                        required>
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>Status</label>
+
+                    <select id="machineStatus">
+
+                        <option value="true">
+                            Active
+                        </option>
+
+                        <option value="false">
+                            Disabled
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- IMAGE -->
+
+            <div class="formGroup">
+
+                <label>Machine Image</label>
+
+                <input
+                    type="file"
+                    id="machineImage"
+                    accept="image/*">
+
+                <img
+                    id="previewImage"
+                    class="previewImage"
+                    alt="Preview">
+
+            </div>
+
+            <!-- VIP -->
+
+            <div class="checkboxRow">
+
+                <input
+                    type="checkbox"
+                    id="machineVIP">
+
+                <label for="machineVIP">
+
+                    Mark as VIP Machine
+
+                </label>
+
+            </div>
+
+            <div class="buttonRow">
+
+                <button
+                    type="submit"
+                    id="saveMachineBtn"
+                    class="saveBtn">
+
+                    💾 Save Machine
+
+                </button>
+
+                <button
+                    type="button"
+                    id="cancelBtn"
+                    class="cancelBtn">
+
+                    Cancel
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+        <!-- ==========================
+         MACHINES LIST
+    =========================== -->
+
+    <section class="machinesSection">
+
+        <div class="sectionHeader">
+
+            <h2>Mining Machines</h2>
+
+            <span id="machineCount">
+                0 Machines
+            </span>
+
+        </div>
+
+        <div
+            id="machinesContainer"
+            class="machinesGrid">
+
+            <!-- Machine cards will be loaded here -->
+
+        </div>
+
+    </section>
 
 </div>
 
-<!-- DELETE POPUP -->
+<!-- ==========================
+DELETE MODAL
+=========================== -->
 
 <div
-    class="popup"
-    id="deletePopup">
+    id="deleteModal"
+    class="modal hidden">
 
-    <div class="popupBox">
-
-        <div class="popupIcon">🗑️</div>
+    <div class="modalCard">
 
         <h2>Delete Machine</h2>
 
         <p>
-            Are you sure you want to permanently delete this machine?
+            Are you sure you want to delete this machine?
+            This action cannot be undone.
         </p>
 
-        <div class="popupButtons">
+        <div class="modalButtons">
 
             <button
-                id="confirmDelete"
-                class="dangerBtn">
+                id="confirmDeleteBtn"
+                class="deleteBtn">
 
                 Delete
 
             </button>
 
             <button
-                id="cancelDelete"
-                class="secondaryBtn">
+                id="cancelDeleteBtn"
+                class="cancelBtn">
 
                 Cancel
 
@@ -270,20 +331,36 @@
 
 </div>
 
-<!-- LOADING -->
+<!-- ==========================
+SUCCESS MESSAGE
+=========================== -->
 
 <div
-    id="loadingOverlay"
-    class="loadingOverlay">
+    id="toast"
+    class="toast">
 
-    <div class="loader"></div>
+    <span id="toastMessage">
+        Success
+    </span>
+
+</div>
+
+<!-- ==========================
+LOADING
+=========================== -->
+
+<div
+    id="loadingScreen"
+    class="loadingScreen hidden">
+
+    <div class="spinner"></div>
 
     <p>Loading...</p>
 
 </div>
 
-<script src="supabase.js"></script>
 <script src="admin-machines.js"></script>
 
 </body>
-  </html>
+
+</html>
