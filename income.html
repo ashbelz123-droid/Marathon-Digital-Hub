@@ -10,6 +10,7 @@
 <title>Income | Marathon Digital Hub</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
 
 <style>
@@ -25,10 +26,12 @@ body{
 
 background:#050B18;
 color:#fff;
-padding-bottom:90px;
 overflow-x:hidden;
+padding-bottom:90px;
 
 }
+
+/* Animated Background */
 
 body::before{
 
@@ -43,14 +46,11 @@ width:180%;
 height:180%;
 
 background:
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.12),transparent 40%);
 
-radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
-
-radial-gradient(circle at 80% 20%,rgba(0,140,255,.18),transparent 35%),
-
-radial-gradient(circle at 60% 80%,rgba(0,255,120,.15),transparent 40%);
-
-animation:bgMove 20s linear infinite;
+animation:bgMove 18s linear infinite;
 
 z-index:-2;
 
@@ -64,77 +64,97 @@ z-index:-2;
 
 }
 
+/* Header */
+
 .header{
 
-padding:20px;
+padding:22px 16px 12px;
 
 }
 
 .header h2{
 
-font-size:28px;
+font-size:32px;
+
+font-weight:bold;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
 
 }
 
 .header p{
 
-margin-top:5px;
+margin-top:6px;
 
-color:#9fb5d1;
+color:#9FB5D1;
+
+font-size:14px;
 
 }
 
-.summary{
+/* Summary */
 
-margin:15px;
+.summary{
 
 display:grid;
 
 grid-template-columns:1fr 1fr;
 
-gap:15px;
+gap:12px;
+
+padding:0 15px;
+
+margin-bottom:16px;
 
 }
 
 .card{
 
-background:#08142d;
+background:#08142D;
 
-padding:18px;
+border:1px solid rgba(0,200,255,.15);
 
 border-radius:18px;
 
-border:1px solid rgba(0,200,255,.15);
+padding:16px;
 
 }
 
 .card small{
 
-color:#9fb5d1;
-
 display:block;
 
-margin-bottom:10px;
+color:#9FB5D1;
+
+margin-bottom:8px;
+
+font-size:13px;
 
 }
 
 .card h2{
 
-color:#00ff88;
+font-size:24px;
 
-font-size:22px;
+color:#00FF88;
 
 }
+
+/* Machine Section */
 
 .section{
 
 margin:15px;
 
-background:#08142d;
+background:#08142D;
 
-padding:20px;
+border-radius:20px;
 
-border-radius:18px;
+padding:18px;
 
 border:1px solid rgba(0,200,255,.15);
 
@@ -142,49 +162,29 @@ border:1px solid rgba(0,200,255,.15);
 
 .section h3{
 
-margin-bottom:15px;
+color:#00FF88;
 
-color:#00ff88;
-
-}
-
-.machineCard{
-
-background:#111f3d;
-
-padding:16px;
-
-border-radius:14px;
-
-margin-bottom:15px;
+margin-bottom:18px;
 
 }
 
-.machineCard h4{
+#machineList{
 
-margin-bottom:10px;
+display:flex;
 
-}
+flex-direction:column;
 
-.machineCard p{
-
-margin:6px 0;
-
-font-size:14px;
+gap:16px;
 
 }
 
-.active{
+.loading{
 
-color:#00ff88;
-font-weight:bold;
+padding:45px;
 
-}
+text-align:center;
 
-.expired{
-
-color:#ff4444;
-font-weight:bold;
+color:#00C8FF;
 
 }
 
@@ -208,11 +208,7 @@ font-weight:bold;
 
 <small>Total Income</small>
 
-<h2 id="totalIncome">
-
-UGX 0
-
-</h2>
+<h2 id="totalIncome">UGX 0</h2>
 
 </div>
 
@@ -220,11 +216,7 @@ UGX 0
 
 <small>Active Machines</small>
 
-<h2 id="activeMachines">
-
-0
-
-</h2>
+<h2 id="activeMachines">0</h2>
 
 </div>
 
@@ -236,11 +228,7 @@ UGX 0
 
 <small>Daily Income</small>
 
-<h2 id="dailyIncome">
-
-UGX 0
-
-</h2>
+<h2 id="dailyIncome">UGX 0</h2>
 
 </div>
 
@@ -248,11 +236,7 @@ UGX 0
 
 <small>Total Return</small>
 
-<h2 id="totalReturn">
-
-UGX 0
-
-</h2>
+<h2 id="totalReturn">UGX 0</h2>
 
 </div>
 
@@ -264,28 +248,226 @@ UGX 0
 
 <div id="machineList">
 
-Loading...
+<div class="loading">
+
+Loading your machines...
 
 </div>
 
-  </div><script>
+</div>
+
+  </div><style>
+
+/* ==========================
+PREMIUM MACHINE CARD
+========================== */
+
+.machineCard{
+
+background:#0B1733;
+
+border:1px solid rgba(0,200,255,.18);
+
+border-radius:20px;
+
+overflow:hidden;
+
+box-shadow:0 8px 18px rgba(0,0,0,.25);
+
+transition:.3s;
+
+}
+
+.machineCard:active{
+
+transform:scale(.98);
+
+}
+
+.machineTop{
+
+display:flex;
+
+gap:12px;
+
+padding:12px;
+
+align-items:center;
+
+}
+
+.machineImage{
+
+width:90px;
+
+height:90px;
+
+border-radius:16px;
+
+object-fit:cover;
+
+background:#08142D;
+
+flex-shrink:0;
+
+}
+
+.machineInfo{
+
+flex:1;
+
+}
+
+.machineName{
+
+font-size:18px;
+
+font-weight:bold;
+
+color:#00FF88;
+
+margin-bottom:6px;
+
+}
+
+.machineSeries{
+
+display:inline-block;
+
+padding:5px 12px;
+
+background:#10345D;
+
+color:#00C8FF;
+
+font-size:11px;
+
+font-weight:bold;
+
+border-radius:20px;
+
+}
+
+.machineBody{
+
+padding:0 14px 14px;
+
+}
+
+.infoRow{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:9px 0;
+
+border-bottom:1px solid rgba(255,255,255,.06);
+
+font-size:14px;
+
+}
+
+.infoRow:last-child{
+
+border-bottom:none;
+
+}
+
+.infoTitle{
+
+color:#9FB5D1;
+
+}
+
+.infoValue{
+
+font-weight:bold;
+
+color:#fff;
+
+}
+
+/* Progress */
+
+.progress{
+
+margin-top:15px;
+
+height:8px;
+
+background:#1C2F50;
+
+border-radius:20px;
+
+overflow:hidden;
+
+}
+
+.progressFill{
+
+height:100%;
+
+width:0%;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+border-radius:20px;
+
+}
+
+/* Status */
+
+.active{
+
+color:#00FF88;
+
+font-weight:bold;
+
+}
+
+.weekend{
+
+color:#FFB84D;
+
+font-weight:bold;
+
+}
+
+.expired{
+
+color:#FF5A5A;
+
+font-weight:bold;
+
+}
+
+  </style><script>
+
+/* ===============================
+SUPABASE
+=============================== */
 
 const db = window.supabaseClient;
 
 let currentUser = null;
 let profile = null;
+let userMachines = [];
 
-/* =====================================
-START
-===================================== */
+/* ===============================
+START PAGE
+=============================== */
 
-document.addEventListener("DOMContentLoaded", async ()=>{
+document.addEventListener("DOMContentLoaded", async()=>{
 
 const { data:{ user } } = await db.auth.getUser();
 
 if(!user){
 
 window.location.href="login.html";
+
 return;
 
 }
@@ -293,13 +475,14 @@ return;
 currentUser=user;
 
 await loadProfile();
-await loadMyMachines();
+
+await loadUserMachines();
 
 });
 
-/* =====================================
+/* ===============================
 LOAD PROFILE
-===================================== */
+=============================== */
 
 async function loadProfile(){
 
@@ -316,6 +499,7 @@ const { data,error } = await db
 if(error){
 
 console.log(error);
+
 return;
 
 }
@@ -324,25 +508,38 @@ profile=data;
 
 }
 
-/* =====================================
+/* ===============================
 LOAD USER MACHINES
-===================================== */
+=============================== */
 
-async function loadMyMachines(){
+async function loadUserMachines(){
 
 const { data,error } = await db
 
 .from("user_machines")
 
 .select(`
+
 *,
+
 machines(
+
 id,
+
 name,
+
+series,
+
+image_url,
+
 price,
+
 total_return,
+
 duration_days
+
 )
+
 `)
 
 .eq("user_id",currentUser.id)
@@ -352,286 +549,252 @@ duration_days
 if(error){
 
 console.log(error);
+
+document.getElementById("machineList").innerHTML=
+'<div class="loading">Failed to load machines.</div>';
+
 return;
 
 }
+
+userMachines=data || [];
+
+renderMachines();
+
+}<script>
+
+/* ===============================
+SUPABASE
+=============================== */
+
+const db = window.supabaseClient;
+
+let currentUser = null;
+let profile = null;
+let userMachines = [];
+
+/* ===============================
+START PAGE
+=============================== */
+
+document.addEventListener("DOMContentLoaded", async()=>{
+
+const { data:{ user } } = await db.auth.getUser();
+
+if(!user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+currentUser = user;
+
+await loadProfile();
+
+await loadUserMachines();
+
+});
+
+/* ===============================
+LOAD PROFILE
+=============================== */
+
+async function loadProfile(){
+
+const { data,error } = await db
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error){
+
+console.log(error);
+
+return;
+
+}
+
+profile = data;
+
+}
+
+/* ===============================
+LOAD USER MACHINES
+=============================== */
+
+async function loadUserMachines(){
+
+document.getElementById("machineList").innerHTML = `
+
+<div class="loading">
+
+Loading your machines...
+
+</div>
+
+`;
+
+const { data,error } = await db
+
+.from("user_machines")
+
+.select(`
+
+*,
+
+machines(
+
+id,
+
+name,
+
+series,
+
+image_url,
+
+price,
+
+total_return,
+
+duration_days
+
+)
+
+`)
+
+.eq("user_id",currentUser.id)
+
+.order("purchase_date",{ascending:false});
+
+if(error){
+
+console.log(error);
+
+document.getElementById("machineList").innerHTML = `
+
+<div class="loading">
+
+Failed to load machines.
+
+</div>
+
+`;
+
+return;
+
+}
+
+userMachines = data || [];
+
+renderMachines();
+
+    }/* ===============================
+RENDER MACHINES
+=============================== */
+
+function renderMachines(){
 
 const container=document.getElementById("machineList");
 
 container.innerHTML="";
 
-if(data.length===0){
+if(userMachines.length===0){
 
 container.innerHTML=`
 
-<div class="machineCard">
+<div class="loading">
 
-You have not purchased any machine yet.
+You have not purchased any machines yet.
 
 </div>
 
 `;
+
+document.getElementById("activeMachines").innerHTML="0";
+document.getElementById("dailyIncome").innerHTML="UGX 0";
+document.getElementById("totalIncome").innerHTML="UGX 0";
+document.getElementById("totalReturn").innerHTML="UGX 0";
 
 return;
 
 }
 
-let activeCount=0;
-let totalReturn=0;
+let activeMachines=0;
 let totalIncome=0;
+let totalReturn=0;
 let dailyIncome=0;
-
-data.forEach(item=>{
-
-const machine=item.machines;
-
-const purchase=new Date(item.purchase_date);
-const expiry=new Date(item.expiry_date);
 
 const today=new Date();
 
-const active=today<=expiry;
+const isWeekend=(today.getDay()===0 || today.getDay()===6);
 
-if(active){
+userMachines.forEach(item=>{
 
-activeCount++;
+const machine=item.machines;
 
-}
+if(!machine)return;
 
-const machineReturn=Number(machine.total_return);
+const purchaseDate=new Date(item.purchase_date);
 
-totalReturn+=machineReturn;
+const expiryDate=new Date(item.expiry_date);
 
-/* Estimated income */
+const expired=today>expiryDate;
 
-const estimatedDaily=machineReturn/Number(machine.duration_days);
+const totalReturnMachine=Number(machine.total_return);
 
-dailyIncome+=estimatedDaily;
+const duration=Number(machine.duration_days);
 
-const passedDays=Math.max(
+const dailyReturn=totalReturnMachine/duration;
+
+const daysPassed=Math.max(
 
 0,
 
-Math.floor((today-purchase)/(1000*60*60*24))
+Math.floor((today-purchaseDate)/(1000*60*60*24))
 
 );
 
 const earned=Math.min(
 
-machineReturn,
+totalReturnMachine,
 
-estimatedDaily*passedDays
+dailyReturn*daysPassed
 
 );
 
-totalIncome+=earned;
+const remaining=Math.max(
 
-container.innerHTML+=`
+0,
 
-<div class="machineCard">
+totalReturnMachine-earned
 
-<h4>${machine.name}</h4>
+);
 
-<p>
+const progress=Math.min(
 
-Purchase Price:
+100,
 
-UGX ${Number(machine.price).toLocaleString()}
+(earned/totalReturnMachine)*100
 
-</p>
+);
 
-<p>
+const daysRemaining=Math.max(
 
-Total Return:
+0,
 
-UGX ${machineReturn.toLocaleString()}
+Math.ceil((expiryDate-today)/(1000*60*60*24))
 
-</p>
+);
 
-<p>
+const isVIP=(machine.series||"").toUpperCase().includes("VIP");
 
-Duration:
+const weekendDisabled=isWeekend && !isVIP && !expired;
 
-${machine.duration_days} Days
-
-</p>
-
-<p>
-
-Purchase Date:
-
-${purchase.toLocaleDateString()}
-
-</p>
-
-<p>
-
-Expiry Date:
-
-${expiry.toLocaleDateString()}
-
-</p>
-
-<p>
-
-Status:
-
-<span class="${active?'active':'expired'}">
-
-${active?'ACTIVE':'EXPIRED'}
-
-</span>
-
-</p>
-
-</div>
-
-`;
-
-});
-
-/* Summary */
-
-document.getElementById("activeMachines").innerHTML=activeCount;
-
-document.getElementById("dailyIncome").innerHTML=
-
-"UGX "+Math.floor(dailyIncome).toLocaleString();
-
-document.getElementById("totalReturn").innerHTML=
-
-"UGX "+totalReturn.toLocaleString();
-
-document.getElementById("totalIncome").innerHTML=
-
-"UGX "+Math.floor(totalIncome).toLocaleString();
-
-}
-
-  </script>
-
-  <!-- ===========================
-BOTTOM NAVIGATION
-=========================== -->
-
-<style>
-
-.bottom-nav{
-
-position:fixed;
-
-left:0;
-
-bottom:0;
-
-width:100%;
-
-height:70px;
-
-background:#08142d;
-
-border-top:1px solid rgba(255,255,255,.08);
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-backdrop-filter:blur(10px);
-
-z-index:999;
-
-}
-
-.bottom-nav a{
-
-text-decoration:none;
-
-color:#cfd8ea;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-font-size:12px;
-
-transition:.3s;
-
-}
-
-.bottom-nav a i{
-
-font-style:normal;
-
-font-size:24px;
-
-margin-bottom:4px;
-
-}
-
-.bottom-nav a.active{
-
-color:#00ff88;
-
-font-weight:bold;
-
-}
-
-.bottom-nav a:hover{
-
-color:#00ff88;
-
-}
-
-</style>
-
-<div class="bottom-nav">
-
-<a href="dashboard.html">
-
-<i>🏠</i>
-
-<span>Home</span>
-
-</a>
-
-<a href="machines.html">
-
-<i>⚙️</i>
-
-<span>Machines</span>
-
-</a>
-
-<a href="deposit.html">
-
-<i>💳</i>
-
-<span>Deposit</span>
-
-</a>
-
-<a href="income.html" class="active">
-
-<i>📈</i>
-
-<span>Income</span>
-
-</a>
-
-<a href="profile.html">
-
-<i>👤</i>
-
-<span>Profile</span>
-
-</a>
-
-</div>
-
-</body>
-
-</html>
+/* Part 5 starts here */
