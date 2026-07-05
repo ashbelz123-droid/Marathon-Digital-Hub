@@ -46,8 +46,11 @@ width:180%;
 height:180%;
 
 background:
+
 radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
+
 radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+
 radial-gradient(circle at 70% 80%,rgba(0,255,120,.12),transparent 40%);
 
 animation:bgMove 18s linear infinite;
@@ -92,8 +95,6 @@ margin-top:6px;
 
 color:#9FB5D1;
 
-font-size:14px;
-
 }
 
 /* Summary */
@@ -108,7 +109,7 @@ gap:12px;
 
 padding:0 15px;
 
-margin-bottom:16px;
+margin-bottom:15px;
 
 }
 
@@ -132,8 +133,6 @@ color:#9FB5D1;
 
 margin-bottom:8px;
 
-font-size:13px;
-
 }
 
 .card h2{
@@ -152,11 +151,11 @@ margin:15px;
 
 background:#08142D;
 
+border:1px solid rgba(0,200,255,.15);
+
 border-radius:20px;
 
 padding:18px;
-
-border:1px solid rgba(0,200,255,.15);
 
 }
 
@@ -174,15 +173,15 @@ display:flex;
 
 flex-direction:column;
 
-gap:16px;
+gap:15px;
 
 }
 
 .loading{
 
-padding:45px;
-
 text-align:center;
+
+padding:40px;
 
 color:#00C8FF;
 
@@ -256,196 +255,7 @@ Loading your machines...
 
 </div>
 
-</div><style>
-
-/* ==========================
-PREMIUM MACHINE CARD
-========================== */
-
-.machineCard{
-
-background:#0B1733;
-
-border:1px solid rgba(0,200,255,.18);
-
-border-radius:20px;
-
-overflow:hidden;
-
-box-shadow:0 8px 18px rgba(0,0,0,.25);
-
-transition:.3s;
-
-}
-
-.machineCard:active{
-
-transform:scale(.98);
-
-}
-
-.machineTop{
-
-display:flex;
-
-gap:12px;
-
-padding:12px;
-
-align-items:center;
-
-}
-
-.machineImage{
-
-width:90px;
-
-height:90px;
-
-border-radius:16px;
-
-object-fit:cover;
-
-background:#08142D;
-
-flex-shrink:0;
-
-}
-
-.machineInfo{
-
-flex:1;
-
-}
-
-.machineName{
-
-font-size:18px;
-
-font-weight:bold;
-
-color:#00FF88;
-
-margin-bottom:6px;
-
-}
-
-.machineSeries{
-
-display:inline-block;
-
-padding:5px 12px;
-
-background:#10345D;
-
-color:#00C8FF;
-
-font-size:11px;
-
-font-weight:bold;
-
-border-radius:20px;
-
-}
-
-.machineBody{
-
-padding:0 14px 14px;
-
-}
-
-.infoRow{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:9px 0;
-
-border-bottom:1px solid rgba(255,255,255,.06);
-
-font-size:14px;
-
-}
-
-.infoRow:last-child{
-
-border-bottom:none;
-
-}
-
-.infoTitle{
-
-color:#9FB5D1;
-
-}
-
-.infoValue{
-
-font-weight:bold;
-
-color:#fff;
-
-}
-
-/* Progress */
-
-.progress{
-
-margin-top:15px;
-
-height:8px;
-
-background:#1C2F50;
-
-border-radius:20px;
-
-overflow:hidden;
-
-}
-
-.progressFill{
-
-height:100%;
-
-width:0%;
-
-background:linear-gradient(90deg,#00C8FF,#00FF88);
-
-border-radius:20px;
-
-}
-
-/* Status */
-
-.active{
-
-color:#00FF88;
-
-font-weight:bold;
-
-}
-
-.weekend{
-
-color:#FFB84D;
-
-font-weight:bold;
-
-}
-
-.expired{
-
-color:#FF5A5A;
-
-font-weight:bold;
-
-}
-
-</style>
-<script>
+  </div><script>
 
 /* ===============================
 SUPABASE
@@ -455,13 +265,16 @@ const db = window.supabaseClient;
 
 let currentUser = null;
 let profile = null;
-let userMachines = [];
 
 /* ===============================
 START PAGE
 =============================== */
 
-document.addEventListener("DOMContentLoaded", async()=>{
+document.addEventListener("DOMContentLoaded", init);
+
+async function init(){
+
+try{
 
 const { data:{ user } } = await db.auth.getUser();
 
@@ -479,7 +292,23 @@ await loadProfile();
 
 await loadUserMachines();
 
-});
+}catch(err){
+
+console.log(err);
+
+document.getElementById("machineList").innerHTML=`
+
+<div class="loading">
+
+Something went wrong.
+
+</div>
+
+`;
+
+}
+
+}
 
 /* ===============================
 LOAD PROFILE
@@ -507,133 +336,15 @@ return;
 
 profile=data;
 
-}
-
-/* ===============================
+}/* ===============================
 LOAD USER MACHINES
 =============================== */
 
-async function loadUserMachines(){
-
-const { data,error } = await db
-
-.from("user_machines")
-
-.select(`
-
-*,
-
-machines(
-
-id,
-
-name,
-
-series,
-
-image_url,
-
-price,
-
-total_return,
-
-duration_days
-
-)
-
-`)
-
-.eq("user_id",currentUser.id)
-
-.order("purchase_date",{ascending:false});
-
-if(error){
-
-console.log(error);
-
-document.getElementById("machineList").innerHTML=
-'<div class="loading">Failed to load machines.</div>';
-
-return;
-
-}
-
-userMachines=data || [];
-
-renderMachines();
-
-}
-  <script>
-
-/* ===============================
-SUPABASE
-=============================== */
-
-const db = window.supabaseClient;
-
-let currentUser = null;
-let profile = null;
-let userMachines = [];
-
-/* ===============================
-START PAGE
-=============================== */
-
-document.addEventListener("DOMContentLoaded", async()=>{
-
-const { data:{ user } } = await db.auth.getUser();
-
-if(!user){
-
-window.location.href="login.html";
-
-return;
-
-}
-
-currentUser = user;
-
-await loadProfile();
-
-await loadUserMachines();
-
-});
-
-/* ===============================
-LOAD PROFILE
-=============================== */
-
-async function loadProfile(){
-
-const { data,error } = await db
-
-.from("profiles")
-
-.select("*")
-
-.eq("id",currentUser.id)
-
-.single();
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-profile = data;
-
-}
-
-/* ===============================
-LOAD USER MACHINES
-=============================== */
+let userMachines=[];
 
 async function loadUserMachines(){
 
-document.getElementById("machineList").innerHTML = `
+document.getElementById("machineList").innerHTML=`
 
 <div class="loading">
 
@@ -679,7 +390,7 @@ if(error){
 
 console.log(error);
 
-document.getElementById("machineList").innerHTML = `
+document.getElementById("machineList").innerHTML=`
 
 <div class="loading">
 
@@ -693,12 +404,15 @@ return;
 
 }
 
-userMachines = data || [];
+userMachines=data || [];
+
+/* Continue in Part 4 */
 
 renderMachines();
 
-  }
-  /* ===============================
+}
+
+/* Update init() *//* ===============================
 RENDER MACHINES
 =============================== */
 
@@ -720,23 +434,9 @@ You have not purchased any machines yet.
 
 `;
 
-document.getElementById("activeMachines").innerHTML="0";
-document.getElementById("dailyIncome").innerHTML="UGX 0";
-document.getElementById("totalIncome").innerHTML="UGX 0";
-document.getElementById("totalReturn").innerHTML="UGX 0";
-
 return;
 
 }
-
-let activeMachines=0;
-let totalIncome=0;
-let totalReturn=0;
-let dailyIncome=0;
-
-const today=new Date();
-
-const isWeekend=(today.getDay()===0 || today.getDay()===6);
 
 userMachines.forEach(item=>{
 
@@ -748,97 +448,6 @@ const purchaseDate=new Date(item.purchase_date);
 
 const expiryDate=new Date(item.expiry_date);
 
-const expired=today>expiryDate;
-
-const totalReturnMachine=Number(machine.total_return);
-
-const duration=Number(machine.duration_days);
-
-const dailyReturn=totalReturnMachine/duration;
-
-const daysPassed=Math.max(
-
-0,
-
-Math.floor((today-purchaseDate)/(1000*60*60*24))
-
-);
-
-const earned=Math.min(
-
-totalReturnMachine,
-
-dailyReturn*daysPassed
-
-);
-
-const remaining=Math.max(
-
-0,
-
-totalReturnMachine-earned
-
-);
-
-const progress=Math.min(
-
-100,
-
-(earned/totalReturnMachine)*100
-
-);
-
-const daysRemaining=Math.max(
-
-0,
-
-Math.ceil((expiryDate-today)/(1000*60*60*24))
-
-);
-
-const isVIP=(machine.series||"").toUpperCase().includes("VIP");
-
-const weekendDisabled=isWeekend && !isVIP && !expired;
-
-/* Part 5 starts here */let statusText="🟢 ACTIVE";
-let statusClass="active";
-
-if(expired){
-
-statusText="🔴 EXPIRED";
-
-statusClass="expired";
-
-}else if(weekendDisabled){
-
-statusText="🟠 DISABLED (WEEKEND)";
-
-statusClass="weekend";
-
-}
-
-if(!expired){
-
-activeMachines++;
-
-}
-
-totalReturn+=totalReturnMachine;
-
-totalIncome+=earned;
-
-if(!expired && !weekendDisabled){
-
-dailyIncome+=dailyReturn;
-
-}
-
-const image=(machine.image_url && machine.image_url.trim()!="")
-
-? machine.image_url
-
-: "images/default-machine.png";
-
 container.innerHTML+=`
 
 <div class="machineCard">
@@ -846,11 +455,8 @@ container.innerHTML+=`
 <div class="machineTop">
 
 <img
-
-src="${image}"
-
+src="${machine.image_url || 'images/default-machine.png'}"
 class="machineImage"
-
 onerror="this.src='images/default-machine.png'">
 
 <div class="machineInfo">
@@ -893,43 +499,13 @@ UGX ${Number(machine.price).toLocaleString()}
 
 <span class="infoTitle">
 
-Earned
-
-</span>
-
-<span class="infoValue">
-
-UGX ${Math.floor(earned).toLocaleString()}
-
-</span>
-
-</div>
-
-<div class="infoRow">
-
-<span class="infoTitle">
-
-Remaining
-
-</span>
-
-<span class="infoValue">
-
-UGX ${Math.floor(remaining).toLocaleString()}
-
-</span>
-
-</div><div class="infoRow">
-
-<span class="infoTitle">
-
 Total Return
 
 </span>
 
 <span class="infoValue">
 
-UGX ${Number(totalReturnMachine).toLocaleString()}
+UGX ${Number(machine.total_return).toLocaleString()}
 
 </span>
 
@@ -939,15 +515,13 @@ UGX ${Number(totalReturnMachine).toLocaleString()}
 
 <span class="infoTitle">
 
-Daily Income
+Duration
 
 </span>
 
 <span class="infoValue">
 
-${weekendDisabled
-? "UGX 0"
-: "UGX "+Math.floor(dailyReturn).toLocaleString()}
+${machine.duration_days} Days
 
 </span>
 
@@ -957,13 +531,13 @@ ${weekendDisabled
 
 <span class="infoTitle">
 
-Days Remaining
+Purchase Date
 
 </span>
 
 <span class="infoValue">
 
-${expired ? "0 Days" : daysRemaining+" Days"}
+${purchaseDate.toLocaleDateString()}
 
 </span>
 
@@ -973,41 +547,13 @@ ${expired ? "0 Days" : daysRemaining+" Days"}
 
 <span class="infoTitle">
 
-Status
+Expiry Date
 
 </span>
 
-<span class="${statusClass}">
+<span class="infoValue">
 
-${statusText}
-
-</span>
-
-</div>
-
-<div class="progress">
-
-<div
-
-class="progressFill"
-
-style="width:${progress}%">
-
-</div>
-
-</div>
-
-<div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:#9FB5D1;">
-
-<span>
-
-${Math.floor(progress)}% Complete
-
-</span>
-
-<span>
-
-Expires: ${expiryDate.toLocaleDateString()}
+${expiryDate.toLocaleDateString()}
 
 </span>
 
@@ -1020,292 +566,5 @@ Expires: ${expiryDate.toLocaleDateString()}
 `;
 
 });
-  /* ===============================
-UPDATE SUMMARY
-=============================== */
 
-document.getElementById("activeMachines").innerHTML=
-
-activeMachines;
-
-document.getElementById("dailyIncome").innerHTML=
-
-"UGX "+Math.floor(dailyIncome).toLocaleString();
-
-document.getElementById("totalIncome").innerHTML=
-
-"UGX "+Math.floor(totalIncome).toLocaleString();
-
-document.getElementById("totalReturn").innerHTML=
-
-"UGX "+Math.floor(totalReturn).toLocaleString();
-
-}
-
-/* ===============================
-END OF MAIN SCRIPT
-=============================== */
-
-</script>
-<!-- ==========================
-BOTTOM NAVIGATION
-========================== -->
-
-<style>
-
-.bottom-nav{
-
-position:fixed;
-
-bottom:0;
-
-left:0;
-
-width:100%;
-
-height:70px;
-
-background:#08142D;
-
-border-top:1px solid rgba(0,200,255,.15);
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-backdrop-filter:blur(12px);
-
-z-index:999;
-
-}
-
-.bottom-nav a{
-
-text-decoration:none;
-
-color:#C5D8FF;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-gap:4px;
-
-font-size:12px;
-
-transition:.3s;
-
-}
-
-.bottom-nav a i{
-
-font-style:normal;
-
-font-size:22px;
-
-}
-
-.bottom-nav a.active{
-
-color:#00FF88;
-
-font-weight:bold;
-
-}
-
-.bottom-nav a:active{
-
-transform:scale(.95);
-
-}
-
-</style>
-
-<div class="bottom-nav">
-
-<a href="dashboard.html">
-
-<i>🏠</i>
-
-<span>Home</span>
-
-</a>
-
-<a href="machines.html">
-
-<i>⚙️</i>
-
-<span>Machines</span>
-
-</a>
-
-<a href="deposit.html">
-
-<i>💳</i>
-
-<span>Deposit</span>
-
-</a>
-
-<a href="income.html" class="active">
-
-<i>📈</i>
-
-<span>Income</span>
-
-</a>
-
-<a href="profile.html">
-
-<i>👤</i>
-
-<span>Profile</span>
-
-</a>
-
-</div>
-<!-- ==========================
-INFO POPUP
-========================== -->
-
-<div id="infoPopup">
-
-Welcome Back
-
-</div>
-
-<style>
-
-#infoPopup{
-
-position:fixed;
-
-top:20px;
-
-left:50%;
-
-transform:translateX(-50%) translateY(-30px);
-
-background:linear-gradient(90deg,#00C8FF,#00FF88);
-
-color:#001018;
-
-padding:14px 24px;
-
-border-radius:14px;
-
-font-weight:bold;
-
-box-shadow:0 0 25px rgba(0,255,255,.35);
-
-opacity:0;
-
-pointer-events:none;
-
-transition:.4s;
-
-z-index:9999;
-
-}
-
-#infoPopup.show{
-
-opacity:1;
-
-transform:translateX(-50%) translateY(0);
-
-}
-
-/* Smooth card animation */
-
-.machineCard{
-
-animation:fadeUp .45s ease;
-
-}
-
-@keyframes fadeUp{
-
-from{
-
-opacity:0;
-
-transform:translateY(20px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-/* Loading animation */
-
-.loading{
-
-animation:pulse 1.2s infinite;
-
-}
-
-@keyframes pulse{
-
-0%{
-
-opacity:.5;
-
-}
-
-50%{
-
-opacity:1;
-
-}
-
-100%{
-
-opacity:.5;
-
-}
-
-}
-
-</style>
-
-<script>
-
-function showPopup(message){
-
-const popup=document.getElementById("infoPopup");
-
-popup.innerHTML=message;
-
-popup.classList.add("show");
-
-setTimeout(()=>{
-
-popup.classList.remove("show");
-
-},2500);
-
-}
-
-window.addEventListener("load",()=>{
-
-showPopup("Income Loaded");
-
-});
-
-</script>
-
-  </body>
-
-</html>
+    }
