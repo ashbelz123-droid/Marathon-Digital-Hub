@@ -1,0 +1,525 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:#050B18;
+color:#fff;
+overflow-x:hidden;
+padding-bottom:90px;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+left:-40%;
+top:-40%;
+
+width:180%;
+height:180%;
+
+background:
+
+radial-gradient(circle at 15% 20%,rgba(0,255,255,.15),transparent 35%),
+
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.15),transparent 35%),
+
+radial-gradient(circle at 75% 80%,rgba(0,255,120,.12),transparent 40%),
+
+radial-gradient(circle at 25% 80%,rgba(170,0,255,.12),transparent 35%);
+
+animation:bgMove 18s linear infinite;
+
+z-index:-1;
+
+}
+
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+
+50%{transform:translateX(2%);}
+
+100%{transform:translateX(-2%);}
+
+}
+
+.page{
+
+width:100%;
+max-width:700px;
+margin:auto;
+padding:20px 15px;
+
+}
+
+.header{
+
+margin-bottom:20px;
+
+}
+
+.header h2{
+
+font-size:28px;
+font-weight:700;
+
+}
+
+.header p{
+
+margin-top:6px;
+color:#9fb5d1;
+font-size:14px;
+
+}
+
+/* Wallet */
+
+.walletCard{
+
+background:#08142d;
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:18px;
+
+padding:18px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.walletCard p{
+
+font-size:14px;
+
+color:#9fb5d1;
+
+}
+
+.walletCard h1{
+
+margin-top:8px;
+
+font-size:32px;
+
+color:#00ff88;
+
+}
+
+.walletIcon{
+
+width:60px;
+
+height:60px;
+
+border-radius:50%;
+
+background:rgba(0,255,136,.12);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:28px;
+
+color:#00ff88;
+
+}
+
+/* Titles */
+
+.sectionTitle{
+
+font-size:18px;
+
+font-weight:bold;
+
+margin:20px 0 15px;
+
+color:#fff;
+
+  }
+
+/* ===========================
+PAYMENT CARDS
+=========================== */
+
+.paymentGrid{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+margin-bottom:20px;
+
+}
+
+.paymentCard{
+
+background:#08142d;
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:18px;
+
+padding:18px;
+
+transition:.3s;
+
+}
+
+.paymentCard.active{
+
+border:2px solid #00ff88;
+
+box-shadow:0 0 18px rgba(0,255,136,.18);
+
+}
+
+.network{
+
+font-size:17px;
+
+font-weight:bold;
+
+margin-bottom:15px;
+
+}
+
+.accountRow{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin:12px 0;
+
+padding:12px;
+
+background:#111f3d;
+
+border-radius:12px;
+
+}
+
+.accountRow span{
+
+font-size:13px;
+
+color:#9fb5d1;
+
+}
+
+.accountRow b{
+
+font-size:15px;
+
+color:#fff;
+
+word-break:break-word;
+
+}
+
+.copyBtn{
+
+width:100%;
+
+height:48px;
+
+margin-top:15px;
+
+border:none;
+
+border-radius:12px;
+
+background:#00c8ff;
+
+color:#fff;
+
+font-size:15px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.copyBtn:hover{
+
+background:#00b2e3;
+
+transform:translateY(-2px);
+
+}
+
+/* ===========================
+PAYMENT INSTRUCTIONS
+=========================== */
+
+.instructionCard{
+
+background:#08142d;
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:18px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+}
+
+.instructionCard h3{
+
+color:#00ff88;
+
+margin-bottom:15px;
+
+font-size:18px;
+
+}
+
+.instructionCard ol{
+
+padding-left:20px;
+
+}
+
+.instructionCard li{
+
+margin-bottom:12px;
+
+line-height:1.6;
+
+color:#d8e4ff;
+
+}
+
+.instructionNote{
+
+margin-top:18px;
+
+padding:14px;
+
+background:rgba(255,193,7,.12);
+
+border-left:4px solid #ffc107;
+
+border-radius:10px;
+
+color:#ffd95c;
+
+font-size:14px;
+
+line-height:1.5;
+
+  }
+
+/* ===========================
+DEPOSIT FORM
+=========================== */
+
+.depositCard{
+
+background:#08142d;
+
+border:1px solid rgba(255,255,255,.08);
+
+border-radius:18px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+}
+
+.depositCard label{
+
+display:block;
+
+margin-bottom:8px;
+
+margin-top:15px;
+
+font-size:14px;
+
+font-weight:bold;
+
+color:#cfd8ea;
+
+}
+
+.depositCard label:first-child{
+
+margin-top:0;
+
+}
+
+.depositCard input{
+
+width:100%;
+
+height:52px;
+
+background:#111f3d;
+
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:12px;
+
+padding:0 15px;
+
+color:#fff;
+
+font-size:15px;
+
+outline:none;
+
+transition:.3s;
+
+}
+
+.depositCard input:focus{
+
+border-color:#00ff88;
+
+box-shadow:0 0 10px rgba(0,255,136,.15);
+
+}
+
+.depositCard input::placeholder{
+
+color:#7d8ca7;
+
+}
+
+/* ===========================
+LIVE SUMMARY
+=========================== */
+
+.summaryBox{
+
+margin-top:18px;
+
+margin-bottom:18px;
+
+background:#111f3d;
+
+border-radius:15px;
+
+padding:15px;
+
+border:1px solid rgba(255,255,255,.05);
+
+}
+
+.summaryBox div{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:10px 0;
+
+}
+
+.summaryBox div:not(:last-child){
+
+border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.summaryBox span{
+
+font-size:14px;
+
+color:#9fb5d1;
+
+}
+
+.summaryBox b{
+
+font-size:15px;
+
+color:#00ff88;
+
+}
+
+/* ===========================
+SUBMIT BUTTON
+=========================== */
+
+.submitBtn{
+
+width:100%;
+
+height:55px;
+
+margin-top:20px;
+
+border:none;
+
+border-radius:14px;
+
+background:linear-gradient(135deg,#00ff88,#00c8ff);
+
+color:#001018;
+
+font-size:17px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.submitBtn:hover{
+
+transform:translateY(-2px);
+
+box-shadow:0 10px 20px rgba(0,255,136,.25);
+
+}
+
+.submitBtn:disabled{
+
+background:#4b5563;
+
+color:#d1d5db;
+
+cursor:not-allowed;
+
+box-shadow:none;
+
+transform:none;
+
+  }
