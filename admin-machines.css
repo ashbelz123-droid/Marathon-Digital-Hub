@@ -3,1039 +3,710 @@ MARATHON DIGITAL HUB
 ADMIN MACHINES
 ==========================================*/
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
-}
+// ---------- Supabase ----------
 
-:root{
+const supabase = window.supabaseClient;
 
-    --bg:#071325;
-    --card:#102344;
-    --card2:#18345F;
+// ---------- State ----------
 
-    --primary:#00D084;
-    --primaryHover:#00B873;
+let machines = [];
+let editingMachineId = null;
+let selectedImage = null;
+let deleteMachineId = null;
 
-    --blue:#2F80ED;
-    --red:#E53935;
-    --orange:#F9A826;
+// ---------- Elements ----------
 
-    --white:#FFFFFF;
-    --text:#C6D3F0;
+const addMachineBtn = document.getElementById("addMachineBtn");
+const closeFormBtn = document.getElementById("closeFormBtn");
+const cancelBtn = document.getElementById("cancelBtn");
 
-    --border:rgba(255,255,255,.08);
+const machineForm = document.getElementById("machineForm");
+const machineFormElement = document.getElementById("machineFormElement");
 
-}
+const searchInput = document.getElementById("searchInput");
 
-body{
+const machineImage = document.getElementById("machineImage");
+const previewImage = document.getElementById("previewImage");
 
-    background:var(--bg);
+const machinesContainer = document.getElementById("machinesContainer");
 
-    color:var(--white);
+const totalMachines = document.getElementById("totalMachines");
+const activeMachines = document.getElementById("activeMachines");
+const disabledMachines = document.getElementById("disabledMachines");
+const vipMachines = document.getElementById("vipMachines");
+const machineCount = document.getElementById("machineCount");
 
-    min-height:100vh;
+const loadingScreen = document.getElementById("loadingScreen");
+const toast = document.getElementById("toast");
+const toastMessage = document.getElementById("toastMessage");
 
-}
+// ---------- Startup ----------
 
-/*=========================
-PAGE
-=========================*/
+document.addEventListener("DOMContentLoaded", () => {
 
-.page{
+    hideForm();
 
-    max-width:1500px;
+    loadMachines();
 
-    margin:auto;
+});
 
-    padding:25px;
+// ---------- Form ----------
 
-}
+addMachineBtn.addEventListener("click", () => {
 
-/*=========================
-TOP BAR
-=========================*/
+    editingMachineId = null;
 
-.topBar{
+    machineFormElement.reset();
 
-    display:flex;
+    previewImage.style.display = "none";
 
-    justify-content:space-between;
+    previewImage.src = "";
 
-    align-items:center;
+    selectedImage = null;
 
-    gap:20px;
+    document.getElementById("formTitle").textContent =
+        "Add New Machine";
 
-    flex-wrap:wrap;
+    showForm();
 
-    margin-bottom:30px;
+});
 
-}
+closeFormBtn.addEventListener("click", hideForm);
 
-.topBar h1{
+cancelBtn.addEventListener("click", hideForm);
 
-    font-size:36px;
+function showForm(){
 
-    margin-bottom:8px;
+    machineForm.classList.remove("hidden");
 
-}
+    window.scrollTo({
 
-.topBar p{
+        top:0,
 
-    color:var(--text);
+        behavior:"smooth"
 
-}
-
-/*=========================
-BUTTONS
-=========================*/
-
-.primaryBtn{
-
-    background:var(--primary);
-
-    color:#071325;
-
-    border:none;
-
-    border-radius:14px;
-
-    padding:15px 28px;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    transition:.3s;
+    });
 
 }
 
-.primaryBtn:hover{
+function hideForm(){
 
-    background:var(--primaryHover);
-
-    transform:translateY(-2px);
+    machineForm.classList.add("hidden");
 
 }
 
-/*=========================
-STATISTICS
-=========================*/
+// ---------- Image Preview ----------
 
-.statsGrid{
+machineImage.addEventListener("change",(e)=>{
 
-    display:grid;
+    const file = e.target.files[0];
 
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    if(!file) return;
 
-    gap:20px;
+    selectedImage = file;
 
-    margin-bottom:30px;
+    previewImage.src = URL.createObjectURL(file);
 
-}
+    previewImage.style.display = "block";
 
-.statCard{
+});
 
-    background:var(--card);
+// ---------- Loading ----------
 
-    border:1px solid var(--border);
+function showLoading(){
 
-    border-radius:20px;
-
-    padding:25px;
-
-    transition:.3s;
+    loadingScreen.classList.remove("hidden");
 
 }
 
-.statCard:hover{
+function hideLoading(){
 
-    transform:translateY(-4px);
-
-}
-
-.statCard span{
-
-    color:var(--text);
-
-    font-size:15px;
+    loadingScreen.classList.add("hidden");
 
 }
 
-.statCard h2{
+// ---------- Toast ----------
 
-    margin-top:12px;
+function showToast(message){
 
-    font-size:38px;
+    toastMessage.textContent = message;
 
-    color:var(--primary);
+    toast.classList.add("show");
 
-}
+    setTimeout(()=>{
 
-/*=========================
-SEARCH
-=========================*/
+        toast.classList.remove("show");
 
-.searchArea{
-
-    margin-bottom:30px;
+    },3000);
 
 }
 
-.searchArea input{
+        /*==========================================
+LOAD MACHINES
+==========================================*/
 
-    width:100%;
+async function loadMachines(){
 
-    background:var(--card);
+    if(!supabase){
 
-    color:white;
+        showToast("Supabase is not connected.");
 
-    border:1px solid var(--border);
-
-    border-radius:15px;
-
-    padding:18px;
-
-    font-size:16px;
-
-    outline:none;
-
-}
-
-.searchArea input::placeholder{
-
-    color:#9CB3DD;
-
-}
-
-/*=========================
-FORM
-=========================*/
-
-.machineForm{
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:22px;
-
-    padding:30px;
-
-    margin-bottom:35px;
-
-}
-
-.hidden{
-
-    display:none;
-
-}
-
-.formHeader{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    margin-bottom:25px;
-
-}
-
-.formHeader h2{
-
-    font-size:28px;
-
-}
-
-.closeBtn{
-
-    width:45px;
-
-    height:45px;
-
-    border:none;
-
-    border-radius:50%;
-
-    background:var(--red);
-
-    color:white;
-
-    cursor:pointer;
-
-    font-size:20px;
-
-}
-
-.formGrid{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:20px;
-
-}
-
-.formGroup{
-
-    display:flex;
-
-    flex-direction:column;
-
-}
-
-.formGroup label{
-
-    margin-bottom:8px;
-
-    font-size:14px;
-
-    color:var(--text);
-
-}
-
-.formGroup input,
-
-.formGroup select{
-
-    width:100%;
-
-    background:var(--card2);
-
-    color:white;
-
-    border:1px solid var(--border);
-
-    border-radius:14px;
-
-    padding:15px;
-
-    font-size:15px;
-
-    outline:none;
+        return;
 
     }
 
-/*=========================================
-IMAGE UPLOAD
-=========================================*/
+    showLoading();
 
-.previewImage{
+    const { data, error } = await supabase
 
-    width:100%;
+        .from("machines")
 
-    height:240px;
+        .select("*")
 
-    object-fit:cover;
+        .order("created_at", { ascending:false });
 
-    margin-top:15px;
+    hideLoading();
 
-    border-radius:16px;
+    if(error){
 
-    display:none;
+        console.error(error);
 
-    border:2px solid var(--border);
+        showToast(error.message);
 
-}
+        return;
 
-input[type="file"]{
+    }
 
-    width:100%;
+    machines = data || [];
 
-    background:var(--card2);
+    updateDashboard();
 
-    color:white;
-
-    border:1px solid var(--border);
-
-    border-radius:14px;
-
-    padding:12px;
-
-    cursor:pointer;
+    renderMachines(machines);
 
 }
 
-/*=========================
-VIP CHECKBOX
-=========================*/
+/*==========================================
+UPDATE DASHBOARD
+==========================================*/
 
-.checkboxRow{
+function updateDashboard(){
 
-    display:flex;
+    totalMachines.textContent = machines.length;
 
-    align-items:center;
+    activeMachines.textContent =
+        machines.filter(machine => machine.status).length;
 
-    gap:12px;
+    disabledMachines.textContent =
+        machines.filter(machine => !machine.status).length;
 
-    margin:25px 0;
+    vipMachines.textContent =
+        machines.filter(machine => machine.is_vip).length;
 
-}
-
-.checkboxRow input{
-
-    width:20px;
-
-    height:20px;
-
-    accent-color:var(--primary);
+    machineCount.textContent =
+        `${machines.length} Machine${machines.length===1?"":"s"}`;
 
 }
 
-.checkboxRow label{
+/*==========================================
+RENDER MACHINES
+==========================================*/
 
-    color:var(--text);
+function renderMachines(list){
 
-    font-size:15px;
+    if(list.length===0){
 
-}
+        machinesContainer.innerHTML = `
 
-/*=========================
-FORM BUTTONS
-=========================*/
+        <div class="emptyState">
 
-.buttonRow{
+            <h2>No Machines Found</h2>
 
-    display:flex;
+            <p>Create your first mining machine.</p>
 
-    gap:15px;
+        </div>
 
-    margin-top:20px;
+        `;
 
-}
+        return;
 
-.saveBtn{
+    }
 
-    flex:1;
+    machinesContainer.innerHTML = "";
 
-    background:var(--primary);
+    list.forEach(machine=>{
 
-    color:#071325;
+        const card = document.createElement("div");
 
-    border:none;
+        card.className = "machineCard";
 
-    border-radius:14px;
+        const image = machine.image_url ||
+        "https://placehold.co/600x400/102344/ffffff?text=Machine";
 
-    padding:16px;
+        card.innerHTML = `
 
-    font-size:16px;
+            <img src="${image}" alt="${machine.name}">
 
-    font-weight:bold;
+            <div class="machineContent">
 
-    cursor:pointer;
+                <h3>${machine.name}</h3>
 
-}
+                <div class="machineInfo">
 
-.saveBtn:hover{
+                    <span>Series</span>
 
-    background:var(--primaryHover);
+                    <strong>${machine.series || "-"}</strong>
 
-}
+                </div>
 
-.cancelBtn{
+                <div class="machineInfo">
 
-    flex:1;
+                    <span>Price</span>
 
-    background:#64748B;
+                    <strong>UGX ${Number(machine.price).toLocaleString()}</strong>
 
-    color:white;
+                </div>
 
-    border:none;
+                <div class="machineInfo">
 
-    border-radius:14px;
+                    <span>Total Return</span>
 
-    padding:16px;
+                    <strong>UGX ${Number(machine.total_return).toLocaleString()}</strong>
 
-    font-size:16px;
+                </div>
 
-    cursor:pointer;
+                <div class="machineInfo">
 
-}
+                    <span>Duration</span>
 
-.cancelBtn:hover{
+                    <strong>${machine.duration_days} Days</strong>
 
-    background:#4B5563;
+                </div>
 
-}
+                <div class="badgeRow">
 
-/*=========================
-SECTION HEADER
-=========================*/
+                    <span class="badge ${machine.status ? "active":"disabled"}">
 
-.sectionHeader{
+                        ${machine.status ? "ACTIVE":"DISABLED"}
 
-    display:flex;
+                    </span>
 
-    justify-content:space-between;
+                    ${machine.is_vip ?
 
-    align-items:center;
+                    '<span class="badge vip">VIP</span>'
 
-    margin-bottom:25px;
+                    : ''}
 
-}
+                </div>
 
-.sectionHeader h2{
+                <div class="cardActions">
 
-    font-size:30px;
+                    <button
+                        class="editBtn"
+                        data-id="${machine.id}">
 
-}
+                        Edit
 
-.sectionHeader span{
+                    </button>
 
-    color:var(--text);
+                    <button
+                        class="deleteBtn"
+                        data-id="${machine.id}">
 
-}
+                        Delete
 
-/*=========================
-MACHINE GRID
-=========================*/
+                    </button>
 
-.machinesGrid{
+                    <button
+                        class="${machine.status ? "disableBtn":"enableBtn"}"
+                        data-status="${machine.status}"
+                        data-id="${machine.id}">
 
-    display:grid;
+                        ${machine.status ? "Disable":"Enable"}
 
-    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+                    </button>
 
-    gap:25px;
+                </div>
 
-}
+            </div>
 
-/*=========================
-MACHINE CARD
-=========================*/
+        `;
 
-.machineCard{
+        machinesContainer.appendChild(card);
 
-    background:var(--card);
-
-    border-radius:22px;
-
-    overflow:hidden;
-
-    border:1px solid var(--border);
-
-    transition:.3s;
+    });
 
 }
 
-.machineCard:hover{
+/*==========================================
+SEARCH
+==========================================*/
 
-    transform:translateY(-6px);
+searchInput.addEventListener("input",()=>{
 
-}
+    const value = searchInput.value
+        .trim()
+        .toLowerCase();
 
-.machineCard img{
+    const filtered = machines.filter(machine=>
 
-    width:100%;
+        machine.name.toLowerCase().includes(value)
 
-    height:220px;
+        ||
 
-    object-fit:cover;
+        (machine.series || "")
+        .toLowerCase()
+        .includes(value)
 
-}
+    );
 
-.machineContent{
+    renderMachines(filtered);
 
-    padding:22px;
+});
 
-}
+                                  /*==========================================
+UPLOAD IMAGE
+==========================================*/
 
-.machineContent h3{
+async function uploadMachineImage(){
 
-    font-size:24px;
+    if(!selectedImage) return null;
 
-    margin-bottom:15px;
+    const fileName =
+        `machine-${Date.now()}-${selectedImage.name}`;
 
-    color:var(--primary);
+    const { error } = await supabase.storage
 
-}
+        .from("machine-images")
 
-.machineInfo{
+        .upload(fileName, selectedImage, {
 
-    display:flex;
+            upsert:true
 
-    justify-content:space-between;
+        });
 
-    margin-bottom:10px;
+    if(error){
 
-    color:var(--text);
+        showToast(error.message);
 
-}
+        return null;
 
-.machineInfo strong{
+    }
 
-    color:white;
+    const { data } = supabase.storage
 
-}
+        .from("machine-images")
 
-/*=========================
-BADGES
-=========================*/
+        .getPublicUrl(fileName);
 
-.badgeRow{
-
-    display:flex;
-
-    gap:10px;
-
-    flex-wrap:wrap;
-
-    margin:18px 0;
-
-}
-
-.badge{
-
-    padding:7px 14px;
-
-    border-radius:30px;
-
-    font-size:12px;
-
-    font-weight:bold;
+    return data.publicUrl;
 
 }
 
-.badge.active{
+/*==========================================
+SAVE MACHINE
+==========================================*/
 
-    background:var(--primary);
+machineFormElement.addEventListener("submit", saveMachine);
 
-    color:#071325;
+async function saveMachine(e){
 
-}
+    e.preventDefault();
 
-.badge.disabled{
+    showLoading();
 
-    background:var(--red);
+    let imageUrl = "";
 
-    color:white;
+    if(selectedImage){
 
-}
+        imageUrl = await uploadMachineImage();
 
-.badge.vip{
+    }
 
-    background:var(--orange);
+    const machine = {
 
-    color:#071325;
+        name:document.getElementById("machineName").value.trim(),
 
-}
+        series:document.getElementById("machineSeries").value.trim(),
 
-/*=========================
-CARD BUTTONS
-=========================*/
+        price:Number(document.getElementById("machinePrice").value),
 
-.cardActions{
+        total_return:Number(document.getElementById("machineReturn").value),
 
-    display:grid;
+        duration_days:Number(document.getElementById("machineDuration").value),
 
-    grid-template-columns:repeat(2,1fr);
+        status:document.getElementById("machineStatus").value==="true",
 
-    gap:12px;
+        is_vip:document.getElementById("machineVIP").checked
 
-    margin-top:20px;
+    };
 
-}
+    if(imageUrl){
 
-.cardActions button{
+        machine.image_url = imageUrl;
 
-    border:none;
+    }
 
-    border-radius:12px;
+    let result;
 
-    padding:13px;
+    if(editingMachineId){
 
-    font-size:14px;
+        if(!imageUrl){
 
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-.editBtn{
-
-    background:var(--blue);
-
-    color:white;
-
-}
-
-.deleteBtn{
-
-    background:var(--red);
-
-    color:white;
-
-}
-
-.enableBtn{
-
-    background:var(--primary);
-
-    color:#071325;
-
-}
-
-.disableBtn{
-
-    background:#6B7280;
-
-    color:white;
-
+            delete machine.image_url;
         }
 
-/*=========================================
-DELETE MODAL
-=========================================*/
+        result = await supabase
 
-.modal{
+            .from("machines")
 
-    position:fixed;
+            .update(machine)
 
-    inset:0;
+            .eq("id", editingMachineId);
 
-    display:flex;
+    }else{
 
-    justify-content:center;
+        result = await supabase
 
-    align-items:center;
+            .from("machines")
 
-    background:rgba(0,0,0,.75);
-
-    backdrop-filter:blur(4px);
-
-    z-index:9999;
-
-}
-
-.modal.hidden{
-
-    display:none;
-
-}
-
-.modalCard{
-
-    width:90%;
-
-    max-width:420px;
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:22px;
-
-    padding:30px;
-
-    text-align:center;
-
-    animation:pop .25s ease;
-
-}
-
-@keyframes pop{
-
-    from{
-
-        opacity:0;
-
-        transform:scale(.9);
+            .insert([machine]);
 
     }
 
-    to{
+    hideLoading();
 
-        opacity:1;
+    if(result.error){
 
-        transform:scale(1);
+        showToast(result.error.message);
 
-    }
-
-}
-
-.modalCard h2{
-
-    font-size:28px;
-
-    margin-bottom:15px;
-
-}
-
-.modalCard p{
-
-    color:var(--text);
-
-    line-height:1.6;
-
-    margin-bottom:25px;
-
-}
-
-.modalButtons{
-
-    display:flex;
-
-    gap:15px;
-
-}
-
-/*=========================================
-TOAST
-=========================================*/
-
-.toast{
-
-    position:fixed;
-
-    top:30px;
-
-    right:30px;
-
-    background:var(--primary);
-
-    color:#071325;
-
-    padding:16px 24px;
-
-    border-radius:14px;
-
-    font-weight:bold;
-
-    box-shadow:0 10px 30px rgba(0,0,0,.35);
-
-    transform:translateX(150%);
-
-    transition:.35s;
-
-    z-index:10000;
-
-}
-
-.toast.show{
-
-    transform:translateX(0);
-
-}
-
-/*=========================================
-LOADING
-=========================================*/
-
-.loadingScreen{
-
-    position:fixed;
-
-    inset:0;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    flex-direction:column;
-
-    background:rgba(7,19,37,.95);
-
-    z-index:10001;
-
-}
-
-.loadingScreen.hidden{
-
-    display:none;
-
-}
-
-.spinner{
-
-    width:65px;
-
-    height:65px;
-
-    border:6px solid rgba(255,255,255,.15);
-
-    border-top:6px solid var(--primary);
-
-    border-radius:50%;
-
-    animation:spin 1s linear infinite;
-
-}
-
-@keyframes spin{
-
-    to{
-
-        transform:rotate(360deg);
+        return;
 
     }
 
-}
+    machineFormElement.reset();
 
-.loadingScreen p{
+    previewImage.style.display = "none";
 
-    margin-top:20px;
+    previewImage.src = "";
 
-    font-size:18px;
+    selectedImage = null;
 
-    font-weight:bold;
+    editingMachineId = null;
 
-}
+    hideForm();
 
-/*=========================================
-EMPTY STATE
-=========================================*/
+    showToast("Machine saved successfully.");
 
-.emptyState{
-
-    grid-column:1/-1;
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:60px 25px;
-
-    text-align:center;
+    loadMachines();
 
 }
 
-.emptyState h2{
+/*==========================================
+EDIT MACHINE
+==========================================*/
 
-    margin-bottom:12px;
+machinesContainer.addEventListener("click", async (e)=>{
 
-    font-size:30px;
+    if(!e.target.classList.contains("editBtn")) return;
+
+    const id = e.target.dataset.id;
+
+    const machine = machines.find(m=>m.id===id);
+
+    if(!machine) return;
+
+    editingMachineId = id;
+
+    document.getElementById("formTitle").textContent =
+        "Edit Machine";
+
+    document.getElementById("machineName").value =
+        machine.name;
+
+    document.getElementById("machineSeries").value =
+        machine.series || "";
+
+    document.getElementById("machinePrice").value =
+        machine.price;
+
+    document.getElementById("machineReturn").value =
+        machine.total_return;
+
+    document.getElementById("machineDuration").value =
+        machine.duration_days;
+
+    document.getElementById("machineStatus").value =
+        String(machine.status);
+
+    document.getElementById("machineVIP").checked =
+        machine.is_vip;
+
+    if(machine.image_url){
+
+        previewImage.src = machine.image_url;
+
+        previewImage.style.display = "block";
+
+    }else{
+
+        previewImage.style.display = "none";
+
+    }
+
+    selectedImage = null;
+
+    showForm();
+
+});
+
+    /*==========================================
+DELETE & STATUS EVENTS
+==========================================*/
+
+const deleteModal = document.getElementById("deleteModal");
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+
+machinesContainer.addEventListener("click", (e)=>{
+
+    // Delete
+
+    if(e.target.classList.contains("deleteBtn")){
+
+        deleteMachineId = e.target.dataset.id;
+
+        deleteModal.classList.remove("hidden");
+
+    }
+
+    // Enable / Disable
+
+    if(
+
+        e.target.classList.contains("enableBtn")
+
+        ||
+
+        e.target.classList.contains("disableBtn")
+
+    ){
+
+        const id = e.target.dataset.id;
+
+        const current = e.target.dataset.status === "true";
+
+        updateMachineStatus(id,!current);
+
+    }
+
+});
+
+/*==========================================
+DELETE MACHINE
+==========================================*/
+
+cancelDeleteBtn.addEventListener("click",()=>{
+
+    deleteModal.classList.add("hidden");
+
+    deleteMachineId = null;
+
+});
+
+confirmDeleteBtn.addEventListener("click",async()=>{
+
+    if(!deleteMachineId) return;
+
+    showLoading();
+
+    const { error } = await supabase
+
+        .from("machines")
+
+        .delete()
+
+        .eq("id",deleteMachineId);
+
+    hideLoading();
+
+    deleteModal.classList.add("hidden");
+
+    deleteMachineId = null;
+
+    if(error){
+
+        showToast(error.message);
+
+        return;
+
+    }
+
+    showToast("Machine deleted successfully.");
+
+    loadMachines();
+
+});
+
+/*==========================================
+ENABLE / DISABLE
+==========================================*/
+
+async function updateMachineStatus(id,status){
+
+    showLoading();
+
+    const { error } = await supabase
+
+        .from("machines")
+
+        .update({
+
+            status:status
+
+        })
+
+        .eq("id",id);
+
+    hideLoading();
+
+    if(error){
+
+        showToast(error.message);
+
+        return;
+
+    }
+
+    showToast(
+
+        status
+
+        ? "Machine enabled."
+
+        : "Machine disabled."
+
+    );
+
+    loadMachines();
 
 }
 
-.emptyState p{
+/*==========================================
+CLOSE MODAL WHEN CLICKING OUTSIDE
+==========================================*/
 
-    color:var(--text);
+deleteModal.addEventListener("click",(e)=>{
 
-}
+    if(e.target===deleteModal){
 
-/*=========================================
-SCROLLBAR
-=========================================*/
-
-::-webkit-scrollbar{
-
-    width:8px;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-    background:var(--primary);
-
-    border-radius:20px;
-
-}
-
-::-webkit-scrollbar-track{
-
-    background:var(--bg);
-
-}
-
-/*=========================================
-RESPONSIVE
-=========================================*/
-
-@media (max-width:900px){
-
-    .formGrid{
-
-        grid-template-columns:1fr;
+        deleteModal.classList.add("hidden");
 
     }
 
-    .machinesGrid{
+});
 
-        grid-template-columns:1fr;
+/*==========================================
+READY
+==========================================*/
 
-    }
-
-}
-
-@media (max-width:600px){
-
-    .page{
-
-        padding:15px;
-
-    }
-
-    .topBar{
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
-    .topBar h1{
-
-        font-size:28px;
-
-    }
-
-    .statsGrid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .buttonRow{
-
-        flex-direction:column;
-
-    }
-
-    .cardActions{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .modalButtons{
-
-        flex-direction:column;
-
-    }
-
-    .machineCard img{
-
-        height:200px;
-
-    }
-
-    .primaryBtn{
-
-        width:100%;
-
-    }
-
-    .toast{
-
-        right:15px;
-
-        left:15px;
-
-        top:15px;
-
-    }
-
-    }
+console.log("✅ Marathon Admin Machines Loaded");
