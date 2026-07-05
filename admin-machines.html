@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Machine Management | Marathon Digital Hub</title>
+<title>Machine Management</title>
 
 <link rel="stylesheet" href="admin-machines.css">
 
@@ -19,19 +19,15 @@
 
 <div class="page">
 
-    <!-- ==========================
-         HEADER
-    =========================== -->
+    <!-- HEADER -->
 
-    <header class="topBar">
+    <div class="topBar">
 
         <div>
 
             <h1>Machine Management</h1>
 
-            <p>
-                Create, edit and manage all mining machines.
-            </p>
+            <p>Manage all mining investment machines</p>
 
         </div>
 
@@ -41,13 +37,11 @@
 
         </button>
 
-    </header>
+    </div>
 
-    <!-- ==========================
-         DASHBOARD CARDS
-    =========================== -->
+    <!-- STATISTICS -->
 
-    <section class="statsGrid">
+    <div class="statsGrid">
 
         <div class="statCard">
 
@@ -81,37 +75,31 @@
 
         </div>
 
-    </section>
+    </div>
 
-    <!-- ==========================
-         SEARCH
-    =========================== -->
+    <!-- SEARCH -->
 
-    <section class="searchArea">
+    <div class="searchBox">
 
         <input
-            id="searchInput"
+
             type="text"
+
+            id="searchInput"
+
             placeholder="Search machine by name or series...">
 
-    </section>
+    </div>
 
-        <!-- ==========================
-         ADD / EDIT MACHINE FORM
-    =========================== -->
+        <!-- MACHINE FORM -->
 
-    <section id="machineForm" class="machineForm hidden">
+    <div id="machineForm" class="machineForm hidden">
 
         <div class="formHeader">
 
-            <h2 id="formTitle">
-                Add New Machine
-            </h2>
+            <h2 id="formTitle">Add New Machine</h2>
 
-            <button
-                id="closeFormBtn"
-                type="button"
-                class="closeBtn">
+            <button id="closeFormBtn" class="closeBtn">
 
                 ✕
 
@@ -123,77 +111,76 @@
 
             <div class="formGrid">
 
-                <div class="formGroup">
+                <div class="inputGroup">
 
                     <label>Machine Name</label>
 
                     <input
                         type="text"
                         id="machineName"
-                        required
-                        placeholder="Example: Antminer S21">
+                        required>
 
                 </div>
 
-                <div class="formGroup">
+                <div class="inputGroup">
 
                     <label>Series</label>
 
                     <input
                         type="text"
-                        id="machineSeries"
-                        placeholder="Example: S21 Series">
+                        id="machineSeries">
 
                 </div>
 
-                <div class="formGroup">
+                <div class="inputGroup">
 
                     <label>Price (UGX)</label>
 
                     <input
                         type="number"
                         id="machinePrice"
-                        min="0"
                         required>
 
                 </div>
 
-                <div class="formGroup">
+                <div class="inputGroup">
 
                     <label>Total Return (UGX)</label>
 
                     <input
                         type="number"
                         id="machineReturn"
-                        min="0"
                         required>
 
                 </div>
 
-                <div class="formGroup">
+                <div class="inputGroup">
 
                     <label>Duration (Days)</label>
 
                     <input
                         type="number"
                         id="machineDuration"
-                        min="1"
                         required>
 
                 </div>
 
-                <div class="formGroup">
+                <div class="inputGroup">
 
                     <label>Status</label>
 
                     <select id="machineStatus">
 
                         <option value="true">
+
                             Active
+
                         </option>
 
                         <option value="false">
+
                             Disabled
+
                         </option>
 
                     </select>
@@ -204,14 +191,19 @@
 
             <!-- IMAGE -->
 
-            <div class="formGroup">
+            <div class="uploadArea">
 
-                <label>Machine Image</label>
+                <label for="machineImage" class="uploadButton">
+
+                    📷 Select Machine Image
+
+                </label>
 
                 <input
                     type="file"
                     id="machineImage"
-                    accept="image/*">
+                    accept="image/*"
+                    hidden>
 
                 <img
                     id="previewImage"
@@ -222,7 +214,7 @@
 
             <!-- VIP -->
 
-            <div class="checkboxRow">
+            <div class="vipRow">
 
                 <input
                     type="checkbox"
@@ -230,20 +222,21 @@
 
                 <label for="machineVIP">
 
-                    Mark as VIP Machine
+                    VIP Machine
 
                 </label>
 
             </div>
 
-            <div class="buttonRow">
+            <!-- BUTTONS -->
+
+            <div class="formButtons">
 
                 <button
                     type="submit"
-                    id="saveMachineBtn"
                     class="saveBtn">
 
-                    💾 Save Machine
+                    Save Machine
 
                 </button>
 
@@ -260,51 +253,38 @@
 
         </form>
 
-    </section>
+    </div>
 
-        <!-- ==========================
-         MACHINES LIST
-    =========================== -->
+        <!-- MACHINE LIST -->
 
-    <section class="machinesSection">
+    <div class="listHeader">
 
-        <div class="sectionHeader">
+        <h2>Mining Machines</h2>
 
-            <h2>Mining Machines</h2>
+        <span id="machineCount">0 Machines</span>
 
-            <span id="machineCount">
-                0 Machines
-            </span>
+    </div>
 
-        </div>
+    <div id="machinesContainer" class="machinesGrid">
 
-        <div
-            id="machinesContainer"
-            class="machinesGrid">
+        <!-- Machine cards loaded by JavaScript -->
 
-            <!-- Machine cards will be loaded here -->
-
-        </div>
-
-    </section>
+    </div>
 
 </div>
 
-<!-- ==========================
-DELETE MODAL
-=========================== -->
+<!-- DELETE MODAL -->
 
-<div
-    id="deleteModal"
-    class="modal hidden">
+<div id="deleteModal" class="modal hidden">
 
-    <div class="modalCard">
+    <div class="modalBox">
 
         <h2>Delete Machine</h2>
 
         <p>
-            Are you sure you want to delete this machine?
-            This action cannot be undone.
+
+            Are you sure you want to permanently delete this machine?
+
         </p>
 
         <div class="modalButtons">
@@ -331,31 +311,25 @@ DELETE MODAL
 
 </div>
 
-<!-- ==========================
-SUCCESS MESSAGE
-=========================== -->
+<!-- LOADING -->
 
-<div
-    id="toast"
-    class="toast">
+<div id="loadingScreen" class="loading hidden">
 
-    <span id="toastMessage">
-        Success
-    </span>
+    <div class="loader"></div>
+
+    <p>Loading...</p>
 
 </div>
 
-<!-- ==========================
-LOADING
-=========================== -->
+<!-- TOAST -->
 
-<div
-    id="loadingScreen"
-    class="loadingScreen hidden">
+<div id="toast" class="toast">
 
-    <div class="spinner"></div>
+    <span id="toastMessage">
 
-    <p>Loading...</p>
+        Success
+
+    </span>
 
 </div>
 
