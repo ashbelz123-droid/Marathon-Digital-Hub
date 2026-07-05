@@ -1,220 +1,236 @@
-/* ==========================================
+/*=========================================
 MARATHON DIGITAL HUB
 ADMIN MACHINE PANEL
-========================================== */
+=========================================*/
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 :root{
 
---bg:#07111F;
---card:#0E1B34;
---card2:#14264A;
---primary:#00C8FF;
---success:#00E676;
---danger:#FF5252;
---warning:#FFD54F;
---text:#FFFFFF;
---text2:#A8BEDB;
---border:rgba(255,255,255,.08);
+    --bg:#07111F;
+    --card:#102040;
+    --card2:#16294F;
+
+    --primary:#00D084;
+    --blue:#19B5FE;
+    --danger:#FF4D4F;
+    --warning:#FFC107;
+
+    --white:#ffffff;
+    --text:#B9C6E4;
+
+    --border:rgba(255,255,255,.08);
 
 }
 
 body{
 
-background:var(--bg);
-color:var(--text);
+    background:var(--bg);
+
+    color:var(--white);
 
 }
 
 .page{
 
-max-width:1400px;
+    max-width:1450px;
 
-margin:auto;
+    margin:auto;
 
-padding:25px;
+    padding:25px;
 
 }
 
-/* ======================
+/*==========================
 HEADER
-====================== */
+==========================*/
 
 .header{
 
-display:flex;
+    display:flex;
 
-justify-content:space-between;
+    justify-content:space-between;
 
-align-items:center;
+    align-items:center;
 
-gap:20px;
+    flex-wrap:wrap;
 
-margin-bottom:30px;
+    gap:20px;
 
-flex-wrap:wrap;
+    margin-bottom:35px;
 
 }
 
 .header h1{
 
-font-size:34px;
+    font-size:36px;
 
-font-weight:700;
-
-margin-bottom:5px;
+    margin-bottom:8px;
 
 }
 
 .header p{
 
-color:var(--text2);
+    color:var(--text);
 
 }
 
 .primaryBtn{
 
-background:linear-gradient(135deg,#00C8FF,#00E676);
+    background:linear-gradient(135deg,#00D084,#00E676);
 
-color:#04111E;
+    color:#04111E;
 
-border:none;
+    border:none;
 
-padding:15px 28px;
+    border-radius:15px;
 
-border-radius:14px;
+    padding:15px 30px;
 
-font-size:16px;
+    font-size:16px;
 
-font-weight:bold;
+    font-weight:bold;
 
-cursor:pointer;
+    cursor:pointer;
 
-transition:.3s;
+    transition:.3s;
 
 }
 
 .primaryBtn:hover{
 
-transform:translateY(-2px);
+    transform:translateY(-3px);
 
 }
 
-/* ======================
+/*==========================
 STATISTICS
-====================== */
+==========================*/
 
 .statsGrid{
 
-display:grid;
+    display:grid;
 
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 
-gap:20px;
+    gap:20px;
 
-margin-bottom:30px;
+    margin-bottom:30px;
 
 }
 
 .statCard{
 
-background:var(--card);
+    background:var(--card);
 
-border:1px solid var(--border);
+    border:1px solid var(--border);
 
-border-radius:18px;
+    border-radius:22px;
 
-padding:25px;
+    padding:25px;
+
+    transition:.3s;
+
+}
+
+.statCard:hover{
+
+    transform:translateY(-5px);
 
 }
 
 .statCard h2{
 
-font-size:34px;
+    font-size:40px;
 
-margin-bottom:10px;
+    color:var(--primary);
 
-color:var(--success);
+    margin-bottom:10px;
 
 }
 
 .statCard span{
 
-color:var(--text2);
+    color:var(--text);
 
 }
 
-/* ======================
+/*==========================
 SEARCH
-====================== */
+==========================*/
 
 .searchSection{
 
-margin-bottom:25px;
+    margin-bottom:30px;
 
 }
 
 .searchSection input{
 
-width:100%;
+    width:100%;
 
-padding:16px;
+    background:var(--card);
 
-background:var(--card);
+    border:1px solid var(--border);
 
-border:1px solid var(--border);
+    border-radius:15px;
 
-border-radius:14px;
+    padding:18px;
 
-color:white;
+    color:white;
 
-font-size:15px;
+    font-size:16px;
 
-outline:none;
+    outline:none;
 
 }
 
-/* ======================
+.searchSection input::placeholder{
+
+    color:#8EA3C9;
+
+}
+
+/*==========================
 FORM
-====================== */
+==========================*/
 
 .machineForm{
 
-display:none;
+    display:none;
 
-background:var(--card);
+    background:var(--card);
 
-border:1px solid var(--border);
+    border-radius:25px;
 
-border-radius:20px;
+    border:1px solid var(--border);
 
-padding:25px;
+    padding:30px;
 
-margin-bottom:35px;
+    margin-bottom:40px;
 
 }
 
 .machineForm h2{
 
-margin-bottom:20px;
+    margin-bottom:25px;
+
+    font-size:28px;
 
 }
 
 .grid2{
 
-display:grid;
+    display:grid;
 
-grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(2,1fr);
 
-gap:15px;
-
-margin-bottom:15px;
+    gap:18px;
 
 }
 
@@ -222,309 +238,343 @@ margin-bottom:15px;
 
 .machineForm select{
 
-width:100%;
+    width:100%;
 
-padding:15px;
+    background:var(--card2);
 
-background:var(--card2);
+    color:white;
 
-border:none;
+    border:none;
 
-border-radius:12px;
+    border-radius:14px;
 
-color:white;
+    padding:16px;
 
-font-size:15px;
+    margin-bottom:18px;
 
-outline:none;
+    outline:none;
+
+    font-size:15px;
+
+}
+
+.machineForm input::placeholder{
+
+    color:#8EA3C9;
 
   }
 
-/* ======================
-VIP
-====================== */
-
-.vipRow{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-margin:20px 0;
-
-font-size:15px;
-
-color:var(--text);
-
-}
-
-.vipRow input{
-
-width:18px;
-
-height:18px;
-
-cursor:pointer;
-
-}
-
-/* ======================
-UPLOAD
-====================== */
+/*=========================================
+UPLOAD AREA
+=========================================*/
 
 .uploadSection{
 
-margin:20px 0;
+    margin:25px 0;
 
 }
 
 .uploadBtn{
 
-display:flex;
+    display:flex;
 
-justify-content:center;
+    align-items:center;
 
-align-items:center;
+    justify-content:center;
 
-height:55px;
+    width:100%;
 
-background:var(--card2);
+    height:65px;
 
-border:2px dashed var(--primary);
+    border:2px dashed var(--blue);
 
-border-radius:14px;
+    border-radius:18px;
 
-cursor:pointer;
+    background:var(--card2);
 
-font-weight:bold;
+    color:var(--blue);
 
-color:var(--primary);
+    font-size:16px;
 
-transition:.3s;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
 
 }
 
 .uploadBtn:hover{
 
-background:#19325E;
+    background:#1C3B6C;
 
 }
 
 #previewImage{
 
-width:100%;
+    width:100%;
 
-height:230px;
+    height:240px;
 
-object-fit:cover;
+    object-fit:cover;
 
-border-radius:16px;
+    border-radius:18px;
 
-margin-top:15px;
+    margin-top:20px;
 
-display:none;
+    display:none;
 
-background:#08142D;
-
-border:1px solid var(--border);
+    border:2px solid var(--border);
 
 }
 
-/* ======================
+/*=========================================
+VIP
+=========================================*/
+
+.vipRow{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:20px 0;
+
+    font-size:16px;
+
+}
+
+.vipRow input{
+
+    width:20px;
+
+    height:20px;
+
+    accent-color:var(--primary);
+
+}
+
+/*=========================================
 FORM BUTTONS
-====================== */
+=========================================*/
 
 .formActions{
 
-display:flex;
+    display:flex;
 
-gap:15px;
+    gap:15px;
 
-margin-top:25px;
+    margin-top:25px;
 
 }
 
 .successBtn,
+.secondaryBtn,
+.dangerBtn{
 
-.dangerBtn,
+    flex:1;
 
-.secondaryBtn{
+    border:none;
 
-flex:1;
+    border-radius:14px;
 
-padding:15px;
+    padding:16px;
 
-border:none;
+    font-size:15px;
 
-border-radius:12px;
+    font-weight:700;
 
-font-size:15px;
+    cursor:pointer;
 
-font-weight:bold;
-
-cursor:pointer;
-
-transition:.3s;
+    transition:.3s;
 
 }
 
 .successBtn{
 
-background:var(--success);
+    background:var(--primary);
 
-color:#04111E;
-
-}
-
-.dangerBtn{
-
-background:var(--danger);
-
-color:white;
+    color:#04111E;
 
 }
 
 .secondaryBtn{
 
-background:#3A4C74;
+    background:#4B5F86;
 
-color:white;
+    color:white;
+
+}
+
+.dangerBtn{
+
+    background:var(--danger);
+
+    color:white;
 
 }
 
 .successBtn:hover,
+.secondaryBtn:hover,
+.dangerBtn:hover{
 
-.dangerBtn:hover,
-
-.secondaryBtn:hover{
-
-transform:translateY(-2px);
+    transform:translateY(-2px);
 
 }
 
-/* ======================
+/*=========================================
 SECTION TITLE
-====================== */
+=========================================*/
 
-.sectionHeader{
+.sectionTitle{
 
-display:flex;
+    font-size:32px;
 
-justify-content:space-between;
-
-align-items:center;
-
-margin:35px 0 20px;
+    margin:35px 0 20px;
 
 }
 
-.sectionHeader h2{
-
-font-size:28px;
-
-}
-
-/* ======================
+/*=========================================
 MACHINE GRID
-====================== */
+=========================================*/
 
 .machineGrid{
 
-display:grid;
+    display:grid;
 
-grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
 
-gap:22px;
+    gap:25px;
 
 }
 
+/*=========================================
+MACHINE CARD
+=========================================*/
+
 .machineCard{
 
-background:var(--card);
+    background:var(--card);
 
-border-radius:20px;
+    border-radius:22px;
 
-overflow:hidden;
+    overflow:hidden;
 
-border:1px solid var(--border);
+    border:1px solid var(--border);
 
-transition:.3s;
+    transition:.35s;
 
 }
 
 .machineCard:hover{
 
-transform:translateY(-5px);
+    transform:translateY(-6px);
 
-box-shadow:0 12px 30px rgba(0,0,0,.35);
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
 
 }
 
 .machineCard img{
 
-width:100%;
+    width:100%;
 
-height:220px;
+    height:230px;
 
-object-fit:cover;
+    object-fit:cover;
 
-background:#102040;
+    background:#1C315C;
 
 }
 
 .machineInfo{
 
-padding:20px;
+    padding:24px;
 
 }
 
 .machineInfo h3{
 
-font-size:24px;
+    font-size:28px;
 
-margin-bottom:12px;
+    color:var(--primary);
 
-color:var(--success);
+    margin-bottom:15px;
 
 }
 
 .machineInfo p{
 
-margin:8px 0;
+    margin:10px 0;
 
-color:var(--text2);
+    color:var(--text);
 
-line-height:1.5;
+    line-height:1.6;
 
 }
 
-/* ======================
+.machineInfo strong{
+
+    color:white;
+
+}
+
+/*=========================================
 BADGES
-====================== */
+=========================================*/
 
 .badges{
 
-display:flex;
+    display:flex;
 
-gap:10px;
+    flex-wrap:wrap;
 
-margin:18px 0;
+    gap:10px;
 
-flex-wrap:wrap;
+    margin:20px 0;
 
 }
 
 .badge{
 
-padding:
+    padding:8px 16px;
 
-  /* ======================
+    border-radius:30px;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+}
+
+.activeBadge{
+
+    background:#00D084;
+
+    color:#04111E;
+
+}
+
+.disabledBadge{
+
+    background:#FF4D4F;
+
+    color:white;
+
+}
+
+.vipBadge{
+
+    background
+
+  /*=========================================
 POPUPS
-====================== */
+=========================================*/
 
 .popup{
+
+display:none;
 
 position:fixed;
 
@@ -536,17 +586,15 @@ width:100%;
 
 height:100%;
 
-display:none;
+background:rgba(0,0,0,.75);
 
 justify-content:center;
 
 align-items:center;
 
-background:rgba(0,0,0,.65);
+z-index:9999;
 
 backdrop-filter:blur(4px);
-
-z-index:999;
 
 }
 
@@ -554,15 +602,15 @@ z-index:999;
 
 width:90%;
 
-max-width:420px;
+max-width:430px;
 
 background:var(--card);
 
-border:1px solid var(--border);
-
-border-radius:20px;
-
 padding:30px;
+
+border-radius:22px;
+
+border:1px solid var(--border);
 
 text-align:center;
 
@@ -602,11 +650,13 @@ margin-bottom:18px;
 
 margin-bottom:12px;
 
+font-size:28px;
+
 }
 
 .popupBox p{
 
-color:var(--text2);
+color:var(--text);
 
 line-height:1.6;
 
@@ -618,15 +668,17 @@ margin-bottom:25px;
 
 display:flex;
 
-gap:12px;
+gap:15px;
 
 }
 
-/* ======================
+/*=========================================
 LOADING
-====================== */
+=========================================*/
 
 .loadingOverlay{
+
+display:none;
 
 position:fixed;
 
@@ -638,9 +690,7 @@ width:100%;
 
 height:100%;
 
-background:rgba(7,17,31,.92);
-
-display:none;
+background:rgba(7,17,31,.95);
 
 justify-content:center;
 
@@ -648,25 +698,23 @@ align-items:center;
 
 flex-direction:column;
 
-z-index:1000;
+z-index:10000;
 
 }
 
 .loader{
 
-width:60px;
+width:65px;
 
-height:60px;
+height:65px;
 
 border:6px solid rgba(255,255,255,.15);
 
-border-top:6px solid var(--success);
+border-top:6px solid var(--primary);
 
 border-radius:50%;
 
-animation:spin .8s linear infinite;
-
-margin-bottom:18px;
+animation:spin 1s linear infinite;
 
 }
 
@@ -682,15 +730,17 @@ transform:rotate(360deg);
 
 .loadingOverlay p{
 
+margin-top:20px;
+
 font-size:18px;
 
-color:white;
+font-weight:bold;
 
 }
 
-/* ======================
+/*=========================================
 EMPTY STATE
-====================== */
+=========================================*/
 
 .emptyState{
 
@@ -698,9 +748,9 @@ background:var(--card);
 
 border:1px solid var(--border);
 
-border-radius:20px;
+border-radius:22px;
 
-padding:60px 25px;
+padding:70px 30px;
 
 text-align:center;
 
@@ -708,19 +758,21 @@ text-align:center;
 
 .emptyState h2{
 
+font-size:30px;
+
 margin-bottom:10px;
 
 }
 
 .emptyState p{
 
-color:var(--text2);
+color:var(--text);
 
 }
 
-/* ======================
+/*=========================================
 SCROLLBAR
-====================== */
+=========================================*/
 
 ::-webkit-scrollbar{
 
@@ -730,7 +782,7 @@ width:8px;
 
 ::-webkit-scrollbar-track{
 
-background:#08142D;
+background:#07111F;
 
 }
 
@@ -738,13 +790,13 @@ background:#08142D;
 
 background:var(--primary);
 
-border-radius:10px;
+border-radius:20px;
 
 }
 
-/* ======================
+/*=========================================
 RESPONSIVE
-====================== */
+=========================================*/
 
 @media(max-width:900px){
 
@@ -756,7 +808,7 @@ grid-template-columns:1fr;
 
 .statsGrid{
 
-grid-template-columns:1fr 1fr;
+grid-template-columns:repeat(2,1fr);
 
 }
 
@@ -817,6 +869,12 @@ grid-template-columns:1fr;
 .machineCard img{
 
 height:200px;
+
+}
+
+.primaryBtn{
+
+width:100%;
 
 }
 
