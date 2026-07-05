@@ -4,424 +4,845 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>User Management | Marathon Digital Hub</title>
 
+<link rel="stylesheet"
+href="admin-users.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#050B18;
-color:#fff;
-}
-
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px;
-background:#08142d;
-}
-
-.header h2{
-font-size:28px;
-}
-
-.backBtn{
-background:#00ff88;
-color:#001018;
-padding:10px 18px;
-border-radius:10px;
-text-decoration:none;
-font-weight:bold;
-}
-
-.summary{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-padding:20px;
-}
-
-.card{
-background:#08142d;
-padding:20px;
-border-radius:15px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.card h4{
-color:#9fb5d1;
-margin-bottom:10px;
-}
-
-.card h1{
-font-size:32px;
-color:#00ff88;
-}
-
-.controls{
-padding:0 20px 20px;
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-}
-
-.controls input,
-.controls select{
-flex:1;
-min-width:220px;
-height:48px;
-background:#08142d;
-border:none;
-border-radius:12px;
-padding:0 15px;
-color:#fff;
-outline:none;
-}
-
-.userContainer{
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-.userCard{
-background:#08142d;
-border-radius:18px;
-padding:20px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.userTop{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px;
-}
-
-.userName{
-font-size:20px;
-font-weight:bold;
-}
-
-.status{
-padding:6px 15px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-text-transform:uppercase;
-}
-
-.active{
-background:#00c853;
-}
-
-.suspended{
-background:#ff3b30;
-}
-
-.info{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:10px;
-margin-bottom:18px;
-}
-
-.info div{
-background:#111f3d;
-padding:12px;
-border-radius:10px;
-}
-
-.info span{
-display:block;
-color:#9fb5d1;
-font-size:12px;
-margin-bottom:5px;
-}
-
-.actions{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
-}
-
-.actions button{
-height:45px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.viewBtn{
-background:#00bcd4;
-color:white;
-}
-
-.editBtn{
-background:#ffc107;
-color:#000;
-}
-
-.suspendBtn{
-background:#ff3b30;
-color:white;
-}
-
-.activateBtn{
-background:#00ff88;
-color:#001018;
-}
-
-</style>
 
 </head>
 
 <body>
 
-<div class="header">
+<div class="page">
 
-<h2>User Management</h2>
+<!-- ==========================
+HEADER
+========================== -->
 
-<a href="admin-dashboard.html" class="backBtn">
+<header class="header">
+
+<div>
+
+<h1>User Management</h1>
+
+<p>
+
+Manage all platform users from one place
+
+</p>
+
+</div>
+
+<a
+href="admin-dashboard.html"
+class="dashboardBtn">
 
 ⬅ Dashboard
 
 </a>
 
-</div>
+</header>
 
-<div class="summary">
+<!-- ==========================
+SUMMARY CARDS
+========================== -->
 
-<div class="card">
-<h4>Total Users</h4>
-<h1 id="totalUsers">0</h1>
-</div>
+<section class="statsGrid">
 
-<div class="card">
-<h4>Active Users</h4>
-<h1 id="activeUsers">0</h1>
-</div>
+<div class="statCard">
 
-<div class="card">
-<h4>Suspended Users</h4>
-<h1 id="suspendedUsers">0</h1>
-</div>
+<div class="statIcon">
 
-<div class="card">
-<h4>New Users</h4>
-<h1 id="newUsers">0</h1>
-</div>
+👥
 
 </div>
 
-<div class="controls">
+<div>
+
+<h2 id="totalUsers">
+
+0
+
+</h2>
+
+<p>Total Users</p>
+
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statIcon">
+
+🟢
+
+</div>
+
+<div>
+
+<h2 id="activeUsers">
+
+0
+
+</h2>
+
+<p>Active Users</p>
+
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statIcon">
+
+⛔
+
+</div>
+
+<div>
+
+<h2 id="suspendedUsers">
+
+0
+
+</h2>
+
+<p>Suspended</p>
+
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statIcon">
+
+🆕
+
+</div>
+
+<div>
+
+<h2 id="newUsers">
+
+0
+
+</h2>
+
+<p>Today</p>
+
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statIcon">
+
+💰
+
+</div>
+
+<div>
+
+<h2 id="walletTotal">
+
+UGX 0
+
+</h2>
+
+<p>Total Wallet</p>
+
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statIcon">
+
+⛏
+
+</div>
+
+<div>
+
+<h2 id="machineOwners">
+
+0
+
+</h2>
+
+<p>Machine Owners</p>
+
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statIcon">
+
+💳
+
+</div>
+
+<div>
+
+<h2 id="pendingDeposits">
+
+0
+
+</h2>
+
+<p>Pending Deposits</p>
+
+</div>
+
+</div>
+
+<div class="statCard">
+
+<div class="statIcon">
+
+💸
+
+</div>
+
+<div>
+
+<h2 id="pendingWithdrawals">
+
+0
+
+</h2>
+
+<p>Pending Withdrawals</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================
+SEARCH
+========================== -->
+
+<section class="searchSection">
 
 <input
+
 type="text"
+
 id="searchInput"
-placeholder="Search by name, phone or email...">
+
+placeholder="Search name, phone, email or referral code...">
 
 <select id="statusFilter">
 
-<option value="all">All Users</option>
-<option value="active">Active</option>
-<option value="suspended">Suspended</option>
+<option value="all">
+
+All Users
+
+</option>
+
+<option value="active">
+
+Active
+
+</option>
+
+<option value="suspended">
+
+Suspended
+
+</option>
+
+</select>
+
+</section>
+
+  <!-- ==========================
+USERS LIST
+========================== -->
+
+<section class="usersSection">
+
+<div class="sectionHeader">
+
+<div>
+
+<h2>
+
+Platform Users
+
+</h2>
+
+<p id="userCount">
+
+0 Users
+
+</p>
+
+</div>
+
+</div>
+
+<div
+
+id="usersContainer"
+
+class="usersGrid">
+
+<!-- Users load here -->
+
+</div>
+
+</section>
+
+<!-- ==========================
+VIEW USER MODAL
+========================== -->
+
+<div
+
+id="viewModal"
+
+class="modal hidden">
+
+<div class="modalContent large">
+
+<div class="modalHeader">
+
+<h2>
+
+👤 User Overview
+
+</h2>
+
+<button
+
+id="closeViewModal"
+
+class="closeBtn">
+
+✕
+
+</button>
+
+</div>
+
+<div class="modalBody">
+
+<!-- PROFILE -->
+
+<div class="profileCard">
+
+<div class="avatar"
+
+id="viewAvatar">
+
+A
+
+</div>
+
+<div>
+
+<h2 id="viewName">
+
+Full Name
+
+</h2>
+
+<p id="viewStatus">
+
+Active
+
+</p>
+
+</div>
+
+</div>
+
+<!-- PERSONAL -->
+
+<div class="detailGrid">
+
+<div class="detailBox">
+
+<span>Phone</span>
+
+<h4 id="viewPhone">-</h4>
+
+</div>
+
+<div class="detailBox">
+
+<span>Email</span>
+
+<h4 id="viewEmail">-</h4>
+
+</div>
+
+<div class="detailBox">
+
+<span>Wallet Balance</span>
+
+<h4 id="viewWallet">
+
+UGX 0
+
+</h4>
+
+</div>
+
+<div class="detailBox">
+
+<span>Referral Code</span>
+
+<h4 id="viewReferral">
+
+-
+
+</h4>
+
+</div>
+
+<div class="detailBox">
+
+<span>Referred By</span>
+
+<h4 id="viewReferredBy">
+
+-
+
+</h4>
+
+</div>
+
+<div class="detailBox">
+
+<span>Joined</span>
+
+<h4 id="viewJoined">
+
+-
+
+</h4>
+
+</div>
+
+</div>
+
+<!-- WALLET SUMMARY -->
+
+<h3 class="sectionTitle">
+
+💰 Wallet Summary
+
+</h3>
+
+<div class="summaryGrid">
+
+<div class="miniCard">
+
+<span>Total Deposits</span>
+
+<h3 id="totalDeposits">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="miniCard">
+
+<span>Total Withdrawals</span>
+
+<h3 id="totalWithdrawals">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="miniCard">
+
+<span>Mining Earnings</span>
+
+<h3 id="totalMining">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="miniCard">
+
+<span>Referral Bonus</span>
+
+<h3 id="totalBonus">
+
+UGX 0
+
+</h3>
+
+</div>
+
+</div>
+
+<!-- MACHINES -->
+
+<h3 class="sectionTitle">
+
+⛏ Machines Owned
+
+</h3>
+
+<div
+
+id="machinesOwned"
+
+class="historyList">
+
+<!-- JS -->
+
+</div>
+
+<!-- WALLET HISTORY -->
+
+<h3 class="sectionTitle">
+
+📜 Wallet History
+
+</h3>
+
+<div
+
+id="walletHistory"
+
+class="historyList">
+
+<!-- JS -->
+
+  </div>
+
+  <!-- ==========================
+DEPOSIT HISTORY
+========================== -->
+
+<h3 class="sectionTitle">
+
+💳 Deposit History
+
+</h3>
+
+<div
+id="depositHistory"
+class="historyList">
+
+<!-- JavaScript -->
+
+</div>
+
+<!-- ==========================
+WITHDRAWAL HISTORY
+========================== -->
+
+<h3 class="sectionTitle">
+
+💸 Withdrawal History
+
+</h3>
+
+<div
+id="withdrawHistory"
+class="historyList">
+
+<!-- JavaScript -->
+
+</div>
+
+<!-- ==========================
+REFERRALS
+========================== -->
+
+<h3 class="sectionTitle">
+
+👥 Referrals
+
+</h3>
+
+<div
+id="referralHistory"
+class="historyList">
+
+<!-- JavaScript -->
+
+</div>
+
+<!-- ==========================
+NOTIFICATIONS
+========================== -->
+
+<h3 class="sectionTitle">
+
+🔔 Notifications
+
+</h3>
+
+<div
+id="notificationHistory"
+class="historyList">
+
+<!-- JavaScript -->
+
+</div>
+
+<!-- ==========================
+SUPPORT
+========================== -->
+
+<h3 class="sectionTitle">
+
+💬 Support Messages
+
+</h3>
+
+<div
+id="supportHistory"
+class="historyList">
+
+<!-- JavaScript -->
+
+</div>
+
+<!-- ==========================
+ADMIN ACTIONS
+========================== -->
+
+<h3 class="sectionTitle">
+
+⚙️ Admin Actions
+
+</h3>
+
+<div class="actionGrid">
+
+<button
+id="creditWalletBtn"
+class="successBtn">
+
+💰 Credit Wallet
+
+</button>
+
+<button
+id="debitWalletBtn"
+class="warningBtn">
+
+➖ Debit Wallet
+
+</button>
+
+<button
+id="assignMachineBtn"
+class="primaryBtn">
+
+⛏ Assign Machine
+
+</button>
+
+<button
+id="extendMachineBtn"
+class="primaryBtn">
+
+🔄 Extend Machine
+
+</button>
+
+<button
+id="sendNotificationBtn"
+class="primaryBtn">
+
+🔔 Send Notification
+
+</button>
+
+<button
+id="suspendUserBtn"
+class="dangerBtn">
+
+⛔ Suspend User
+
+</button>
+
+<button
+id="activateUserBtn"
+class="successBtn">
+
+✅ Activate User
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================
+EDIT USER MODAL
+========================== -->
+
+<div
+id="editModal"
+class="modal hidden">
+
+<div class="modalContent">
+
+<div class="modalHeader">
+
+<h2>
+
+✏ Edit User
+
+</h2>
+
+<button
+id="closeEditModal"
+class="closeBtn">
+
+✕
+
+</button>
+
+</div>
+
+<form
+id="editUserForm">
+
+<div class="formGrid">
+
+<input
+type="text"
+id="editFullname"
+placeholder="Full Name">
+
+<input
+type="text"
+id="editPhone"
+placeholder="Phone Number">
+
+<input
+type="email"
+id="editEmail"
+placeholder="Email">
+
+<input
+type="number"
+id="editWallet"
+placeholder="Wallet Balance">
+
+<input
+type="text"
+id="editReferralCode"
+placeholder="Referral Code">
+
+<select id="editStatus">
+
+<option value="active">
+
+Active
+
+</option>
+
+<option value="suspended">
+
+Suspended
+
+</option>
 
 </select>
 
 </div>
 
-<div class="userContainer" id="userContainer">
-
-<!-- Users will load here -->
-
-  </div><script>
-
-const db = window.supabaseClient;
-
-/* ==========================
-PROTECT PAGE
-========================== */
-
-if(localStorage.getItem("admin_logged_in")!=="true"){
-    window.location.href="admin-login.html";
-}
-
-/* ==========================
-LOAD USERS
-========================== */
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-loadUsers();
-
-});
-
-async function loadUsers(){
-
-const container=document.getElementById("userContainer");
-
-container.innerHTML="<center>Loading users...</center>";
-
-const {data,error}=await db
-
-.from("profiles")
-
-.select("*")
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-container.innerHTML="<center>Failed to load users.</center>";
-
-console.log(error);
-
-return;
-
-}
-
-/* Dashboard Cards */
-
-document.getElementById("totalUsers").innerHTML=data.length;
-
-document.getElementById("activeUsers").innerHTML=
-
-data.filter(x=>x.account_status==="active").length;
-
-document.getElementById("suspendedUsers").innerHTML=
-
-data.filter(x=>x.account_status==="suspended").length;
-
-const today=new Date().toDateString();
-
-document.getElementById("newUsers").innerHTML=
-
-data.filter(x=>new Date(x.created_at).toDateString()===today).length;
-
-container.innerHTML="";
-
-if(data.length===0){
-
-container.innerHTML="<center>No users found.</center>";
-
-return;
-
-}
-
-/* User Cards */
-
-data.forEach(user=>{
-
-container.innerHTML+=`
-
-<div class="userCard">
-
-<div class="userTop">
-
-<div class="userName">
-
-${user.fullname}
-
-</div>
-
-<div class="status ${user.account_status}">
-
-${user.account_status}
-
-</div>
-
-</div>
-
-<div class="info">
-
-<div>
-
-<span>Phone</span>
-
-${user.phone || "-"}
-
-</div>
-
-<div>
-
-<span>Email</span>
-
-${user.email || "-"}
-
-</div>
-
-<div>
-
-<span>Wallet</span>
-
-UGX ${Number(user.wallet_balance||0).toLocaleString()}
-
-</div>
-
-<div>
-
-<span>Joined</span>
-
-${new Date(user.created_at).toLocaleDateString()}
-
-</div>
-
-</div>
-
-<div class="actions">
+<div class="formButtons">
 
 <button
+type="submit"
+class="successBtn">
 
-class="viewBtn"
-
-onclick="viewUser('${user.id}')">
-
-View
+💾 Save Changes
 
 </button>
 
 <button
+type="button"
+id="cancelEditBtn"
+class="secondaryBtn">
 
-class="editBtn"
-
-onclick="editUser('${user.id}')">
-
-Edit
-
-</button>
-
-<button
-
-class="suspendBtn"
-
-onclick="suspendUser('${user.id}')">
-
-Suspend
+Cancel
 
 </button>
 
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- ==========================
+SUCCESS POPUP
+========================== -->
+
+<div
+id="successPopup"
+class="popup hidden">
+
+<div class="popupBox">
+
+<div class="popupIcon">
+
+✅
+
+</div>
+
+<h2>
+
+Success
+
+</h2>
+
+<p id="successMessage">
+
+Operation completed successfully.
+
+</p>
+
 <button
+id="closeSuccessPopup"
+class="successBtn">
 
-class="activateBtn"
-
-onclick="activateUser('${user.id}')">
-
-Activate
+OK
 
 </button>
 
@@ -429,255 +850,26 @@ Activate
 
 </div>
 
-`;
+<!-- ==========================
+LOADING
+========================== -->
 
-});
+<div
+id="loadingOverlay"
+class="loading hidden">
 
-}
+<div class="loader"></div>
 
-    </script><script>
+<p>
 
-/* ==========================
-VIEW USER
-========================== */
+Loading...
 
-async function viewUser(userId){
+</p>
 
-localStorage.setItem("selectedUser",userId);
+</div>
 
-window.location.href="admin-user-profile.html";
-
-}
-
-/* ==========================
-EDIT USER
-========================== */
-
-async function editUser(userId){
-
-localStorage.setItem("editUser",userId);
-
-window.location.href="admin-edit-user.html";
-
-}
-
-/* ==========================
-SUSPEND USER
-========================== */
-
-async function suspendUser(userId){
-
-if(!confirm("Suspend this user?")) return;
-
-const {error}=await db
-
-.from("profiles")
-
-.update({
-
-account_status:"suspended"
-
-})
-
-.eq("id",userId);
-
-if(error){
-
-alert("Failed to suspend user.");
-
-console.log(error);
-
-return;
-
-}
-
-/* Admin Notification */
-
-await db
-
-.from("admin_notifications")
-
-.insert({
-
-title:"User Suspended",
-
-message:"A user account has been suspended.",
-
-type:"warning"
-
-});
-
-alert("User suspended successfully.");
-
-loadUsers();
-
-}
-
-/* ==========================
-ACTIVATE USER
-========================== */
-
-async function activateUser(userId){
-
-if(!confirm("Activate this user?")) return;
-
-const {error}=await db
-
-.from("profiles")
-
-.update({
-
-account_status:"active"
-
-})
-
-.eq("id",userId);
-
-if(error){
-
-alert("Failed to activate user.");
-
-console.log(error);
-
-return;
-
-}
-
-/* Admin Notification */
-
-await db
-
-.from("admin_notifications")
-
-.insert({
-
-title:"User Activated",
-
-message:"A user account has been activated.",
-
-type:"success"
-
-});
-
-alert("User activated successfully.");
-
-loadUsers();
-
-}
-
-    </script><script>
-
-/* ==========================
-LIVE SEARCH
-========================== */
-
-document.getElementById("searchInput")
-
-.addEventListener("keyup",function(){
-
-const value=this.value.toLowerCase();
-
-const cards=document.querySelectorAll(".userCard");
-
-cards.forEach(card=>{
-
-card.style.display=
-
-card.innerText.toLowerCase().includes(value)
-
-? "block"
-
-: "none";
-
-});
-
-});
-
-/* ==========================
-STATUS FILTER
-========================== */
-
-document.getElementById("statusFilter")
-
-.addEventListener("change",function(){
-
-const value=this.value;
-
-const cards=document.querySelectorAll(".userCard");
-
-cards.forEach(card=>{
-
-const status=card.querySelector(".status")
-
-.innerText
-
-.toLowerCase()
-
-.trim();
-
-if(value==="all"){
-
-card.style.display="block";
-
-}else{
-
-card.style.display=
-
-status===value
-
-? "block"
-
-: "none";
-
-}
-
-});
-
-});
-
-/* ==========================
-AUTO REFRESH
-========================== */
-
-
-/* ==========================
-DISABLE BUTTONS
-========================== */
-
-document.addEventListener("click",function(e){
-
-if(
-
-e.target.classList.contains("viewBtn") ||
-
-e.target.classList.contains("editBtn") ||
-
-e.target.classList.contains("suspendBtn") ||
-
-e.target.classList.contains("activateBtn")
-
-){
-
-e.target.disabled=true;
-
-setTimeout(()=>{
-
-e.target.disabled=false;
-
-},1500);
-
-}
-
-});
-
-/* ==========================
-READY
-========================== */
-
-console.log("User Management Ready");
-
-</script>
+<script src="admin-users.js"></script>
 
 </body>
 
-</html>
+  </html>
