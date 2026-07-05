@@ -1,620 +1,754 @@
-/* ==========================================
-MARATHON DIGITAL HUB
-ADMIN MACHINES
-========================================== */
+/*==================================
+MARATHON DIGITAL HUB ADMIN MACHINES
+==================================*/
 
-const db = window.supabaseClient;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
 
-let machines = [];
-let editingId = null;
-let deleteId = null;
-let uploadedImage = "";
+:root{
 
-/* ==========================================
-ELEMENTS
-========================================== */
+    --bg:#07111F;
+    --card:#102040;
+    --card2:#16294F;
+    --primary:#00D084;
+    --blue:#19B5FE;
+    --danger:#FF4D4F;
+    --warning:#FFC107;
 
-const form = document.getElementById("machineForm");
-const openFormBtn = document.getElementById("openFormBtn");
-const cancelMachine = document.getElementById("cancelMachine");
-const saveMachine = document.getElementById("saveMachine");
-const machineList = document.getElementById("machineList");
-const searchMachine = document.getElementById("searchMachine");
-const previewImage = document.getElementById("previewImage");
-const machineImage = document.getElementById("machineImage");
-
-/* ==========================================
-START
-========================================== */
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    form.style.display = "none";
-
-    loadMachines();
-
-});
-
-/* ==========================================
-OPEN FORM
-========================================== */
-
-openFormBtn.onclick = () => {
-
-    editingId = null;
-
-    clearForm();
-
-    document.getElementById("formTitle").innerText =
-    "Add New Machine";
-
-    form.style.display = "block";
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-};
-
-/* ==========================================
-CANCEL
-========================================== */
-
-cancelMachine.onclick = () => {
-
-    form.style.display = "none";
-
-    clearForm();
-
-};
-
-/* ==========================================
-CLEAR FORM
-========================================== */
-
-function clearForm(){
-
-    document.getElementById("machineName").value = "";
-    document.getElementById("machineSeries").value = "";
-    document.getElementById("machinePrice").value = "";
-    document.getElementById("machineReturn").value = "";
-    document.getElementById("machineDuration").value = "";
-    document.getElementById("machineStatus").value = "true";
-    document.getElementById("machineVIP").checked = false;
-
-    machineImage.value = "";
-
-    uploadedImage = "";
-
-    previewImage.src = "";
-
-    previewImage.style.display = "none";
+    --white:#ffffff;
+    --text:#BFCBE5;
+    --border:rgba(255,255,255,.06);
 
 }
 
-/* ==========================================
-IMAGE PREVIEW
-========================================== */
+body{
 
-machineImage.addEventListener("change",(e)=>{
-
-    const file=e.target.files[0];
-
-    if(!file) return;
-
-    previewImage.src=URL.createObjectURL(file);
-
-    previewImage.style.display="block";
-
-});
-
-/* ==========================================
-LOAD MACHINES
-========================================== */
-
-async function loadMachines(){
-
-    machineList.innerHTML = `
-        <div class="emptyState">
-            <h2>Loading machines...</h2>
-        </div>
-    `;
-
-    const { data, error } = await db
-
-    .from("machines")
-
-    .select("*")
-
-    .order("created_at",{ascending:false});
-
-    if(error){
-
-        console.log(error);
-
-        machineList.innerHTML = `
-            <div class="emptyState">
-                <h2>Failed to load machines</h2>
-                <p>${error.message}</p>
-            </div>
-        `;
-
-        return;
-
-    }
-
-    machines = data || [];
-
-    updateStats();
-
-    renderMachines(machines);
+    background:var(--bg);
+    color:var(--white);
 
 }
 
-/* ==========================================
-UPDATE STATS
-========================================== */
+.page{
 
-function updateStats(){
-
-    document.getElementById("totalMachines").textContent =
-    machines.length;
-
-    document.getElementById("activeMachines").textContent =
-    machines.filter(m=>m.status===true).length;
-
-    document.getElementById("disabledMachines").textContent =
-    machines.filter(m=>m.status===false).length;
-
-    document.getElementById("vipMachines").textContent =
-    machines.filter(m=>m.is_vip===true).length;
-
-    }
-
-/* ==========================================
-RENDER MACHINES
-========================================== */
-
-function renderMachines(machineArray){
-
-    if(machineArray.length===0){
-
-        machineList.innerHTML=`
-        <div class="emptyState">
-            <h2>No Machines Found</h2>
-            <p>Add your first mining machine.</p>
-        </div>
-        `;
-
-        return;
-
-    }
-
-    machineList.innerHTML=machineArray.map(machine=>{
-
-        const daily=Math.floor(
-            Number(machine.total_return||0)/
-            Number(machine.duration_days||1)
-        );
-
-        return `
-
-        <div class="machineCard">
-
-            <img
-            src="${machine.image_url||''}"
-            alt="${machine.name}">
-
-            <div class="machineInfo">
-
-                <h3>${machine.name}</h3>
-
-                <p>
-                <strong>Series:</strong>
-                ${machine.series||"-"}
-                </p>
-
-                <p>
-                <strong>Price:</strong>
-                UGX ${Number(machine.price).toLocaleString()}
-                </p>
-
-                <p>
-                <strong>Total Return:</strong>
-                UGX ${Number(machine.total_return).toLocaleString()}
-                </p>
-
-                <p>
-                <strong>Daily Income:</strong>
-                UGX ${daily.toLocaleString()}
-                </p>
-
-                <p>
-                <strong>Duration:</strong>
-                ${machine.duration_days} Days
-                </p>
-
-                <div class="badges">
-
-                    ${
-                        machine.is_vip
-                        ?'<span class="badge vipBadge">⭐ VIP</span>'
-                        :''
-                    }
-
-                    ${
-                        machine.status
-                        ?'<span class="badge activeBadge">🟢 Active</span>'
-                        :'<span class="badge disabledBadge">🔴 Disabled</span>'
-                    }
-
-                </div>
-
-                <div class="cardButtons">
-
-                    <button
-                    class="editBtn"
-                    onclick="editMachine('${machine.id}')">
-
-                    ✏ Edit
-
-                    </button>
-
-                    <button
-                    class="deleteBtn"
-                    onclick="deleteMachine('${machine.id}')">
-
-                    🗑 Delete
-
-                    </button>
-
-                    <button
-                    class="enableBtn"
-                    onclick="changeStatus('${machine.id}',true)">
-
-                    Enable
-
-                    </button>
-
-                    <button
-                    class="disableBtn"
-                    onclick="changeStatus('${machine.id}',false)">
-
-                    Disable
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        `;
-
-    }).join("");
+    max-width:1400px;
+    margin:auto;
+    padding:25px;
 
 }
 
-/* ==========================================
+/*========================
+HEADER
+========================*/
+
+.header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+
+}
+
+.header h1{
+
+    font-size:36px;
+    font-weight:700;
+
+}
+
+.header p{
+
+    color:var(--text);
+    margin-top:6px;
+
+}
+
+.primaryBtn{
+
+    background:linear-gradient(135deg,#00D084,#00E676);
+    color:#04111E;
+    border:none;
+    padding:15px 28px;
+    border-radius:14px;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+
+}
+
+.primaryBtn:hover{
+
+    transform:translateY(-2px);
+
+}
+
+/*========================
+STATISTICS
+========================*/
+
+.statsGrid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:20px;
+    margin-bottom:30px;
+
+}
+
+.statCard{
+
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:25px;
+    transition:.3s;
+
+}
+
+.statCard:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.statCard h2{
+
+    color:var(--primary);
+    font-size:38px;
+    margin-bottom:10px;
+
+}
+
+.statCard span{
+
+    color:var(--text);
+    font-size:15px;
+
+}
+
+/*========================
 SEARCH
-========================================== */
+========================*/
 
-searchMachine.addEventListener("input",()=>{
+.searchSection{
 
-    const keyword=searchMachine.value.toLowerCase();
-
-    const filtered=machines.filter(machine=>
-
-        (machine.name||"")
-        .toLowerCase()
-        .includes(keyword)
-
-        ||
-
-        (machine.series||"")
-        .toLowerCase()
-        .includes(keyword)
-
-    );
-
-    renderMachines(filtered);
-
-});
-
-/* ==========================================
-UPLOAD IMAGE
-========================================== */
-
-async function uploadMachineImage(){
-
-    const file = machineImage.files[0];
-
-    if(!file) return uploadedImage;
-
-    const fileName = Date.now()+"-"+file.name.replace(/\s/g,"-");
-
-    const { error } = await db.storage
-
-    .from("machine-images")
-
-    .upload(fileName,file,{upsert:true});
-
-    if(error){
-
-        alert(error.message);
-
-        return null;
-
-    }
-
-    const { data } = db.storage
-
-    .from("machine-images")
-
-    .getPublicUrl(fileName);
-
-    return data.publicUrl;
+    margin:30px 0;
 
 }
 
-/* ==========================================
-SAVE MACHINE
-========================================== */
+.searchSection input{
 
-saveMachine.addEventListener("click",saveCurrentMachine);
-
-async function saveCurrentMachine(){
-
-    const imageUrl = await uploadMachineImage();
-
-    if(machineImage.files.length && !imageUrl) return;
-
-    const machineData = {
-
-        name:document.getElementById("machineName").value.trim(),
-
-        series:document.getElementById("machineSeries").value.trim(),
-
-        price:Number(document.getElementById("machinePrice").value),
-
-        total_return:Number(document.getElementById("machineReturn").value),
-
-        duration_days:Number(document.getElementById("machineDuration").value),
-
-        status:document.getElementById("machineStatus").value==="true",
-
-        is_vip:document.getElementById("machineVIP").checked,
-
-        image_url:imageUrl || uploadedImage
-
-    };
-
-    if(machineData.name===""){
-
-        alert("Machine name is required.");
-
-        return;
-
-    }
-
-    let response;
-
-    if(editingId){
-
-        response = await db
-
-        .from("machines")
-
-        .update(machineData)
-
-        .eq("id",editingId);
-
-    }else{
-
-        response = await db
-
-        .from("machines")
-
-        .insert(machineData);
-
-    }
-
-    if(response.error){
-
-        alert(response.error.message);
-
-        return;
-
-    }
-
-    form.style.display="none";
-
-    clearForm();
-
-    loadMachines();
+    width:100%;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:18px;
+    color:white;
+    font-size:16px;
+    outline:none;
 
 }
 
-/* ==========================================
-EDIT MACHINE
-========================================== */
+.searchSection input::placeholder{
 
-window.editMachine = function(id){
-
-    const machine = machines.find(m=>m.id===id);
-
-    if(!machine) return;
-
-    editingId=id;
-
-    document.getElementById("formTitle").innerText="Edit Machine";
-
-    document.getElementById("machineName").value=machine.name||"";
-
-    document.getElementById("machineSeries").value=machine.series||"";
-
-    document.getElementById("machinePrice").value=machine.price||0;
-
-    document.getElementById("machineReturn").value=machine.total_return||0;
-
-    document.getElementById("machineDuration").value=machine.duration_days||0;
-
-    document.getElementById("machineStatus").value=machine.status?"true":"false";
-
-    document.getElementById("machineVIP").checked=machine.is_vip;
-
-    uploadedImage=machine.image_url||"";
-
-    if(uploadedImage){
-
-        previewImage.src=uploadedImage;
-
-        previewImage.style.display="block";
-
-    }
-
-    form.style.display="block";
-
-    window.scrollTo({
-
-        top:0,
-
-        behavior:"smooth"
-
-    });
-
-};
-
-/* ==========================================
-DELETE MACHINE
-========================================== */
-
-window.deleteMachine = async function(id){
-
-    const ok = confirm("Are you sure you want to delete this machine?");
-
-    if(!ok) return;
-
-    const { error } = await db
-
-    .from("machines")
-
-    .delete()
-
-    .eq("id",id);
-
-    if(error){
-
-        alert(error.message);
-
-        return;
-
-    }
-
-    await loadMachines();
-
-};
-
-/* ==========================================
-ENABLE / DISABLE MACHINE
-========================================== */
-
-window.changeStatus = async function(id,status){
-
-    const { error } = await db
-
-    .from("machines")
-
-    .update({
-
-        status:status
-
-    })
-
-    .eq("id",id);
-
-    if(error){
-
-        alert(error.message);
-
-        return;
-
-    }
-
-    await loadMachines();
-
-};
-
-/* ==========================================
-SUCCESS POPUP
-========================================== */
-
-function showSuccess(message){
-
-    const popup=document.getElementById("successPopup");
-
-    document.getElementById("successMessage").textContent=message;
-
-    popup.style.display="flex";
+    color:#7E91B7;
 
 }
 
-document.getElementById("closeSuccess").onclick=function(){
+/*========================
+FORM
+========================*/
 
-    document.getElementById("successPopup").style.display="none";
+.machineForm{
 
-};
+    display:none;
+    background:var(--card);
+    border-radius:24px;
+    padding:30px;
+    margin-bottom:40px;
+    border:1px solid var(--border);
 
-/* ==========================================
-DELETE POPUP BUTTON
-========================================== */
+}
 
-document.getElementById("cancelDelete").onclick=function(){
+.machineForm h2{
 
-    document.getElementById("deletePopup").style.display="none";
+    margin-bottom:25px;
+    font-size:28px;
 
-};
+}
 
-/* ==========================================
+.grid2{
+
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+
+}
+
+.machineForm input,
+.machineForm select{
+
+    width:100%;
+    background:var(--card2);
+    border:none;
+    border-radius:14px;
+    padding:16px;
+    color:white;
+    font-size:15px;
+    outline:none;
+    margin-bottom:16px;
+
+}
+
+.machineForm input::placeholder{
+
+    color:#8EA3C9;
+
+}
+
+/*========================
+SECTION TITLE
+========================*/
+
+.sectionTitle{
+
+    font-size:34px;
+    font-weight:700;
+    margin:35px 0 25px;
+
+}
+
+/*========================
+MACHINE GRID
+========================*/
+
+.machineGrid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+    gap:25px;
+
+}
+
+/*========================
+MACHINE CARD
+========================*/
+
+.machineCard{
+
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:22px;
+    overflow:hidden;
+    transition:.35s;
+
+}
+
+.machineCard:hover{
+
+    transform:translateY(-6px);
+    box-shadow:0 18px 40px rgba(0,0,0,.35);
+
+}
+
+.machineCard img{
+
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    display:block;
+    background:#16294F;
+
+}
+
+.machineInfo{
+
+    padding:24px;
+
+}
+
+.machineInfo h3{
+
+    font-size:30px;
+    color:var(--primary);
+    margin-bottom:18px;
+
+}
+
+.machineInfo p{
+
+    margin:12px 0;
+    color:var(--text);
+    font-size:17px;
+    line-height:1.6;
+
+}
+
+.machineInfo strong{
+
+    color:white;
+
+}
+
+/*========================
+BADGES
+========================*/
+
+.badges{
+
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin:20px 0;
+
+}
+
+.badge{
+
+    padding:8px 18px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:bold;
+
+}
+
+.activeBadge{
+
+    background:#00D084;
+    color:#04111E;
+
+}
+
+.disabledBadge{
+
+    background:#FF4D4F;
+    color:white;
+
+}
+
+.vipBadge{
+
+    background:#FFC107;
+    color:#111827;
+
+}
+
+/*========================
+BUTTONS
+========================*/
+
+.cardButtons{
+
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+    margin-top:25px;
+
+}
+
+.cardButtons button{
+
+    border:none;
+    border-radius:12px;
+    padding:14px;
+    font-size:15px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.25s;
+
+}
+
+.cardButtons button:hover{
+
+    transform:translateY(-2px);
+
+}
+
+.editBtn{
+
+    background:#FFC107;
+    color:#111827;
+
+}
+
+.deleteBtn{
+
+    background:#FF4D4F;
+    color:white;
+
+}
+
+.enableBtn{
+
+    background:#00D084;
+    color:#04111E;
+
+}
+
+.disableBtn{
+
+    background:#5C657A;
+    color:white;
+
+}
+
+/*==========================
+UPLOAD SECTION
+==========================*/
+
+.uploadSection{
+
+    margin:25px 0;
+
+}
+
+.uploadBtn{
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:60px;
+
+    background:var(--card2);
+
+    border:2px dashed var(--blue);
+
+    border-radius:16px;
+
+    color:var(--blue);
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.uploadBtn:hover{
+
+    background:#1A3566;
+
+}
+
+#previewImage{
+
+    width:100%;
+
+    height:240px;
+
+    object-fit:cover;
+
+    margin-top:20px;
+
+    border-radius:18px;
+
+    display:none;
+
+    border:2px solid var(--border);
+
+}
+
+/*==========================
+VIP
+==========================*/
+
+.vipRow{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    margin:20px 0;
+
+}
+
+.vipRow input{
+
+    width:20px;
+
+    height:20px;
+
+    accent-color:var(--primary);
+
+}
+
+/*==========================
+FORM BUTTONS
+==========================*/
+
+.formActions{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:25px;
+
+}
+
+.successBtn{
+
+    flex:1;
+
+    background:var(--primary);
+
+    color:#04111E;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.dangerBtn{
+
+    flex:1;
+
+    background:var(--danger);
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.secondaryBtn{
+
+    flex:1;
+
+    background:#475569;
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+/*==========================
+POPUPS
+==========================*/
+
+.popup{
+
+    position:fixed;
+
+    inset:0;
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.75);
+
+    z-index:1000;
+
+}
+
+.popupBox{
+
+    width:92%;
+
+    max-width:420px;
+
+    background:var(--card);
+
+    border-radius:22px;
+
+    padding:30px;
+
+    text-align:center;
+
+    border:1px solid var(--border);
+
+}
+
+.popupIcon{
+
+    font-size:60px;
+
+    margin-bottom:20px;
+
+}
+
+.popupButtons{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:25px;
+
+}
+
+/*==========================
 LOADING
-========================================== */
+==========================*/
 
-function showLoading(){
+.loadingOverlay{
 
-    document.getElementById("loadingOverlay").style.display="flex";
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(7,17,31,.95);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    z-index:2000;
 
 }
 
-function hideLoading(){
+.loader{
 
-    document.getElementById("loadingOverlay").style.display="none";
+    width:60px;
+
+    height:60px;
+
+    border:6px solid rgba(255,255,255,.15);
+
+    border-top:6px solid var(--primary);
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
 
 }
 
-/* ==========================================
-CLICK OUTSIDE POPUPS
-========================================== */
+.loadingOverlay p{
 
-window.onclick=function(e){
+    margin-top:20px;
 
-    if(e.target.id==="successPopup"){
+    font-size:18px;
 
-        document.getElementById("successPopup").style.display="none";
+}
 
-    }
+@keyframes spin{
 
-    if(e.target.id==="deletePopup"){
+    to{
 
-        document.getElementById("deletePopup").style.display="none";
+        transform:rotate(360deg);
 
     }
 
-};
+}
 
-/* ==========================================
-END OF FILE
-========================================== */
+/*==========================
+RESPONSIVE
+==========================*/
 
-console.log("Admin Machines Loaded Successfully");
+@media(max-width:900px){
+
+.grid2{
+
+grid-template-columns:1fr;
+
+}
+
+.machineGrid{
+
+grid-template-columns:1fr;
+
+}
+
+.statsGrid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:600px){
+
+.page{
+
+padding:15px;
+
+}
+
+.header{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.header h1{
+
+font-size:28px;
+
+}
+
+.statsGrid{
+
+grid-template-columns:1fr;
+
+}
+
+.formActions{
+
+flex-direction:column;
+
+}
+
+.popupButtons{
+
+flex-direction:column;
+
+}
+
+.cardButtons{
+
+grid-template-columns:1fr;
+
+}
+
+.machineCard img{
+
+height:200px;
+
+}
+
+}
