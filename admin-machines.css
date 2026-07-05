@@ -3,710 +3,1039 @@ MARATHON DIGITAL HUB
 ADMIN MACHINES
 ==========================================*/
 
-// ---------- Supabase ----------
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
 
-const supabase = window.supabaseClient;
+:root{
 
-// ---------- State ----------
+    --bg:#071325;
+    --card:#102344;
+    --card2:#18345F;
 
-let machines = [];
-let editingMachineId = null;
-let selectedImage = null;
-let deleteMachineId = null;
+    --primary:#00D084;
+    --primaryHover:#00B873;
 
-// ---------- Elements ----------
+    --blue:#2F80ED;
+    --red:#E53935;
+    --orange:#F9A826;
 
-const addMachineBtn = document.getElementById("addMachineBtn");
-const closeFormBtn = document.getElementById("closeFormBtn");
-const cancelBtn = document.getElementById("cancelBtn");
+    --white:#FFFFFF;
+    --text:#C6D3F0;
 
-const machineForm = document.getElementById("machineForm");
-const machineFormElement = document.getElementById("machineFormElement");
-
-const searchInput = document.getElementById("searchInput");
-
-const machineImage = document.getElementById("machineImage");
-const previewImage = document.getElementById("previewImage");
-
-const machinesContainer = document.getElementById("machinesContainer");
-
-const totalMachines = document.getElementById("totalMachines");
-const activeMachines = document.getElementById("activeMachines");
-const disabledMachines = document.getElementById("disabledMachines");
-const vipMachines = document.getElementById("vipMachines");
-const machineCount = document.getElementById("machineCount");
-
-const loadingScreen = document.getElementById("loadingScreen");
-const toast = document.getElementById("toast");
-const toastMessage = document.getElementById("toastMessage");
-
-// ---------- Startup ----------
-
-document.addEventListener("DOMContentLoaded", () => {
-
-    hideForm();
-
-    loadMachines();
-
-});
-
-// ---------- Form ----------
-
-addMachineBtn.addEventListener("click", () => {
-
-    editingMachineId = null;
-
-    machineFormElement.reset();
-
-    previewImage.style.display = "none";
-
-    previewImage.src = "";
-
-    selectedImage = null;
-
-    document.getElementById("formTitle").textContent =
-        "Add New Machine";
-
-    showForm();
-
-});
-
-closeFormBtn.addEventListener("click", hideForm);
-
-cancelBtn.addEventListener("click", hideForm);
-
-function showForm(){
-
-    machineForm.classList.remove("hidden");
-
-    window.scrollTo({
-
-        top:0,
-
-        behavior:"smooth"
-
-    });
+    --border:rgba(255,255,255,.08);
 
 }
 
-function hideForm(){
+body{
 
-    machineForm.classList.add("hidden");
+    background:var(--bg);
 
-}
+    color:var(--white);
 
-// ---------- Image Preview ----------
-
-machineImage.addEventListener("change",(e)=>{
-
-    const file = e.target.files[0];
-
-    if(!file) return;
-
-    selectedImage = file;
-
-    previewImage.src = URL.createObjectURL(file);
-
-    previewImage.style.display = "block";
-
-});
-
-// ---------- Loading ----------
-
-function showLoading(){
-
-    loadingScreen.classList.remove("hidden");
+    min-height:100vh;
 
 }
 
-function hideLoading(){
+/*=========================
+PAGE
+=========================*/
 
-    loadingScreen.classList.add("hidden");
+.page{
 
-}
+    max-width:1500px;
 
-// ---------- Toast ----------
+    margin:auto;
 
-function showToast(message){
-
-    toastMessage.textContent = message;
-
-    toast.classList.add("show");
-
-    setTimeout(()=>{
-
-        toast.classList.remove("show");
-
-    },3000);
+    padding:25px;
 
 }
 
-        /*==========================================
-LOAD MACHINES
-==========================================*/
+/*=========================
+TOP BAR
+=========================*/
 
-async function loadMachines(){
+.topBar{
 
-    if(!supabase){
+    display:flex;
 
-        showToast("Supabase is not connected.");
+    justify-content:space-between;
 
-        return;
+    align-items:center;
 
-    }
+    gap:20px;
 
-    showLoading();
+    flex-wrap:wrap;
 
-    const { data, error } = await supabase
-
-        .from("machines")
-
-        .select("*")
-
-        .order("created_at", { ascending:false });
-
-    hideLoading();
-
-    if(error){
-
-        console.error(error);
-
-        showToast(error.message);
-
-        return;
-
-    }
-
-    machines = data || [];
-
-    updateDashboard();
-
-    renderMachines(machines);
+    margin-bottom:30px;
 
 }
 
-/*==========================================
-UPDATE DASHBOARD
-==========================================*/
+.topBar h1{
 
-function updateDashboard(){
+    font-size:36px;
 
-    totalMachines.textContent = machines.length;
-
-    activeMachines.textContent =
-        machines.filter(machine => machine.status).length;
-
-    disabledMachines.textContent =
-        machines.filter(machine => !machine.status).length;
-
-    vipMachines.textContent =
-        machines.filter(machine => machine.is_vip).length;
-
-    machineCount.textContent =
-        `${machines.length} Machine${machines.length===1?"":"s"}`;
+    margin-bottom:8px;
 
 }
 
-/*==========================================
-RENDER MACHINES
-==========================================*/
+.topBar p{
 
-function renderMachines(list){
-
-    if(list.length===0){
-
-        machinesContainer.innerHTML = `
-
-        <div class="emptyState">
-
-            <h2>No Machines Found</h2>
-
-            <p>Create your first mining machine.</p>
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-    machinesContainer.innerHTML = "";
-
-    list.forEach(machine=>{
-
-        const card = document.createElement("div");
-
-        card.className = "machineCard";
-
-        const image = machine.image_url ||
-        "https://placehold.co/600x400/102344/ffffff?text=Machine";
-
-        card.innerHTML = `
-
-            <img src="${image}" alt="${machine.name}">
-
-            <div class="machineContent">
-
-                <h3>${machine.name}</h3>
-
-                <div class="machineInfo">
-
-                    <span>Series</span>
-
-                    <strong>${machine.series || "-"}</strong>
-
-                </div>
-
-                <div class="machineInfo">
-
-                    <span>Price</span>
-
-                    <strong>UGX ${Number(machine.price).toLocaleString()}</strong>
-
-                </div>
-
-                <div class="machineInfo">
-
-                    <span>Total Return</span>
-
-                    <strong>UGX ${Number(machine.total_return).toLocaleString()}</strong>
-
-                </div>
-
-                <div class="machineInfo">
-
-                    <span>Duration</span>
-
-                    <strong>${machine.duration_days} Days</strong>
-
-                </div>
-
-                <div class="badgeRow">
-
-                    <span class="badge ${machine.status ? "active":"disabled"}">
-
-                        ${machine.status ? "ACTIVE":"DISABLED"}
-
-                    </span>
-
-                    ${machine.is_vip ?
-
-                    '<span class="badge vip">VIP</span>'
-
-                    : ''}
-
-                </div>
-
-                <div class="cardActions">
-
-                    <button
-                        class="editBtn"
-                        data-id="${machine.id}">
-
-                        Edit
-
-                    </button>
-
-                    <button
-                        class="deleteBtn"
-                        data-id="${machine.id}">
-
-                        Delete
-
-                    </button>
-
-                    <button
-                        class="${machine.status ? "disableBtn":"enableBtn"}"
-                        data-status="${machine.status}"
-                        data-id="${machine.id}">
-
-                        ${machine.status ? "Disable":"Enable"}
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        `;
-
-        machinesContainer.appendChild(card);
-
-    });
+    color:var(--text);
 
 }
 
-/*==========================================
+/*=========================
+BUTTONS
+=========================*/
+
+.primaryBtn{
+
+    background:var(--primary);
+
+    color:#071325;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:15px 28px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.primaryBtn:hover{
+
+    background:var(--primaryHover);
+
+    transform:translateY(-2px);
+
+}
+
+/*=========================
+STATISTICS
+=========================*/
+
+.statsGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    margin-bottom:30px;
+
+}
+
+.statCard{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:25px;
+
+    transition:.3s;
+
+}
+
+.statCard:hover{
+
+    transform:translateY(-4px);
+
+}
+
+.statCard span{
+
+    color:var(--text);
+
+    font-size:15px;
+
+}
+
+.statCard h2{
+
+    margin-top:12px;
+
+    font-size:38px;
+
+    color:var(--primary);
+
+}
+
+/*=========================
 SEARCH
-==========================================*/
+=========================*/
 
-searchInput.addEventListener("input",()=>{
+.searchArea{
 
-    const value = searchInput.value
-        .trim()
-        .toLowerCase();
-
-    const filtered = machines.filter(machine=>
-
-        machine.name.toLowerCase().includes(value)
-
-        ||
-
-        (machine.series || "")
-        .toLowerCase()
-        .includes(value)
-
-    );
-
-    renderMachines(filtered);
-
-});
-
-                                  /*==========================================
-UPLOAD IMAGE
-==========================================*/
-
-async function uploadMachineImage(){
-
-    if(!selectedImage) return null;
-
-    const fileName =
-        `machine-${Date.now()}-${selectedImage.name}`;
-
-    const { error } = await supabase.storage
-
-        .from("machine-images")
-
-        .upload(fileName, selectedImage, {
-
-            upsert:true
-
-        });
-
-    if(error){
-
-        showToast(error.message);
-
-        return null;
-
-    }
-
-    const { data } = supabase.storage
-
-        .from("machine-images")
-
-        .getPublicUrl(fileName);
-
-    return data.publicUrl;
+    margin-bottom:30px;
 
 }
 
-/*==========================================
-SAVE MACHINE
-==========================================*/
+.searchArea input{
 
-machineFormElement.addEventListener("submit", saveMachine);
+    width:100%;
 
-async function saveMachine(e){
+    background:var(--card);
 
-    e.preventDefault();
+    color:white;
 
-    showLoading();
+    border:1px solid var(--border);
 
-    let imageUrl = "";
+    border-radius:15px;
 
-    if(selectedImage){
+    padding:18px;
 
-        imageUrl = await uploadMachineImage();
+    font-size:16px;
 
-    }
+    outline:none;
 
-    const machine = {
+}
 
-        name:document.getElementById("machineName").value.trim(),
+.searchArea input::placeholder{
 
-        series:document.getElementById("machineSeries").value.trim(),
+    color:#9CB3DD;
 
-        price:Number(document.getElementById("machinePrice").value),
+}
 
-        total_return:Number(document.getElementById("machineReturn").value),
+/*=========================
+FORM
+=========================*/
 
-        duration_days:Number(document.getElementById("machineDuration").value),
+.machineForm{
 
-        status:document.getElementById("machineStatus").value==="true",
+    background:var(--card);
 
-        is_vip:document.getElementById("machineVIP").checked
+    border:1px solid var(--border);
 
-    };
+    border-radius:22px;
 
-    if(imageUrl){
+    padding:30px;
 
-        machine.image_url = imageUrl;
+    margin-bottom:35px;
 
-    }
+}
 
-    let result;
+.hidden{
 
-    if(editingMachineId){
+    display:none;
 
-        if(!imageUrl){
+}
 
-            delete machine.image_url;
+.formHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.formHeader h2{
+
+    font-size:28px;
+
+}
+
+.closeBtn{
+
+    width:45px;
+
+    height:45px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:var(--red);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+}
+
+.formGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:20px;
+
+}
+
+.formGroup{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+.formGroup label{
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+    color:var(--text);
+
+}
+
+.formGroup input,
+
+.formGroup select{
+
+    width:100%;
+
+    background:var(--card2);
+
+    color:white;
+
+    border:1px solid var(--border);
+
+    border-radius:14px;
+
+    padding:15px;
+
+    font-size:15px;
+
+    outline:none;
+
         }
 
-        result = await supabase
+    /*=========================================
+IMAGE UPLOAD
+=========================================*/
 
-            .from("machines")
+.previewImage{
 
-            .update(machine)
+    width:100%;
 
-            .eq("id", editingMachineId);
+    height:240px;
 
-    }else{
+    object-fit:cover;
 
-        result = await supabase
+    margin-top:15px;
 
-            .from("machines")
+    border-radius:16px;
 
-            .insert([machine]);
+    display:none;
 
-    }
-
-    hideLoading();
-
-    if(result.error){
-
-        showToast(result.error.message);
-
-        return;
-
-    }
-
-    machineFormElement.reset();
-
-    previewImage.style.display = "none";
-
-    previewImage.src = "";
-
-    selectedImage = null;
-
-    editingMachineId = null;
-
-    hideForm();
-
-    showToast("Machine saved successfully.");
-
-    loadMachines();
+    border:2px solid var(--border);
 
 }
 
-/*==========================================
-EDIT MACHINE
-==========================================*/
+input[type="file"]{
 
-machinesContainer.addEventListener("click", async (e)=>{
+    width:100%;
 
-    if(!e.target.classList.contains("editBtn")) return;
+    background:var(--card2);
 
-    const id = e.target.dataset.id;
+    color:white;
 
-    const machine = machines.find(m=>m.id===id);
+    border:1px solid var(--border);
 
-    if(!machine) return;
+    border-radius:14px;
 
-    editingMachineId = id;
+    padding:12px;
 
-    document.getElementById("formTitle").textContent =
-        "Edit Machine";
-
-    document.getElementById("machineName").value =
-        machine.name;
-
-    document.getElementById("machineSeries").value =
-        machine.series || "";
-
-    document.getElementById("machinePrice").value =
-        machine.price;
-
-    document.getElementById("machineReturn").value =
-        machine.total_return;
-
-    document.getElementById("machineDuration").value =
-        machine.duration_days;
-
-    document.getElementById("machineStatus").value =
-        String(machine.status);
-
-    document.getElementById("machineVIP").checked =
-        machine.is_vip;
-
-    if(machine.image_url){
-
-        previewImage.src = machine.image_url;
-
-        previewImage.style.display = "block";
-
-    }else{
-
-        previewImage.style.display = "none";
-
-    }
-
-    selectedImage = null;
-
-    showForm();
-
-});
-
-    /*==========================================
-DELETE & STATUS EVENTS
-==========================================*/
-
-const deleteModal = document.getElementById("deleteModal");
-const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
-const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
-
-machinesContainer.addEventListener("click", (e)=>{
-
-    // Delete
-
-    if(e.target.classList.contains("deleteBtn")){
-
-        deleteMachineId = e.target.dataset.id;
-
-        deleteModal.classList.remove("hidden");
-
-    }
-
-    // Enable / Disable
-
-    if(
-
-        e.target.classList.contains("enableBtn")
-
-        ||
-
-        e.target.classList.contains("disableBtn")
-
-    ){
-
-        const id = e.target.dataset.id;
-
-        const current = e.target.dataset.status === "true";
-
-        updateMachineStatus(id,!current);
-
-    }
-
-});
-
-/*==========================================
-DELETE MACHINE
-==========================================*/
-
-cancelDeleteBtn.addEventListener("click",()=>{
-
-    deleteModal.classList.add("hidden");
-
-    deleteMachineId = null;
-
-});
-
-confirmDeleteBtn.addEventListener("click",async()=>{
-
-    if(!deleteMachineId) return;
-
-    showLoading();
-
-    const { error } = await supabase
-
-        .from("machines")
-
-        .delete()
-
-        .eq("id",deleteMachineId);
-
-    hideLoading();
-
-    deleteModal.classList.add("hidden");
-
-    deleteMachineId = null;
-
-    if(error){
-
-        showToast(error.message);
-
-        return;
-
-    }
-
-    showToast("Machine deleted successfully.");
-
-    loadMachines();
-
-});
-
-/*==========================================
-ENABLE / DISABLE
-==========================================*/
-
-async function updateMachineStatus(id,status){
-
-    showLoading();
-
-    const { error } = await supabase
-
-        .from("machines")
-
-        .update({
-
-            status:status
-
-        })
-
-        .eq("id",id);
-
-    hideLoading();
-
-    if(error){
-
-        showToast(error.message);
-
-        return;
-
-    }
-
-    showToast(
-
-        status
-
-        ? "Machine enabled."
-
-        : "Machine disabled."
-
-    );
-
-    loadMachines();
+    cursor:pointer;
 
 }
 
-/*==========================================
-CLOSE MODAL WHEN CLICKING OUTSIDE
-==========================================*/
+/*=========================
+VIP CHECKBOX
+=========================*/
 
-deleteModal.addEventListener("click",(e)=>{
+.checkboxRow{
 
-    if(e.target===deleteModal){
+    display:flex;
 
-        deleteModal.classList.add("hidden");
+    align-items:center;
+
+    gap:12px;
+
+    margin:25px 0;
+
+}
+
+.checkboxRow input{
+
+    width:20px;
+
+    height:20px;
+
+    accent-color:var(--primary);
+
+}
+
+.checkboxRow label{
+
+    color:var(--text);
+
+    font-size:15px;
+
+}
+
+/*=========================
+FORM BUTTONS
+=========================*/
+
+.buttonRow{
+
+    display:flex;
+
+    gap:15px;
+
+    margin-top:20px;
+
+}
+
+.saveBtn{
+
+    flex:1;
+
+    background:var(--primary);
+
+    color:#071325;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.saveBtn:hover{
+
+    background:var(--primaryHover);
+
+}
+
+.cancelBtn{
+
+    flex:1;
+
+    background:#64748B;
+
+    color:white;
+
+    border:none;
+
+    border-radius:14px;
+
+    padding:16px;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+}
+
+.cancelBtn:hover{
+
+    background:#4B5563;
+
+}
+
+/*=========================
+SECTION HEADER
+=========================*/
+
+.sectionHeader{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:25px;
+
+}
+
+.sectionHeader h2{
+
+    font-size:30px;
+
+}
+
+.sectionHeader span{
+
+    color:var(--text);
+
+}
+
+/*=========================
+MACHINE GRID
+=========================*/
+
+.machinesGrid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+
+    gap:25px;
+
+}
+
+/*=========================
+MACHINE CARD
+=========================*/
+
+.machineCard{
+
+    background:var(--card);
+
+    border-radius:22px;
+
+    overflow:hidden;
+
+    border:1px solid var(--border);
+
+    transition:.3s;
+
+}
+
+.machineCard:hover{
+
+    transform:translateY(-6px);
+
+}
+
+.machineCard img{
+
+    width:100%;
+
+    height:220px;
+
+    object-fit:cover;
+
+}
+
+.machineContent{
+
+    padding:22px;
+
+}
+
+.machineContent h3{
+
+    font-size:24px;
+
+    margin-bottom:15px;
+
+    color:var(--primary);
+
+}
+
+.machineInfo{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-bottom:10px;
+
+    color:var(--text);
+
+}
+
+.machineInfo strong{
+
+    color:white;
+
+}
+
+/*=========================
+BADGES
+=========================*/
+
+.badgeRow{
+
+    display:flex;
+
+    gap:10px;
+
+    flex-wrap:wrap;
+
+    margin:18px 0;
+
+}
+
+.badge{
+
+    padding:7px 14px;
+
+    border-radius:30px;
+
+    font-size:12px;
+
+    font-weight:bold;
+
+}
+
+.badge.active{
+
+    background:var(--primary);
+
+    color:#071325;
+
+}
+
+.badge.disabled{
+
+    background:var(--red);
+
+    color:white;
+
+}
+
+.badge.vip{
+
+    background:var(--orange);
+
+    color:#071325;
+
+}
+
+/*=========================
+CARD BUTTONS
+=========================*/
+
+.cardActions{
+
+    display:grid;
+
+    grid-template-columns:repeat(2,1fr);
+
+    gap:12px;
+
+    margin-top:20px;
+
+}
+
+.cardActions button{
+
+    border:none;
+
+    border-radius:12px;
+
+    padding:13px;
+
+    font-size:14px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.editBtn{
+
+    background:var(--blue);
+
+    color:white;
+
+}
+
+.deleteBtn{
+
+    background:var(--red);
+
+    color:white;
+
+}
+
+.enableBtn{
+
+    background:var(--primary);
+
+    color:#071325;
+
+}
+
+.disableBtn{
+
+    background:#6B7280;
+
+    color:white;
 
     }
 
-});
+/*=========================================
+DELETE MODAL
+=========================================*/
 
-/*==========================================
-READY
-==========================================*/
+.modal{
 
-console.log("✅ Marathon Admin Machines Loaded");
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:rgba(0,0,0,.75);
+
+    backdrop-filter:blur(4px);
+
+    z-index:9999;
+
+}
+
+.modal.hidden{
+
+    display:none;
+
+}
+
+.modalCard{
+
+    width:90%;
+
+    max-width:420px;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    padding:30px;
+
+    text-align:center;
+
+    animation:pop .25s ease;
+
+}
+
+@keyframes pop{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.9);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
+
+}
+
+.modalCard h2{
+
+    font-size:28px;
+
+    margin-bottom:15px;
+
+}
+
+.modalCard p{
+
+    color:var(--text);
+
+    line-height:1.6;
+
+    margin-bottom:25px;
+
+}
+
+.modalButtons{
+
+    display:flex;
+
+    gap:15px;
+
+}
+
+/*=========================================
+TOAST
+=========================================*/
+
+.toast{
+
+    position:fixed;
+
+    top:30px;
+
+    right:30px;
+
+    background:var(--primary);
+
+    color:#071325;
+
+    padding:16px 24px;
+
+    border-radius:14px;
+
+    font-weight:bold;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+
+    transform:translateX(150%);
+
+    transition:.35s;
+
+    z-index:10000;
+
+}
+
+.toast.show{
+
+    transform:translateX(0);
+
+}
+
+/*=========================================
+LOADING
+=========================================*/
+
+.loadingScreen{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    background:rgba(7,19,37,.95);
+
+    z-index:10001;
+
+}
+
+.loadingScreen.hidden{
+
+    display:none;
+
+}
+
+.spinner{
+
+    width:65px;
+
+    height:65px;
+
+    border:6px solid rgba(255,255,255,.15);
+
+    border-top:6px solid var(--primary);
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+.loadingScreen p{
+
+    margin-top:20px;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+}
+
+/*=========================================
+EMPTY STATE
+=========================================*/
+
+.emptyState{
+
+    grid-column:1/-1;
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:60px 25px;
+
+    text-align:center;
+
+}
+
+.emptyState h2{
+
+    margin-bottom:12px;
+
+    font-size:30px;
+
+}
+
+.emptyState p{
+
+    color:var(--text);
+
+}
+
+/*=========================================
+SCROLLBAR
+=========================================*/
+
+::-webkit-scrollbar{
+
+    width:8px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:var(--primary);
+
+    border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:var(--bg);
+
+}
+
+/*=========================================
+RESPONSIVE
+=========================================*/
+
+@media (max-width:900px){
+
+    .formGrid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .machinesGrid{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
+@media (max-width:600px){
+
+    .page{
+
+        padding:15px;
+
+    }
+
+    .topBar{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+    }
+
+    .topBar h1{
+
+        font-size:28px;
+
+    }
+
+    .statsGrid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .buttonRow{
+
+        flex-direction:column;
+
+    }
+
+    .cardActions{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .modalButtons{
+
+        flex-direction:column;
+
+    }
+
+    .machineCard img{
+
+        height:200px;
+
+    }
+
+    .primaryBtn{
+
+        width:100%;
+
+    }
+
+    .toast{
+
+        right:15px;
+
+        left:15px;
+
+        top:15px;
+
+    }
+
+    }
