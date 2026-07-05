@@ -4,18 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Machine Management</title>
 
-<link rel="stylesheet"
-href="admin-machines.css">
+<link rel="stylesheet" href="admin-machines.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="supabase-config.js"></script>
 
 </head>
 
@@ -23,428 +18,272 @@ href="admin-machines.css">
 
 <div class="page">
 
-<!-- ==========================
-HEADER
-========================== -->
+    <!-- HEADER -->
 
-<header class="header">
+    <div class="header">
 
-<div>
+        <div>
 
-<h1>Machine Management</h1>
+            <h1>Machine Management</h1>
 
-<p>
+            <p>Manage all mining machines</p>
 
-Manage all Marathon mining machines
+        </div>
 
-</p>
+        <button id="openFormBtn" class="primaryBtn">
+            ➕ Add Machine
+        </button>
+
+    </div>
+
+    <!-- STATISTICS -->
+
+    <div class="statsGrid">
+
+        <div class="statCard">
+            <h2 id="totalMachines">0</h2>
+            <span>Total Machines</span>
+        </div>
+
+        <div class="statCard">
+            <h2 id="activeMachines">0</h2>
+            <span>Active</span>
+        </div>
+
+        <div class="statCard">
+            <h2 id="disabledMachines">0</h2>
+            <span>Disabled</span>
+        </div>
+
+        <div class="statCard">
+            <h2 id="vipMachines">0</h2>
+            <span>VIP</span>
+        </div>
+
+    </div>
+
+      <!-- SEARCH -->
+
+    <div class="searchSection">
+
+        <input
+            type="text"
+            id="searchMachine"
+            placeholder="Search machines...">
+
+    </div>
+
+    <!-- ADD / EDIT MACHINE FORM -->
+
+    <div class="machineForm" id="machineForm">
+
+        <h2 id="formTitle">Add New Machine</h2>
+
+        <div class="grid2">
+
+            <input
+                type="text"
+                id="machineName"
+                placeholder="Machine Name">
+
+            <input
+                type="text"
+                id="machineSeries"
+                placeholder="Machine Series">
+
+            <input
+                type="number"
+                id="machinePrice"
+                placeholder="Price">
+
+            <input
+                type="number"
+                id="machineReturn"
+                placeholder="Total Return">
+
+            <input
+                type="number"
+                id="machineDuration"
+                placeholder="Duration (Days)">
+
+            <select id="machineStatus">
+
+                <option value="true">Active</option>
+
+                <option value="false">Disabled</option>
+
+            </select>
+
+        </div>
+
+        <!-- IMAGE -->
+
+        <div class="uploadSection">
+
+            <label
+                for="machineImage"
+                class="uploadBtn">
+
+                📷 Upload Machine Image
+
+            </label>
+
+            <input
+                type="file"
+                id="machineImage"
+                accept="image/*"
+                hidden>
+
+            <img
+                id="previewImage"
+                src=""
+                alt="Preview">
+
+        </div>
+
+        <!-- VIP -->
+
+        <div class="vipRow">
+
+            <input
+                type="checkbox"
+                id="machineVIP">
+
+            <label for="machineVIP">
+
+                VIP Machine
+
+            </label>
+
+        </div>
+
+        <!-- BUTTONS -->
+
+        <div class="formActions">
+
+            <button
+                id="saveMachine"
+                class="successBtn">
+
+                💾 Save Machine
+
+            </button>
+
+            <button
+                type="button"
+                id="cancelMachine"
+                class="secondaryBtn">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+              </div>
+
+      <!-- MACHINES -->
+
+    <h2 class="sectionTitle">
+        Mining Machines
+    </h2>
+
+    <div
+        id="machineList"
+        class="machineGrid">
+
+        <!-- JavaScript loads machine cards here -->
+
+    </div>
 
 </div>
 
-<button
-id="openFormBtn"
-class="primaryBtn">
-
-➕ Add Machine
-
-</button>
-
-</header>
-
-<!-- ==========================
-STATISTICS
-========================== -->
-
-<section class="statsGrid">
-
-<div class="statCard">
-
-<h2 id="totalMachines">
-
-0
-
-</h2>
-
-<span>
-
-Total Machines
-
-</span>
-
-</div>
-
-<div class="statCard">
-
-<h2 id="activeMachines">
-
-0
-
-</h2>
-
-<span>
-
-Active
-
-</span>
-
-</div>
-
-<div class="statCard">
-
-<h2 id="disabledMachines">
-
-0
-
-</h2>
-
-<span>
-
-Disabled
-
-</span>
-
-</div>
-
-<div class="statCard">
-
-<h2 id="vipMachines">
-
-0
-
-</h2>
-
-<span>
-
-VIP
-
-</span>
-
-</div>
-
-</section>
-
-<!-- ==========================
-SEARCH
-========================== -->
-
-<section class="searchSection">
-
-<input
-
-type="search"
-
-id="searchMachine"
-
-placeholder="Search machines...">
-
-</section>
-
-<!-- ==========================
-ADD / EDIT FORM
-========================== -->
-
-<section
-
-id="machineForm"
-
-class="machineForm">
-
-<h2 id="formTitle">
-
-Add New Machine
-
-</h2>
-
-<div class="grid2">
-
-<input
-
-type="text"
-
-id="machineName"
-
-placeholder="Machine Name">
-
-<input
-
-type="text"
-
-id="machineSeries"
-
-placeholder="Machine Series">
-
-</div>
-
-<div class="grid2">
-
-<input
-
-type="number"
-
-id="machinePrice"
-
-placeholder="Price">
-
-<input
-
-type="number"
-
-id="machineReturn"
-
-placeholder="Total Return">
-
-</div>
-
-<div class="grid2">
-
-<input
-
-type="number"
-
-id="machineDuration"
-
-placeholder="Duration (Days)">
-
-  <select id="machineStatus">
-
-<option value="true">
-
-🟢 Active
-
-</option>
-
-<option value="false">
-
-🔴 Disabled
-
-</option>
-
-</select>
-
-</div>
-
-<label class="vipRow">
-
-<input
-
-type="checkbox"
-
-id="machineVIP">
-
-<span>VIP Machine</span>
-
-</label>
-
-<div class="uploadSection">
-
-<input
-
-type="file"
-
-id="machineImage"
-
-accept="image/*"
-
-hidden>
-
-<label
-
-for="machineImage"
-
-class="uploadBtn">
-
-📷 Choose Machine Image
-
-</label>
-
-<img
-
-id="previewImage"
-
-src=""
-
-alt="Preview">
-
-</div>
-
-<div class="formActions">
-
-<button
-
-type="button"
-
-id="saveMachine"
-
-class="successBtn">
-
-💾 Save Machine
-
-</button>
-
-<button
-
-type="button"
-
-id="cancelMachine"
-
-class="dangerBtn">
-
-✖ Cancel
-
-</button>
-
-</div>
-
-</section>
-
-<!-- ==========================
-MACHINE LIST
-========================== -->
-
-<section>
-
-<div class="sectionHeader">
-
-<h2>
-
-Mining Machines
-
-</h2>
-
-</div>
+<!-- SUCCESS POPUP -->
 
 <div
+    class="popup"
+    id="successPopup">
 
-id="machineList"
+    <div class="popupBox">
 
-class="machineGrid">
+        <div class="popupIcon">✅</div>
 
-<!-- Machine cards will be loaded here -->
+        <h2>Success</h2>
+
+        <p id="successMessage">
+            Operation completed successfully.
+        </p>
+
+        <div class="popupButtons">
+
+            <button
+                id="closeSuccess"
+                class="successBtn">
+
+                OK
+
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
-  </section>
-
-  <!-- ==========================
-SUCCESS POPUP
-========================== -->
+<!-- DELETE POPUP -->
 
 <div
-id="successPopup"
-class="popup">
+    class="popup"
+    id="deletePopup">
 
-<div class="popupBox">
+    <div class="popupBox">
 
-<div class="popupIcon">
+        <div class="popupIcon">🗑️</div>
 
-✅
+        <h2>Delete Machine</h2>
+
+        <p>
+            Are you sure you want to permanently delete this machine?
+        </p>
+
+        <div class="popupButtons">
+
+            <button
+                id="confirmDelete"
+                class="dangerBtn">
+
+                Delete
+
+            </button>
+
+            <button
+                id="cancelDelete"
+                class="secondaryBtn">
+
+                Cancel
+
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
-<h2>
-
-Success
-
-</h2>
-
-<p id="successMessage">
-
-Operation completed successfully.
-
-</p>
-
-<button
-
-id="closeSuccess"
-
-class="successBtn">
-
-OK
-
-</button>
-
-</div>
-
-</div>
-
-<!-- ==========================
-DELETE POPUP
-========================== -->
+<!-- LOADING -->
 
 <div
-id="deletePopup"
-class="popup">
+    id="loadingOverlay"
+    class="loadingOverlay">
 
-<div class="popupBox">
+    <div class="loader"></div>
 
-<div class="popupIcon">
-
-🗑️
+    <p>Loading...</p>
 
 </div>
 
-<h2>
-
-Delete Machine
-
-</h2>
-
-<p>
-
-Are you sure you want to permanently delete this machine?
-
-</p>
-
-<div class="popupButtons">
-
-<button
-
-id="confirmDelete"
-
-class="dangerBtn">
-
-Delete
-
-</button>
-
-<button
-
-id="cancelDelete"
-
-class="secondaryBtn">
-
-Cancel
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ==========================
-LOADING OVERLAY
-========================== -->
-
-<div
-id="loadingOverlay"
-class="loadingOverlay">
-
-<div class="loader"></div>
-
-<p>
-
-Loading...
-
-</p>
-
-</div>
-
-</div>
-
+<script src="supabase.js"></script>
 <script src="admin-machines.js"></script>
 
 </body>
-
-                   </html>
+  </html>
