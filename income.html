@@ -797,4 +797,508 @@ const isVIP=(machine.series||"").toUpperCase().includes("VIP");
 
 const weekendDisabled=isWeekend && !isVIP && !expired;
 
-/* Part 5 starts here */
+/* Part 5 starts here */let statusText="🟢 ACTIVE";
+let statusClass="active";
+
+if(expired){
+
+statusText="🔴 EXPIRED";
+
+statusClass="expired";
+
+}else if(weekendDisabled){
+
+statusText="🟠 DISABLED (WEEKEND)";
+
+statusClass="weekend";
+
+}
+
+if(!expired){
+
+activeMachines++;
+
+}
+
+totalReturn+=totalReturnMachine;
+
+totalIncome+=earned;
+
+if(!expired && !weekendDisabled){
+
+dailyIncome+=dailyReturn;
+
+}
+
+const image=(machine.image_url && machine.image_url.trim()!="")
+
+? machine.image_url
+
+: "images/default-machine.png";
+
+container.innerHTML+=`
+
+<div class="machineCard">
+
+<div class="machineTop">
+
+<img
+
+src="${image}"
+
+class="machineImage"
+
+onerror="this.src='images/default-machine.png'">
+
+<div class="machineInfo">
+
+<div class="machineName">
+
+${machine.name}
+
+</div>
+
+<div class="machineSeries">
+
+${machine.series || "STANDARD"}
+
+</div>
+
+</div>
+
+</div>
+
+<div class="machineBody">
+
+<div class="infoRow">
+
+<span class="infoTitle">
+
+Purchase Price
+
+</span>
+
+<span class="infoValue">
+
+UGX ${Number(machine.price).toLocaleString()}
+
+</span>
+
+</div>
+
+<div class="infoRow">
+
+<span class="infoTitle">
+
+Earned
+
+</span>
+
+<span class="infoValue">
+
+UGX ${Math.floor(earned).toLocaleString()}
+
+</span>
+
+</div>
+
+<div class="infoRow">
+
+<span class="infoTitle">
+
+Remaining
+
+</span>
+
+<span class="infoValue">
+
+UGX ${Math.floor(remaining).toLocaleString()}
+
+</span>
+
+</div><div class="infoRow">
+
+<span class="infoTitle">
+
+Total Return
+
+</span>
+
+<span class="infoValue">
+
+UGX ${Number(totalReturnMachine).toLocaleString()}
+
+</span>
+
+</div>
+
+<div class="infoRow">
+
+<span class="infoTitle">
+
+Daily Income
+
+</span>
+
+<span class="infoValue">
+
+${weekendDisabled
+? "UGX 0"
+: "UGX "+Math.floor(dailyReturn).toLocaleString()}
+
+</span>
+
+</div>
+
+<div class="infoRow">
+
+<span class="infoTitle">
+
+Days Remaining
+
+</span>
+
+<span class="infoValue">
+
+${expired ? "0 Days" : daysRemaining+" Days"}
+
+</span>
+
+</div>
+
+<div class="infoRow">
+
+<span class="infoTitle">
+
+Status
+
+</span>
+
+<span class="${statusClass}">
+
+${statusText}
+
+</span>
+
+</div>
+
+<div class="progress">
+
+<div
+
+class="progressFill"
+
+style="width:${progress}%">
+
+</div>
+
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:#9FB5D1;">
+
+<span>
+
+${Math.floor(progress)}% Complete
+
+</span>
+
+<span>
+
+Expires: ${expiryDate.toLocaleDateString()}
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+/* ===============================
+UPDATE SUMMARY
+=============================== */
+
+document.getElementById("activeMachines").innerHTML=
+
+activeMachines;
+
+document.getElementById("dailyIncome").innerHTML=
+
+"UGX "+Math.floor(dailyIncome).toLocaleString();
+
+document.getElementById("totalIncome").innerHTML=
+
+"UGX "+Math.floor(totalIncome).toLocaleString();
+
+document.getElementById("totalReturn").innerHTML=
+
+"UGX "+Math.floor(totalReturn).toLocaleString();
+
+}
+
+/* ===============================
+END OF MAIN SCRIPT
+=============================== */
+
+</script><!-- ==========================
+BOTTOM NAVIGATION
+========================== -->
+
+<style>
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+height:70px;
+
+background:#08142D;
+
+border-top:1px solid rgba(0,200,255,.15);
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+backdrop-filter:blur(12px);
+
+z-index:999;
+
+}
+
+.bottom-nav a{
+
+text-decoration:none;
+
+color:#C5D8FF;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+gap:4px;
+
+font-size:12px;
+
+transition:.3s;
+
+}
+
+.bottom-nav a i{
+
+font-style:normal;
+
+font-size:22px;
+
+}
+
+.bottom-nav a.active{
+
+color:#00FF88;
+
+font-weight:bold;
+
+}
+
+.bottom-nav a:active{
+
+transform:scale(.95);
+
+}
+
+</style>
+
+<div class="bottom-nav">
+
+<a href="dashboard.html">
+
+<i>🏠</i>
+
+<span>Home</span>
+
+</a>
+
+<a href="machines.html">
+
+<i>⚙️</i>
+
+<span>Machines</span>
+
+</a>
+
+<a href="deposit.html">
+
+<i>💳</i>
+
+<span>Deposit</span>
+
+</a>
+
+<a href="income.html" class="active">
+
+<i>📈</i>
+
+<span>Income</span>
+
+</a>
+
+<a href="profile.html">
+
+<i>👤</i>
+
+<span>Profile</span>
+
+</a>
+
+</div><!-- ==========================
+INFO POPUP
+========================== -->
+
+<div id="infoPopup">
+
+Welcome Back
+
+</div>
+
+<style>
+
+#infoPopup{
+
+position:fixed;
+
+top:20px;
+
+left:50%;
+
+transform:translateX(-50%) translateY(-30px);
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+color:#001018;
+
+padding:14px 24px;
+
+border-radius:14px;
+
+font-weight:bold;
+
+box-shadow:0 0 25px rgba(0,255,255,.35);
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.4s;
+
+z-index:9999;
+
+}
+
+#infoPopup.show{
+
+opacity:1;
+
+transform:translateX(-50%) translateY(0);
+
+}
+
+/* Smooth card animation */
+
+.machineCard{
+
+animation:fadeUp .45s ease;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(20px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+/* Loading animation */
+
+.loading{
+
+animation:pulse 1.2s infinite;
+
+}
+
+@keyframes pulse{
+
+0%{
+
+opacity:.5;
+
+}
+
+50%{
+
+opacity:1;
+
+}
+
+100%{
+
+opacity:.5;
+
+}
+
+}
+
+</style>
+
+<script>
+
+function showPopup(message){
+
+const popup=document.getElementById("infoPopup");
+
+popup.innerHTML=message;
+
+popup.classList.add("show");
+
+setTimeout(()=>{
+
+popup.classList.remove("show");
+
+},2500);
+
+}
+
+window.addEventListener("load",()=>{
+
+showPopup("Income Loaded");
+
+});
+
+</script></body>
+
+</html>
