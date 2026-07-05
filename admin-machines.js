@@ -1,60 +1,83 @@
-/*=========================================
+/*==========================================
 MARATHON DIGITAL HUB
 ADMIN MACHINES
-=========================================*/
+==========================================*/
 
-const db = window.supabaseClient;
+// ---------- Supabase ----------
+
+const supabase = window.supabaseClient;
+
+// ---------- State ----------
 
 let machines = [];
-let editingId = null;
-let uploadedImageUrl = "";
+let editingMachineId = null;
+let selectedImage = null;
 let deleteMachineId = null;
 
-/*=========================================
-ELEMENTS
-=========================================*/
+// ---------- Elements ----------
+
+const addMachineBtn = document.getElementById("addMachineBtn");
+const closeFormBtn = document.getElementById("closeFormBtn");
+const cancelBtn = document.getElementById("cancelBtn");
 
 const machineForm = document.getElementById("machineForm");
-const openFormBtn = document.getElementById("openFormBtn");
-const cancelMachine = document.getElementById("cancelMachine");
-const saveMachine = document.getElementById("saveMachine");
+const machineFormElement = document.getElementById("machineFormElement");
 
-const machineList = document.getElementById("machineList");
-const searchMachine = document.getElementById("searchMachine");
+const searchInput = document.getElementById("searchInput");
 
-const previewImage = document.getElementById("previewImage");
 const machineImage = document.getElementById("machineImage");
+const previewImage = document.getElementById("previewImage");
 
-const successPopup = document.getElementById("successPopup");
-const deletePopup = document.getElementById("deletePopup");
-const loadingOverlay = document.getElementById("loadingOverlay");
+const machinesContainer = document.getElementById("machinesContainer");
 
-/*=========================================
-START
-=========================================*/
+const totalMachines = document.getElementById("totalMachines");
+const activeMachines = document.getElementById("activeMachines");
+const disabledMachines = document.getElementById("disabledMachines");
+const vipMachines = document.getElementById("vipMachines");
+const machineCount = document.getElementById("machineCount");
+
+const loadingScreen = document.getElementById("loadingScreen");
+const toast = document.getElementById("toast");
+const toastMessage = document.getElementById("toastMessage");
+
+// ---------- Startup ----------
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    machineForm.style.display = "none";
+    hideForm();
 
     loadMachines();
 
 });
 
-/*=========================================
-OPEN FORM
-=========================================*/
+// ---------- Form ----------
 
-openFormBtn.onclick = () => {
+addMachineBtn.addEventListener("click", () => {
 
-    editingId = null;
+    editingMachineId = null;
 
-    clearForm();
+    machineFormElement.reset();
+
+    previewImage.style.display = "none";
+
+    previewImage.src = "";
+
+    selectedImage = null;
 
     document.getElementById("formTitle").textContent =
-    "Add New Machine";
+        "Add New Machine";
 
-    machineForm.style.display = "block";
+    showForm();
+
+});
+
+closeFormBtn.addEventListener("click", hideForm);
+
+cancelBtn.addEventListener("click", hideForm);
+
+function showForm(){
+
+    machineForm.classList.remove("hidden");
 
     window.scrollTo({
 
@@ -64,59 +87,23 @@ openFormBtn.onclick = () => {
 
     });
 
-};
+}
 
-/*=========================================
-CANCEL
-=========================================*/
+function hideForm(){
 
-cancelMachine.onclick = () => {
-
-    machineForm.style.display = "none";
-
-    clearForm();
-
-};
-
-/*=========================================
-CLEAR FORM
-=========================================*/
-
-function clearForm(){
-
-    document.getElementById("machineName").value = "";
-
-    document.getElementById("machineSeries").value = "";
-
-    document.getElementById("machinePrice").value = "";
-
-    document.getElementById("machineReturn").value = "";
-
-    document.getElementById("machineDuration").value = "";
-
-    document.getElementById("machineStatus").value = "true";
-
-    document.getElementById("machineVIP").checked = false;
-
-    machineImage.value = "";
-
-    previewImage.src = "";
-
-    previewImage.style.display = "none";
-
-    uploadedImageUrl = "";
+    machineForm.classList.add("hidden");
 
 }
 
-/*=========================================
-IMAGE PREVIEW
-=========================================*/
+// ---------- Image Preview ----------
 
-machineImage.addEventListener("change", e=>{
+machineImage.addEventListener("change",(e)=>{
 
     const file = e.target.files[0];
 
     if(!file) return;
+
+    selectedImage = file;
 
     previewImage.src = URL.createObjectURL(file);
 
@@ -124,31 +111,53 @@ machineImage.addEventListener("change", e=>{
 
 });
 
-/*=========================================
-LOADING
-=========================================*/
+// ---------- Loading ----------
 
 function showLoading(){
 
-    loadingOverlay.style.display = "flex";
+    loadingScreen.classList.remove("hidden");
 
 }
 
 function hideLoading(){
 
-    loadingOverlay.style.display = "none";
+    loadingScreen.classList.add("hidden");
 
-  }
+}
 
-/*=========================================
+// ---------- Toast ----------
+
+function showToast(message){
+
+    toastMessage.textContent = message;
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+
+        toast.classList.remove("show");
+
+    },3000);
+
+    }
+
+/*==========================================
 LOAD MACHINES
-=========================================*/
+==========================================*/
 
 async function loadMachines(){
 
+    if(!supabase){
+
+        showToast("Supabase is not connected.");
+
+        return;
+
+    }
+
     showLoading();
 
-    const { data, error } = await db
+    const { data, error } = await supabase
 
         .from("machines")
 
@@ -162,12 +171,7 @@ async function loadMachines(){
 
         console.error(error);
 
-        machineList.innerHTML = `
-            <div class="emptyState">
-                <h2>Failed to load machines</h2>
-                <p>${error.message}</p>
-            </div>
-        `;
+        showToast(error.message);
 
         return;
 
@@ -175,133 +179,149 @@ async function loadMachines(){
 
     machines = data || [];
 
-    updateStats();
+    updateDashboard();
 
     renderMachines(machines);
 
 }
 
-/*=========================================
+/*==========================================
 UPDATE DASHBOARD
-=========================================*/
+==========================================*/
 
-function updateStats(){
+function updateDashboard(){
 
-    document.getElementById("totalMachines").textContent =
-        machines.length;
+    totalMachines.textContent = machines.length;
 
-    document.getElementById("activeMachines").textContent =
-        machines.filter(m=>m.status===true).length;
+    activeMachines.textContent =
+        machines.filter(machine => machine.status).length;
 
-    document.getElementById("disabledMachines").textContent =
-        machines.filter(m=>m.status===false).length;
+    disabledMachines.textContent =
+        machines.filter(machine => !machine.status).length;
 
-    document.getElementById("vipMachines").textContent =
-        machines.filter(m=>m.is_vip===true).length;
+    vipMachines.textContent =
+        machines.filter(machine => machine.is_vip).length;
+
+    machineCount.textContent =
+        `${machines.length} Machine${machines.length===1?"":"s"}`;
 
 }
 
-/*=========================================
+/*==========================================
 RENDER MACHINES
-=========================================*/
+==========================================*/
 
 function renderMachines(list){
 
     if(list.length===0){
 
-        machineList.innerHTML=`
-            <div class="emptyState">
-                <h2>No Machines Found</h2>
-                <p>Add your first machine.</p>
-            </div>
+        machinesContainer.innerHTML = `
+
+        <div class="emptyState">
+
+            <h2>No Machines Found</h2>
+
+            <p>Create your first mining machine.</p>
+
+        </div>
+
         `;
 
         return;
 
     }
 
-    machineList.innerHTML=list.map(machine=>{
+    machinesContainer.innerHTML = "";
 
-        const daily=Math.floor(
-            Number(machine.total_return||0)/
-            Number(machine.duration_days||1)
-        );
+    list.forEach(machine=>{
 
-        const image =
-            machine.image_url && machine.image_url !== ""
-            ? machine.image_url
-            : "https://placehold.co/600x400/102040/FFFFFF?text=Machine";
+        const card = document.createElement("div");
 
-        return `
+        card.className = "machineCard";
 
-        <div class="machineCard">
+        const image = machine.image_url ||
+        "https://placehold.co/600x400/102344/ffffff?text=Machine";
 
-            <img
-                src="${image}"
-                alt="${machine.name}"
-                onerror="this.src='https://placehold.co/600x400/102040/FFFFFF?text=Machine'">
+        card.innerHTML = `
 
-            <div class="machineInfo">
+            <img src="${image}" alt="${machine.name}">
+
+            <div class="machineContent">
 
                 <h3>${machine.name}</h3>
 
-                <p><strong>Series:</strong> ${machine.series||"-"}</p>
+                <div class="machineInfo">
 
-                <p><strong>Price:</strong> UGX ${Number(machine.price).toLocaleString()}</p>
+                    <span>Series</span>
 
-                <p><strong>Total Return:</strong> UGX ${Number(machine.total_return).toLocaleString()}</p>
-
-                <p><strong>Daily Income:</strong> UGX ${daily.toLocaleString()}</p>
-
-                <p><strong>Duration:</strong> ${machine.duration_days} Days</p>
-
-                <div class="badges">
-
-                    ${
-                        machine.status
-                        ? '<span class="badge activeBadge">ACTIVE</span>'
-                        : '<span class="badge disabledBadge">DISABLED</span>'
-                    }
-
-                    ${
-                        machine.is_vip
-                        ? '<span class="badge vipBadge">VIP</span>'
-                        : ''
-                    }
+                    <strong>${machine.series || "-"}</strong>
 
                 </div>
 
-                <div class="cardButtons">
+                <div class="machineInfo">
+
+                    <span>Price</span>
+
+                    <strong>UGX ${Number(machine.price).toLocaleString()}</strong>
+
+                </div>
+
+                <div class="machineInfo">
+
+                    <span>Total Return</span>
+
+                    <strong>UGX ${Number(machine.total_return).toLocaleString()}</strong>
+
+                </div>
+
+                <div class="machineInfo">
+
+                    <span>Duration</span>
+
+                    <strong>${machine.duration_days} Days</strong>
+
+                </div>
+
+                <div class="badgeRow">
+
+                    <span class="badge ${machine.status ? "active":"disabled"}">
+
+                        ${machine.status ? "ACTIVE":"DISABLED"}
+
+                    </span>
+
+                    ${machine.is_vip ?
+
+                    '<span class="badge vip">VIP</span>'
+
+                    : ''}
+
+                </div>
+
+                <div class="cardActions">
 
                     <button
                         class="editBtn"
-                        onclick="editMachine('${machine.id}')">
+                        data-id="${machine.id}">
 
-                        ✏ Edit
+                        Edit
 
                     </button>
 
                     <button
                         class="deleteBtn"
-                        onclick="deleteMachine('${machine.id}')">
+                        data-id="${machine.id}">
 
-                        🗑 Delete
-
-                    </button>
-
-                    <button
-                        class="enableBtn"
-                        onclick="changeStatus('${machine.id}',true)">
-
-                        Enable
+                        Delete
 
                     </button>
 
                     <button
-                        class="disableBtn"
-                        onclick="changeStatus('${machine.id}',false)">
+                        class="${machine.status ? "disableBtn":"enableBtn"}"
+                        data-status="${machine.status}"
+                        data-id="${machine.id}">
 
-                        Disable
+                        ${machine.status ? "Disable":"Enable"}
 
                     </button>
 
@@ -309,31 +329,31 @@ function renderMachines(list){
 
             </div>
 
-        </div>
-
         `;
 
-    }).join("");
+        machinesContainer.appendChild(card);
+
+    });
 
 }
 
-/*=========================================
+/*==========================================
 SEARCH
-=========================================*/
+==========================================*/
 
-searchMachine.addEventListener("input",()=>{
+searchInput.addEventListener("input",()=>{
 
-    const value=searchMachine.value.toLowerCase();
+    const value = searchInput.value
+        .trim()
+        .toLowerCase();
 
-    const filtered=machines.filter(machine=>
+    const filtered = machines.filter(machine=>
 
-        (machine.name||"")
-        .toLowerCase()
-        .includes(value)
+        machine.name.toLowerCase().includes(value)
 
         ||
 
-        (machine.series||"")
+        (machine.series || "")
         .toLowerCase()
         .includes(value)
 
@@ -343,38 +363,36 @@ searchMachine.addEventListener("input",()=>{
 
 });
 
-/*=========================================
+/*==========================================
 UPLOAD IMAGE
-=========================================*/
+==========================================*/
 
-async function uploadImage(){
+async function uploadMachineImage(){
 
-    const file = machineImage.files[0];
-
-    if(!file) return uploadedImageUrl;
-
-    showLoading();
+    if(!selectedImage) return null;
 
     const fileName =
-        `machine-${Date.now()}-${file.name.replace(/\s+/g,"-")}`;
+        `machine-${Date.now()}-${selectedImage.name}`;
 
-    const { error } = await db.storage
+    const { error } = await supabase.storage
 
         .from("machine-images")
 
-        .upload(fileName,file,{upsert:true});
+        .upload(fileName, selectedImage, {
 
-    hideLoading();
+            upsert:true
+
+        });
 
     if(error){
 
-        alert(error.message);
+        showToast(error.message);
 
         return null;
 
     }
 
-    const { data } = db.storage
+    const { data } = supabase.storage
 
         .from("machine-images")
 
@@ -384,21 +402,23 @@ async function uploadImage(){
 
 }
 
-/*=========================================
+/*==========================================
 SAVE MACHINE
-=========================================*/
+==========================================*/
 
-saveMachine.addEventListener("click",saveCurrentMachine);
+machineFormElement.addEventListener("submit", saveMachine);
 
-async function saveCurrentMachine(){
+async function saveMachine(e){
 
-    let imageUrl = uploadedImageUrl;
+    e.preventDefault();
 
-    if(machineImage.files.length){
+    showLoading();
 
-        imageUrl = await uploadImage();
+    let imageUrl = "";
 
-        if(!imageUrl) return;
+    if(selectedImage){
+
+        imageUrl = await uploadMachineImage();
 
     }
 
@@ -416,41 +436,40 @@ async function saveCurrentMachine(){
 
         status:document.getElementById("machineStatus").value==="true",
 
-        is_vip:document.getElementById("machineVIP").checked,
-
-        image_url:imageUrl
+        is_vip:document.getElementById("machineVIP").checked
 
     };
 
-    if(machine.name===""){
+    if(imageUrl){
 
-        alert("Enter machine name.");
-
-        return;
+        machine.image_url = imageUrl;
 
     }
 
-    showLoading();
-
     let result;
 
-    if(editingId){
+    if(editingMachineId){
 
-        result = await db
+        if(!imageUrl){
+
+            delete machine.image_url;
+        }
+
+        result = await supabase
 
             .from("machines")
 
             .update(machine)
 
-            .eq("id",editingId);
+            .eq("id", editingMachineId);
 
     }else{
 
-        result = await db
+        result = await supabase
 
             .from("machines")
 
-            .insert(machine);
+            .insert([machine]);
 
     }
 
@@ -458,147 +477,185 @@ async function saveCurrentMachine(){
 
     if(result.error){
 
-        alert(result.error.message);
+        showToast(result.error.message);
 
         return;
 
     }
 
-    machineForm.style.display="none";
+    machineFormElement.reset();
 
-    clearForm();
+    previewImage.style.display = "none";
+
+    previewImage.src = "";
+
+    selectedImage = null;
+
+    editingMachineId = null;
+
+    hideForm();
+
+    showToast("Machine saved successfully.");
 
     loadMachines();
 
-    showSuccess(
-        editingId
-        ? "Machine updated successfully."
-        : "Machine added successfully."
-    );
-
 }
 
-/*=========================================
+/*==========================================
 EDIT MACHINE
-=========================================*/
+==========================================*/
 
-window.editMachine = function(id){
+machinesContainer.addEventListener("click", async (e)=>{
+
+    if(!e.target.classList.contains("editBtn")) return;
+
+    const id = e.target.dataset.id;
 
     const machine = machines.find(m=>m.id===id);
 
     if(!machine) return;
 
-    editingId = id;
+    editingMachineId = id;
 
     document.getElementById("formTitle").textContent =
         "Edit Machine";
 
     document.getElementById("machineName").value =
-        machine.name || "";
+        machine.name;
 
     document.getElementById("machineSeries").value =
         machine.series || "";
 
     document.getElementById("machinePrice").value =
-        machine.price || "";
+        machine.price;
 
     document.getElementById("machineReturn").value =
-        machine.total_return || "";
+        machine.total_return;
 
     document.getElementById("machineDuration").value =
-        machine.duration_days || "";
+        machine.duration_days;
 
     document.getElementById("machineStatus").value =
-        machine.status ? "true" : "false";
+        String(machine.status);
 
     document.getElementById("machineVIP").checked =
         machine.is_vip;
 
-    uploadedImageUrl = machine.image_url || "";
+    if(machine.image_url){
 
-    if(uploadedImageUrl){
-
-        previewImage.src = uploadedImageUrl;
+        previewImage.src = machine.image_url;
 
         previewImage.style.display = "block";
 
+    }else{
+
+        previewImage.style.display = "none";
+
     }
 
-    machineForm.style.display = "block";
+    selectedImage = null;
 
-    window.scrollTo({
+    showForm();
 
-        top:0,
+});
 
-        behavior:"smooth"
+/*==========================================
+DELETE & STATUS EVENTS
+==========================================*/
 
-    });
+const deleteModal = document.getElementById("deleteModal");
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
 
-};
+machinesContainer.addEventListener("click", (e)=>{
 
-/*=========================================
+    // Delete
+
+    if(e.target.classList.contains("deleteBtn")){
+
+        deleteMachineId = e.target.dataset.id;
+
+        deleteModal.classList.remove("hidden");
+
+    }
+
+    // Enable / Disable
+
+    if(
+
+        e.target.classList.contains("enableBtn")
+
+        ||
+
+        e.target.classList.contains("disableBtn")
+
+    ){
+
+        const id = e.target.dataset.id;
+
+        const current = e.target.dataset.status === "true";
+
+        updateMachineStatus(id,!current);
+
+    }
+
+});
+
+/*==========================================
 DELETE MACHINE
-=========================================*/
+==========================================*/
 
-window.deleteMachine = function(id){
+cancelDeleteBtn.addEventListener("click",()=>{
 
-    deleteMachineId = id;
-
-    deletePopup.style.display = "flex";
-
-};
-
-document.getElementById("cancelDelete").onclick = () => {
-
-    deletePopup.style.display = "none";
+    deleteModal.classList.add("hidden");
 
     deleteMachineId = null;
 
-};
+});
 
-document.getElementById("confirmDelete").onclick = async () => {
+confirmDeleteBtn.addEventListener("click",async()=>{
 
     if(!deleteMachineId) return;
 
     showLoading();
 
-    const { error } = await db
+    const { error } = await supabase
 
         .from("machines")
 
         .delete()
 
-        .eq("id", deleteMachineId);
+        .eq("id",deleteMachineId);
 
     hideLoading();
 
-    deletePopup.style.display = "none";
+    deleteModal.classList.add("hidden");
+
+    deleteMachineId = null;
 
     if(error){
 
-        alert(error.message);
+        showToast(error.message);
 
         return;
 
     }
 
-    deleteMachineId = null;
+    showToast("Machine deleted successfully.");
 
     loadMachines();
 
-    showSuccess("Machine deleted successfully.");
+});
 
-};
-
-/*=========================================
+/*==========================================
 ENABLE / DISABLE
-=========================================*/
+==========================================*/
 
-window.changeStatus = async function(id,status){
+async function updateMachineStatus(id,status){
 
     showLoading();
 
-    const { error } = await db
+    const { error } = await supabase
 
         .from("machines")
 
@@ -614,66 +671,42 @@ window.changeStatus = async function(id,status){
 
     if(error){
 
-        alert(error.message);
+        showToast(error.message);
 
         return;
 
     }
 
-    loadMachines();
-
-    showSuccess(
+    showToast(
 
         status
 
-        ? "Machine enabled successfully."
+        ? "Machine enabled."
 
-        : "Machine disabled successfully."
+        : "Machine disabled."
 
     );
 
-};
-
-/*=========================================
-SUCCESS POPUP
-=========================================*/
-
-function showSuccess(message){
-
-    document.getElementById("successMessage").textContent = message;
-
-    successPopup.style.display = "flex";
+    loadMachines();
 
 }
 
-document.getElementById("closeSuccess").onclick = () => {
+/*==========================================
+CLOSE MODAL WHEN CLICKING OUTSIDE
+==========================================*/
 
-    successPopup.style.display = "none";
+deleteModal.addEventListener("click",(e)=>{
 
-};
+    if(e.target===deleteModal){
 
-/*=========================================
-CLICK OUTSIDE POPUPS
-=========================================*/
-
-window.addEventListener("click",(e)=>{
-
-    if(e.target===successPopup){
-
-        successPopup.style.display="none";
-
-    }
-
-    if(e.target===deletePopup){
-
-        deletePopup.style.display="none";
+        deleteModal.classList.add("hidden");
 
     }
 
 });
 
-/*=========================================
-FINISH
-=========================================*/
+/*==========================================
+READY
+==========================================*/
 
-console.log("✅ Marathon Admin Machines Ready");
+console.log("✅ Marathon Admin Machines Loaded");
