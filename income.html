@@ -5,751 +5,96 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Income | Marathon Digital Hub</title>
+
+<link rel="stylesheet" href="income.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 
-<style>
+</head>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+<body>
 
-body{
+<!-- HEADER -->
 
-background:#050B18;
-color:#fff;
-overflow-x:hidden;
-padding-bottom:90px;
+<div class="header">
 
-}
+    <h2>Income</h2>
 
-/* Animated Background */
-
-body::before{
-
-content:"";
-position:fixed;
-left:-40%;
-top:-40%;
-width:180%;
-height:180%;
-
-background:
-radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
-radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
-radial-gradient(circle at 70% 80%,rgba(0,255,120,.15),transparent 40%);
-
-animation:bgMove 18s linear infinite;
-
-z-index:-2;
-
-}
-
-@keyframes bgMove{
-
-0%{transform:translateX(-2%);}
-50%{transform:translateX(2%);}
-100%{transform:translateX(-2%);}
-
-}
-
-.header{
-
-padding:22px 16px 10px;
-
-}
-
-.header h2{
-
-font-size:30px;
-font-weight:bold;
-
-background:linear-gradient(90deg,#00C8FF,#00FF88);
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-
-}
-
-.header p{
-
-margin-top:5px;
-font-size:14px;
-color:#9FB5D1;
-
-}
-
-.summary{
-
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-
-padding:0 15px;
-margin-bottom:15px;
-
-}
-
-.card{
-
-background:#08142D;
-
-border-radius:18px;
-
-padding:16px;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.card small{
-
-display:block;
-
-font-size:13px;
-
-color:#9FB5D1;
-
-margin-bottom:8px;
-
-}
-
-.card h2{
-
-font-size:23px;
-
-color:#00FF88;
-
-}
-
-.section{
-
-margin:15px;
-
-padding:18px;
-
-background:#08142D;
-
-border-radius:20px;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.section h3{
-
-margin-bottom:18px;
-
-color:#00FF88;
-
-font-size:22px;
-
-}
-
-  <style>
-
-/* ==========================
-MACHINE CARD
-========================== */
-
-.machineCard{
-
-background:#101E3D;
-
-border-radius:18px;
-
-padding:15px;
-
-margin-bottom:16px;
-
-border:1px solid rgba(255,255,255,.05);
-
-}
-
-.machineTop{
-
-display:flex;
-
-gap:12px;
-
-align-items:center;
-
-margin-bottom:15px;
-
-}
-
-.machineImage{
-
-width:85px;
-
-height:85px;
-
-border-radius:15px;
-
-object-fit:cover;
-
-background:#071123;
-
-}
-
-.machineInfo{
-
-flex:1;
-
-}
-
-.machineName{
-
-font-size:18px;
-
-font-weight:bold;
-
-color:#00FF88;
-
-margin-bottom:6px;
-
-}
-
-.machineSeries{
-
-display:inline-block;
-
-padding:5px 12px;
-
-border-radius:20px;
-
-background:#12385E;
-
-color:#00C8FF;
-
-font-size:11px;
-
-font-weight:bold;
-
-}
-
-.vipBadge{
-
-display:inline-block;
-
-margin-left:8px;
-
-padding:5px 10px;
-
-border-radius:20px;
-
-background:#FFD700;
-
-color:#111;
-
-font-size:11px;
-
-font-weight:bold;
-
-}
-
-.infoRow{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:9px 0;
-
-border-bottom:1px solid rgba(255,255,255,.06);
-
-font-size:14px;
-
-}
-
-.infoTitle{
-
-color:#9FB5D1;
-
-}
-
-.infoValue{
-
-font-weight:bold;
-
-color:#fff;
-
-}
-
-.progress{
-
-height:8px;
-
-background:#1C3156;
-
-border-radius:20px;
-
-overflow:hidden;
-
-margin-top:15px;
-
-}
-
-.progressFill{
-
-height:100%;
-
-background:linear-gradient(90deg,#00C8FF,#00FF88);
-
-width:0%;
-
-}
-
-/* ==========================
-STATUS
-========================== */
-
-.active{
-
-color:#00FF88;
-
-font-weight:bold;
-
-}
-
-.weekend{
-
-color:#FFC857;
-
-font-weight:bold;
-
-}
-
-.expired{
-
-color:#FF5A5A;
-
-font-weight:bold;
-
-}
-
-.loading{
-
-padding:40px;
-
-text-align:center;
-
-color:#00C8FF;
-
-}
-
-</style>
-
-<script>
-
-const db = window.supabaseClient;
-
-let currentUser = null;
-
-let profile = null;
-
-let userMachines = [];
-
-document.addEventListener("DOMContentLoaded", init);
-
-async function init(){
-
-try{
-
-const { data:{ user } } = await db.auth.getUser();
-
-if(!user){
-
-window.location.href="login.html";
-
-  function renderMachines(){
-
-const container=document.getElementById("machineList");
-
-container.innerHTML="";
-
-if(userMachines.length===0){
-
-container.innerHTML=`
-
-<div class="loading">
-
-You have not purchased any machines yet.
+    <p>Your mining earnings overview</p>
 
 </div>
 
-`;
+<!-- SUMMARY -->
 
-return;
+<div class="summary">
 
-}
+    <div class="card">
 
-let activeMachines=0;
-let totalIncome=0;
-let totalReturn=0;
-let dailyIncome=0;
+        <small>Total Income</small>
 
-const today=new Date();
+        <h2 id="totalIncome">UGX 0</h2>
 
-const isWeekend=(today.getDay()==0 || today.getDay()==6);
+    </div>
 
-userMachines.forEach(item=>{
+    <div class="card">
 
-const machine=item.machines;
+        <small>Active Machines</small>
 
-if(!machine)return;
+        <h2 id="activeMachines">0</h2>
 
-const purchaseDate=new Date(item.purchase_date);
-
-const isVIP=machine.is_vip===true;
-
-const totalReturnMachine=Number(machine.total_return);
-
-const duration=Number(machine.duration_days);
-
-const dailyReturn=totalReturnMachine/duration;
-
-/* Count earning days */
-
-let earningDays=0;
-
-let current=new Date(purchaseDate);
-
-while(current<=today && earningDays<duration){
-
-const day=current.getDay();
-
-if(isVIP || (day!==0 && day!==6)){
-
-earningDays++;
-
-}
-
-current.setDate(current.getDate()+1);
-
-}
-
-const expired=earningDays>=duration;
-
-const earned=Math.min(
-
-totalReturnMachine,
-
-dailyReturn*earningDays
-
-);
-
-const remaining=Math.max(
-
-0,
-
-totalReturnMachine-earned
-
-);
-
-const progress=Math.min(
-
-100,
-
-(earned/totalReturnMachine)*100
-
-);
-
-const daysRemaining=Math.max(
-
-0,
-
-duration-earningDays
-
-);
-
-const weekendDisabled=
-
-isWeekend && !isVIP && !expired;
-
-let statusText="🟢 ACTIVE";
-
-let statusClass="active";
-
-if(expired){
-
-statusText="🔴 EXPIRED";
-
-statusClass="expired";
-
-}else if(weekendDisabled){
-
-statusText="🟠 DISABLED (WEEKEND)";
-
-statusClass="weekend";
-
-}
-
-if(!expired){
-
-activeMachines++;
-
-}
-
-totalIncome+=earned;
-
-totalReturn+=totalReturnMachine;
-
-if(!expired && !weekendDisabled){
-
-dailyIncome+=dailyReturn;
-
-}
-
-const image=
-
-machine.image_url && machine.image_url.trim()!=="" ?
-
-machine.image_url :
-
-"images/default-machine.png";
-
-            container.innerHTML += `
-
-<div class="machineCard">
-
-<div class="machineTop">
-
-<img
-src="${image}"
-class="machineImage"
-onerror="this.src='images/default-machine.png'">
-
-<div class="machineInfo">
-
-<div class="machineName">
-
-${machine.name}
-
-${isVIP ? '<span class="vipBadge">VIP</span>' : ''}
+    </div>
 
 </div>
 
-<div class="machineSeries">
+<div class="summary">
 
-${machine.series || "STANDARD"}
+    <div class="card">
 
-</div>
+        <small>Today's Income</small>
 
-</div>
+        <h2 id="dailyIncome">UGX 0</h2>
 
-</div>
+    </div>
 
-<div class="infoRow">
+    <div class="card">
 
-<span class="infoTitle">Purchase Price</span>
+        <small>Total Return</small>
 
-<span class="infoValue">
+        <h2 id="totalReturn">UGX 0</h2>
 
-UGX ${Number(machine.price).toLocaleString()}
-
-</span>
+    </div>
 
 </div>
 
-<div class="infoRow">
+<!-- MACHINE LIST -->
 
-<span class="infoTitle">Earned</span>
+<div class="section">
 
-<span class="infoValue">
+    <h3>My Machines</h3>
 
-UGX ${Math.floor(earned).toLocaleString()}
+    <div id="machineList">
 
-</span>
+        <div class="loading">
 
-</div>
+            Loading your machines...
 
-<div class="infoRow">
+        </div>
 
-<span class="infoTitle">Remaining</span>
-
-<span class="infoValue">
-
-UGX ${Math.floor(remaining).toLocaleString()}
-
-</span>
+    </div>
 
 </div>
 
-<div class="infoRow">
+  <!-- BOTTOM NAVIGATION -->
 
-<span class="infoTitle">Total Return</span>
-
-<span class="infoValue">
-
-UGX ${totalReturnMachine.toLocaleString()}
-
-</span>
-
-</div>
-
-<div class="infoRow">
-
-<span class="infoTitle">Daily Income</span>
-
-<span class="infoValue">
-
-${weekendDisabled ? "UGX 0" : "UGX " + Math.floor(dailyReturn).toLocaleString()}
-
-</span>
-
-</div>
-
-<div class="infoRow">
-
-<span class="infoTitle">Working Days Left</span>
-
-<span class="infoValue">
-
-${expired ? "Completed" : daysRemaining + " Days"}
-
-</span>
-
-</div>
-
-<div class="infoRow">
-
-<span class="infoTitle">Status</span>
-
-<span class="${statusClass}">
-
-${statusText}
-
-</span>
-
-</div>
-
-<div class="progress">
-
-<div
-class="progressFill"
-style="width:${progress}%">
-
-</div>
-
-</div>
-
-<div style="display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:#9FB5D1;">
-
-<span>
-
-${Math.floor(progress)}% Complete
-
-</span>
-
-<span>
-
-${isVIP ? "VIP Machine" : "Standard Machine"}
-
-</span>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("activeMachines").textContent =
-activeMachines;
-
-document.getElementById("dailyIncome").textContent =
-"UGX " + Math.floor(dailyIncome).toLocaleString();
-
-document.getElementById("totalIncome").textContent =
-"UGX " + Math.floor(totalIncome).toLocaleString();
-
-document.getElementById("totalReturn").textContent =
-"UGX " + Math.floor(totalReturn).toLocaleString();
-
-}
-
-</script>
-
-<style>
-
-.bottom-nav{
-
-position:fixed;
-
-left:0;
-
-bottom:0;
-
-width:100%;
-
-height:70px;
-
-background:#08142D;
-
-border-top:1px solid rgba(0,200,255,.15);
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-backdrop-filter:blur(12px);
-
-z-index:999;
-
-}
-
-.bottom-nav a{
-
-text-decoration:none;
-
-color:#C5D8FF;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-gap:4px;
-
-font-size:12px;
-
-}
-
-.bottom-nav a.active{
-
-color:#00FF88;
-
-font-weight:bold;
-
-}
-
-.bottom-nav i{
-
-font-style:normal;
-
-font-size:22px;
-
-}
-
-</style>
-
-<div class="bottom-nav">
+<nav class="bottom-nav">
 
 <a href="dashboard.html">
 
-<i>🏠</i>
+<div class="nav-icon">🏠</div>
 
 <span>Home</span>
 
@@ -757,7 +102,7 @@ font-size:22px;
 
 <a href="machines.html">
 
-<i>⚙️</i>
+<div class="nav-icon">⚙️</div>
 
 <span>Machines</span>
 
@@ -765,7 +110,7 @@ font-size:22px;
 
 <a href="deposit.html">
 
-<i>💳</i>
+<div class="nav-icon">💳</div>
 
 <span>Deposit</span>
 
@@ -773,7 +118,7 @@ font-size:22px;
 
 <a href="income.html" class="active">
 
-<i>📈</i>
+<div class="nav-icon">📈</div>
 
 <span>Income</span>
 
@@ -781,14 +126,16 @@ font-size:22px;
 
 <a href="profile.html">
 
-<i>👤</i>
+<div class="nav-icon">👤</div>
 
 <span>Profile</span>
 
 </a>
 
-</div>
+</nav>
+
+<script src="income.js"></script>
 
 </body>
 
-</html>         
+</html>
