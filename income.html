@@ -10,7 +10,6 @@
 <title>Income | Marathon Digital Hub</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase-config.js"></script>
 
 <style>
@@ -36,21 +35,15 @@ padding-bottom:90px;
 body::before{
 
 content:"";
-
 position:fixed;
-
 left:-40%;
 top:-40%;
-
 width:180%;
 height:180%;
 
 background:
-
 radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
-
 radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
-
 radial-gradient(circle at 70% 80%,rgba(0,255,120,.15),transparent 40%);
 
 animation:bgMove 18s linear infinite;
@@ -67,8 +60,6 @@ z-index:-2;
 
 }
 
-/* Header */
-
 .header{
 
 padding:22px 16px 10px;
@@ -78,13 +69,11 @@ padding:22px 16px 10px;
 .header h2{
 
 font-size:30px;
-
 font-weight:bold;
 
 background:linear-gradient(90deg,#00C8FF,#00FF88);
 
 -webkit-background-clip:text;
-
 -webkit-text-fill-color:transparent;
 
 }
@@ -92,26 +81,19 @@ background:linear-gradient(90deg,#00C8FF,#00FF88);
 .header p{
 
 margin-top:5px;
-
 font-size:14px;
-
 color:#9FB5D1;
 
 }
 
-/* Summary */
-
 .summary{
 
 display:grid;
-
 grid-template-columns:1fr 1fr;
-
 gap:12px;
 
 padding:0 15px;
-
-margin-bottom:14px;
+margin-bottom:15px;
 
 }
 
@@ -131,23 +113,21 @@ border:1px solid rgba(0,200,255,.15);
 
 display:block;
 
+font-size:13px;
+
 color:#9FB5D1;
 
 margin-bottom:8px;
-
-font-size:13px;
 
 }
 
 .card h2{
 
-font-size:22px;
+font-size:23px;
 
 color:#00FF88;
 
 }
-
-/* Section */
 
 .section{
 
@@ -169,9 +149,15 @@ margin-bottom:18px;
 
 color:#00FF88;
 
+font-size:22px;
+
 }
 
-/* Machine Card */
+  <style>
+
+/* ==========================
+MACHINE CARD
+========================== */
 
 .machineCard{
 
@@ -179,9 +165,9 @@ background:#101E3D;
 
 border-radius:18px;
 
-padding:14px;
+padding:15px;
 
-margin-bottom:15px;
+margin-bottom:16px;
 
 border:1px solid rgba(255,255,255,.05);
 
@@ -227,7 +213,7 @@ font-weight:bold;
 
 color:#00FF88;
 
-margin-bottom:5px;
+margin-bottom:6px;
 
 }
 
@@ -242,6 +228,26 @@ border-radius:20px;
 background:#12385E;
 
 color:#00C8FF;
+
+font-size:11px;
+
+font-weight:bold;
+
+}
+
+.vipBadge{
+
+display:inline-block;
+
+margin-left:8px;
+
+padding:5px 10px;
+
+border-radius:20px;
+
+background:#FFD700;
+
+color:#111;
 
 font-size:11px;
 
@@ -295,11 +301,15 @@ margin-top:15px;
 
 height:100%;
 
-width:0;
-
 background:linear-gradient(90deg,#00C8FF,#00FF88);
 
+width:0%;
+
 }
+
+/* ==========================
+STATUS
+========================== */
 
 .active{
 
@@ -337,87 +347,15 @@ color:#00C8FF;
 
 </style>
 
-</head>
-
-<body>
-
-<div class="header">
-
-<h2>Income</h2>
-
-<p>Your mining earnings overview.</p>
-
-</div>
-
-<div class="summary">
-
-<div class="card">
-
-<small>Total Income</small>
-
-<h2 id="totalIncome">UGX 0</h2>
-
-</div>
-
-<div class="card">
-
-<small>Active Machines</small>
-
-<h2 id="activeMachines">0</h2>
-
-</div>
-
-</div>
-
-<div class="summary">
-
-<div class="card">
-
-<small>Daily Income</small>
-
-<h2 id="dailyIncome">UGX 0</h2>
-
-</div>
-
-<div class="card">
-
-<small>Total Return</small>
-
-<h2 id="totalReturn">UGX 0</h2>
-
-</div>
-
-</div>
-
-<div class="section">
-
-<h3>My Machines</h3>
-
-<div id="machineList">
-
-<div class="loading">
-
-Loading your machines...
-
-</div>
-
-</div>
-
-  </div><script>
-
-/* ==========================================
-SUPABASE
-========================================== */
+<script>
 
 const db = window.supabaseClient;
 
 let currentUser = null;
-let profile = null;
-let userMachines = [];
 
-/* ==========================================
-START PAGE
-========================================== */
+let profile = null;
+
+let userMachines = [];
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -431,139 +369,7 @@ if(!user){
 
 window.location.href="login.html";
 
-return;
-
-}
-
-currentUser=user;
-
-await loadProfile();
-
-await loadUserMachines();
-
-}catch(err){
-
-console.log(err);
-
-document.getElementById("machineList").innerHTML=`
-
-<div class="loading">
-
-Unable to load page.
-
-</div>
-
-`;
-
-}
-
-}
-
-/* ==========================================
-LOAD PROFILE
-========================================== */
-
-async function loadProfile(){
-
-const { data,error } = await db
-
-.from("profiles")
-
-.select("*")
-
-.eq("id",currentUser.id)
-
-.single();
-
-if(error){
-
-console.log(error);
-
-return;
-
-}
-
-profile=data;
-
-}
-
-/* ==========================================
-LOAD USER MACHINES
-========================================== */
-
-async function loadUserMachines(){
-
-document.getElementById("machineList").innerHTML=`
-
-<div class="loading">
-
-Loading your machines...
-
-</div>
-
-`;
-
-const { data,error } = await db
-
-.from("user_machines")
-
-.select(`
-
-*,
-
-machines(
-
-id,
-
-name,
-
-series,
-
-image_url,
-
-price,
-
-total_return,
-
-duration_days,
-
-is_vip
-
-)
-
-`)
-
-.eq("user_id",currentUser.id)
-
-.order("purchase_date",{ascending:false});
-
-if(error){
-
-console.log(error);
-
-document.getElementById("machineList").innerHTML=`
-
-<div class="loading">
-
-Failed to load your machines.
-
-</div>
-
-`;
-
-return;
-
-}
-
-userMachines=data || [];
-
-renderMachines();
-
-}/* ==========================================
-RENDER MACHINES
-========================================== */
-
-function renderMachines(){
+  function renderMachines(){
 
 const container=document.getElementById("machineList");
 
@@ -591,6 +397,7 @@ let totalReturn=0;
 let dailyIncome=0;
 
 const today=new Date();
+
 const isWeekend=(today.getDay()==0 || today.getDay()==6);
 
 userMachines.forEach(item=>{
@@ -599,72 +406,88 @@ const machine=item.machines;
 
 if(!machine)return;
 
-const purchaseDate = new Date(item.purchase_date);
+const purchaseDate=new Date(item.purchase_date);
 
-const isVIP = machine.is_vip === true;
+const isVIP=machine.is_vip===true;
 
-const totalReturnMachine = Number(machine.total_return);
+const totalReturnMachine=Number(machine.total_return);
 
-const duration = Number(machine.duration_days);
+const duration=Number(machine.duration_days);
 
-const dailyReturn = totalReturnMachine / duration;
+const dailyReturn=totalReturnMachine/duration;
 
 /* Count earning days */
 
-let earningDays = 0;
+let earningDays=0;
 
-let current = new Date(purchaseDate);
+let current=new Date(purchaseDate);
 
-while (current <= today && earningDays < duration) {
+while(current<=today && earningDays<duration){
 
-    const day = current.getDay();
+const day=current.getDay();
 
-    if (isVIP || (day !== 0 && day !== 6)) {
+if(isVIP || (day!==0 && day!==6)){
 
-        earningDays++;
-
-    }
-
-    current.setDate(current.getDate() + 1);
+earningDays++;
 
 }
 
-const expired = earningDays >= duration;
+current.setDate(current.getDate()+1);
 
-const earned = Math.min(
-    totalReturnMachine,
-    dailyReturn * earningDays
+}
+
+const expired=earningDays>=duration;
+
+const earned=Math.min(
+
+totalReturnMachine,
+
+dailyReturn*earningDays
+
 );
 
-const remaining = Math.max(
-    0,
-    totalReturnMachine - earned
+const remaining=Math.max(
+
+0,
+
+totalReturnMachine-earned
+
 );
 
-const progress = Math.min(
-    100,
-    (earned / totalReturnMachine) * 100
+const progress=Math.min(
+
+100,
+
+(earned/totalReturnMachine)*100
+
 );
 
-const daysRemaining = Math.max(
-    0,
-    duration - earningDays
+const daysRemaining=Math.max(
+
+0,
+
+duration-earningDays
+
 );
 
-const weekendDisabled =
-    isWeekend && !isVIP && !expired;
+const weekendDisabled=
+
+isWeekend && !isVIP && !expired;
 
 let statusText="🟢 ACTIVE";
+
 let statusClass="active";
 
 if(expired){
 
 statusText="🔴 EXPIRED";
+
 statusClass="expired";
 
 }else if(weekendDisabled){
 
 statusText="🟠 DISABLED (WEEKEND)";
+
 statusClass="weekend";
 
 }
@@ -675,8 +498,9 @@ activeMachines++;
 
 }
 
-totalReturn+=totalReturnMachine;
 totalIncome+=earned;
+
+totalReturn+=totalReturnMachine;
 
 if(!expired && !weekendDisabled){
 
@@ -684,11 +508,15 @@ dailyIncome+=dailyReturn;
 
 }
 
-/* Continue with the card in Part 4 */const image = machine.image_url && machine.image_url.trim() !== ""
-? machine.image_url
-: "images/default-machine.png";
+const image=
 
-container.innerHTML += `
+machine.image_url && machine.image_url.trim()!=="" ?
+
+machine.image_url :
+
+"images/default-machine.png";
+
+            container.innerHTML += `
 
 <div class="machineCard">
 
@@ -705,6 +533,8 @@ onerror="this.src='images/default-machine.png'">
 
 ${machine.name}
 
+${isVIP ? '<span class="vipBadge">VIP</span>' : ''}
+
 </div>
 
 <div class="machineSeries">
@@ -719,11 +549,7 @@ ${machine.series || "STANDARD"}
 
 <div class="infoRow">
 
-<span class="infoTitle">
-
-Purchase Price
-
-</span>
+<span class="infoTitle">Purchase Price</span>
 
 <span class="infoValue">
 
@@ -735,11 +561,7 @@ UGX ${Number(machine.price).toLocaleString()}
 
 <div class="infoRow">
 
-<span class="infoTitle">
-
-Earned
-
-</span>
+<span class="infoTitle">Earned</span>
 
 <span class="infoValue">
 
@@ -751,11 +573,7 @@ UGX ${Math.floor(earned).toLocaleString()}
 
 <div class="infoRow">
 
-<span class="infoTitle">
-
-Remaining
-
-</span>
+<span class="infoTitle">Remaining</span>
 
 <span class="infoValue">
 
@@ -767,11 +585,7 @@ UGX ${Math.floor(remaining).toLocaleString()}
 
 <div class="infoRow">
 
-<span class="infoTitle">
-
-Total Return
-
-</span>
+<span class="infoTitle">Total Return</span>
 
 <span class="infoValue">
 
@@ -783,11 +597,7 @@ UGX ${totalReturnMachine.toLocaleString()}
 
 <div class="infoRow">
 
-<span class="infoTitle">
-
-Daily Income
-
-</span>
+<span class="infoTitle">Daily Income</span>
 
 <span class="infoValue">
 
@@ -799,15 +609,11 @@ ${weekendDisabled ? "UGX 0" : "UGX " + Math.floor(dailyReturn).toLocaleString()}
 
 <div class="infoRow">
 
-<span class="infoTitle">
-
-Days Remaining
-
-</span>
+<span class="infoTitle">Working Days Left</span>
 
 <span class="infoValue">
 
-${expired ? "0 Days" : daysRemaining + " Days"}
+${expired ? "Completed" : daysRemaining + " Days"}
 
 </span>
 
@@ -815,11 +621,7 @@ ${expired ? "0 Days" : daysRemaining + " Days"}
 
 <div class="infoRow">
 
-<span class="infoTitle">
-
-Status
-
-</span>
+<span class="infoTitle">Status</span>
 
 <span class="${statusClass}">
 
@@ -849,7 +651,7 @@ ${Math.floor(progress)}% Complete
 
 <span>
 
-Expires: ${expiryDate.toLocaleDateString()}
+${isVIP ? "VIP Machine" : "Standard Machine"}
 
 </span>
 
@@ -859,35 +661,23 @@ Expires: ${expiryDate.toLocaleDateString()}
 
 `;
 
-});/* ==========================================
-UPDATE SUMMARY
-========================================== */
+});
 
-document.getElementById("activeMachines").innerHTML=
-
+document.getElementById("activeMachines").textContent =
 activeMachines;
 
-document.getElementById("dailyIncome").innerHTML=
+document.getElementById("dailyIncome").textContent =
+"UGX " + Math.floor(dailyIncome).toLocaleString();
 
-"UGX "+Math.floor(dailyIncome).toLocaleString();
+document.getElementById("totalIncome").textContent =
+"UGX " + Math.floor(totalIncome).toLocaleString();
 
-document.getElementById("totalIncome").innerHTML=
-
-"UGX "+Math.floor(totalIncome).toLocaleString();
-
-document.getElementById("totalReturn").innerHTML=
-
-"UGX "+Math.floor(totalReturn).toLocaleString();
+document.getElementById("totalReturn").textContent =
+"UGX " + Math.floor(totalReturn).toLocaleString();
 
 }
 
-/* ==========================================
-END MAIN SCRIPT
-========================================== */
-
-</script><!-- ==========================
-BOTTOM NAVIGATION
-========================== -->
+</script>
 
 <style>
 
@@ -931,11 +721,9 @@ flex-direction:column;
 
 align-items:center;
 
-font-size:12px;
-
 gap:4px;
 
-transition:.3s;
+font-size:12px;
 
 }
 
@@ -947,7 +735,7 @@ font-weight:bold;
 
 }
 
-.bottom-nav a i{
+.bottom-nav i{
 
 font-style:normal;
 
@@ -1003,4 +791,4 @@ font-size:22px;
 
 </body>
 
-</html>
+</html>         
