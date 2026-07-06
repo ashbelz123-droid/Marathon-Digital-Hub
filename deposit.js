@@ -13,30 +13,26 @@ let selectedMethod = "MTN";
    START
 ========================================== */
 
-document.addEventListener("DOMContentLoaded", async()=>{
+document.addEventListener("DOMContentLoaded", async () => {
 
-const { data:{ user }, error } = await db.auth.getUser();
+    const { data: { user }, error } = await db.auth.getUser();
 
-if(error){
+    if (error) {
+        console.log(error);
+        return;
+    }
 
-console.log(error);
-return;
+    if (!user) {
+        window.location.href = "login.html";
+        return;
+    }
 
-}
+    currentUser = user;
 
-if(!user){
-
-window.location.replace("login.html");
-return;
-
-}
-
-currentUser = user;
-
-await loadProfile();
-await loadPaymentAccounts();
-await loadLatestDeposit();
-await loadDepositHistory();
+    await loadProfile();
+    await loadPaymentAccounts();
+    await loadLatestDeposit();
+    await loadDepositHistory();
 
 });
 
@@ -44,105 +40,99 @@ await loadDepositHistory();
    LOAD USER PROFILE
 ========================================== */
 
-async function loadProfile(){
+async function loadProfile() {
 
-const { data,error } = await db
+    const { data, error } = await db
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .single();
 
-.from("profiles")
+    if (error) {
+        console.log(error);
+        return;
+    }
 
-.select("fullname,phone,wallet_balance")
+    profile = data;
 
-.eq("id",currentUser.id)
-
-.single();
-
-if(error){
-
-console.log(error);
-return;
-
-}
-
-profile=data;
-
-document.getElementById("walletBalance").innerHTML=
-
-"UGX "+Number(profile.wallet_balance||0).toLocaleString();
+    document.getElementById("walletBalance").textContent =
+        "UGX " + Number(profile.wallet_balance || 0).toLocaleString();
 
 }
 
 /* ==========================================
-   LOAD PAYMENT SETTINGS
+   LOAD PAYMENT ACCOUNTS
 ========================================== */
 
-async function loadPaymentAccounts(){
+async function loadPaymentAccounts() {
 
-const { data,error } = await db
+    const { data, error } = await db
+        .from("payment_settings")
+        .select("*")
+        .eq("is_active", true);
 
-.from("payment_settings")
+    if (error) {
+        console.log(error);
+        return;
+    }
 
-.select("*")
+    data.forEach(account => {
 
-.eq("is_active",true);
+        if (account.method.toLowerCase() === "mtn") {
 
-if(error){
+            document.getElementById("mtnName").textContent =
+                account.account_name;
 
-console.log(error);
-return;
+            document.getElementById("mtnNumber").textContent =
+                account.phone_number;
 
-}
+        }
 
-data.forEach(account=>{
+        if (account.method.toLowerCase() === "airtel") {
 
-if(account.method==="MTN"){
+            document.getElementById("airtelName").textContent =
+                account.account_name;
 
-document.getElementById("mtnName").textContent=
+            document.getElementById("airtelNumber").textContent =
+                account.phone_number;
 
-account.account_name;
+        }
 
-document.getElementById("mtnNumber").textContent=
+    });
 
-account.phone_number;
-
-}
-
-if(account.method==="Airtel"){
-
-document.getElementById("airtelName").textContent=
-
-account.account_name;
-
-document.getElementById("airtelNumber").textContent=
-
-account.phone_number;
-
-}
-
-});
-
-}
+                          }
 
 /* ==========================================
-   COPY ACCOUNT NUMBERS
+   COPY PAYMENT NUMBERS
 ========================================== */
 
 document.getElementById("copyMTN").onclick = async () => {
 
-const number = document.getElementById("mtnNumber").textContent;
+    const number = document.getElementById("mtnNumber").textContent;
 
-await navigator.clipboard.writeText(number);
+    if(number === "Loading..." || number === ""){
+        alert("MTN number not available.");
+        return;
+    }
 
-alert("MTN number copied successfully.");
+    await navigator.clipboard.writeText(number);
+
+    alert("MTN number copied successfully.");
 
 };
 
 document.getElementById("copyAirtel").onclick = async () => {
 
-const number = document.getElementById("airtelNumber").textContent;
+    const number = document.getElementById("airtelNumber").textContent;
 
-await navigator.clipboard.writeText(number);
+    if(number === "Loading..." || number === ""){
+        alert("Airtel number not available.");
+        return;
+    }
 
-alert("Airtel number copied successfully.");
+    await navigator.clipboard.writeText(number);
+
+    alert("Airtel number copied successfully.");
 
 };
 
@@ -152,19 +142,19 @@ alert("Airtel number copied successfully.");
 
 document.getElementById("mtnMethod").onclick = () => {
 
-selectedMethod = "MTN";
+    selectedMethod = "MTN";
 
-document.getElementById("mtnMethod").classList.add("active");
-document.getElementById("airtelMethod").classList.remove("active");
+    document.getElementById("mtnMethod").classList.add("active");
+    document.getElementById("airtelMethod").classList.remove("active");
 
 };
 
 document.getElementById("airtelMethod").onclick = () => {
 
-selectedMethod = "Airtel";
+    selectedMethod = "Airtel";
 
-document.getElementById("airtelMethod").classList.add("active");
-document.getElementById("mtnMethod").classList.remove("active");
+    document.getElementById("airtelMethod").classList.add("active");
+    document.getElementById("mtnMethod").classList.remove("active");
 
 };
 
@@ -174,105 +164,100 @@ document.getElementById("mtnMethod").classList.remove("active");
 
 document.getElementById("submitDeposit").onclick = async () => {
 
-const amount = Number(document.getElementById("depositAmount").value);
+    const amount = Number(document.getElementById("depositAmount").value);
 
-const transactionId = document.getElementById("transactionId").value.trim();
+    const transactionId = document
+        .getElementById("transactionId")
+        .value
+        .trim();
 
-if(!amount || amount <= 0){
+    if(amount <= 0){
 
-alert("Enter a valid deposit amount.");
+        alert("Please enter a valid deposit amount.");
 
-return;
+        return;
 
-}
+    }
 
-if(transactionId === ""){
+    if(transactionId === ""){
 
-alert("Enter the Transaction ID from the SMS.");
+        alert("Please enter the Transaction ID.");
 
-return;
+        return;
 
-}
+    }
 
-const btn = document.getElementById("submitDeposit");
+    const btn = document.getElementById("submitDeposit");
 
-btn.disabled = true;
+    btn.disabled = true;
+    btn.innerHTML = "Submitting...";
 
-btn.innerHTML = "Submitting...";
+    const { error } = await db
+        .from("deposits")
+        .insert({
 
-/* Save Deposit */
+            user_id: currentUser.id,
+            amount: amount,
+            method: selectedMethod,
+            transaction_id: transactionId,
+            status: "pending",
+            payment_message: transactionId,
+            user_message: "Deposit submitted successfully."
 
-const { data: deposit, error } = await db
+        });
 
-.from("deposits")
+    if(error){
 
-.insert({
+        btn.disabled = false;
+        btn.innerHTML = "Submit Deposit Request";
 
-user_id: currentUser.id,
+        alert(error.message);
 
-amount: amount,
+        return;
 
-method: selectedMethod,
+    }
 
-transaction_id: transactionId,
+    /* Continue in Part 3 */
 
-status: "pending",
+       /* ==========================================
+       CREATE ADMIN NOTIFICATION
+    ========================================== */
 
-payment_message: transactionId,
+    await db
+        .from("admin_notifications")
+        .insert({
 
-user_message: "Deposit request submitted."
+            title: "New Deposit Request",
 
-})
+            message:
+                profile.fullname +
+                " submitted a " +
+                selectedMethod +
+                " deposit of UGX " +
+                amount.toLocaleString(),
 
-.select()
+            type: "deposit",
 
-.single();
+            is_read: false,
 
-if(error){
+            created_at: new Date().toISOString()
 
-btn.disabled = false;
+        });
 
-btn.innerHTML = "Submit Deposit Request";
+    /* ==========================================
+       RESET FORM
+    ========================================== */
 
-alert(error.message);
+    document.getElementById("depositAmount").value = "";
+    document.getElementById("transactionId").value = "";
 
-return;
+    btn.disabled = false;
+    btn.innerHTML = "Submit Deposit Request";
 
-}
+    alert("Deposit request submitted successfully.");
 
-/* Notify Admin */
-
-await db
-
-.from("admin_notifications")
-
-.insert({
-
-title: "New Deposit Request",
-
-message: `${profile.fullname} submitted a ${selectedMethod} deposit of UGX ${amount.toLocaleString()}.`,
-
-type: "deposit",
-
-is_read: false,
-
-created_at: new Date().toISOString()
-
-});
-
-btn.disabled = false;
-
-btn.innerHTML = "Submit Deposit Request";
-
-document.getElementById("depositAmount").value = "";
-
-document.getElementById("transactionId").value = "";
-
-await loadLatestDeposit();
-
-await loadDepositHistory();
-
-alert("Deposit request submitted successfully. It will be reviewed by the admin.");
+    await loadLatestDeposit();
+    await loadDepositHistory();
 
 };
 
@@ -282,61 +267,38 @@ alert("Deposit request submitted successfully. It will be reviewed by the admin.
 
 async function loadLatestDeposit(){
 
-const { data, error } = await db
-.from("deposits")
-.select("*")
-.eq("user_id", currentUser.id)
-.order("created_at", { ascending:false })
-.limit(1);
+    const { data, error } = await db
+        .from("deposits")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending:false })
+        .limit(1);
 
-if(error){
+    if(error){
 
-console.log(error);
-return;
+        console.log(error);
+        return;
 
-}
+    }
 
-if(!data || data.length===0){
+    if(!data || data.length===0) return;
 
-document.getElementById("latestStatus").innerHTML="🟡 No Request";
-document.getElementById("latestAmount").innerHTML="UGX 0";
-document.getElementById("latestMethod").innerHTML="-";
-document.getElementById("latestTransaction").innerHTML="-";
-document.getElementById("latestTime").innerHTML="-";
+    const deposit = data[0];
 
-return;
+    document.getElementById("latestStatus").textContent =
+        deposit.status.toUpperCase();
 
-}
+    document.getElementById("latestAmount").textContent =
+        "UGX " + Number(deposit.amount).toLocaleString();
 
-const deposit=data[0];
+    document.getElementById("latestMethod").textContent =
+        deposit.method;
 
-let badge="🟡 Pending";
+    document.getElementById("latestTransaction").textContent =
+        deposit.transaction_id;
 
-if(deposit.status==="approved"){
-
-badge="🟢 Approved";
-
-}
-
-if(deposit.status==="rejected"){
-
-badge="🔴 Rejected";
-
-}
-
-document.getElementById("latestStatus").innerHTML=badge;
-
-document.getElementById("latestAmount").innerHTML=
-"UGX "+Number(deposit.amount).toLocaleString();
-
-document.getElementById("latestMethod").innerHTML=
-deposit.method || "-";
-
-document.getElementById("latestTransaction").innerHTML=
-deposit.transaction_id || "-";
-
-document.getElementById("latestTime").innerHTML=
-new Date(deposit.created_at).toLocaleString();
+    document.getElementById("latestTime").textContent =
+        new Date(deposit.created_at).toLocaleString();
 
 }
 
@@ -346,76 +308,52 @@ new Date(deposit.created_at).toLocaleString();
 
 async function loadDepositHistory(){
 
-const { data, error } = await db
-.from("deposits")
-.select("*")
-.eq("user_id", currentUser.id)
-.order("created_at",{ascending:false});
+    const { data, error } = await db
+        .from("deposits")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending:false });
 
-if(error){
+    if(error){
 
-console.log(error);
-return;
+        console.log(error);
+        return;
 
-}
+    }
 
-const history=document.getElementById("depositHistory");
+    const history = document.getElementById("depositHistory");
 
-history.innerHTML="";
+    history.innerHTML = "";
 
-if(!data || data.length===0){
+    if(!data || data.length===0){
 
-history.innerHTML=`
+        history.innerHTML =
+        "<div class='history-empty'>No deposit history.</div>";
 
-<div class="history-empty">
+        return;
 
-No deposit requests yet.
+    }
 
-</div>
+    data.forEach(item=>{
 
-`;
+        history.innerHTML += `
 
-return;
+        <div class="history-item">
 
-}
+            <h4>UGX ${Number(item.amount).toLocaleString()}</h4>
 
-data.forEach(item=>{
+            <p><strong>Status:</strong> ${item.status}</p>
 
-let color="#ffcc00";
-let status="🟡 Pending";
+            <p><strong>Method:</strong> ${item.method}</p>
 
-if(item.status==="approved"){
+            <p><strong>Transaction ID:</strong> ${item.transaction_id}</p>
 
-color="#00ff88";
-status="🟢 Approved";
+            <p>${new Date(item.created_at).toLocaleString()}</p>
 
-}
+        </div>
 
-if(item.status==="rejected"){
+        `;
 
-color="#ff4444";
-status="🔴 Rejected";
+    });
 
-}
-
-history.innerHTML+=`
-
-<div class="history-item" style="border-left:4px solid ${color};">
-
-<h4>UGX ${Number(item.amount).toLocaleString()}</h4>
-
-<p><b>Status:</b> ${status}</p>
-
-<p><b>Method:</b> ${item.method}</p>
-
-<p><b>Transaction ID:</b> ${item.transaction_id || "-"}</p>
-
-<p><b>Date:</b> ${new Date(item.created_at).toLocaleString()}</p>
-
-</div>
-
-`;
-
-});
-
-}
+           }
