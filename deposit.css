@@ -1,44 +1,18 @@
-/* ====================================
-RESET
-==================================== */
-
 *{
-
 margin:0;
-
 padding:0;
-
 box-sizing:border-box;
-
 font-family:Arial,sans-serif;
-
-}
-
-html{
-
-scroll-behavior:smooth;
-
 }
 
 body{
 
 background:#050B18;
-
-color:#ffffff;
-
+color:#fff;
+padding:20px 15px 90px;
 overflow-x:hidden;
 
-padding-bottom:90px;
-
-position:relative;
-
-min-height:100vh;
-
 }
-
-/* ====================================
-ANIMATED BACKGROUND
-==================================== */
 
 body::before{
 
@@ -47,11 +21,9 @@ content:"";
 position:fixed;
 
 left:-40%;
-
 top:-40%;
 
 width:180%;
-
 height:180%;
 
 background:
@@ -72,269 +44,205 @@ z-index:-2;
 
 @keyframes bgMove{
 
-0%{
-
-transform:translateX(-2%);
-
-}
-
-50%{
-
-transform:translateX(2%);
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
 
 }
 
-100%{
+.page{
 
-transform:translateX(-2%);
+max-width:600px;
+margin:auto;
 
 }
-
-}
-
-/* ====================================
-HEADER
-==================================== */
 
 .header{
 
-padding:22px 20px 10px;
+margin-bottom:18px;
 
 }
 
 .header h2{
 
 font-size:28px;
-
 font-weight:700;
-
-color:#ffffff;
 
 }
 
 .header p{
 
 margin-top:6px;
-
 font-size:14px;
-
 color:#9fb5d1;
-
-line-height:1.6;
 
 }
 
-/* ====================================
-WALLET CARD
-==================================== */
-
-.walletCard{
-
-margin:18px;
-
-padding:22px;
-
-background:linear-gradient(135deg,#08142d,#0d1f45);
-
-border-radius:22px;
-
-border:1px solid rgba(0,200,255,.15);
+.wallet-card{
 
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
 
-box-shadow:0 15px 35px rgba(0,0,0,.25);
+padding:20px;
+
+border-radius:18px;
+
+background:linear-gradient(135deg,#08142d,#0c1d40);
+
+border:1px solid rgba(0,255,136,.18);
+
+margin-bottom:18px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.35);
 
 }
 
-.walletCard span{
+.wallet-card span{
 
 font-size:14px;
-
 color:#9fb5d1;
 
 }
 
-.walletCard h1{
+.wallet-card h1{
 
-margin-top:8px;
+margin-top:10px;
 
-font-size:32px;
-
-font-weight:bold;
+font-size:30px;
 
 color:#00ff88;
 
 }
 
-#walletStatus{
+.wallet-icon{
 
-margin-top:8px;
-
-font-size:13px;
-
-color:#7dd3fc;
-
-}
-
-.walletIcon{
-
-font-size:48px;
-
-opacity:.95;
-
-}
-
-/* ====================================
-SECTION TITLE
-==================================== */
-
-.sectionTitle{
-
-margin:24px 18px 12px;
-
-font-size:18px;
-
-font-weight:bold;
-
-color:#00ff88;
-
-letter-spacing:.3px;
-
-  }
-
-/* ====================================
-PAYMENT GRID
-==================================== */
-
-.paymentGrid{
-
-margin:0 18px;
+width:65px;
+height:65px;
 
 display:flex;
+justify-content:center;
+align-items:center;
 
-flex-direction:column;
+border-radius:50%;
 
-gap:15px;
+background:rgba(0,255,136,.12);
+
+font-size:30px;
 
 }
 
-/* ====================================
-PAYMENT CARD
-==================================== */
-
-.paymentCard{
+.card{
 
 background:#08142d;
-
-border:1px solid rgba(255,255,255,.08);
 
 border-radius:18px;
 
 padding:18px;
 
-transition:.3s;
+margin-bottom:18px;
 
-cursor:pointer;
+border:1px solid rgba(0,200,255,.12);
 
-}
-
-.paymentCard.active{
-
-border:2px solid #00ff88;
-
-box-shadow:0 0 18px rgba(0,255,136,.18);
+box-shadow:0 8px 20px rgba(0,0,0,.25);
 
 }
 
-.paymentCard:hover{
+.card h3{
 
-transform:translateY(-3px);
-
-border-color:#00c8ff;
-
-}
-
-/* ====================================
-NETWORK TITLE
-==================================== */
-
-.network{
-
-display:flex;
-
-align-items:center;
-
-gap:8px;
-
-font-size:17px;
-
-font-weight:bold;
+font-size:18px;
 
 margin-bottom:16px;
 
-color:#ffffff;
+color:#00ff88;
 
-}
+                }
 
-/* ====================================
-ACCOUNT ROW
-==================================== */
-
-.accountRow{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
+.payment-card{
 
 background:#111f3d;
 
-border-radius:12px;
+border-radius:16px;
 
-padding:14px;
+padding:16px;
 
-margin-bottom:12px;
+margin-bottom:15px;
+
+border:1px solid rgba(255,255,255,.08);
+
+transition:.3s;
 
 }
 
-.accountRow span{
+.payment-card:hover{
+
+transform:translateY(-2px);
+
+border-color:#00ff88;
+
+}
+
+.network-tag{
+
+display:inline-block;
+
+padding:6px 12px;
+
+border-radius:30px;
+
+font-size:12px;
+
+font-weight:bold;
+
+margin-bottom:15px;
+
+}
+
+.mtn .network-tag{
+
+background:#ffd400;
+
+color:#111;
+
+}
+
+.airtel .network-tag{
+
+background:#ff3b30;
+
+color:#fff;
+
+}
+
+.payment-info p{
 
 font-size:13px;
 
 color:#9fb5d1;
 
+margin-top:8px;
+
 }
 
-.accountRow b{
+.payment-info h4{
 
-font-size:15px;
+font-size:18px;
 
-color:#ffffff;
+margin-top:4px;
+
+margin-bottom:10px;
+
+color:#fff;
 
 word-break:break-word;
 
-text-align:right;
-
-max-width:60%;
-
 }
 
-/* ====================================
-COPY BUTTON
-==================================== */
-
-.copyBtn{
+.copy-btn{
 
 width:100%;
 
 height:48px;
-
-margin-top:5px;
 
 border:none;
 
@@ -342,7 +250,7 @@ border-radius:12px;
 
 background:#00c8ff;
 
-color:#ffffff;
+color:#001018;
 
 font-size:15px;
 
@@ -350,167 +258,87 @@ font-weight:bold;
 
 cursor:pointer;
 
+margin-top:12px;
+
 transition:.3s;
 
 }
 
-.copyBtn:hover{
+.copy-btn:hover{
 
-background:#00b3e6;
-
-transform:translateY(-2px);
-
-box-shadow:0 8px 18px rgba(0,200,255,.25);
+background:#00ff88;
 
 }
 
-.copyBtn:active{
+.instruction-box{
 
-transform:scale(.98);
+background:#111f3d;
 
-}
+border-left:4px solid #00ff88;
 
-/* ====================================
-PAYMENT INSTRUCTIONS
-==================================== */
+padding:15px;
 
-.instructionCard{
-
-margin:0 18px 20px;
-
-background:#08142d;
-
-border:1px solid rgba(255,255,255,.08);
-
-border-radius:18px;
-
-padding:20px;
-
-}
-
-.instructionCard h3{
-
-font-size:18px;
-
-color:#00ff88;
+border-radius:12px;
 
 margin-bottom:15px;
 
 }
 
-.instructionCard ol{
+.instruction-box p{
+
+margin-bottom:10px;
+
+font-size:15px;
+
+}
+
+.instruction-box ol{
 
 padding-left:20px;
 
 }
 
-.instructionCard li{
-
-margin-bottom:12px;
-
-line-height:1.6;
-
-font-size:14px;
-
-color:#dbe7ff;
-
-}
-
-.instructionNote{
-
-margin-top:18px;
-
-padding:15px;
-
-background:rgba(255,193,7,.12);
-
-border-left:4px solid #ffc107;
-
-border-radius:10px;
-
-font-size:14px;
-
-line-height:1.7;
-
-color:#ffd95c;
-
-}
-
-/* ====================================
-DEPOSIT FORM
-==================================== */
-
-.depositCard{
-
-margin:0 18px 20px;
-
-background:#08142d;
-
-border:1px solid rgba(255,255,255,.08);
-
-border-radius:18px;
-
-padding:20px;
-
-}
-
-.depositCard label{
-
-display:block;
-
-margin-top:16px;
+.instruction-box li{
 
 margin-bottom:8px;
 
 font-size:14px;
 
-font-weight:bold;
+color:#d9e4f5;
 
-color:#d6e2ff;
-
-}
-
-.depositCard label:first-child{
-
-margin-top:0;
+line-height:1.5;
 
 }
 
-.messageBox{
+.notice{
 
-background:#111f3d;
+background:rgba(255,204,0,.12);
+
+border:1px solid rgba(255,204,0,.35);
+
+color:#ffd54f;
+
+padding:14px;
 
 border-radius:12px;
 
-padding:15px;
-
-line-height:1.7;
-
 font-size:14px;
 
-color:#ffffff;
+line-height:1.5;
 
-word-break:break-word;
+  }
 
-margin-bottom:12px;
-
-}
-
-/* ====================================
-PAYMENT METHOD BUTTONS
-==================================== */
-
-.methodButtons{
+.method-buttons{
 
 display:flex;
 
 gap:10px;
 
-margin:15px 0;
+margin-bottom:15px;
 
 }
 
-.methodButtons button{
+.method-buttons button{
 
 flex:1;
 
@@ -522,7 +350,7 @@ border-radius:12px;
 
 background:#111f3d;
 
-color:#ffffff;
+color:#fff;
 
 font-size:15px;
 
@@ -534,7 +362,7 @@ transition:.3s;
 
 }
 
-.methodButtons button.active{
+.method-buttons button.active{
 
 background:#00ff88;
 
@@ -542,23 +370,11 @@ color:#001018;
 
 }
 
-.methodButtons button:hover{
-
-background:#00c8ff;
-
-}
-
-/* ====================================
-INPUTS
-==================================== */
-
-.depositCard input{
+input{
 
 width:100%;
 
 height:52px;
-
-padding:0 15px;
 
 background:#111f3d;
 
@@ -566,99 +382,35 @@ border:1px solid rgba(255,255,255,.08);
 
 border-radius:12px;
 
-outline:none;
+padding:0 15px;
 
 font-size:15px;
 
-color:#ffffff;
+color:#fff;
 
-transition:.3s;
+outline:none;
 
-}
-
-.depositCard input::placeholder{
-
-color:#7f8da8;
+margin-bottom:15px;
 
 }
 
-.depositCard input:focus{
+input:focus{
 
 border-color:#00ff88;
 
-box-shadow:0 0 12px rgba(0,255,136,.20);
-
 }
 
-/* ====================================
-LIVE SUMMARY
-==================================== */
-
-.summaryBox{
-
-margin:18px 0;
-
-background:#111f3d;
-
-border-radius:14px;
-
-padding:15px;
-
-border:1px solid rgba(255,255,255,.06);
-
-}
-
-.summaryBox div{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:10px 0;
-
-}
-
-.summaryBox div:not(:last-child){
-
-border-bottom:1px solid rgba(255,255,255,.06);
-
-}
-
-.summaryBox span{
-
-font-size:14px;
-
-color:#9fb5d1;
-
-}
-
-.summaryBox b{
-
-font-size:15px;
-
-color:#00ff88;
-
-}
-
-/* ====================================
-SUBMIT BUTTON
-==================================== */
-
-.submitBtn{
+.submit-btn{
 
 width:100%;
 
-height:55px;
-
-margin-top:20px;
+height:54px;
 
 border:none;
 
 border-radius:14px;
 
-background:linear-gradient(135deg,#00ff88,#00c8ff);
+background:#00ff88;
 
 color:#001018;
 
@@ -672,285 +424,129 @@ transition:.3s;
 
 }
 
-.submitBtn:hover{
+.submit-btn:hover{
 
-transform:translateY(-2px);
-
-box-shadow:0 12px 25px rgba(0,255,136,.25);
+background:#00d96f;
 
 }
 
-.submitBtn:disabled{
-
-background:#555;
-
-color:#ddd;
-
-cursor:not-allowed;
-
-box-shadow:none;
-
-transform:none;
-
-  }
-
-/* ====================================
-LATEST DEPOSIT REQUEST
-==================================== */
-
-.statusCard{
-
-margin:0 18px 20px;
-
-background:#08142d;
-
-border:1px solid rgba(255,255,255,.08);
-
-border-radius:18px;
-
-padding:20px;
-
-}
-
-.statusHeader{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-flex-wrap:wrap;
-
-gap:10px;
-
-margin-bottom:15px;
-
-}
-
-.pendingBadge,
-.approvedBadge,
-.rejectedBadge{
-
-padding:7px 14px;
-
-border-radius:25px;
-
-font-size:12px;
-
-font-weight:bold;
-
-text-transform:uppercase;
-
-}
-
-.pendingBadge{
-
-background:#ffc107;
-
-color:#000;
-
-}
-
-.approvedBadge{
-
-background:#00c853;
-
-color:#fff;
-
-}
-
-.rejectedBadge{
-
-background:#ff3b30;
-
-color:#fff;
-
-}
-
-#latestRequestTime{
-
-font-size:13px;
-
-color:#9fb5d1;
-
-}
-
-#latestAmount{
-
-font-size:30px;
-
-font-weight:bold;
-
-color:#00ff88;
-
-margin:15px 0;
-
-}
-
-.statusInfo{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-margin-bottom:15px;
-
-}
-
-.statusInfo div{
+.latest-request{
 
 background:#111f3d;
 
-padding:14px;
-
-border-radius:12px;
-
-}
-
-.statusInfo span{
-
-display:block;
-
-font-size:12px;
-
-color:#9fb5d1;
-
-margin-bottom:5px;
-
-}
-
-.statusInfo b{
-
-font-size:14px;
-
-word-break:break-word;
-
-}
-
-.statusMessage{
-
-background:#111f3d;
+border-radius:14px;
 
 padding:15px;
 
-border-radius:12px;
-
-line-height:1.6;
-
-font-size:14px;
-
-color:#dbe7ff;
-
 }
 
-/* ====================================
-DEPOSIT HISTORY
-==================================== */
+.status-badge{
 
-.historyCard{
+display:inline-block;
 
-background:#08142d;
+padding:6px 14px;
 
-border:1px solid rgba(255,255,255,.08);
+border-radius:30px;
 
-border-radius:18px;
+background:#ffcc00;
 
-padding:18px;
+color:#111;
 
-margin:0 18px 15px;
+font-size:13px;
 
-}
-
-.historyTop{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
+font-weight:bold;
 
 margin-bottom:15px;
 
 }
 
-.historyAmount{
-
-font-size:22px;
-
-font-weight:bold;
-
-color:#00ff88;
-
-}
-
-.historyGrid{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-}
-
-.historyGrid div{
-
-background:#111f3d;
-
-padding:12px;
-
-border-radius:10px;
-
-}
-
-.historyGrid span{
-
-display:block;
-
-font-size:12px;
-
-color:#9fb5d1;
-
-margin-bottom:4px;
-
-}
-
-.historyGrid b{
-
-font-size:14px;
-
-word-break:break-word;
-
-}
-
-.historyDate{
-
-margin-top:15px;
+.request-details p{
 
 font-size:13px;
 
 color:#9fb5d1;
 
+margin-top:10px;
+
 }
 
-/* ====================================
-BOTTOM NAVIGATION
-==================================== */
+.request-details h2{
+
+font-size:28px;
+
+color:#00ff88;
+
+margin-top:5px;
+
+}
+
+.request-details span{
+
+display:block;
+
+margin-top:5px;
+
+font-size:15px;
+
+color:#fff;
+
+word-break:break-word;
+
+}
+
+.history-empty{
+
+text-align:center;
+
+padding:25px;
+
+color:#9fb5d1;
+
+}
+
+.history-item{
+
+background:#111f3d;
+
+border-radius:14px;
+
+padding:15px;
+
+margin-top:12px;
+
+border-left:4px solid #00ff88;
+
+}
+
+.history-item h4{
+
+font-size:18px;
+
+margin-bottom:8px;
+
+}
+
+.history-item p{
+
+font-size:14px;
+
+color:#d9e4f5;
+
+margin:4px 0;
+
+}
 
 .bottom-nav{
 
 position:fixed;
 
-bottom:0;
-
 left:0;
+
+bottom:0;
 
 width:100%;
 
-height:72px;
+height:70px;
 
 background:#08142d;
 
@@ -962,9 +558,9 @@ justify-content:space-around;
 
 align-items:center;
 
-backdrop-filter:blur(12px);
+backdrop-filter:blur(10px);
 
-z-index:1000;
+z-index:999;
 
 }
 
@@ -972,15 +568,15 @@ z-index:1000;
 
 text-decoration:none;
 
+color:#cfd8ea;
+
+font-size:12px;
+
 display:flex;
 
 flex-direction:column;
 
 align-items:center;
-
-color:#b9c8df;
-
-font-size:12px;
 
 transition:.3s;
 
@@ -988,7 +584,7 @@ transition:.3s;
 
 .bottom-nav a div{
 
-font-size:23px;
+font-size:24px;
 
 margin-bottom:4px;
 
@@ -1008,35 +604,11 @@ color:#00ff88;
 
 }
 
-/* ====================================
-MOBILE RESPONSIVE
-==================================== */
-
 @media(max-width:480px){
 
-.walletCard{
+.wallet-card h1{
 
-padding:18px;
-
-}
-
-.walletCard h1{
-
-font-size:27px;
-
-}
-
-.walletIcon{
-
-font-size:40px;
-
-}
-
-.statusInfo,
-
-.historyGrid{
-
-grid-template-columns:1fr;
+font-size:24px;
 
 }
 
@@ -1046,24 +618,10 @@ font-size:24px;
 
 }
 
-.sectionTitle{
+.card{
 
-font-size:17px;
-
-}
-
-.depositCard,
-
-.paymentCard,
-
-.instructionCard,
-
-.statusCard,
-
-.historyCard{
-
-border-radius:16px;
+padding:15px;
 
 }
 
-  }
+}
