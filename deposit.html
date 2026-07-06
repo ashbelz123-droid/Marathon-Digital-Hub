@@ -7,73 +7,75 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deposit | Marathon Digital Hub</title>
+<title>Deposit Funds | Marathon Digital Hub</title>
 
 <link rel="stylesheet" href="deposit.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
-<script src="auth.js"></script>
 
 </head>
 
 <body>
 
-<div class="page">
+<div class="container">
 
 <!-- Header -->
 
-<div class="header">
+<header class="header">
 
 <h2>Deposit Funds</h2>
 
-<p>Securely fund your Marathon Digital Hub wallet.</p>
+<p>Securely fund your Marathon wallet.</p>
 
-</div>
+</header>
 
 <!-- Wallet Card -->
 
-<div class="wallet-card">
+<section class="wallet-card">
 
 <div>
 
-<span>Wallet Balance</span>
+<p class="wallet-title">Wallet Balance</p>
 
 <h1 id="walletBalance">UGX 0</h1>
 
 </div>
 
-<div class="wallet-icon">💰</div>
+<div class="wallet-icon">
+
+💰
 
 </div>
 
+</section>
+
 <!-- Payment Accounts -->
 
-<div class="card">
+<section class="card">
 
 <h3>Payment Accounts</h3>
 
 <!-- MTN -->
 
-<div class="payment-card mtn">
+<div class="payment-card">
 
-<div class="network-tag">
+<div class="network-header">
 
-🟡 MTN MOBILE MONEY
+<img src="images/mtn.png" alt="MTN" class="network-logo">
 
-</div>
-
-<div class="payment-info">
-
-<p>Account Name</p>
-
-<h4 id="mtnName">Loading...</h4>
-
-<p>Account Number</p>
-
-<h4 id="mtnNumber">Loading...</h4>
+<h4>MTN Mobile Money</h4>
 
 </div>
+
+<p class="label">Account Name</p>
+
+<p id="mtnName">Loading...</p>
+
+<p class="label">Account Number</p>
+
+<p id="mtnNumber">Loading...</p>
 
 <button id="copyMTN" class="copy-btn">
 
@@ -85,25 +87,23 @@ Copy Number
 
 <!-- Airtel -->
 
-<div class="payment-card airtel">
+<div class="payment-card">
 
-<div class="network-tag">
+<div class="network-header">
 
-🔴 AIRTEL MONEY
+<img src="images/airtel.png" alt="Airtel" class="network-logo">
 
-</div>
-
-<div class="payment-info">
-
-<p>Account Name</p>
-
-<h4 id="airtelName">Loading...</h4>
-
-<p>Account Number</p>
-
-<h4 id="airtelNumber">Loading...</h4>
+<h4>Airtel Money</h4>
 
 </div>
+
+<p class="label">Account Name</p>
+
+<p id="airtelName">Loading...</p>
+
+<p class="label">Account Number</p>
+
+<p id="airtelNumber">Loading...</p>
 
 <button id="copyAirtel" class="copy-btn">
 
@@ -113,165 +113,183 @@ Copy Number
 
 </div>
 
-</div>
+  </section>
 
-  <!-- Payment Instructions -->
+<!-- Payment Instructions -->
 
-<div class="card">
+<section class="card">
 
 <h3>Payment Instructions</h3>
 
-<div class="instruction-box">
+<div class="instructions">
 
-<p><b>🟡 MTN Mobile Money</b></p>
-
-<ol>
-
-<li>Dial <b>*165#</b>.</li>
-
-<li>Select <b>Send Money</b>.</li>
-
-<li>Enter the MTN number above.</li>
-
-<li>Enter the amount you want to deposit.</li>
-
-<li>Confirm the payment using your PIN.</li>
-
-<li>Wait for the MTN confirmation SMS.</li>
-
-<li>Copy the <b>Transaction ID</b> from the SMS.</li>
-
-<li>Return here and submit your deposit request.</li>
-
-</ol>
-
-</div>
-
-<div class="instruction-box">
-
-<p><b>🔴 Airtel Money</b></p>
+<h4>🟡 MTN Mobile Money</h4>
 
 <ol>
 
-<li>Dial <b>*185#</b>.</li>
+<li>Dial <strong>*165#</strong>.</li>
 
-<li>Select <b>Send Money</b>.</li>
+<li>Select <strong>Send Money</strong>.</li>
 
-<li>Enter the Airtel number above.</li>
+<li>Enter the MTN number shown above.</li>
 
-<li>Enter the amount you want to deposit.</li>
+<li>Enter the deposit amount.</li>
 
-<li>Confirm the payment using your PIN.</li>
+<li>Confirm using your PIN.</li>
 
-<li>Wait for the Airtel confirmation SMS.</li>
+<li>Wait for the confirmation SMS.</li>
 
-<li>Copy the <b>Transaction ID</b> from the SMS.</li>
-
-<li>Return here and submit your deposit request.</li>
+<li>Copy the <strong>Transaction ID</strong> from the SMS.</li>
 
 </ol>
 
-</div>
+<hr>
+
+<h4>🔴 Airtel Money</h4>
+
+<ol>
+
+<li>Dial <strong>*185#</strong>.</li>
+
+<li>Select <strong>Send Money</strong>.</li>
+
+<li>Enter the Airtel number shown above.</li>
+
+<li>Enter the deposit amount.</li>
+
+<li>Confirm using your PIN.</li>
+
+<li>Wait for the confirmation SMS.</li>
+
+<li>Copy the <strong>Transaction ID</strong> from the SMS.</li>
+
+</ol>
 
 <div class="notice">
 
-⚠️ Deposit requests are verified manually. Approval time depends on verification.
+⚠️ After sending the money, enter the exact amount and Transaction ID below, then submit your request for verification.
 
 </div>
 
 </div>
 
-<!-- Submit Deposit -->
+</section>
 
-<div class="card">
+<!-- Deposit Form -->
 
-<h3>Submit Deposit Request</h3>
+<section class="card">
+
+<h3>Submit Deposit</h3>
 
 <div class="method-buttons">
 
 <button id="mtnMethod" class="active">
 
-🟡 MTN
+MTN
 
 </button>
 
 <button id="airtelMethod">
 
-🔴 Airtel
+Airtel
 
 </button>
 
 </div>
 
 <input
-
 type="number"
-
 id="depositAmount"
-
 placeholder="Enter Deposit Amount">
 
 <input
-
 type="text"
-
 id="transactionId"
-
-placeholder="Enter Transaction ID from SMS">
+placeholder="Enter SMS Transaction ID">
 
 <button
-
 id="submitDeposit"
-
 class="submit-btn">
 
 Submit Deposit Request
 
 </button>
 
-  </div>
+  </section>
 
-  <!-- Latest Deposit Request -->
+ <!-- Latest Deposit Request -->
 
-<div class="card">
+<section class="card">
 
 <h3>Latest Deposit Request</h3>
 
 <div class="latest-request">
 
-<div class="status-badge" id="latestStatus">
+<div id="latestStatus" class="status pending">
 
 🟡 No Request
 
 </div>
 
-<div class="request-details">
+<div class="request-info">
 
-<p><strong>Amount</strong></p>
+<p>
 
-<h2 id="latestAmount">UGX 0</h2>
+<strong>Amount</strong>
 
-<p><strong>Payment Method</strong></p>
+</p>
 
-<span id="latestMethod">-</span>
+<h2 id="latestAmount">
 
-<p><strong>Transaction ID</strong></p>
+UGX 0
 
-<span id="latestTransaction">-</span>
+</h2>
 
-<p><strong>Request Time</strong></p>
+<p>
 
-<span id="latestTime">-</span>
+<strong>Payment Method</strong>
+
+</p>
+
+<span id="latestMethod">
+
+-
+
+</span>
+
+<p>
+
+<strong>Transaction ID</strong>
+
+</p>
+
+<span id="latestTransaction">
+
+-
+
+</span>
+
+<p>
+
+<strong>Request Time</strong>
+
+</p>
+
+<span id="latestTime">
+
+-
+
+</span>
 
 </div>
 
 </div>
 
-</div>
+</section>
 
 <!-- Deposit History -->
 
-<div class="card">
+<section class="card">
 
 <h3>Deposit History</h3>
 
@@ -279,19 +297,19 @@ Submit Deposit Request
 
 <div class="history-empty">
 
-No deposit requests yet.
+No deposit requests found.
 
 </div>
 
 </div>
 
-</div>
+</section>
 
 </div>
 
 <!-- Bottom Navigation -->
 
-<div class="bottom-nav">
+<nav class="bottom-nav">
 
 <a href="dashboard.html">
 
@@ -333,10 +351,12 @@ No deposit requests yet.
 
 </a>
 
-</div>
+</nav>
+
+<script src="security.js"></script>
 
 <script src="deposit.js"></script>
 
 </body>
 
-  </html>
+                                    </html> 
