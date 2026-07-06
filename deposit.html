@@ -9,364 +9,105 @@
 
 <title>Deposit | Marathon Digital Hub</title>
 
+<link rel="stylesheet" href="deposit.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-
-background:#050B18;
-color:#fff;
-padding-bottom:90px;
-overflow-x:hidden;
-
-}
-
-body::before{
-
-content:"";
-
-position:fixed;
-
-left:-40%;
-top:-40%;
-
-width:180%;
-height:180%;
-
-background:
-
-radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
-
-radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
-
-radial-gradient(circle at 70% 80%,rgba(0,255,120,.16),transparent 40%),
-
-radial-gradient(circle at 25% 80%,rgba(170,0,255,.15),transparent 35%);
-
-animation:bgMove 18s linear infinite;
-
-z-index:-2;
-
-}
-
-@keyframes bgMove{
-
-0%{transform:translateX(-2%);}
-50%{transform:translateX(2%);}
-100%{transform:translateX(-2%);}
-
-}
-
-.header{
-
-padding:20px;
-
-}
-
-.header h2{
-
-font-size:28px;
-
-}
-
-.header p{
-
-margin-top:5px;
-
-color:#9fb5d1;
-
-font-size:14px;
-
-}
-
-.wallet{
-
-margin:15px;
-
-background:#08142d;
-
-border-radius:18px;
-
-padding:20px;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.wallet span{
-
-color:#9fb5d1;
-
-font-size:14px;
-
-}
-
-.wallet h1{
-
-margin-top:10px;
-
-font-size:30px;
-
-color:#00ff88;
-
-}
-
-.section{
-
-margin:15px;
-
-background:#08142d;
-
-border-radius:18px;
-
-padding:20px;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.section h3{
-
-margin-bottom:15px;
-
-color:#00ff88;
-
-}
-
-.payment-card{
-
-background:#111f3d;
-
-padding:15px;
-
-border-radius:14px;
-
-margin-bottom:15px;
-
-}
-
-.payment-card p{
-
-margin:8px 0;
-
-font-size:15px;
-
-}
-
-.copyBtn{
-
-width:100%;
-
-height:48px;
-
-border:none;
-
-border-radius:12px;
-
-background:#00c8ff;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-margin-top:12px;
-
-}
-
-.methodButtons{
-
-display:flex;
-
-gap:10px;
-
-margin-top:15px;
-
-}
-
-.methodButtons button{
-
-flex:1;
-
-height:50px;
-
-border:none;
-
-border-radius:12px;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-background:#111f3d;
-
-color:white;
-
-}
-
-.methodButtons button.active{
-
-background:#00ff88;
-
-color:#001018;
-
-}
-
-input{
-
-width:100%;
-
-height:50px;
-
-border:none;
-
-border-radius:12px;
-
-background:#111f3d;
-
-padding:15px;
-
-margin-top:12px;
-
-color:white;
-
-font-size:16px;
-
-outline:none;
-
-}
-
-.submitBtn{
-
-width:100%;
-
-height:55px;
-
-margin-top:18px;
-
-border:none;
-
-border-radius:14px;
-
-background:#00ff88;
-
-color:#001018;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.historyItem{
-
-background:#111f3d;
-
-padding:15px;
-
-border-radius:12px;
-
-margin-top:12px;
-
-}
-
-.status{
-
-margin-top:8px;
-
-font-weight:bold;
-
-}
-
-.pending{
-
-color:#ffcc00;
-
-}
-
-.approved{
-
-color:#00ff88;
-
-}
-
-.rejected{
-
-color:#ff4444;
-
-}
-
-</style>
+<script src="auth.js"></script>
 
 </head>
 
 <body>
 
+<div class="page">
+
+<!-- Header -->
+
 <div class="header">
 
-<h2>Deposit</h2>
+<h2>Deposit Funds</h2>
 
-<p>Fund your Marathon wallet securely.</p>
+<p>Securely fund your Marathon Digital Hub wallet.</p>
 
 </div>
 
-<div class="wallet">
+<!-- Wallet Card -->
+
+<div class="wallet-card">
+
+<div>
 
 <span>Wallet Balance</span>
 
-<h1 id="walletBalance">
-
-UGX 0
-
-</h1>
+<h1 id="walletBalance">UGX 0</h1>
 
 </div>
 
-<div class="section">
+<div class="wallet-icon">💰</div>
 
-<h3>Payment Details</h3>
+</div>
 
-<div class="payment-card">
+<!-- Payment Accounts -->
 
-<p><b>MTN Account</b></p>
+<div class="card">
 
-<p id="mtnName">Loading...</p>
+<h3>Payment Accounts</h3>
 
-<p id="mtnNumber">Loading...</p>
+<!-- MTN -->
 
-<button class="copyBtn" id="copyMTN">
+<div class="payment-card mtn">
 
-📋 Copy MTN Number
+<div class="network-tag">
+
+🟡 MTN MOBILE MONEY
+
+</div>
+
+<div class="payment-info">
+
+<p>Account Name</p>
+
+<h4 id="mtnName">Loading...</h4>
+
+<p>Account Number</p>
+
+<h4 id="mtnNumber">Loading...</h4>
+
+</div>
+
+<button id="copyMTN" class="copy-btn">
+
+Copy Number
 
 </button>
 
 </div>
 
-<div class="payment-card">
+<!-- Airtel -->
 
-<p><b>Airtel Account</b></p>
+<div class="payment-card airtel">
 
-<p id="airtelName">Loading...</p>
+<div class="network-tag">
 
-<p id="airtelNumber">Loading...</p>
+🔴 AIRTEL MONEY
 
-<button class="copyBtn" id="copyAirtel">
+</div>
 
-📋 Copy Airtel Number
+<div class="payment-info">
+
+<p>Account Name</p>
+
+<h4 id="airtelName">Loading...</h4>
+
+<p>Account Number</p>
+
+<h4 id="airtelNumber">Loading...</h4>
+
+</div>
+
+<button id="copyAirtel" class="copy-btn">
+
+Copy Number
 
 </button>
 
@@ -374,514 +115,187 @@ UGX 0
 
 </div>
 
-<div class="section">
+  <!-- Payment Instructions -->
 
-<h3>Make Deposit</h3>
+<div class="card">
 
-<div id="depositMessage">
+<h3>Payment Instructions</h3>
 
-Loading...
+<div class="instruction-box">
+
+<p><b>🟡 MTN Mobile Money</b></p>
+
+<ol>
+
+<li>Dial <b>*165#</b>.</li>
+
+<li>Select <b>Send Money</b>.</li>
+
+<li>Enter the MTN number above.</li>
+
+<li>Enter the amount you want to deposit.</li>
+
+<li>Confirm the payment using your PIN.</li>
+
+<li>Wait for the MTN confirmation SMS.</li>
+
+<li>Copy the <b>Transaction ID</b> from the SMS.</li>
+
+<li>Return here and submit your deposit request.</li>
+
+</ol>
 
 </div>
 
-<button class="copyBtn" id="copyMessage">
+<div class="instruction-box">
 
-📋 Copy Deposit Message
+<p><b>🔴 Airtel Money</b></p>
 
-</button>
+<ol>
 
-<div class="methodButtons">
+<li>Dial <b>*185#</b>.</li>
+
+<li>Select <b>Send Money</b>.</li>
+
+<li>Enter the Airtel number above.</li>
+
+<li>Enter the amount you want to deposit.</li>
+
+<li>Confirm the payment using your PIN.</li>
+
+<li>Wait for the Airtel confirmation SMS.</li>
+
+<li>Copy the <b>Transaction ID</b> from the SMS.</li>
+
+<li>Return here and submit your deposit request.</li>
+
+</ol>
+
+</div>
+
+<div class="notice">
+
+⚠️ Deposit requests are verified manually. Approval time depends on verification.
+
+</div>
+
+</div>
+
+<!-- Submit Deposit -->
+
+<div class="card">
+
+<h3>Submit Deposit Request</h3>
+
+<div class="method-buttons">
 
 <button id="mtnMethod" class="active">
 
-MTN
+🟡 MTN
 
 </button>
 
 <button id="airtelMethod">
 
-Airtel
+🔴 Airtel
 
 </button>
 
 </div>
 
 <input
+
 type="number"
+
 id="depositAmount"
-placeholder="Deposit Amount">
+
+placeholder="Enter Deposit Amount">
 
 <input
+
 type="text"
+
 id="transactionId"
-placeholder="Transaction ID">
+
+placeholder="Enter Transaction ID from SMS">
 
 <button
-class="submitBtn"
-id="submitDeposit">
 
-Submit Deposit
+id="submitDeposit"
+
+class="submit-btn">
+
+Submit Deposit Request
 
 </button>
 
+  </div>
+
+  <!-- Latest Deposit Request -->
+
+<div class="card">
+
+<h3>Latest Deposit Request</h3>
+
+<div class="latest-request">
+
+<div class="status-badge" id="latestStatus">
+
+🟡 No Request
+
 </div>
 
-<div class="section">
+<div class="request-details">
+
+<p><strong>Amount</strong></p>
+
+<h2 id="latestAmount">UGX 0</h2>
+
+<p><strong>Payment Method</strong></p>
+
+<span id="latestMethod">-</span>
+
+<p><strong>Transaction ID</strong></p>
+
+<span id="latestTransaction">-</span>
+
+<p><strong>Request Time</strong></p>
+
+<span id="latestTime">-</span>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Deposit History -->
+
+<div class="card">
 
 <h3>Deposit History</h3>
 
 <div id="depositHistory">
 
-Loading...
+<div class="history-empty">
+
+No deposit requests yet.
 
 </div>
 
-  </div><script>
-
-const db = window.supabaseClient;
-
-let currentUser = null;
-let profile = null;
-let selectedMethod = "MTN";
-
-/* ===============================
-START
-=============================== */
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-const { data:{ user } } = await db.auth.getUser();
-
-if(!user){
-
-window.location.href="login.html";
-return;
-
-}
-
-currentUser = user;
-
-await loadProfile();
-await loadPaymentSettings();
-await loadDepositHistory();
-
-});
-
-/* ===============================
-LOAD USER PROFILE
-=============================== */
-
-async function loadProfile(){
-
-const { data,error } = await db
-
-.from("profiles")
-
-.select("*")
-
-.eq("id",currentUser.id)
-
-.single();
-
-if(error){
-
-console.log(error);
-return;
-
-}
-
-profile = data;
-
-document.getElementById("walletBalance").innerHTML =
-"UGX " + Number(data.wallet_balance).toLocaleString();
-
-document.getElementById("depositMessage").innerHTML =
-
-`
-<b>Name:</b> ${data.fullname}<br><br>
-
-<b>Phone:</b> ${data.phone}<br><br>
-
-<b>User ID:</b> ${currentUser.id}
-`;
-
-}
-
-/* ===============================
-LOAD PAYMENT SETTINGS
-=============================== */
-
-async function loadPaymentSettings(){
-
-const { data,error } = await db
-
-.from("payment_settings")
-
-.select("*")
-
-.eq("is_active",true);
-
-if(error){
-
-console.log(error);
-return;
-
-}
-
-data.forEach(item=>{
-
-if(item.method.toLowerCase()=="mtn"){
-
-document.getElementById("mtnName").innerHTML =
-item.account_name;
-
-document.getElementById("mtnNumber").innerHTML =
-item.phone_number;
-
-}
-
-if(item.method.toLowerCase()=="airtel"){
-
-document.getElementById("airtelName").innerHTML =
-item.account_name;
-
-document.getElementById("airtelNumber").innerHTML =
-item.phone_number;
-
-}
-
-});
-
-}
-
-/* ===============================
-COPY BUTTONS
-=============================== */
-
-document.getElementById("copyMTN").onclick = ()=>{
-
-navigator.clipboard.writeText(
-
-document.getElementById("mtnNumber").innerText
-
-);
-
-alert("MTN Number Copied");
-
-};
-
-document.getElementById("copyAirtel").onclick = ()=>{
-
-navigator.clipboard.writeText(
-
-document.getElementById("airtelNumber").innerText
-
-);
-
-alert("Airtel Number Copied");
-
-};
-
-document.getElementById("copyMessage").onclick = ()=>{
-
-navigator.clipboard.writeText(
-
-document.getElementById("depositMessage").innerText
-
-);
-
-alert("Deposit Message Copied");
-
-};
-
-/* ===============================
-PAYMENT METHOD
-=============================== */
-
-document.getElementById("mtnMethod").onclick = ()=>{
-
-selectedMethod="MTN";
-
-document.getElementById("mtnMethod").classList.add("active");
-document.getElementById("airtelMethod").classList.remove("active");
-
-};
-
-document.getElementById("airtelMethod").onclick = ()=>{
-
-selectedMethod="Airtel";
-
-document.getElementById("airtelMethod").classList.add("active");
-document.getElementById("mtnMethod").classList.remove("active");
-
-};
-
-  </script><script>
-
-/* =====================================
-SUBMIT DEPOSIT
-===================================== */
-
-document.getElementById("submitDeposit").onclick = async () => {
-
-const amount = document.getElementById("depositAmount").value.trim();
-const transactionId = document.getElementById("transactionId").value.trim();
-
-if(amount==""){
-
-alert("Enter Deposit Amount");
-return;
-
-}
-
-if(Number(amount)<=0){
-
-alert("Invalid Deposit Amount");
-return;
-
-}
-
-if(transactionId==""){
-
-alert("Enter Transaction ID");
-return;
-
-}
-
-/* Disable Button */
-
-const btn=document.getElementById("submitDeposit");
-
-btn.disabled=true;
-btn.innerHTML="Submitting...";
-
-/* Save Deposit */
-
-const { error } = await db
-
-.from("deposits")
-
-.insert({
-
-user_id:currentUser.id,
-
-amount:Number(amount),
-
-method:selectedMethod,
-
-transaction_id:transactionId,
-
-status:"pending"
-
-});
-
-btn.disabled=false;
-btn.innerHTML="Submit Deposit";
-
-if(error){
-
-alert(error.message);
-return;
-
-}
-
-/* Clear Inputs */
-
-document.getElementById("depositAmount").value="";
-document.getElementById("transactionId").value="";
-
-/* Reload History */
-
-await loadDepositHistory();
-
-alert("Deposit Submitted Successfully.\n\nWait for Admin Approval.");
-
-};
-
-/* =====================================
-LOAD DEPOSIT HISTORY
-===================================== */
-
-async function loadDepositHistory(){
-
-const { data,error } = await db
-
-.from("deposits")
-
-.select("*")
-
-.eq("user_id",currentUser.id)
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.log(error);
-return;
-
-}
-
-const history=document.getElementById("depositHistory");
-
-history.innerHTML="";
-
-if(data.length==0){
-
-history.innerHTML=`
-
-<div class="historyItem">
-
-No Deposits Yet
+</div>
 
 </div>
 
-`;
-
-return;
-
-}
-
-data.forEach(item=>{
-
-let statusClass="pending";
-
-if(item.status=="approved"){
-
-statusClass="approved";
-
-}
-
-if(item.status=="rejected"){
-
-statusClass="rejected";
-
-}
-
-history.innerHTML+=`
-
-<div class="historyItem">
-
-<b>
-
-UGX ${Number(item.amount).toLocaleString()}
-
-</b>
-
-<br><br>
-
-Payment Method:
-${item.method}
-
-<br>
-
-Transaction ID:
-${item.transaction_id}
-
-<br>
-
-<div class="status ${statusClass}">
-
-${item.status.toUpperCase()}
-
 </div>
 
-<br>
-
-${new Date(item.created_at).toLocaleString()}
-
-</div>
-
-`;
-
-});
-
-}
-
-  </script>
-
-  <!-- ===============================
-BOTTOM NAVIGATION
-=============================== -->
-
-<style>
-
-.bottom-nav{
-
-position:fixed;
-
-left:0;
-
-bottom:0;
-
-width:100%;
-
-height:70px;
-
-background:#08142d;
-
-border-top:1px solid rgba(255,255,255,.08);
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-z-index:999;
-
-backdrop-filter:blur(10px);
-
-}
-
-.bottom-nav a{
-
-text-decoration:none;
-
-color:#cfd8ea;
-
-font-size:12px;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-transition:.3s;
-
-}
-
-.bottom-nav a i{
-
-font-style:normal;
-
-font-size:24px;
-
-margin-bottom:4px;
-
-}
-
-.bottom-nav a.active{
-
-color:#00ff88;
-
-font-weight:bold;
-
-}
-
-.bottom-nav a:hover{
-
-color:#00ff88;
-
-}
-
-</style>
+<!-- Bottom Navigation -->
 
 <div class="bottom-nav">
 
 <a href="dashboard.html">
 
-<i>🏠</i>
+<div>🏠</div>
 
 <span>Home</span>
 
@@ -889,7 +303,7 @@ color:#00ff88;
 
 <a href="machines.html">
 
-<i>⚙️</i>
+<div>⚙️</div>
 
 <span>Machines</span>
 
@@ -897,7 +311,7 @@ color:#00ff88;
 
 <a href="deposit.html" class="active">
 
-<i>💳</i>
+<div>💳</div>
 
 <span>Deposit</span>
 
@@ -905,7 +319,7 @@ color:#00ff88;
 
 <a href="income.html">
 
-<i>📈</i>
+<div>📈</div>
 
 <span>Income</span>
 
@@ -913,7 +327,7 @@ color:#00ff88;
 
 <a href="profile.html">
 
-<i>👤</i>
+<div>👤</div>
 
 <span>Profile</span>
 
@@ -921,6 +335,8 @@ color:#00ff88;
 
 </div>
 
+<script src="deposit.js"></script>
+
 </body>
 
- </html>
+  </html>
