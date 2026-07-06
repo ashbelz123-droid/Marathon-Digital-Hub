@@ -1,6 +1,6 @@
 /* ==========================================
    MARATHON DIGITAL HUB
-   DEPOSIT PAGE
+   DEPOSIT.JS
 ========================================== */
 
 const db = window.supabaseClient;
@@ -10,12 +10,19 @@ let profile = null;
 let selectedMethod = "MTN";
 
 /* ==========================================
-   PAGE START
+   START
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", async()=>{
 
-const { data:{ user } } = await db.auth.getUser();
+const { data:{ user }, error } = await db.auth.getUser();
+
+if(error){
+
+console.log(error);
+return;
+
+}
 
 if(!user){
 
@@ -34,7 +41,7 @@ await loadDepositHistory();
 });
 
 /* ==========================================
-   LOAD PROFILE
+   LOAD USER PROFILE
 ========================================== */
 
 async function loadProfile(){
@@ -43,7 +50,7 @@ const { data,error } = await db
 
 .from("profiles")
 
-.select("*")
+.select("fullname,phone,wallet_balance")
 
 .eq("id",currentUser.id)
 
@@ -65,7 +72,7 @@ document.getElementById("walletBalance").innerHTML=
 }
 
 /* ==========================================
-   LOAD PAYMENT ACCOUNTS
+   LOAD PAYMENT SETTINGS
 ========================================== */
 
 async function loadPaymentAccounts(){
@@ -85,21 +92,29 @@ return;
 
 }
 
-data.forEach(item=>{
+data.forEach(account=>{
 
-if(item.method.toLowerCase()=="mtn"){
+if(account.method==="MTN"){
 
-document.getElementById("mtnName").innerHTML=item.account_name;
+document.getElementById("mtnName").textContent=
 
-document.getElementById("mtnNumber").innerHTML=item.phone_number;
+account.account_name;
+
+document.getElementById("mtnNumber").textContent=
+
+account.phone_number;
 
 }
 
-if(item.method.toLowerCase()=="airtel"){
+if(account.method==="Airtel"){
 
-document.getElementById("airtelName").innerHTML=item.account_name;
+document.getElementById("airtelName").textContent=
 
-document.getElementById("airtelNumber").innerHTML=item.phone_number;
+account.account_name;
+
+document.getElementById("airtelNumber").textContent=
+
+account.phone_number;
 
 }
 
@@ -108,28 +123,24 @@ document.getElementById("airtelNumber").innerHTML=item.phone_number;
 }
 
 /* ==========================================
-   COPY PAYMENT NUMBERS
+   COPY ACCOUNT NUMBERS
 ========================================== */
 
-document.getElementById("copyMTN").onclick=()=>{
+document.getElementById("copyMTN").onclick = async () => {
 
-navigator.clipboard.writeText(
+const number = document.getElementById("mtnNumber").textContent;
 
-document.getElementById("mtnNumber").innerText
-
-);
+await navigator.clipboard.writeText(number);
 
 alert("MTN number copied successfully.");
 
 };
 
-document.getElementById("copyAirtel").onclick=()=>{
+document.getElementById("copyAirtel").onclick = async () => {
 
-navigator.clipboard.writeText(
+const number = document.getElementById("airtelNumber").textContent;
 
-document.getElementById("airtelNumber").innerText
-
-);
+await navigator.clipboard.writeText(number);
 
 alert("Airtel number copied successfully.");
 
@@ -139,89 +150,89 @@ alert("Airtel number copied successfully.");
    PAYMENT METHOD
 ========================================== */
 
-document.getElementById("mtnMethod").onclick=()=>{
+document.getElementById("mtnMethod").onclick = () => {
 
-selectedMethod="MTN";
+selectedMethod = "MTN";
 
 document.getElementById("mtnMethod").classList.add("active");
-
 document.getElementById("airtelMethod").classList.remove("active");
 
 };
 
-document.getElementById("airtelMethod").onclick=()=>{
+document.getElementById("airtelMethod").onclick = () => {
 
-selectedMethod="Airtel";
+selectedMethod = "Airtel";
 
 document.getElementById("airtelMethod").classList.add("active");
-
 document.getElementById("mtnMethod").classList.remove("active");
 
 };
 
 /* ==========================================
-   SUBMIT DEPOSIT REQUEST
+   SUBMIT DEPOSIT
 ========================================== */
 
-document.getElementById("submitDeposit").onclick=async()=>{
+document.getElementById("submitDeposit").onclick = async () => {
 
-const amount=document.getElementById("depositAmount").value.trim();
+const amount = Number(document.getElementById("depositAmount").value);
 
-const transactionId=document.getElementById("transactionId").value.trim();
+const transactionId = document.getElementById("transactionId").value.trim();
 
-if(amount===""){
+if(!amount || amount <= 0){
 
-alert("Please enter the deposit amount.");
-
-return;
-
-}
-
-if(Number(amount)<=0){
-
-alert("Please enter a valid amount.");
+alert("Enter a valid deposit amount.");
 
 return;
 
 }
 
-if(transactionId===""){
+if(transactionId === ""){
 
-alert("Please enter the Transaction ID from the SMS.");
+alert("Enter the Transaction ID from the SMS.");
 
 return;
 
 }
 
-const btn=document.getElementById("submitDeposit");
+const btn = document.getElementById("submitDeposit");
 
-btn.disabled=true;
+btn.disabled = true;
 
-btn.innerHTML="Submitting...";
+btn.innerHTML = "Submitting...";
 
-const { error }=await db
+/* Save Deposit */
+
+const { data: deposit, error } = await db
 
 .from("deposits")
 
 .insert({
 
-user_id:currentUser.id,
+user_id: currentUser.id,
 
-amount:Number(amount),
+amount: amount,
 
-method:selectedMethod,
+method: selectedMethod,
 
-transaction_id:transactionId,
+transaction_id: transactionId,
 
-status:"pending"
+status: "pending",
 
-});
+payment_message: transactionId,
 
-btn.disabled=false;
+user_message: "Deposit request submitted."
 
-btn.innerHTML="Submit Deposit Request";
+})
+
+.select()
+
+.single();
 
 if(error){
+
+btn.disabled = false;
+
+btn.innerHTML = "Submit Deposit Request";
 
 alert(error.message);
 
@@ -229,15 +240,39 @@ return;
 
 }
 
-document.getElementById("depositAmount").value="";
+/* Notify Admin */
 
-document.getElementById("transactionId").value="";
+await db
+
+.from("admin_notifications")
+
+.insert({
+
+title: "New Deposit Request",
+
+message: `${profile.fullname} submitted a ${selectedMethod} deposit of UGX ${amount.toLocaleString()}.`,
+
+type: "deposit",
+
+is_read: false,
+
+created_at: new Date().toISOString()
+
+});
+
+btn.disabled = false;
+
+btn.innerHTML = "Submit Deposit Request";
+
+document.getElementById("depositAmount").value = "";
+
+document.getElementById("transactionId").value = "";
 
 await loadLatestDeposit();
 
 await loadDepositHistory();
 
-alert("Your deposit request has been submitted successfully. Please wait while our team verifies your payment.");
+alert("Deposit request submitted successfully. It will be reviewed by the admin.");
 
 };
 
@@ -247,16 +282,11 @@ alert("Your deposit request has been submitted successfully. Please wait while o
 
 async function loadLatestDeposit(){
 
-const { data,error } = await db
-
+const { data, error } = await db
 .from("deposits")
-
 .select("*")
-
-.eq("user_id",currentUser.id)
-
-.order("created_at",{ascending:false})
-
+.eq("user_id", currentUser.id)
+.order("created_at", { ascending:false })
 .limit(1);
 
 if(error){
@@ -266,7 +296,7 @@ return;
 
 }
 
-if(data.length==0){
+if(!data || data.length===0){
 
 document.getElementById("latestStatus").innerHTML="🟡 No Request";
 document.getElementById("latestAmount").innerHTML="UGX 0";
@@ -297,19 +327,15 @@ badge="🔴 Rejected";
 document.getElementById("latestStatus").innerHTML=badge;
 
 document.getElementById("latestAmount").innerHTML=
-
 "UGX "+Number(deposit.amount).toLocaleString();
 
 document.getElementById("latestMethod").innerHTML=
-
-deposit.method;
+deposit.method || "-";
 
 document.getElementById("latestTransaction").innerHTML=
-
-deposit.transaction_id;
+deposit.transaction_id || "-";
 
 document.getElementById("latestTime").innerHTML=
-
 new Date(deposit.created_at).toLocaleString();
 
 }
@@ -320,20 +346,15 @@ new Date(deposit.created_at).toLocaleString();
 
 async function loadDepositHistory(){
 
-const { data,error } = await db
-
+const { data, error } = await db
 .from("deposits")
-
 .select("*")
-
-.eq("user_id",currentUser.id)
-
+.eq("user_id", currentUser.id)
 .order("created_at",{ascending:false});
 
 if(error){
 
 console.log(error);
-
 return;
 
 }
@@ -342,13 +363,13 @@ const history=document.getElementById("depositHistory");
 
 history.innerHTML="";
 
-if(data.length===0){
+if(!data || data.length===0){
 
 history.innerHTML=`
 
 <div class="history-empty">
 
-No deposit requests found.
+No deposit requests yet.
 
 </div>
 
@@ -360,35 +381,34 @@ return;
 
 data.forEach(item=>{
 
+let color="#ffcc00";
 let status="🟡 Pending";
 
 if(item.status==="approved"){
 
+color="#00ff88";
 status="🟢 Approved";
 
 }
 
 if(item.status==="rejected"){
 
+color="#ff4444";
 status="🔴 Rejected";
 
 }
 
 history.innerHTML+=`
 
-<div class="history-item">
+<div class="history-item" style="border-left:4px solid ${color};">
 
-<h4>
-
-UGX ${Number(item.amount).toLocaleString()}
-
-</h4>
+<h4>UGX ${Number(item.amount).toLocaleString()}</h4>
 
 <p><b>Status:</b> ${status}</p>
 
 <p><b>Method:</b> ${item.method}</p>
 
-<p><b>Transaction ID:</b> ${item.transaction_id}</p>
+<p><b>Transaction ID:</b> ${item.transaction_id || "-"}</p>
 
 <p><b>Date:</b> ${new Date(item.created_at).toLocaleString()}</p>
 
@@ -398,4 +418,4 @@ UGX ${Number(item.amount).toLocaleString()}
 
 });
 
-  }
+}
