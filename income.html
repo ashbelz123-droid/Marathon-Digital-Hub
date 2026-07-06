@@ -599,45 +599,60 @@ const machine=item.machines;
 
 if(!machine)return;
 
-const purchaseDate=new Date(item.purchase_date);
-const expiryDate=new Date(item.expiry_date);
+const purchaseDate = new Date(item.purchase_date);
 
-const expired=today>expiryDate;
+const isVIP = machine.is_vip === true;
 
-const totalReturnMachine=Number(machine.total_return);
+const totalReturnMachine = Number(machine.total_return);
 
-const duration=Number(machine.duration_days);
+const duration = Number(machine.duration_days);
 
-const dailyReturn=totalReturnMachine/duration;
+const dailyReturn = totalReturnMachine / duration;
 
-const daysPassed=Math.max(
-0,
-Math.floor((today-purchaseDate)/(1000*60*60*24))
+/* Count earning days */
+
+let earningDays = 0;
+
+let current = new Date(purchaseDate);
+
+while (current <= today && earningDays < duration) {
+
+    const day = current.getDay();
+
+    if (isVIP || (day !== 0 && day !== 6)) {
+
+        earningDays++;
+
+    }
+
+    current.setDate(current.getDate() + 1);
+
+}
+
+const expired = earningDays >= duration;
+
+const earned = Math.min(
+    totalReturnMachine,
+    dailyReturn * earningDays
 );
 
-const earned=Math.min(
-totalReturnMachine,
-dailyReturn*daysPassed
+const remaining = Math.max(
+    0,
+    totalReturnMachine - earned
 );
 
-const remaining=Math.max(
-0,
-totalReturnMachine-earned
+const progress = Math.min(
+    100,
+    (earned / totalReturnMachine) * 100
 );
 
-const progress=Math.min(
-100,
-(earned/totalReturnMachine)*100
+const daysRemaining = Math.max(
+    0,
+    duration - earningDays
 );
 
-const daysRemaining=Math.max(
-0,
-Math.ceil((expiryDate-today)/(1000*60*60*24))
-);
-
-const isVIP=machine.is_vip===true;
-
-const weekendDisabled=isWeekend && !isVIP && !expired;
+const weekendDisabled =
+    isWeekend && !isVIP && !expired;
 
 let statusText="🟢 ACTIVE";
 let statusClass="active";
