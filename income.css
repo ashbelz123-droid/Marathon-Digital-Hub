@@ -1,0 +1,661 @@
+/* ==========================================
+   RESET
+========================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+
+background:#050B18;
+color:#fff;
+overflow-x:hidden;
+padding-bottom:90px;
+
+}
+
+/* ==========================================
+   ANIMATED BACKGROUND
+========================================== */
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+top:-40%;
+left:-40%;
+
+width:180%;
+height:180%;
+
+background:
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.15),transparent 40%);
+
+animation:bgMove 18s linear infinite;
+
+z-index:-2;
+
+}
+
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
+
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header{
+
+padding:22px 16px 10px;
+
+}
+
+.header h2{
+
+font-size:30px;
+
+font-weight:bold;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+.header p{
+
+margin-top:6px;
+
+font-size:14px;
+
+color:#9FB5D1;
+
+}
+
+/* ==========================================
+   SUMMARY CARDS
+========================================== */
+
+.summary{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:12px;
+
+padding:0 15px;
+
+margin-bottom:15px;
+
+}
+
+.card{
+
+background:#08142D;
+
+border-radius:18px;
+
+padding:16px;
+
+border:1px solid rgba(0,200,255,.15);
+
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+}
+
+.card small{
+
+display:block;
+
+margin-bottom:8px;
+
+font-size:13px;
+
+color:#9FB5D1;
+
+}
+
+.card h2{
+
+font-size:23px;
+
+font-weight:bold;
+
+color:#00FF88;
+
+}
+
+/* ==========================================
+   SECTION
+========================================== */
+
+.section{
+
+margin:15px;
+
+padding:18px;
+
+background:#08142D;
+
+border-radius:20px;
+
+border:1px solid rgba(0,200,255,.15);
+
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+}
+
+.section h3{
+
+font-size:22px;
+
+margin-bottom:18px;
+
+color:#00FF88;
+
+}
+
+/* ==========================================
+   MACHINE CARD
+========================================== */
+
+.machineCard{
+
+background:#101E3D;
+
+border-radius:18px;
+
+padding:15px;
+
+margin-bottom:16px;
+
+border:1px solid rgba(255,255,255,.06);
+
+box-shadow:0 6px 18px rgba(0,0,0,.25);
+
+transition:.3s;
+
+}
+
+.machineCard:hover{
+
+transform:translateY(-2px);
+
+border-color:#00C8FF;
+
+}
+
+.machineTop{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+margin-bottom:15px;
+
+}
+
+.machineImage{
+
+width:85px;
+
+height:85px;
+
+border-radius:15px;
+
+object-fit:cover;
+
+background:#071123;
+
+}
+
+.machineInfo{
+
+flex:1;
+
+}
+
+.machineName{
+
+font-size:18px;
+
+font-weight:bold;
+
+color:#00FF88;
+
+margin-bottom:8px;
+
+}
+
+.machineSeries{
+
+display:inline-block;
+
+padding:5px 12px;
+
+border-radius:20px;
+
+background:#12385E;
+
+color:#00C8FF;
+
+font-size:11px;
+
+font-weight:bold;
+
+}
+
+/* ==========================================
+   VIP BADGE
+========================================== */
+
+.vipBadge{
+
+display:inline-block;
+
+margin-left:8px;
+
+padding:5px 10px;
+
+border-radius:20px;
+
+background:#FFD700;
+
+color:#111;
+
+font-size:11px;
+
+font-weight:bold;
+
+}
+
+/* ==========================================
+   MACHINE DETAILS
+========================================== */
+
+.infoRow{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:10px 0;
+
+border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.infoTitle{
+
+font-size:14px;
+
+color:#9FB5D1;
+
+}
+
+.infoValue{
+
+font-size:14px;
+
+font-weight:bold;
+
+color:#fff;
+
+}
+
+/* ==========================================
+   STATUS
+========================================== */
+
+.active{
+
+color:#00FF88;
+
+font-weight:bold;
+
+}
+
+.weekend{
+
+color:#FFC857;
+
+font-weight:bold;
+
+}
+
+.expired{
+
+color:#FF5A5A;
+
+font-weight:bold;
+
+}
+
+/* ==========================================
+   PROGRESS BAR
+========================================== */
+
+.progress{
+
+height:8px;
+
+background:#1C3156;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin-top:15px;
+
+}
+
+.progressFill{
+
+height:100%;
+
+width:0%;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+border-radius:20px;
+
+transition:width .5s ease;
+
+}
+
+.progressText{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:10px;
+
+font-size:12px;
+
+color:#9FB5D1;
+
+}
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading{
+
+padding:40px;
+
+text-align:center;
+
+font-size:16px;
+
+color:#00C8FF;
+
+  }
+
+/* ==========================================
+   BOTTOM NAVIGATION
+========================================== */
+
+.bottom-nav{
+
+position:fixed;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:70px;
+
+background:#08142D;
+
+border-top:1px solid rgba(0,200,255,.15);
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+backdrop-filter:blur(12px);
+
+z-index:999;
+
+}
+
+.bottom-nav a{
+
+flex:1;
+
+text-decoration:none;
+
+color:#C5D8FF;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+height:100%;
+
+transition:.3s;
+
+font-size:12px;
+
+font-weight:500;
+
+}
+
+.bottom-nav a:hover{
+
+color:#00FF88;
+
+}
+
+.bottom-nav a.active{
+
+color:#00FF88;
+
+font-weight:bold;
+
+}
+
+.nav-icon{
+
+font-size:22px;
+
+margin-bottom:4px;
+
+}
+
+/* ==========================================
+   MOBILE RESPONSIVE
+========================================== */
+
+@media (max-width:768px){
+
+.summary{
+
+grid-template-columns:1fr 1fr;
+
+gap:10px;
+
+}
+
+.card{
+
+padding:14px;
+
+}
+
+.card h2{
+
+font-size:20px;
+
+}
+
+.machineImage{
+
+width:75px;
+
+height:75px;
+
+}
+
+.machineName{
+
+font-size:17px;
+
+}
+
+.section{
+
+margin:12px;
+
+padding:15px;
+
+}
+
+}
+
+@media (max-width:480px){
+
+.header{
+
+padding:18px 14px 10px;
+
+}
+
+.header h2{
+
+font-size:28px;
+
+}
+
+.header p{
+
+font-size:13px;
+
+}
+
+.summary{
+
+grid-template-columns:1fr;
+
+}
+
+.card{
+
+padding:15px;
+
+}
+
+.machineTop{
+
+align-items:flex-start;
+
+}
+
+.machineImage{
+
+width:68px;
+
+height:68px;
+
+}
+
+.machineName{
+
+font-size:16px;
+
+}
+
+.machineSeries{
+
+font-size:10px;
+
+}
+
+.infoRow{
+
+font-size:13px;
+
+}
+
+.bottom-nav{
+
+height:68px;
+
+}
+
+.bottom-nav span{
+
+font-size:11px;
+
+}
+
+.nav-icon{
+
+font-size:20px;
+
+}
+
+}
+
+/* ==========================================
+   UTILITIES
+========================================== */
+
+.hidden{
+
+display:none !important;
+
+}
+
+.text-center{
+
+text-align:center;
+
+}
+
+.mt-10{
+
+margin-top:10px;
+
+}
+
+.mt-15{
+
+margin-top:15px;
+
+}
+
+.mb-15{
+
+margin-bottom:15px;
+
+  }
