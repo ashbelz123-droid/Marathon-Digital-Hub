@@ -1,6 +1,5 @@
 /* ==========================================
-   MARATHON DIGITAL HUB
-   INCOME.JS
+   INCOME PAGE
 ========================================== */
 
 const db = window.supabaseClient;
@@ -10,7 +9,7 @@ let profile = null;
 let userMachines = [];
 
 /* ==========================================
-   START PAGE
+   START
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", init);
@@ -19,31 +18,26 @@ async function init(){
 
     try{
 
-        const { data:{ user }, error } = await db.auth.getUser();
+        const { data, error } = await db.auth.getUser();
 
-        if(error){
+        if(error) throw error;
 
-            console.log(error);
+        if(!data.user){
+
+            window.location.href = "login.html";
             return;
 
         }
 
-        if(!user){
-
-            window.location.href="login.html";
-            return;
-
-        }
-
-        currentUser = user;
+        currentUser = data.user;
 
         await loadProfile();
 
-        await loadMachines();
+        await loadUserMachines();
 
     }catch(err){
 
-        console.log(err);
+        console.error(err);
 
         document.getElementById("machineList").innerHTML=`
             <div class="loading">
@@ -61,24 +55,25 @@ async function init(){
 
 async function loadProfile(){
 
-    const { data,error } = await db
+    const { data, error } = await db
 
     .from("profiles")
 
     .select("*")
 
-    .eq("id",currentUser.id)
+    .eq("id", currentUser.id)
 
     .single();
 
     if(error){
 
-        console.log(error);
+        console.error(error);
+
         return;
 
     }
 
-    profile=data;
+    profile = data;
 
 }
 
@@ -86,19 +81,15 @@ async function loadProfile(){
    LOAD USER MACHINES
 ========================================== */
 
-async function loadMachines(){
+async function loadUserMachines(){
 
-    document.getElementById("machineList").innerHTML=`
-
+    document.getElementById("machineList").innerHTML = `
         <div class="loading">
-
             Loading your machines...
-
         </div>
-
     `;
 
-    const { data,error } = await db
+    const { data, error } = await db
 
     .from("user_machines")
 
@@ -107,31 +98,27 @@ async function loadMachines(){
         machines(
             id,
             name,
-            series,
-            image_url,
             price,
             total_return,
             duration_days,
+            series,
+            image_url,
             is_vip
         )
     `)
 
-    .eq("user_id",currentUser.id)
+    .eq("user_id", currentUser.id)
 
-    .order("purchase_date",{ascending:false});
+    .order("purchase_date", { ascending:false });
 
     if(error){
 
-        console.log(error);
+        console.error(error);
 
-        document.getElementById("machineList").innerHTML=`
-
+        document.getElementById("machineList").innerHTML = `
             <div class="loading">
-
                 Failed to load your machines.
-
             </div>
-
         `;
 
         return;
@@ -162,6 +149,8 @@ function renderMachines(){
             </div>
         `;
 
+        updateSummary(0,0,0,0);
+
         return;
 
     }
@@ -174,7 +163,8 @@ function renderMachines(){
     const today = new Date();
 
     const isWeekend =
-        today.getDay() === 0 || today.getDay() === 6;
+        today.getDay() === 0 ||
+        today.getDay() === 6;
 
     userMachines.forEach(item=>{
 
@@ -182,20 +172,21 @@ function renderMachines(){
 
         if(!machine) return;
 
-        const purchaseDate = new Date(item.purchase_date);
-
         const isVIP = machine.is_vip === true;
 
-        const totalReturnMachine =
-            Number(machine.total_return);
+        const purchaseDate =
+            new Date(item.purchase_date);
 
         const duration =
             Number(machine.duration_days);
 
+        const totalReturnMachine =
+            Number(machine.total_return);
+
         const dailyReturn =
             totalReturnMachine / duration;
 
-        /* Count earning days */
+        /* Count only working days */
 
         let earningDays = 0;
 
@@ -220,7 +211,7 @@ function renderMachines(){
 
         const earned = Math.min(
             totalReturnMachine,
-            dailyReturn * earningDays
+            earningDays * dailyReturn
         );
 
         const remaining = Math.max(
@@ -233,10 +224,8 @@ function renderMachines(){
             (earned / totalReturnMachine) * 100
         );
 
-        const daysRemaining = Math.max(
-            0,
-            duration - earningDays
-        );
+        const daysRemaining =
+            Math.max(0, duration - earningDays);
 
         const weekendDisabled =
             isWeekend && !isVIP && !expired;
@@ -263,7 +252,6 @@ function renderMachines(){
         }
 
         totalIncome += earned;
-
         totalReturn += totalReturnMachine;
 
         if(!expired && !weekendDisabled){
@@ -310,89 +298,56 @@ function renderMachines(){
             </div>
 
             <div class="infoRow">
-
                 <span class="infoTitle">Purchase Price</span>
-
                 <span class="infoValue">
-
                     UGX ${Number(machine.price).toLocaleString()}
-
                 </span>
-
             </div>
 
             <div class="infoRow">
-
                 <span class="infoTitle">Earned</span>
-
                 <span class="infoValue">
-
                     UGX ${Math.floor(earned).toLocaleString()}
-
                 </span>
-
             </div>
 
             <div class="infoRow">
-
                 <span class="infoTitle">Remaining</span>
-
                 <span class="infoValue">
-
                     UGX ${Math.floor(remaining).toLocaleString()}
-
                 </span>
-
             </div>
 
             <div class="infoRow">
-
                 <span class="infoTitle">Total Return</span>
-
                 <span class="infoValue">
-
-                    UGX ${totalReturnMachine.toLocaleString()}
-
+                    UGX ${Math.floor(totalReturnMachine).toLocaleString()}
                 </span>
-
             </div>
 
             <div class="infoRow">
-
                 <span class="infoTitle">Daily Income</span>
-
                 <span class="infoValue">
-
-                    ${weekendDisabled
+                    ${
+                        weekendDisabled
                         ? "UGX 0"
-                        : "UGX " + Math.floor(dailyReturn).toLocaleString()}
-
+                        : "UGX " + Math.floor(dailyReturn).toLocaleString()
+                    }
                 </span>
-
             </div>
 
             <div class="infoRow">
-
                 <span class="infoTitle">Working Days Left</span>
-
                 <span class="infoValue">
-
                     ${expired ? "Completed" : daysRemaining + " Days"}
-
                 </span>
-
             </div>
 
             <div class="infoRow">
-
                 <span class="infoTitle">Status</span>
-
                 <span class="${statusClass}">
-
                     ${statusText}
-
                 </span>
-
             </div>
 
             <div class="progress">
@@ -400,24 +355,15 @@ function renderMachines(){
                 <div
                     class="progressFill"
                     style="width:${progress}%">
-
                 </div>
 
             </div>
 
             <div class="progressText">
 
-                <span>
+                <span>${Math.floor(progress)}% Complete</span>
 
-                    ${Math.floor(progress)}% Complete
-
-                </span>
-
-                <span>
-
-                    ${isVIP ? "VIP Machine" : "Standard Machine"}
-
-                </span>
+                <span>${isVIP ? "VIP Machine" : "Standard Machine"}</span>
 
             </div>
 
@@ -427,20 +373,34 @@ function renderMachines(){
 
     });
 
-    document.getElementById("activeMachines").textContent =
-        activeMachines;
-
-    document.getElementById("dailyIncome").textContent =
-        "UGX " + Math.floor(dailyIncome).toLocaleString();
-
-    document.getElementById("totalIncome").textContent =
-        "UGX " + Math.floor(totalIncome).toLocaleString();
-
-    document.getElementById("totalReturn").textContent =
-        "UGX " + Math.floor(totalReturn).toLocaleString();
+    updateSummary(
+        activeMachines,
+        dailyIncome,
+        totalIncome,
+        totalReturn
+    );
 
 }
+
+/* ==========================================
+   UPDATE SUMMARY
+========================================== */
+
+function updateSummary(active,daily,total,returns){
+
+    document.getElementById("activeMachines").textContent = active;
+
+    document.getElementById("dailyIncome").textContent =
+        "UGX " + Math.floor(daily).toLocaleString();
+
+    document.getElementById("totalIncome").textContent =
+        "UGX " + Math.floor(total).toLocaleString();
+
+    document.getElementById("totalReturn").textContent =
+        "UGX " + Math.floor(returns).toLocaleString();
+
+}
+
     });
 
-        }
-
+            }
