@@ -1,3 +1,7 @@
+/* ==========================================
+   RESET
+========================================== */
+
 *{
 margin:0;
 padding:0;
@@ -9,10 +13,12 @@ body{
 
 background:#050B18;
 color:#fff;
-padding:20px 15px 90px;
 overflow-x:hidden;
+padding:20px 15px 90px;
 
 }
+
+/* Animated Background */
 
 body::before{
 
@@ -20,25 +26,25 @@ content:"";
 
 position:fixed;
 
-left:-40%;
 top:-40%;
+left:-40%;
 
 width:180%;
 height:180%;
 
 background:
 
-radial-gradient(circle at 15% 20%,rgba(0,255,255,.18),transparent 35%),
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
 
-radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.15),transparent 35%),
 
-radial-gradient(circle at 70% 80%,rgba(0,255,120,.16),transparent 40%),
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.12),transparent 40%),
 
-radial-gradient(circle at 25% 80%,rgba(170,0,255,.15),transparent 35%);
+radial-gradient(circle at 25% 80%,rgba(170,0,255,.12),transparent 35%);
 
 animation:bgMove 18s linear infinite;
 
-z-index:-2;
+z-index:-1;
 
 }
 
@@ -50,66 +56,83 @@ z-index:-2;
 
 }
 
-.page{
+.container{
 
-max-width:600px;
+max-width:650px;
+
 margin:auto;
 
 }
 
+/* ==========================================
+   HEADER
+========================================== */
+
 .header{
 
-margin-bottom:18px;
+margin-bottom:20px;
 
 }
 
 .header h2{
 
-font-size:28px;
+font-size:30px;
+
 font-weight:700;
+
+margin-bottom:8px;
 
 }
 
 .header p{
 
-margin-top:6px;
-font-size:14px;
 color:#9fb5d1;
 
+font-size:15px;
+
 }
+
+/* ==========================================
+   WALLET CARD
+========================================== */
 
 .wallet-card{
 
 display:flex;
+
 justify-content:space-between;
+
 align-items:center;
 
-padding:20px;
+padding:22px;
+
+margin-bottom:20px;
 
 border-radius:18px;
 
-background:linear-gradient(135deg,#08142d,#0c1d40);
+background:linear-gradient(135deg,#08142d,#10224a);
 
-border:1px solid rgba(0,255,136,.18);
+border:1px solid rgba(0,255,136,.15);
 
-margin-bottom:18px;
-
-box-shadow:0 10px 25px rgba(0,0,0,.35);
+box-shadow:0 12px 30px rgba(0,0,0,.35);
 
 }
 
-.wallet-card span{
+.wallet-title{
 
 font-size:14px;
+
 color:#9fb5d1;
 
 }
 
-.wallet-card h1{
+#walletBalance{
 
 margin-top:10px;
 
-font-size:30px;
+font-size:32px;
+
+font-weight:bold;
 
 color:#00ff88;
 
@@ -117,46 +140,57 @@ color:#00ff88;
 
 .wallet-icon{
 
-width:65px;
-height:65px;
+width:70px;
 
-display:flex;
-justify-content:center;
-align-items:center;
+height:70px;
 
 border-radius:50%;
 
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
 background:rgba(0,255,136,.12);
 
-font-size:30px;
+font-size:32px;
 
 }
+
+/* ==========================================
+   CARDS
+========================================== */
 
 .card{
 
 background:#08142d;
 
+border:1px solid rgba(255,255,255,.08);
+
 border-radius:18px;
 
 padding:18px;
 
-margin-bottom:18px;
+margin-bottom:20px;
 
-border:1px solid rgba(0,200,255,.12);
-
-box-shadow:0 8px 20px rgba(0,0,0,.25);
+box-shadow:0 8px 25px rgba(0,0,0,.25);
 
 }
 
 .card h3{
 
-font-size:18px;
-
-margin-bottom:16px;
+font-size:19px;
 
 color:#00ff88;
 
-                }
+margin-bottom:18px;
+
+}
+
+/* ==========================================
+   PAYMENT CARDS
+========================================== */
 
 .payment-card{
 
@@ -166,71 +200,77 @@ border-radius:16px;
 
 padding:16px;
 
-margin-bottom:15px;
+margin-bottom:18px;
 
-border:1px solid rgba(255,255,255,.08);
+border:1px solid rgba(255,255,255,.06);
 
 transition:.3s;
 
 }
 
-.payment-card:hover{
+.payment-card:last-child{
 
-transform:translateY(-2px);
+margin-bottom:0;
+
+}
+
+.payment-card:hover{
 
 border-color:#00ff88;
 
-}
-
-.network-tag{
-
-display:inline-block;
-
-padding:6px 12px;
-
-border-radius:30px;
-
-font-size:12px;
-
-font-weight:bold;
-
-margin-bottom:15px;
+transform:translateY(-2px);
 
 }
 
-.mtn .network-tag{
+.network-header{
 
-background:#ffd400;
+display:flex;
 
-color:#111;
+align-items:center;
+
+gap:12px;
+
+margin-bottom:16px;
 
 }
 
-.airtel .network-tag{
+.network-logo{
 
-background:#ff3b30;
+width:42px;
+
+height:42px;
+
+object-fit:contain;
+
+}
+
+.network-header h4{
+
+font-size:17px;
+
+font-weight:700;
 
 color:#fff;
 
 }
 
-.payment-info p{
+.label{
 
 font-size:13px;
 
-color:#9fb5d1;
+color:#8ea8c9;
 
-margin-top:8px;
+margin-top:12px;
+
+margin-bottom:4px;
 
 }
 
-.payment-info h4{
+.payment-card p:not(.label){
 
-font-size:18px;
+font-size:17px;
 
-margin-top:4px;
-
-margin-bottom:10px;
+font-weight:600;
 
 color:#fff;
 
@@ -238,11 +278,17 @@ word-break:break-word;
 
 }
 
+/* ==========================================
+   COPY BUTTON
+========================================== */
+
 .copy-btn{
 
 width:100%;
 
 height:48px;
+
+margin-top:16px;
 
 border:none;
 
@@ -258,8 +304,6 @@ font-weight:bold;
 
 cursor:pointer;
 
-margin-top:12px;
-
 transition:.3s;
 
 }
@@ -270,43 +314,53 @@ background:#00ff88;
 
 }
 
-.instruction-box{
+/* ==========================================
+   PAYMENT INSTRUCTIONS
+========================================== */
+
+.instructions{
 
 background:#111f3d;
 
-border-left:4px solid #00ff88;
+border-radius:14px;
 
-padding:15px;
-
-border-radius:12px;
-
-margin-bottom:15px;
+padding:16px;
 
 }
 
-.instruction-box p{
+.instructions h4{
 
-margin-bottom:10px;
+margin:10px 0;
 
-font-size:15px;
+font-size:16px;
 
 }
 
-.instruction-box ol{
+.instructions ol{
 
 padding-left:20px;
 
+margin-bottom:18px;
+
 }
 
-.instruction-box li{
+.instructions li{
 
 margin-bottom:8px;
 
-font-size:14px;
+line-height:1.6;
 
 color:#d9e4f5;
 
-line-height:1.5;
+}
+
+.instructions hr{
+
+border:none;
+
+border-top:1px solid rgba(255,255,255,.08);
+
+margin:18px 0;
 
 }
 
@@ -324,9 +378,15 @@ border-radius:12px;
 
 font-size:14px;
 
-line-height:1.5;
+line-height:1.6;
+
+margin-top:10px;
 
   }
+
+/* ==========================================
+   DEPOSIT FORM
+========================================== */
 
 .method-buttons{
 
@@ -334,7 +394,7 @@ display:flex;
 
 gap:10px;
 
-margin-bottom:15px;
+margin-bottom:18px;
 
 }
 
@@ -342,7 +402,7 @@ margin-bottom:15px;
 
 flex:1;
 
-height:48px;
+height:50px;
 
 border:none;
 
@@ -376,21 +436,21 @@ width:100%;
 
 height:52px;
 
-background:#111f3d;
+padding:0 15px;
+
+margin-bottom:15px;
 
 border:1px solid rgba(255,255,255,.08);
 
 border-radius:12px;
 
-padding:0 15px;
-
-font-size:15px;
+background:#111f3d;
 
 color:#fff;
 
-outline:none;
+font-size:15px;
 
-margin-bottom:15px;
+outline:none;
 
 }
 
@@ -430,27 +490,27 @@ background:#00d96f;
 
 }
 
+/* ==========================================
+   LATEST REQUEST
+========================================== */
+
 .latest-request{
 
 background:#111f3d;
 
-border-radius:14px;
+padding:16px;
 
-padding:15px;
+border-radius:14px;
 
 }
 
-.status-badge{
+.status{
 
 display:inline-block;
 
 padding:6px 14px;
 
 border-radius:30px;
-
-background:#ffcc00;
-
-color:#111;
 
 font-size:13px;
 
@@ -460,27 +520,51 @@ margin-bottom:15px;
 
 }
 
-.request-details p{
+.status.pending{
+
+background:#fff3cd;
+
+color:#856404;
+
+}
+
+.status.approved{
+
+background:#d4edda;
+
+color:#155724;
+
+}
+
+.status.rejected{
+
+background:#f8d7da;
+
+color:#721c24;
+
+}
+
+.request-info p{
+
+margin-top:10px;
 
 font-size:13px;
 
 color:#9fb5d1;
 
-margin-top:10px;
-
 }
 
-.request-details h2{
+.request-info h2{
+
+margin:8px 0;
 
 font-size:28px;
 
 color:#00ff88;
 
-margin-top:5px;
-
 }
 
-.request-details span{
+.request-info span{
 
 display:block;
 
@@ -493,6 +577,10 @@ color:#fff;
 word-break:break-word;
 
 }
+
+/* ==========================================
+   HISTORY
+========================================== */
 
 .history-empty{
 
@@ -508,9 +596,9 @@ color:#9fb5d1;
 
 background:#111f3d;
 
-border-radius:14px;
-
 padding:15px;
+
+border-radius:14px;
 
 margin-top:12px;
 
@@ -520,21 +608,27 @@ border-left:4px solid #00ff88;
 
 .history-item h4{
 
-font-size:18px;
+font-size:20px;
 
-margin-bottom:8px;
+margin-bottom:10px;
+
+color:#fff;
 
 }
 
 .history-item p{
 
+margin:6px 0;
+
 font-size:14px;
 
 color:#d9e4f5;
 
-margin:4px 0;
-
 }
+
+/* ==========================================
+   BOTTOM NAVIGATION
+========================================== */
 
 .bottom-nav{
 
@@ -570,13 +664,13 @@ text-decoration:none;
 
 color:#cfd8ea;
 
-font-size:12px;
-
 display:flex;
 
 flex-direction:column;
 
 align-items:center;
+
+font-size:12px;
 
 transition:.3s;
 
@@ -584,7 +678,7 @@ transition:.3s;
 
 .bottom-nav a div{
 
-font-size:24px;
+font-size:22px;
 
 margin-bottom:4px;
 
@@ -604,17 +698,37 @@ color:#00ff88;
 
 }
 
-@media(max-width:480px){
+/* ==========================================
+   MOBILE
+========================================== */
 
-.wallet-card h1{
+@media (max-width:480px){
 
-font-size:24px;
+body{
+
+padding:15px 12px 90px;
 
 }
 
 .header h2{
 
-font-size:24px;
+font-size:25px;
+
+}
+
+#walletBalance{
+
+font-size:26px;
+
+}
+
+.wallet-icon{
+
+width:60px;
+
+height:60px;
+
+font-size:28px;
 
 }
 
@@ -624,4 +738,12 @@ padding:15px;
 
 }
 
+.network-logo{
+
+width:36px;
+
+height:36px;
+
 }
+
+  }
