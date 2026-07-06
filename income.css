@@ -1,380 +1,618 @@
 /* ==========================================
-   INCOME.JS
+RESET
 ========================================== */
 
-const db = window.supabaseClient;
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-let currentUser = null;
-let profile = null;
-let userMachines = [];
+body{
 
-/* ==========================================
-   START
-========================================== */
-
-document.addEventListener("DOMContentLoaded", init);
-
-async function init() {
-
-    try {
-
-        const { data, error } = await db.auth.getUser();
-
-        if (error) throw error;
-
-        if (!data.user) {
-            window.location.href = "login.html";
-            return;
-        }
-
-        currentUser = data.user;
-
-        await loadProfile();
-
-        await loadMachines();
-
-    } catch (err) {
-
-        console.error("Init Error:", err);
-
-        document.getElementById("machineList").innerHTML = `
-            <div class="loading">
-                Unable to load page.
-            </div>
-        `;
-
-    }
+background:#050B18;
+color:#fff;
+overflow-x:hidden;
+padding-bottom:90px;
 
 }
 
 /* ==========================================
-   LOAD PROFILE
+ANIMATED BACKGROUND
 ========================================== */
 
-async function loadProfile() {
+body::before{
 
-    const { data, error } = await db
+content:"";
 
-        .from("profiles")
+position:fixed;
 
-        .select("*")
+left:-40%;
+top:-40%;
 
-        .eq("id", currentUser.id)
+width:180%;
+height:180%;
 
-        .single();
+background:
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.15),transparent 40%);
 
-    if (error) {
+animation:bgMove 18s linear infinite;
 
-        console.error("Profile Error:", error);
+z-index:-2;
 
-        return;
-    }
+}
 
-    profile = data;
+@keyframes bgMove{
+
+0%{transform:translateX(-2%);}
+50%{transform:translateX(2%);}
+100%{transform:translateX(-2%);}
 
 }
 
 /* ==========================================
-   LOAD USER MACHINES
+HEADER
 ========================================== */
 
-async function loadMachines() {
+.header{
 
-    document.getElementById("machineList").innerHTML = `
-        <div class="loading">
-            Loading your machines...
-        </div>
-    `;
+padding:22px 16px 10px;
 
-    const { data, error } = await db
+}
 
-        .from("user_machines")
+.header h2{
 
-        .select(`
-            *,
-            machines (
-                id,
-                name,
-                price,
-                total_return,
-                duration_days,
-                image_url,
-                series,
-                is_vip
-            )
-        `)
+font-size:30px;
+font-weight:bold;
 
-        .eq("user_id", currentUser.id)
+background:linear-gradient(90deg,#00C8FF,#00FF88);
 
-        .order("purchase_date", { ascending: false });
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
 
-    if (error) {
+}
 
-        console.error("Machine Error:", error);
+.header p{
 
-        document.getElementById("machineList").innerHTML = `
-            <div class="loading">
-                Failed to load your machines.
-            </div>
-        `;
-
-        return;
-
-    }
-
-    userMachines = data || [];
-
-    renderMachines();
-
-       }
-
-/* ==========================================
-   RENDER MACHINES
-========================================== */
-
-function renderMachines() {
-
-    const container = document.getElementById("machineList");
-
-    container.innerHTML = "";
-
-    if (userMachines.length === 0) {
-
-        container.innerHTML = `
-            <div class="loading">
-                You have not purchased any machines yet.
-            </div>
-        `;
-
-        updateSummary(0, 0, 0, 0);
-
-        return;
-    }
-
-    let totalIncome = 0;
-    let totalReturn = 0;
-    let dailyIncome = 0;
-    let activeMachines = 0;
-
-    const today = new Date();
-
-    const isWeekend =
-        today.getDay() === 0 || today.getDay() === 6;
-
-    userMachines.forEach(item => {
-
-        const machine = item.machines;
-
-        if (!machine) return;
-
-        const isVIP = machine.is_vip === true;
-
-        const purchaseDate = new Date(item.purchase_date);
-
-        const duration = Number(machine.duration_days);
-
-        const totalReturnMachine = Number(machine.total_return);
-
-        const dailyReturn = totalReturnMachine / duration;
-
-        /* Count working days */
-
-        let earningDays = 0;
-
-        let cursor = new Date(purchaseDate);
-
-        while (cursor <= today && earningDays < duration) {
-
-            const day = cursor.getDay();
-
-            if (isVIP || (day !== 0 && day !== 6)) {
-
-                earningDays++;
-
-            }
-
-            cursor.setDate(cursor.getDate() + 1);
-
-        }
-
-        const expired = earningDays >= duration;
-
-        const earned = Math.min(
-            totalReturnMachine,
-            earningDays * dailyReturn
-        );
-
-        const remaining = Math.max(
-            0,
-            totalReturnMachine - earned
-        );
-
-        const progress = Math.min(
-            100,
-            (earned / totalReturnMachine) * 100
-        );
-
-        const daysRemaining =
-            Math.max(0, duration - earningDays);
-
-        const weekendDisabled =
-            isWeekend && !isVIP && !expired;
-
-        let statusText = "🟢 ACTIVE";
-        let statusClass = "active";
-
-        if (expired) {
-
-            statusText = "🔴 EXPIRED";
-            statusClass = "expired";
-
-        } else if (weekendDisabled) {
-
-            statusText = "🟠 DISABLED (WEEKEND)";
-            statusClass = "weekend";
-
-        }
-
-        if (!expired)
-            activeMachines++;
-
-        totalIncome += earned;
-        totalReturn += totalReturnMachine;
-
-        if (!expired && !weekendDisabled)
-            dailyIncome += dailyReturn;
-
-        const image =
-            machine.image_url && machine.image_url.trim() !== ""
-            ? machine.image_url
-            : "images/default-machine.png";
-
-                container.innerHTML += `
-
-        <div class="machineCard">
-
-            <div class="machineTop">
-
-                <img
-                    src="${image}"
-                    class="machineImage"
-                    onerror="this.src='images/default-machine.png'">
-
-                <div class="machineInfo">
-
-                    <div class="machineName">
-
-                        ${machine.name}
-
-                        ${isVIP ? '<span class="vipBadge">VIP</span>' : ''}
-
-                    </div>
-
-                    <div class="machineSeries">
-
-                        ${machine.series || "STANDARD"}
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="infoRow">
-                <span class="infoTitle">Purchase Price</span>
-                <span class="infoValue">
-                    UGX ${Number(machine.price).toLocaleString()}
-                </span>
-            </div>
-
-            <div class="infoRow">
-                <span class="infoTitle">Earned</span>
-                <span class="infoValue">
-                    UGX ${Math.floor(earned).toLocaleString()}
-                </span>
-            </div>
-
-            <div class="infoRow">
-                <span class="infoTitle">Remaining</span>
-                <span class="infoValue">
-                    UGX ${Math.floor(remaining).toLocaleString()}
-                </span>
-            </div>
-
-            <div class="infoRow">
-                <span class="infoTitle">Total Return</span>
-                <span class="infoValue">
-                    UGX ${totalReturnMachine.toLocaleString()}
-                </span>
-            </div>
-
-            <div class="infoRow">
-                <span class="infoTitle">Daily Income</span>
-                <span class="infoValue">
-                    ${weekendDisabled
-                        ? "UGX 0"
-                        : "UGX " + Math.floor(dailyReturn).toLocaleString()}
-                </span>
-            </div>
-
-            <div class="infoRow">
-                <span class="infoTitle">Working Days Left</span>
-                <span class="infoValue">
-                    ${expired ? "Completed" : daysRemaining + " Days"}
-                </span>
-            </div>
-
-            <div class="infoRow">
-                <span class="infoTitle">Status</span>
-                <span class="${statusClass}">
-                    ${statusText}
-                </span>
-            </div>
-
-            <div class="progress">
-                <div class="progressFill"
-                    style="width:${progress}%;">
-                </div>
-            </div>
-
-            <div class="progressText">
-                <span>${Math.floor(progress)}% Complete</span>
-                <span>${isVIP ? "VIP Machine" : "Standard Machine"}</span>
-            </div>
-
-        </div>
-
-        `;
-
-    });
-
-    updateSummary(
-        activeMachines,
-        dailyIncome,
-        totalIncome,
-        totalReturn
-    );
+margin-top:6px;
+font-size:14px;
+color:#9FB5D1;
 
 }
 
 /* ==========================================
-   UPDATE SUMMARY
+SUMMARY CARDS
 ========================================== */
 
-function updateSummary(active,daily,total,returns){
+.summary{
 
-    document.getElementById("activeMachines").textContent =
-        active;
+display:grid;
 
-    document.getElementById("dailyIncome").textContent =
-        "UGX " + Math.floor(daily).toLocaleString();
+grid-template-columns:1fr 1fr;
 
-    document.getElementById("totalIncome").textContent =
-        "UGX " + Math.floor(total).toLocaleString();
+gap:12px;
 
-    document.getElementById("totalReturn").textContent =
-        "UGX " + Math.floor(returns).toLocaleString();
+padding:0 15px;
 
-               }
-    });
+margin-bottom:15px;
+
 }
+
+.card{
+
+background:#08142D;
+
+border-radius:18px;
+
+padding:18px;
+
+border:1px solid rgba(0,200,255,.15);
+
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+}
+
+.card small{
+
+display:block;
+
+margin-bottom:8px;
+
+font-size:13px;
+
+color:#9FB5D1;
+
+}
+
+.card h2{
+
+font-size:22px;
+
+font-weight:bold;
+
+color:#00FF88;
+
+}
+
+/* ==========================================
+SECTION
+========================================== */
+
+.section{
+
+margin:15px;
+
+padding:18px;
+
+background:#08142D;
+
+border-radius:20px;
+
+border:1px solid rgba(0,200,255,.15);
+
+box-shadow:0 8px 25px rgba(0,0,0,.25);
+
+}
+
+.section h3{
+
+font-size:22px;
+
+margin-bottom:18px;
+
+color:#00FF88;
+
+}
+
+.loading{
+
+padding:40px;
+
+text-align:center;
+
+color:#00C8FF;
+
+font-size:18px;
+
+}
+
+/* ==========================================
+MACHINE CARD
+========================================== */
+
+.machineCard{
+
+background:#101E3D;
+
+border-radius:18px;
+
+padding:15px;
+
+margin-bottom:16px;
+
+border:1px solid rgba(255,255,255,.06);
+
+box-shadow:0 6px 18px rgba(0,0,0,.25);
+
+transition:.3s;
+
+}
+
+.machineCard:hover{
+
+transform:translateY(-2px);
+
+border-color:#00C8FF;
+
+}
+
+.machineTop{
+
+display:flex;
+
+align-items:center;
+
+gap:14px;
+
+margin-bottom:15px;
+
+}
+
+.machineImage{
+
+width:90px;
+
+height:90px;
+
+border-radius:16px;
+
+object-fit:cover;
+
+background:#071123;
+
+border:2px solid rgba(0,200,255,.25);
+
+}
+
+.machineInfo{
+
+flex:1;
+
+}
+
+.machineName{
+
+font-size:20px;
+
+font-weight:bold;
+
+color:#fff;
+
+margin-bottom:8px;
+
+}
+
+.machineSeries{
+
+display:inline-block;
+
+padding:6px 12px;
+
+border-radius:20px;
+
+background:#12385E;
+
+color:#00C8FF;
+
+font-size:11px;
+
+font-weight:bold;
+
+}
+
+.vipBadge{
+
+display:inline-block;
+
+margin-left:8px;
+
+padding:5px 10px;
+
+border-radius:20px;
+
+background:#FFD700;
+
+color:#111;
+
+font-size:11px;
+
+font-weight:bold;
+
+}
+
+/* ==========================================
+DETAIL ROWS
+========================================== */
+
+.infoRow{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:10px 0;
+
+border-bottom:1px solid rgba(255,255,255,.06);
+
+}
+
+.infoTitle{
+
+font-size:14px;
+
+color:#9FB5D1;
+
+}
+
+.infoValue{
+
+font-size:14px;
+
+font-weight:bold;
+
+color:#fff;
+
+}
+
+/* ==========================================
+STATUS
+========================================== */
+
+.active{
+
+color:#00FF88;
+
+font-weight:bold;
+
+}
+
+.weekend{
+
+color:#FFC857;
+
+font-weight:bold;
+
+}
+
+.expired{
+
+color:#FF5A5A;
+
+font-weight:bold;
+
+}
+
+/* ==========================================
+PROGRESS BAR
+========================================== */
+
+.progress{
+
+margin-top:16px;
+
+height:8px;
+
+background:#1C3156;
+
+border-radius:30px;
+
+overflow:hidden;
+
+}
+
+.progressFill{
+
+height:100%;
+
+width:0%;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+transition:width .5s ease;
+
+}
+
+.progressText{
+
+display:flex;
+
+justify-content:space-between;
+
+margin-top:10px;
+
+font-size:12px;
+
+color:#9FB5D1;
+
+   }
+
+/* ==========================================
+BOTTOM NAVIGATION
+========================================== */
+
+.bottom-nav{
+
+position:fixed;
+
+left:0;
+
+bottom:0;
+
+width:100%;
+
+height:70px;
+
+background:#08142D;
+
+border-top:1px solid rgba(0,200,255,.15);
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+backdrop-filter:blur(12px);
+
+z-index:999;
+
+box-shadow:0 -4px 20px rgba(0,0,0,.35);
+
+}
+
+.bottom-nav a{
+
+flex:1;
+
+height:100%;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+text-decoration:none;
+
+color:#C5D8FF;
+
+transition:.3s;
+
+}
+
+.bottom-nav a.active{
+
+color:#00FF88;
+
+}
+
+.bottom-nav a:hover{
+
+color:#00FF88;
+
+}
+
+.nav-icon{
+
+font-size:22px;
+
+margin-bottom:4px;
+
+}
+
+.bottom-nav span{
+
+font-size:12px;
+
+font-weight:600;
+
+}
+
+/* ==========================================
+RESPONSIVE
+========================================== */
+
+@media(max-width:768px){
+
+.summary{
+
+grid-template-columns:1fr;
+
+}
+
+.machineTop{
+
+align-items:flex-start;
+
+}
+
+.machineImage{
+
+width:80px;
+
+height:80px;
+
+}
+
+.machineName{
+
+font-size:18px;
+
+}
+
+.card h2{
+
+font-size:20px;
+
+}
+
+}
+
+@media(max-width:480px){
+
+.header h2{
+
+font-size:26px;
+
+}
+
+.header p{
+
+font-size:13px;
+
+}
+
+.machineImage{
+
+width:70px;
+
+height:70px;
+
+}
+
+.machineName{
+
+font-size:16px;
+
+}
+
+.machineSeries{
+
+font-size:10px;
+
+}
+
+.infoTitle,
+
+.infoValue{
+
+font-size:13px;
+
+}
+
+.section{
+
+margin:12px;
+
+padding:15px;
+
+}
+
+}
+
+/* ==========================================
+UTILITY CLASSES
+========================================== */
+
+.hidden{
+
+display:none !important;
+
+}
+
+.text-center{
+
+text-align:center;
+
+}
+
+.mt-10{
+
+margin-top:10px;
+
+}
+
+.mt-15{
+
+margin-top:15px;
+
+}
+
+.mb-10{
+
+margin-bottom:10px;
+
+}
+
+.mb-15{
+
+margin-bottom:15px;
+
+   }
