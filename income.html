@@ -5,90 +5,99 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Income | Marathon Digital Hub</title>
 
-<link rel="stylesheet" href="income.css">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
+
+<link rel="stylesheet" href="income.css">
 
 </head>
 
 <body>
 
-<!-- HEADER -->
+<!-- ==========================
+HEADER
+========================== -->
 
 <div class="header">
 
-    <h2>Income</h2>
+<h2>Income</h2>
 
-    <p>Your mining earnings overview</p>
+<p>Your mining earnings overview.</p>
 
 </div>
 
-<!-- SUMMARY -->
+<!-- ==========================
+SUMMARY
+========================== -->
 
 <div class="summary">
 
-    <div class="card">
+<div class="card">
 
-        <small>Total Income</small>
+<small>Total Income</small>
 
-        <h2 id="totalIncome">UGX 0</h2>
+<h2 id="totalIncome">UGX 0</h2>
 
-    </div>
+</div>
 
-    <div class="card">
+<div class="card">
 
-        <small>Active Machines</small>
+<small>Active Machines</small>
 
-        <h2 id="activeMachines">0</h2>
+<h2 id="activeMachines">0</h2>
 
-    </div>
+</div>
 
 </div>
 
 <div class="summary">
 
-    <div class="card">
+<div class="card">
 
-        <small>Today's Income</small>
+<small>Today's Income</small>
 
-        <h2 id="dailyIncome">UGX 0</h2>
-
-    </div>
-
-    <div class="card">
-
-        <small>Total Return</small>
-
-        <h2 id="totalReturn">UGX 0</h2>
-
-    </div>
+<h2 id="dailyIncome">UGX 0</h2>
 
 </div>
 
-<!-- MACHINE LIST -->
+<div class="card">
+
+<small>Total Return</small>
+
+<h2 id="totalReturn">UGX 0</h2>
+
+</div>
+
+</div>
+
+<!-- ==========================
+MY MACHINES
+========================== -->
 
 <div class="section">
 
-    <h3>My Machines</h3>
+<h3>My Machines</h3>
 
-    <div id="machineList">
+<div id="machineList">
 
-        <div class="loading">
+<div class="loading">
 
-            Loading your machines...
-
-        </div>
-
-    </div>
+Loading your machines...
 
 </div>
 
-  <!-- BOTTOM NAVIGATION -->
+</div>
+
+</div>
+
+    <!-- ==========================
+BOTTOM NAVIGATION
+========================== -->
 
 <nav class="bottom-nav">
 
@@ -134,8 +143,12 @@
 
 </nav>
 
+<!-- ==========================
+JAVASCRIPT
+========================== -->
+
 <script src="income.js"></script>
 
 </body>
 
-</html>
+    </html>
