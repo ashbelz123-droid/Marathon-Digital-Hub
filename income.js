@@ -400,7 +400,3 @@ function updateSummary(active,daily,total,returns){
         "UGX " + Math.floor(returns).toLocaleString();
 
 }
-
-    });
-
-            }
