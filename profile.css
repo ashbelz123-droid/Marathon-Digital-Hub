@@ -1,0 +1,1033 @@
+/* ===========================
+RESET
+=========================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+
+background:#050B18;
+color:#fff;
+overflow-x:hidden;
+padding-bottom:90px;
+position:relative;
+
+}
+
+/* ===========================
+ANIMATED BACKGROUND
+=========================== */
+
+.bg-animation{
+
+position:fixed;
+left:-40%;
+top:-40%;
+width:180%;
+height:180%;
+
+background:
+radial-gradient(circle at 20% 20%,rgba(0,255,255,.14),transparent 35%),
+radial-gradient(circle at 80% 20%,rgba(0,120,255,.15),transparent 35%),
+radial-gradient(circle at 70% 80%,rgba(0,255,120,.12),transparent 40%);
+
+animation:bgMove 18s linear infinite;
+
+z-index:-2;
+
+}
+
+@keyframes bgMove{
+
+0%{
+transform:translateX(-2%);
+}
+
+50%{
+transform:translateX(2%);
+}
+
+100%{
+transform:translateX(-2%);
+}
+
+}
+
+/* ===========================
+PROFILE HEADER
+=========================== */
+
+.profile-header{
+
+padding:20px 16px;
+
+}
+
+.profile-top{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+
+}
+
+.profile-top h2{
+
+font-size:24px;
+font-weight:bold;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+
+}
+
+.back-btn,
+.notification-btn{
+
+width:42px;
+height:42px;
+
+border:none;
+
+border-radius:50%;
+
+background:#101C38;
+
+color:#fff;
+
+font-size:18px;
+
+cursor:pointer;
+
+position:relative;
+
+}
+
+#notificationCount{
+
+position:absolute;
+
+right:-4px;
+top:-4px;
+
+width:18px;
+height:18px;
+
+border-radius:50%;
+
+background:#ff3b30;
+
+display:flex;
+
+justify-content:center;
+align-items:center;
+
+font-size:10px;
+
+font-weight:bold;
+
+}
+
+/* ===========================
+PROFILE CARD
+=========================== */
+
+.profile-card{
+
+background:rgba(16,28,56,.94);
+
+border:1px solid rgba(0,200,255,.15);
+
+border-radius:22px;
+
+padding:20px;
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+backdrop-filter:blur(16px);
+
+box-shadow:
+
+0 0 30px rgba(0,200,255,.08);
+
+}
+
+.profile-image-wrapper{
+
+position:relative;
+
+}
+
+.profile-image-wrapper img{
+
+width:95px;
+height:95px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:3px solid #00C8FF;
+
+background:#08142D;
+
+}
+
+.change-photo-btn{
+
+position:absolute;
+
+right:0;
+bottom:0;
+
+width:32px;
+height:32px;
+
+border:none;
+
+border-radius:50%;
+
+background:#00C8FF;
+
+color:#fff;
+
+font-size:15px;
+
+cursor:pointer;
+
+}
+
+.profile-details{
+
+flex:1;
+
+}
+
+.profile-details h3{
+
+font-size:22px;
+
+margin-bottom:6px;
+
+}
+
+.profile-details p{
+
+color:#A8C7F7;
+
+font-size:14px;
+
+}
+
+.badges{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:8px;
+
+margin:10px 0;
+
+}
+
+.badges span{
+
+padding:6px 12px;
+
+border-radius:30px;
+
+font-size:12px;
+
+font-weight:bold;
+
+background:#11284D;
+
+color:#00FF88;
+
+  }
+
+/* ===========================
+WALLET SUMMARY
+=========================== */
+
+.wallet-summary{
+
+padding:0 16px;
+margin-top:20px;
+
+}
+
+.wallet-card{
+
+background:linear-gradient(135deg,#0E1F45,#162D63);
+
+border:1px solid rgba(0,200,255,.18);
+
+border-radius:22px;
+
+padding:22px;
+
+box-shadow:0 10px 35px rgba(0,0,0,.30);
+
+margin-bottom:18px;
+
+}
+
+.wallet-card h4{
+
+color:#9FB5D1;
+
+font-size:15px;
+
+font-weight:500;
+
+}
+
+.wallet-card h2{
+
+font-size:34px;
+
+margin:10px 0;
+
+font-weight:700;
+
+color:#00FF88;
+
+}
+
+.wallet-card p{
+
+color:#8CA8D7;
+
+font-size:13px;
+
+}
+
+/* ===========================
+SUMMARY GRID
+=========================== */
+
+.summary-grid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:14px;
+
+}
+
+.summary-item{
+
+background:#0E1D3A;
+
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:18px;
+
+padding:18px;
+
+transition:.3s;
+
+}
+
+.summary-item:hover{
+
+transform:translateY(-4px);
+
+border-color:#00C8FF;
+
+}
+
+.summary-item span{
+
+display:block;
+
+font-size:13px;
+
+color:#9FB5D1;
+
+margin-bottom:10px;
+
+}
+
+.summary-item h3{
+
+font-size:22px;
+
+color:#00FF88;
+
+}
+
+/* ===========================
+SECTION TITLE
+=========================== */
+
+.section-title{
+
+font-size:20px;
+
+font-weight:700;
+
+margin-bottom:16px;
+
+color:#fff;
+
+}
+
+/* ===========================
+QUICK ACTIONS
+=========================== */
+
+.quick-actions{
+
+padding:22px 16px;
+
+}
+
+.action-grid{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:14px;
+
+}
+
+.action-card{
+
+background:#0D1A35;
+
+border:1px solid rgba(255,255,255,.05);
+
+border-radius:18px;
+
+padding:18px 10px;
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+justify-content:center;
+
+gap:10px;
+
+cursor:pointer;
+
+transition:.3s;
+
+color:#fff;
+
+}
+
+.action-card:hover{
+
+transform:translateY(-5px);
+
+border-color:#00C8FF;
+
+box-shadow:0 0 20px rgba(0,200,255,.18);
+
+}
+
+.action-icon{
+
+width:54px;
+
+height:54px;
+
+border-radius:16px;
+
+background:linear-gradient(135deg,#00C8FF,#00FF88);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+font-size:24px;
+
+color:#08142D;
+
+font-weight:bold;
+
+}
+
+.action-card span{
+
+font-size:13px;
+
+font-weight:600;
+
+text-align:center;
+
+}
+
+/* ===========================
+PROFILE SECTION
+=========================== */
+
+.profile-section{
+
+padding:0 16px;
+
+margin-bottom:22px;
+
+}
+
+.info-card{
+
+background:#0D1A35;
+
+border-radius:20px;
+
+border:1px solid rgba(255,255,255,.05);
+
+overflow:hidden;
+
+}
+
+.info-row{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:16px 18px;
+
+border-bottom:1px solid rgba(255,255,255,.05);
+
+}
+
+.info-row:last-child{
+
+border-bottom:none;
+
+}
+
+.info-row span{
+
+color:#9FB5D1;
+
+font-size:14px;
+
+}
+
+.info-row strong{
+
+color:#fff;
+
+font-size:14px;
+
+text-align:right;
+
+}
+
+/* ===========================
+PROFILE COMPLETION
+=========================== */
+
+.completion-card{
+
+background:#0D1A35;
+
+border-radius:20px;
+
+padding:20px;
+
+border:1px solid rgba(255,255,255,.05);
+
+}
+
+.completion-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:14px;
+
+}
+
+.completion-top span{
+
+color:#9FB5D1;
+
+font-size:14px;
+
+}
+
+.completion-top strong{
+
+color:#00FF88;
+
+font-size:18px;
+
+}
+
+.progress{
+
+height:10px;
+
+background:#1A2A4F;
+
+border-radius:30px;
+
+overflow:hidden;
+
+margin-bottom:14px;
+
+}
+
+.progress-fill{
+
+width:0%;
+
+height:100%;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+border-radius:30px;
+
+transition:.5s;
+
+}
+
+.completion-card p{
+
+font-size:13px;
+
+line-height:1.6;
+
+color:#9FB5D1;
+
+  }
+
+/* ===========================
+REFERRAL LOCK CARD
+=========================== */
+
+.lock-card{
+
+background:linear-gradient(135deg,#101E3D,#162B56);
+
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:22px;
+
+padding:25px 20px;
+
+text-align:center;
+
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+
+}
+
+.lock-icon{
+
+font-size:50px;
+
+margin-bottom:15px;
+
+}
+
+.lock-card h3{
+
+font-size:22px;
+
+margin-bottom:10px;
+
+color:#fff;
+
+}
+
+.lock-card p{
+
+color:#9FB5D1;
+
+font-size:14px;
+
+line-height:1.7;
+
+margin-bottom:20px;
+
+}
+
+.primary-btn{
+
+width:100%;
+
+height:50px;
+
+border:none;
+
+border-radius:15px;
+
+background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+color:#08142D;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.primary-btn:hover{
+
+transform:translateY(-2px);
+
+}
+
+/* ===========================
+POPUPS
+=========================== */
+
+.popup-overlay{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:rgba(0,0,0,.65);
+
+display:none;
+
+z-index:999;
+
+backdrop-filter:blur(5px);
+
+}
+
+.popup{
+
+position:fixed;
+
+left:50%;
+
+top:50%;
+
+transform:translate(-50%,-50%) scale(.9);
+
+width:92%;
+
+max-width:420px;
+
+background:#0E1D3A;
+
+border-radius:22px;
+
+padding:20px;
+
+border:1px solid rgba(0,200,255,.18);
+
+display:none;
+
+z-index:1000;
+
+transition:.3s;
+
+box-shadow:0 20px 60px rgba(0,0,0,.45);
+
+}
+
+.popup.active{
+
+display:block;
+
+transform:translate(-50%,-50%) scale(1);
+
+}
+
+.popup-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.popup-header h3{
+
+font-size:20px;
+
+}
+
+.closePopup{
+
+background:none;
+
+border:none;
+
+font-size:30px;
+
+color:#fff;
+
+cursor:pointer;
+
+}
+
+.popup-body{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.copy-box{
+
+display:flex;
+
+gap:10px;
+
+}
+
+.copy-box input{
+
+flex:1;
+
+background:#08142D;
+
+border:none;
+
+border-radius:12px;
+
+padding:12px;
+
+color:#fff;
+
+}
+
+.copy-box button{
+
+padding:0 18px;
+
+border:none;
+
+border-radius:12px;
+
+background:#00C8FF;
+
+color:#fff;
+
+cursor:pointer;
+
+}
+
+.team-stats{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:12px;
+
+text-align:center;
+
+margin-top:10px;
+
+}
+
+.team-stats div{
+
+background:#08142D;
+
+padding:15px;
+
+border-radius:15px;
+
+}
+
+.team-stats h4{
+
+font-size:20px;
+
+color:#00FF88;
+
+margin-bottom:5px;
+
+}
+
+.team-stats span{
+
+font-size:12px;
+
+color:#9FB5D1;
+
+}
+
+.menu-btn{
+
+width:100%;
+
+height:50px;
+
+border:none;
+
+border-radius:14px;
+
+background:#08142D;
+
+color:#fff;
+
+font-size:15px;
+
+cursor:pointer;
+
+text-align:left;
+
+padding:0 18px;
+
+transition:.3s;
+
+}
+
+.menu-btn:hover{
+
+background:#102850;
+
+}
+
+.logout{
+
+background:#4B1010;
+
+color:#FF8E8E;
+
+}
+
+/* ===========================
+BOTTOM NAVIGATION
+=========================== */
+
+.bottom-nav{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+width:100%;
+
+height:72px;
+
+background:#08142D;
+
+border-top:1px solid rgba(255,255,255,.08);
+
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+z-index:500;
+
+}
+
+.bottom-nav a{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:center;
+
+gap:5px;
+
+text-decoration:none;
+
+font-size:12px;
+
+color:#A7C5EF;
+
+font-weight:500;
+
+}
+
+.bottom-nav a.active{
+
+color:#00FF88;
+
+}
+
+.bottom-nav a span{
+
+font-size:11px;
+
+}
+
+/* ===========================
+RESPONSIVE
+=========================== */
+
+@media(max-width:380px){
+
+.profile-card{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.summary-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.action-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+.team-stats{
+
+grid-template-columns:1fr;
+
+}
+
+  }
