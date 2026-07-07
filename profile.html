@@ -6,345 +6,179 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Profile | Marathon Digital Hub</title>
+<title>My Profile | Marathon Digital Hub</title>
 
-<link rel="stylesheet" href="profile.css">
+<link rel="stylesheet" href="assets/css/profile.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase-config.js"></script>
+<script src="assets/js/supabase-config.js"></script>
 
 </head>
 
 <body>
 
-<!-- Animated Background -->
-<div class="bg-animation"></div>
+<div class="profile-container">
 
-<!-- ===========================
-PROFILE HEADER
-=========================== -->
+<div class="profile-background"></div>
+
+<!-- HEADER -->
 
 <header class="profile-header">
 
-<div class="profile-top">
+<button class="header-btn" onclick="history.back()">
 
-<button class="back-btn" onclick="history.back()">
-←
+<i class="fas fa-arrow-left"></i>
+
 </button>
 
 <h2>My Profile</h2>
 
-<button class="notification-btn" id="notificationBtn">
-🔔
-<span id="notificationCount">0</span>
+<button class="header-btn" id="settingsBtn">
+
+<i class="fas fa-cog"></i>
+
 </button>
 
-</div>
+</header>
 
-<div class="profile-card">
+<!-- PROFILE CARD -->
 
-<div class="profile-image-wrapper">
+<section class="profile-card">
+
+<div class="profile-cover"></div>
+
+<div class="profile-avatar-box">
 
 <img
+
 id="profileImage"
-src="images/default-avatar.png"
+
+src="assets/images/default-avatar.png"
+
 alt="Profile">
 
-<button
-class="change-photo-btn"
-id="changePhotoBtn">
+<button id="changePhotoBtn">
 
 📷
 
 </button>
 
+<input
+
+type="file"
+
+id="photoInput"
+
+accept="image/*"
+
+hidden>
+
 </div>
 
 <div class="profile-details">
 
-<h3 id="fullName">
+<h2 id="fullName">
+
 Loading...
-</h3>
-
-<p id="memberLevel">
-
-STANDARD MEMBER
-
-</p>
-
-<div class="badges">
-
-<span id="kycBadge">
-🛡️ Not Verified
-</span>
-
-<span id="statusBadge">
-🟢 Active
-</span>
-
-</div>
-
-<p id="userId">
-
-ID: Loading...
-
-</p>
-
-</div>
-
-</div>
-
-</header>
-
-<!-- ===========================
-WALLET SUMMARY
-=========================== -->
-
-<section class="wallet-summary">
-
-<div class="wallet-card">
-
-<h4>Wallet Balance</h4>
-
-<h2 id="walletBalance">
-
-UGX 0
 
 </h2>
 
-<p>
+<p id="userId">
 
-Available Balance
+Member ID
 
 </p>
 
-</div>
+<div class="badge-row">
 
-<div class="summary-grid">
+<span id="membership" class="badge gold">
 
-<div class="summary-item">
+STANDARD
 
-<span>Total Invested</span>
+</span>
 
-<h3 id="totalInvested">
+<span id="profileStatus" class="badge green">
 
-UGX 0
+ACTIVE
 
-</h3>
+</span>
 
-</div>
+<span id="profileKyc" class="badge blue">
 
-<div class="summary-item">
+NOT VERIFIED
 
-<span>Total Profit</span>
-
-<h3 id="totalProfit">
-
-UGX 0
-
-</h3>
+</span>
 
 </div>
 
-<div class="summary-item">
+<div class="profile-progress">
 
-<span>Active Machines</span>
+<div class="progress-top">
 
-<h3 id="activeMachines">
+<span>Profile Completion</span>
 
-0
-
-</h3>
-
-</div>
-
-<div class="summary-item">
-
-<span>Membership</span>
-
-<h3 id="membership">
-
-Standard
-
-</h3>
-
-</div>
-
-</div>
-
-  </section>
-
- <!-- ===========================
-QUICK ACTIONS
-=========================== -->
-
-<section class="quick-actions">
-
-<h3 class="section-title">Quick Actions</h3>
-
-<div class="action-grid">
-
-<button class="action-card" id="depositBtn">
-<div class="action-icon">💳</div>
-<span>Deposit</span>
-</button>
-
-<button class="action-card" id="withdrawBtn">
-<div class="action-icon">💸</div>
-<span>Withdraw</span>
-</button>
-
-<button class="action-card" id="inviteBtn">
-<div class="action-icon">👥</div>
-<span>Invite</span>
-</button>
-
-<button class="action-card" id="teamBtn">
-<div class="action-icon">👨‍👩‍👧</div>
-<span>My Team</span>
-</button>
-
-<button class="action-card" id="rewardBtn">
-<div class="action-icon">🎁</div>
-<span>Rewards</span>
-</button>
-
-<button class="action-card" id="settingBtn">
-<div class="action-icon">⚙️</div>
-<span>Settings</span>
-</button>
-
-</div>
-
-</section>
-
-<!-- ===========================
-ACCOUNT INFORMATION
-=========================== -->
-
-<section class="profile-section">
-
-<h3 class="section-title">
-
-Account Information
-
-</h3>
-
-<div class="info-card">
-
-<div class="info-row">
-<span>Full Name</span>
-<strong id="profileName">Loading...</strong>
-</div>
-
-<div class="info-row">
-<span>Email</span>
-<strong id="profileEmail">Loading...</strong>
-</div>
-
-<div class="info-row">
-<span>Phone</span>
-<strong id="profilePhone">Not Added</strong>
-</div>
-
-<div class="info-row">
-<span>Country</span>
-<strong id="profileCountry">Not Set</strong>
-</div>
-
-<div class="info-row">
-<span>Date of Birth</span>
-<strong id="profileDob">Not Set</strong>
-</div>
-
-<div class="info-row">
-<span>Gender</span>
-<strong id="profileGender">Not Set</strong>
-</div>
-
-<div class="info-row">
-<span>KYC Status</span>
-<strong id="profileKyc">Not Verified</strong>
-</div>
-
-<div class="info-row">
-<span>Account Status</span>
-<strong id="profileStatus">Active</strong>
-</div>
-
-<div class="info-row">
-<span>Member Since</span>
-<strong id="memberSince">Loading...</strong>
-</div>
-
-</div>
-
-</section>
-
-<!-- ===========================
-PROFILE COMPLETION
-=========================== -->
-
-<section class="profile-section">
-
-<h3 class="section-title">
-
-Profile Completion
-
-</h3>
-
-<div class="completion-card">
-
-<div class="completion-top">
-
-<span>Complete your profile</span>
-
-<strong id="profilePercent">
+<span id="profilePercent">
 
 0%
 
-</strong>
+</span>
 
 </div>
 
-<div class="progress">
+<div class="progress-bar">
 
-<div class="progress-fill" id="profileProgress">
+<div
+
+id="profileProgress"
+
+class="progress-fill">
+
+</div>
 
 </div>
 
 </div>
 
-<p>
+</div>
 
-Complete your profile to unlock all Marathon Digital Hub features.
+</section>
 
-</p>
+<!-- WALLET -->
+
+<section class="wallet-card">
+
+<div class="wallet-header">
+
+<p>Available Balance</p>
+
+<h1 id="walletBalance">
+
+UGX 0
+
+</h1>
 
 </div>
 
-  </section>
+<div class="wallet-buttons">
 
-  <!-- ===========================
-REFERRAL LOCK CARD
-=========================== -->
+<button id="depositBtn">
 
-<section class="profile-section" id="referralLockCard">
+Deposit
 
-<div class="lock-card">
+</button>
 
-<div class="lock-icon">🔒</div>
+<button id="withdrawBtn">
 
-<h3>Referral Locked</h3>
+Withdraw
 
-<p>
+</button>
 
-Buy your first mining machine to unlock referrals,
-build your team and earn referral rewards.
-
-</p>
-
-<button id="buyMachineBtn" class="primary-btn">
+<button id="buyMachineBtn">
 
 Buy Machine
 
@@ -354,149 +188,480 @@ Buy Machine
 
 </section>
 
-<!-- ===========================
-POPUPS
-=========================== -->
+<!-- QUICK STATS -->
 
-<!-- Overlay -->
+<section class="quick-stats">
+
+<div class="stat-box">
+
+<h3 id="activeMachines">0</h3>
+
+<p>Machines</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="teamMembers">0</h3>
+
+<p>Team</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="totalProfit">
+
+UGX 0
+
+</h3>
+
+<p>Profit</p>
+
+</div>
+
+<div class="stat-box">
+
+<h3 id="totalInvested">
+
+UGX 0
+
+</h3>
+
+<p>Invested</p>
+
+</div>
+
+  </section>
+
+  <!-- REFERRAL CARD -->
+
+<section class="referral-card">
+
+<div class="section-title">
+
+<h3>Referral Program</h3>
+
+<span class="reward-badge">
+
+Unlock Rewards
+
+</span>
+
+</div>
+
+<div id="referralLockCard" class="referral-lock">
+
+<h4>🔒 Referral Locked</h4>
+
+<p>
+
+Buy your first mining machine to unlock your referral link, referral rewards and team dashboard.
+
+</p>
+
+<button id="unlockReferralBtn">
+
+Buy First Machine
+
+</button>
+
+</div>
+
+<div id="referralContent" class="referral-content">
+
+<div class="input-group">
+
+<label>Referral Code</label>
+
+<div class="copy-box">
+
+<input
+
+id="referralCode"
+
+type="text"
+
+readonly>
+
+<button id="copyCodeBtn">
+
+Copy
+
+</button>
+
+</div>
+
+</div>
+
+<div class="input-group">
+
+<label>Referral Link</label>
+
+<div class="copy-box">
+
+<input
+
+id="referralLink"
+
+type="text"
+
+readonly>
+
+<button id="copyLinkBtn">
+
+Copy
+
+</button>
+
+</div>
+
+</div>
+
+<div class="share-buttons">
+
+<button id="shareReferralBtn">
+
+Share Referral
+
+</button>
+
+<button id="inviteBtn">
+
+Invite Friends
+
+</button>
+
+</div>
+
+<div class="team-grid">
+
+<div class="team-card">
+
+<h2 id="teamMembers">
+
+0
+
+</h2>
+
+<p>Total Team</p>
+
+</div>
+
+<div class="team-card">
+
+<h2 id="activeTeam">
+
+0
+
+</h2>
+
+<p>Active Team</p>
+
+</div>
+
+<div class="team-card">
+
+<h2 id="referralBonus">
+
+UGX 0
+
+</h2>
+
+<p>Referral Bonus</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- PERSONAL INFORMATION -->
+
+<section class="profile-info-card">
+
+<div class="section-title">
+
+<h3>Personal Information</h3>
+
+<button id="editProfileBtn">
+
+Edit
+
+</button>
+
+</div>
+
+<div class="info-row">
+
+<span>Full Name</span>
+
+<strong id="profileName">
+
+Loading...
+
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Email</span>
+
+<strong id="profileEmail">
+
+Loading...
+
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Phone</span>
+
+<strong id="profilePhone">
+
+Not Added
+
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Country</span>
+
+<strong id="profileCountry">
+
+Not Set
+
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Gender</span>
+
+<strong id="profileGender">
+
+Not Set
+
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Date of Birth</span>
+
+<strong id="profileDob">
+
+Not Set
+
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Member Since</span>
+
+<strong id="memberSince">
+
+Loading...
+
+</strong>
+
+</div>
+
+</section>
+
+<!-- SECURITY -->
+
+<section class="security-card">
+
+<div class="section-title">
+
+<h3>Security</h3>
+
+</div>
+
+<button id="changePasswordBtn" class="menu-item">
+
+🔒 Change Password
+
+</button>
+
+<button id="changePinBtn" class="menu-item">
+
+🔑 Transaction PIN
+
+</button>
+
+<button id="verifyAccountBtn" class="menu-item">
+
+🛡 Verify Account
+
+</button>
+
+  </section>
+
+  <!-- INVESTMENT SUMMARY -->
+
+<section class="investment-card">
+
+<div class="section-title">
+
+<h3>Investment Summary</h3>
+
+</div>
+
+<div class="summary-grid">
+
+<div class="summary-box">
+
+<h2 id="currentMachines">0</h2>
+
+<p>Current Machines</p>
+
+</div>
+
+<div class="summary-box">
+
+<h2 id="completedMachines">0</h2>
+
+<p>Completed</p>
+
+</div>
+
+<div class="summary-box">
+
+<h2 id="dailyIncome">
+
+UGX 0
+
+</h2>
+
+<p>Daily Income</p>
+
+</div>
+
+<div class="summary-box">
+
+<h2 id="nextProfitTime">
+
+--:--
+
+</h2>
+
+<p>Next Profit</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- RECENT NOTIFICATIONS -->
+
+<section class="notification-card">
+
+<div class="section-title">
+
+<h3>Recent Notifications</h3>
+
+</div>
+
+<div id="notificationList">
+
+<div class="empty-box">
+
+No notifications available.
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SETTINGS POPUP -->
+
 <div id="popupOverlay" class="popup-overlay"></div>
 
-<!-- Referral Popup -->
-<div class="popup" id="referralPopup">
+<div id="settingsPopup" class="popup">
 
 <div class="popup-header">
 
-<h3>Referral & Team</h3>
+<h3>Account Settings</h3>
 
-<button class="closePopup">&times;</button>
+<button class="closePopup">
+
+✕
+
+</button>
 
 </div>
 
 <div class="popup-body">
 
-<p><strong>Your Referral Code</strong></p>
+<button id="changePhotoPopupBtn" class="popup-item">
 
-<div class="copy-box">
-
-<input id="referralCode" readonly>
-
-<button id="copyCodeBtn">Copy</button>
-
-</div>
-
-<p><strong>Your Referral Link</strong></p>
-
-<div class="copy-box">
-
-<input id="referralLink" readonly>
-
-<button id="copyLinkBtn">Copy</button>
-
-</div>
-
-<button class="primary-btn" id="shareReferralBtn">
-
-Share Referral Link
+📷 Change Profile Photo
 
 </button>
 
-<hr>
+<button id="editProfilePopupBtn" class="popup-item">
 
-<div class="team-stats">
+👤 Edit Profile
 
-<div>
-<h4 id="teamMembers">0</h4>
-<span>Team Members</span>
-</div>
-
-<div>
-<h4 id="activeTeam">0</h4>
-<span>Active Team</span>
-</div>
-
-<div>
-<h4 id="referralBonus">UGX 0</h4>
-<span>Total Bonus</span>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- Settings Popup -->
-
-<div class="popup" id="settingsPopup">
-
-<div class="popup-header">
-
-<h3>Settings</h3>
-
-<button class="closePopup">&times;</button>
-
-</div>
-
-<div class="popup-body">
-
-<button class="menu-btn" id="editProfileBtn">
-✏ Edit Profile
 </button>
 
-<button class="menu-btn" id="changePasswordBtn">
+<button id="changePasswordBtn2" class="popup-item">
+
 🔒 Change Password
+
 </button>
 
-<button class="menu-btn" id="changePinBtn">
-🔑 Change PIN
+<button id="changePinBtn2" class="popup-item">
+
+🔑 Transaction PIN
+
 </button>
 
-<button class="menu-btn" id="changePhotoBtn2">
-📷 Change Photo
+<button id="notificationSettingsBtn" class="popup-item">
+
+🔔 Notification Settings
+
 </button>
 
-<button class="menu-btn logout" id="logoutBtn">
+<button id="logoutBtn" class="popup-item logout">
+
 🚪 Logout
+
 </button>
 
 </div>
 
 </div>
 
-<!-- ===========================
-BOTTOM NAVIGATION
-=========================== -->
+<!-- LOADING -->
 
-<nav class="bottom-nav">
+<div id="loadingScreen" class="loading-screen">
 
-<a href="dashboard.html">
-🏠
-<span>Home</span>
-</a>
+<div class="loader"></div>
 
-<a href="machines.html">
-⚙️
-<span>Machines</span>
-</a>
+<p>Loading Profile...</p>
 
-<a href="deposit.html">
-💳
-<span>Deposit</span>
-</a>
+</div>
 
-<a href="income.html">
-📈
-<span>Income</span>
-</a>
+</div>
 
-<a href="profile.html" class="active">
-👤
-<span>Profile</span>
-</a>
-
-</nav>
-
-<script src="profile.js"></script>
+<script src="assets/js/profile.js"></script>
 
 </body>
+
   </html>
