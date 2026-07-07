@@ -6,31 +6,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>My Profile | Marathon Digital Hub</title>
+<title>Profile | Marathon Digital Hub</title>
 
 <link rel="stylesheet" href="assets/css/profile.css">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="assets/js/supabase-config.js"></script>
 
 </head>
 
 <body>
 
-<div class="profile-container">
+<div class="profile-page">
 
-<div class="profile-background"></div>
+<div class="bg-animation"></div>
 
 <!-- HEADER -->
 
 <header class="profile-header">
 
-<button class="header-btn" onclick="history.back()">
+<button id="backBtn" class="icon-btn">
 
 <i class="fas fa-arrow-left"></i>
 
@@ -38,7 +42,7 @@
 
 <h2>My Profile</h2>
 
-<button class="header-btn" id="settingsBtn">
+<button id="settingsBtn" class="icon-btn">
 
 <i class="fas fa-cog"></i>
 
@@ -50,9 +54,9 @@
 
 <section class="profile-card">
 
-<div class="profile-cover"></div>
+<div class="cover-gradient"></div>
 
-<div class="profile-avatar-box">
+<div class="avatar-wrapper">
 
 <img
 
@@ -60,11 +64,11 @@ id="profileImage"
 
 src="assets/images/default-avatar.png"
 
-alt="Profile">
+alt="Profile Photo">
 
 <button id="changePhotoBtn">
 
-📷
+<i class="fas fa-camera"></i>
 
 </button>
 
@@ -80,7 +84,7 @@ hidden>
 
 </div>
 
-<div class="profile-details">
+<div class="profile-info">
 
 <h2 id="fullName">
 
@@ -94,21 +98,21 @@ Member ID
 
 </p>
 
-<div class="badge-row">
+<div class="badge-container">
 
-<span id="membership" class="badge gold">
+<span id="membership" class="badge badge-gold">
 
 STANDARD
 
 </span>
 
-<span id="profileStatus" class="badge green">
+<span id="profileStatus" class="badge badge-green">
 
 ACTIVE
 
 </span>
 
-<span id="profileKyc" class="badge blue">
+<span id="profileKyc" class="badge badge-blue">
 
 NOT VERIFIED
 
@@ -116,9 +120,11 @@ NOT VERIFIED
 
 </div>
 
-<div class="profile-progress">
+</div>
 
-<div class="progress-top">
+<div class="completion-box">
+
+<div class="completion-header">
 
 <span>Profile Completion</span>
 
@@ -130,7 +136,7 @@ NOT VERIFIED
 
 </div>
 
-<div class="progress-bar">
+<div class="progress">
 
 <div
 
@@ -144,17 +150,17 @@ class="progress-fill">
 
 </div>
 
-</div>
-
 </section>
 
 <!-- WALLET -->
 
 <section class="wallet-card">
 
-<div class="wallet-header">
+<p class="wallet-title">
 
-<p>Available Balance</p>
+Available Balance
+
+</p>
 
 <h1 id="walletBalance">
 
@@ -162,11 +168,11 @@ UGX 0
 
 </h1>
 
-</div>
-
-<div class="wallet-buttons">
+<div class="wallet-actions">
 
 <button id="depositBtn">
+
+<i class="fas fa-arrow-down"></i>
 
 Deposit
 
@@ -174,13 +180,17 @@ Deposit
 
 <button id="withdrawBtn">
 
+<i class="fas fa-arrow-up"></i>
+
 Withdraw
 
 </button>
 
 <button id="buyMachineBtn">
 
-Buy Machine
+<i class="fas fa-microchip"></i>
+
+Buy
 
 </button>
 
@@ -190,73 +200,87 @@ Buy Machine
 
 <!-- QUICK STATS -->
 
-<section class="quick-stats">
+<section class="stats-grid">
 
-<div class="stat-box">
+<div class="stat-card">
 
-<h3 id="activeMachines">0</h3>
+<h2 id="activeMachines">
 
-<p>Machines</p>
+0
 
-</div>
+</h2>
 
-<div class="stat-box">
-
-<h3 id="teamMembers">0</h3>
-
-<p>Team</p>
+<p>Active Machines</p>
 
 </div>
 
-<div class="stat-box">
+<div class="stat-card">
 
-<h3 id="totalProfit">
+<h2 id="teamMembers">
+
+0
+
+</h2>
+
+<p>Team Members</p>
+
+</div>
+
+<div class="stat-card">
+
+<h2 id="totalProfit">
 
 UGX 0
 
-</h3>
+</h2>
 
-<p>Profit</p>
+<p>Total Profit</p>
 
 </div>
 
-<div class="stat-box">
+<div class="stat-card">
 
-<h3 id="totalInvested">
+<h2 id="totalInvested">
 
 UGX 0
 
-</h3>
+</h2>
 
-<p>Invested</p>
+<p>Total Invested</p>
 
 </div>
 
   </section>
 
-  <!-- REFERRAL CARD -->
+  <!-- REFERRAL PROGRAM -->
 
 <section class="referral-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Referral Program</h3>
 
-<span class="reward-badge">
+<span class="section-tag">
 
-Unlock Rewards
+Earn Rewards
 
 </span>
 
 </div>
 
-<div id="referralLockCard" class="referral-lock">
+<div id="referralLock" class="referral-lock">
 
-<h4>🔒 Referral Locked</h4>
+<div class="lock-icon">
+
+🔒
+
+</div>
+
+<h4>Referral Locked</h4>
 
 <p>
 
-Buy your first mining machine to unlock your referral link, referral rewards and team dashboard.
+Purchase your first mining machine to unlock your referral link, team dashboard and referral rewards.
 
 </p>
 
@@ -268,19 +292,19 @@ Buy First Machine
 
 </div>
 
-<div id="referralContent" class="referral-content">
+<div id="referralContent" style="display:none;">
 
 <div class="input-group">
 
-<label>Referral Code</label>
+<label>Your Referral Code</label>
 
 <div class="copy-box">
 
 <input
 
-id="referralCode"
-
 type="text"
+
+id="referralCode"
 
 readonly>
 
@@ -296,15 +320,15 @@ Copy
 
 <div class="input-group">
 
-<label>Referral Link</label>
+<label>Your Referral Link</label>
 
 <div class="copy-box">
 
 <input
 
-id="referralLink"
-
 type="text"
+
+id="referralLink"
 
 readonly>
 
@@ -322,13 +346,17 @@ Copy
 
 <button id="shareReferralBtn">
 
-Share Referral
+<i class="fas fa-share-alt"></i>
+
+Share
 
 </button>
 
 <button id="inviteBtn">
 
-Invite Friends
+<i class="fas fa-user-plus"></i>
+
+Invite
 
 </button>
 
@@ -338,7 +366,7 @@ Invite Friends
 
 <div class="team-card">
 
-<h2 id="teamMembers">
+<h2 id="teamMembersCount">
 
 0
 
@@ -380,9 +408,9 @@ UGX 0
 
 <!-- PERSONAL INFORMATION -->
 
-<section class="profile-info-card">
+<section class="info-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Personal Information</h3>
 
@@ -394,7 +422,7 @@ Edit
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Full Name</span>
 
@@ -406,7 +434,7 @@ Loading...
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Email</span>
 
@@ -418,7 +446,7 @@ Loading...
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Phone</span>
 
@@ -430,7 +458,7 @@ Not Added
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Country</span>
 
@@ -442,7 +470,7 @@ Not Set
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Gender</span>
 
@@ -454,7 +482,7 @@ Not Set
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Date of Birth</span>
 
@@ -466,7 +494,7 @@ Not Set
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Member Since</span>
 
@@ -480,31 +508,45 @@ Loading...
 
 </section>
 
-<!-- SECURITY -->
+<!-- ACCOUNT SECURITY -->
 
 <section class="security-card">
 
-<div class="section-title">
+<div class="section-header">
 
-<h3>Security</h3>
+<h3>Account Security</h3>
 
 </div>
 
-<button id="changePasswordBtn" class="menu-item">
+<button id="changePasswordBtn" class="menu-button">
 
-🔒 Change Password
+<i class="fas fa-lock"></i>
 
-</button>
-
-<button id="changePinBtn" class="menu-item">
-
-🔑 Transaction PIN
+Change Password
 
 </button>
 
-<button id="verifyAccountBtn" class="menu-item">
+<button id="changePinBtn" class="menu-button">
 
-🛡 Verify Account
+<i class="fas fa-key"></i>
+
+Transaction PIN
+
+</button>
+
+<button id="verifyAccountBtn" class="menu-button">
+
+<i class="fas fa-shield-alt"></i>
+
+Verify Account
+
+</button>
+
+<button id="notificationBtn" class="menu-button">
+
+<i class="fas fa-bell"></i>
+
+Notification Settings
 
 </button>
 
@@ -514,23 +556,23 @@ Loading...
 
 <section class="investment-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Investment Summary</h3>
 
 </div>
 
-<div class="summary-grid">
+<div class="investment-grid">
 
-<div class="summary-box">
+<div class="investment-box">
 
 <h2 id="currentMachines">0</h2>
 
-<p>Current Machines</p>
+<p>Running Machines</p>
 
 </div>
 
-<div class="summary-box">
+<div class="investment-box">
 
 <h2 id="completedMachines">0</h2>
 
@@ -538,7 +580,7 @@ Loading...
 
 </div>
 
-<div class="summary-box">
+<div class="investment-box">
 
 <h2 id="dailyIncome">
 
@@ -550,9 +592,9 @@ UGX 0
 
 </div>
 
-<div class="summary-box">
+<div class="investment-box">
 
-<h2 id="nextProfitTime">
+<h2 id="nextProfit">
 
 --:--
 
@@ -570,15 +612,21 @@ UGX 0
 
 <section class="notification-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Recent Notifications</h3>
+
+<button id="markReadBtn">
+
+Mark All Read
+
+</button>
 
 </div>
 
 <div id="notificationList">
 
-<div class="empty-box">
+<div class="empty-notification">
 
 No notifications available.
 
@@ -600,7 +648,7 @@ No notifications available.
 
 <button class="closePopup">
 
-✕
+<i class="fas fa-times"></i>
 
 </button>
 
@@ -608,39 +656,59 @@ No notifications available.
 
 <div class="popup-body">
 
-<button id="changePhotoPopupBtn" class="popup-item">
+<button id="editProfilePopup" class="popup-btn">
 
-📷 Change Profile Photo
+<i class="fas fa-user"></i>
 
-</button>
-
-<button id="editProfilePopupBtn" class="popup-item">
-
-👤 Edit Profile
+Edit Profile
 
 </button>
 
-<button id="changePasswordBtn2" class="popup-item">
+<button id="changePhotoPopup" class="popup-btn">
 
-🔒 Change Password
+<i class="fas fa-camera"></i>
 
-</button>
-
-<button id="changePinBtn2" class="popup-item">
-
-🔑 Transaction PIN
+Change Profile Photo
 
 </button>
 
-<button id="notificationSettingsBtn" class="popup-item">
+<button id="changePasswordPopup" class="popup-btn">
 
-🔔 Notification Settings
+<i class="fas fa-lock"></i>
+
+Change Password
 
 </button>
 
-<button id="logoutBtn" class="popup-item logout">
+<button id="changePinPopup" class="popup-btn">
 
-🚪 Logout
+<i class="fas fa-key"></i>
+
+Change Transaction PIN
+
+</button>
+
+<button id="notificationPopup" class="popup-btn">
+
+<i class="fas fa-bell"></i>
+
+Notification Settings
+
+</button>
+
+<button id="aboutPopup" class="popup-btn">
+
+<i class="fas fa-circle-info"></i>
+
+About Marathon Digital Hub
+
+</button>
+
+<button id="logoutBtn" class="popup-btn logout-btn">
+
+<i class="fas fa-right-from-bracket"></i>
+
+Logout
 
 </button>
 
@@ -654,9 +722,31 @@ No notifications available.
 
 <div class="loader"></div>
 
-<p>Loading Profile...</p>
+<p>
+
+Loading your profile...
+
+</p>
 
 </div>
+
+<!-- APP VERSION -->
+
+<footer class="profile-footer">
+
+<p>
+
+Marathon Digital Hub
+
+</p>
+
+<small>
+
+Version 1.0.0
+
+</small>
+
+</footer>
 
 </div>
 
