@@ -1,240 +1,72 @@
-/*=========================================
-PROFILE.JS - PART 1
-=========================================*/
+/*==================================================
+PROFILE.JS
+PART 1
+==================================================*/
 
-const supabase = window.supabaseClient;
+const db = window.supabaseClient;
 
-let user = null;
+let currentUser = null;
 let profile = null;
+let userMachines = [];
 
-/*=========================================
-START
-=========================================*/
-
-document.addEventListener("DOMContentLoaded", () => {
-    initializeProfile();
-});
-
-async function initializeProfile() {
+document.addEventListener("DOMContentLoaded", async () => {
 
     try {
 
-        const {
-            data: { session },
-            error
-        } = await supabase.auth.getSession();
+        const { data:{ user }, error } = await db.auth.getUser();
 
         if (error) throw error;
 
-        if (!session) {
-            location.href = "login.html";
+        if (!user) {
+
+            window.location.href = "login.html";
             return;
+
         }
 
-        user = session.user;
+        currentUser = user;
 
-        await loadProfile();
+        await initializeProfile();
 
     } catch (err) {
 
-        console.error(err);
+        console.error("AUTH ERROR:", err);
 
-        alert("Error: " + err.message);
+        alert(err.message);
 
     }
 
+});
+
+/*==================================================
+INITIALIZE
+==================================================*/
+
+async function initializeProfile(){
+
+    await loadProfile();
+
+    await loadUserMachines();
+
 }
 
-/*=========================================
+/*==================================================
 LOAD PROFILE
-=========================================*/
+==================================================*/
 
-async function loadProfile() {
+async function loadProfile(){
 
-    const { data, error } = await supabase
+    const { data, error } = await db
 
         .from("profiles")
 
         .select("*")
 
-        .eq("id", user.id)
+        .eq("id", currentUser.id)
 
         .single();
 
-    if (error) throw error;
-
-    profile = data;
-
-    updateProfileUI();
-
-}
-
-/*=========================================
-UPDATE PROFILE UI
-=========================================*/
-
-function updateProfileUI() {
-
-    const set = (id, value) => {
-
-        const el = document.getElementById(id);
-
-        if (el) el.textContent = value;
-
-    };
-
-    set("fullName", profile.fullname || "User");
-
-    set("profileName", profile.fullname || "-");
-
-    set("profileEmail", profile.email || "-");
-
-    set("profilePhone", profile.phone || "Not Added");
-
-    set("profileCountry", profile.country || "Not Set");
-
-    set("profileDob", profile.date_of_birth || "Not Set");
-
-    set("profileGender", profile.gender || "Not Set");
-
-    set("profileStatus", profile.account_status || "Active");
-
-    set("profileKyc", profile.kyc_status || "Not Verified");
-
-    set("membership", profile.membership || "Standard");
-
-    set("memberLevel",
-        (profile.membership || "Standard").toUpperCase() + " MEMBER"
-    );
-
-    set(
-        "walletBalance",
-        "UGX " + Number(profile.wallet_balance || 0).toLocaleString()
-    );
-
-    set(
-        "totalInvested",
-        "UGX " + Number(profile.total_invested || 0).toLocaleString()
-    );
-
-    set(
-        "totalProfit",
-        "UGX " + Number(profile.total_profit || 0).toLocaleString()
-    );
-
-    set(
-        "memberSince",
-        new Date(profile.created_at).toLocaleDateString()
-    );
-
-    set(
-        "userId",
-        "ID: " + user.id.substring(0,8).toUpperCase()
-    );
-
-    if (profile.avatar_url) {
-
-        const img = document.getElementById("profileImage");
-
-        if (img) img.src = profile.avatar_url;
-
-    }
-
-    loadMachines();
-
-}
-
-/*=========================================
-PROFILE.JS - PART 2
-=========================================*/
-
-let machines = [];
-let referralCount = 0;
-
-/*=========================================
-LOAD MACHINES
-=========================================*/
-
-async function loadMachines() {
-
-    const { data, error } = await supabase
-
-        .from("user_machines")
-
-        .select("*")
-
-        .eq("user_id", user.id);
-
-    if (error) {
-
-        console.error(error);
-
-        machines = [];
-
-    } else {
-
-        machines = data || [];
-
-    }
-
-    const active = machines.filter(m =>
-        m.status === "active" && !m.completed
-    ).length;
-
-    const activeMachines =
-        document.getElementById("activeMachines");
-
-    if (activeMachines)
-        activeMachines.textContent = active;
-
-    checkReferralAccess();
-
-    await loadReferralData();
-
-    calculateProfileCompletion();
-
-}
-
-/*=========================================
-REFERRAL ACCESS
-=========================================*/
-
-function checkReferralAccess() {
-
-    const lock =
-        document.getElementById("referralLockCard");
-
-    if (!lock) return;
-
-    if (machines.length > 0) {
-
-        lock.style.display = "none";
-
-    } else {
-
-        lock.style.display = "block";
-
-    }
-
-}
-
-/*=========================================
-LOAD REFERRALS
-=========================================*/
-
-async function loadReferralData() {
-
-    if (!profile.referral_code) return;
-
-    const { data, error } = await supabase
-
-        .from("profiles")
-
-        .select("id")
-
-        .eq("referred_by", profile.referral_code);
-
-    if (error) {
+    if(error){
 
         console.error(error);
 
@@ -242,110 +74,270 @@ async function loadReferralData() {
 
     }
 
-    referralCount = data ? data.length : 0;
+    profile = data;
 
-    const team =
-        document.getElementById("teamMembers");
+    updateProfileUI();
 
-    if (team)
-        team.textContent = referralCount;
+}
 
-    const activeTeam =
-        document.getElementById("activeTeam");
+/*==================================================
+UPDATE UI
+==================================================*/
 
-    if (activeTeam)
-        activeTeam.textContent = referralCount;
+function setText(id,value){
 
-    const bonus =
-        document.getElementById("referralBonus");
+    const el=document.getElementById(id);
 
-    if (bonus)
+    if(el) el.textContent=value;
 
-        bonus.textContent =
-            "UGX " +
-            Number(
-                profile.total_referral_bonus || 0
-            ).toLocaleString();
+}
 
-    const code =
-        document.getElementById("referralCode");
+function updateProfileUI(){
 
-    if (code)
+    setText("fullName",profile.fullname||"User");
 
-        code.value =
-            profile.referral_code;
+    setText("profileName",profile.fullname||"User");
 
-    const link =
-        document.getElementById("referralLink");
+    setText("profileEmail",profile.email||"-");
 
-    if (link)
+    setText("profilePhone",profile.phone||"Not Added");
+
+    setText("profileCountry",profile.country||"Not Set");
+
+    setText("profileDob",profile.date_of_birth||"Not Set");
+
+    setText("profileGender",profile.gender||"Not Set");
+
+    setText("profileStatus",profile.account_status||"Active");
+
+    setText("profileKyc",profile.kyc_status||"Not Verified");
+
+    setText("memberSince",
+
+        new Date(profile.created_at)
+
+        .toLocaleDateString()
+
+    );
+
+    setText(
+
+        "walletBalance",
+
+        "UGX "+Number(
+
+            profile.wallet_balance||0
+
+        ).toLocaleString()
+
+    );
+
+    setText(
+
+        "totalInvested",
+
+        "UGX "+Number(
+
+            profile.total_invested||0
+
+        ).toLocaleString()
+
+    );
+
+    setText(
+
+        "totalProfit",
+
+        "UGX "+Number(
+
+            profile.total_profit||0
+
+        ).toLocaleString()
+
+    );
+
+    if(profile.avatar_url){
+
+        const img=document.getElementById("profileImage");
+
+        if(img){
+
+            img.src=profile.avatar_url;
+
+        }
+
+    }
+
+}
+
+/*==================================================
+LOAD USER MACHINES
+==================================================*/
+
+async function loadUserMachines(){
+
+    const { data, error } = await db
+
+        .from("user_machines")
+
+        .select("*")
+
+        .eq("user_id", currentUser.id);
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+    userMachines = data || [];
+
+    const active = userMachines.filter(machine =>
+        machine.status === "active"
+    ).length;
+
+    setText("activeMachines", active);
+
+    await loadReferralInformation();
+
+}
+
+/*==================================================
+LOAD REFERRAL INFORMATION
+==================================================*/
+
+async function loadReferralInformation(){
+
+    if(!profile || !profile.referral_code){
+
+        setText("teamMembers",0);
+        setText("activeTeam",0);
+
+        return;
+
+    }
+
+    const { data, error } = await db
+
+        .from("profiles")
+
+        .select("id")
+
+        .eq("referred_by", profile.referral_code);
+
+    if(error){
+
+        console.error(error);
+
+        return;
+
+    }
+
+    const totalTeam = data ? data.length : 0;
+
+    setText("teamMembers", totalTeam);
+
+    setText("activeTeam", totalTeam);
+
+    setText(
+
+        "referralBonus",
+
+        "UGX " +
+
+        Number(profile.total_referral_bonus || 0)
+
+        .toLocaleString()
+
+    );
+
+    const code = document.getElementById("referralCode");
+
+    if(code){
+
+        code.value = profile.referral_code;
+
+    }
+
+    const link = document.getElementById("referralLink");
+
+    if(link){
 
         link.value =
-`https://marathon-digital-hub-lwb4.vercel.app/register.html?ref=${profile.referral_code}`;
+        `https://marathon-digital-hub-lwb4.vercel.app/register.html?ref=${profile.referral_code}`;
+
+    }
+
+    updateProfileCompletion();
 
 }
 
-/*=========================================
+/*==================================================
 PROFILE COMPLETION
-=========================================*/
+==================================================*/
 
-function calculateProfileCompletion() {
+function updateProfileCompletion(){
 
-    let score = 0;
+    let percent = 0;
 
-    if (profile.fullname) score += 10;
-    if (profile.phone) score += 10;
-    if (profile.email) score += 10;
-    if (profile.country) score += 10;
-    if (profile.gender) score += 10;
-    if (profile.date_of_birth) score += 10;
-    if (profile.avatar_url) score += 10;
-    if (profile.transaction_pin) score += 20;
-    if (profile.profile_completed) score += 20;
+    if(profile.fullname) percent += 10;
+    if(profile.phone) percent += 10;
+    if(profile.email) percent += 10;
+    if(profile.country) percent += 10;
+    if(profile.gender) percent += 10;
+    if(profile.date_of_birth) percent += 10;
+    if(profile.avatar_url) percent += 10;
+    if(profile.transaction_pin) percent += 20;
+    if(profile.profile_completed) percent += 20;
 
-    if (score > 100) score = 100;
+    if(percent > 100){
 
-    const percent =
-        document.getElementById("profilePercent");
+        percent = 100;
 
-    if (percent)
-        percent.textContent = score + "%";
+    }
 
-    const bar =
-        document.getElementById("profileProgress");
+    const progress = document.getElementById("profileProgress");
 
-    if (bar)
-        bar.style.width = score + "%";
+    if(progress){
 
-}
+        progress.style.width = percent + "%";
 
-/*=========================================
-PROFILE.JS - PART 3
-=========================================*/
+    }
 
-/*=========================================
+    setText("profilePercent", percent + "%");
+
+            }
+
+/*==================================================
+PROFILE.JS
+PART 3
+==================================================*/
+
+/*==============================
 POPUPS
-=========================================*/
+==============================*/
 
 const overlay = document.getElementById("popupOverlay");
 
-function openPopup(id) {
+function openPopup(id){
 
     const popup = document.getElementById(id);
 
-    if (!popup) return;
+    if(!popup) return;
 
-    if (overlay) overlay.style.display = "block";
+    if(overlay) overlay.style.display="block";
 
     popup.classList.add("active");
 
 }
 
-function closePopups() {
+function closePopup(){
 
-    if (overlay) overlay.style.display = "none";
+    if(overlay) overlay.style.display="none";
 
-    document.querySelectorAll(".popup").forEach(p => {
+    document.querySelectorAll(".popup").forEach(p=>{
 
         p.classList.remove("active");
 
@@ -353,43 +345,29 @@ function closePopups() {
 
 }
 
-document.querySelectorAll(".closePopup").forEach(btn => {
+overlay?.addEventListener("click",closePopup);
 
-    btn.addEventListener("click", closePopups);
+document.querySelectorAll(".closePopup").forEach(btn=>{
 
-});
-
-if (overlay) {
-
-    overlay.addEventListener("click", closePopups);
-
-}
-
-/*=========================================
-BUTTON EVENTS
-=========================================*/
-
-function go(page){
-
-    window.location.href = page;
-
-}
-
-document.getElementById("depositBtn")?.addEventListener("click",()=>{
-
-    go("deposit.html");
+    btn.addEventListener("click",closePopup);
 
 });
 
-document.getElementById("withdrawBtn")?.addEventListener("click",()=>{
+/*==============================
+BUTTONS
+==============================*/
 
-    go("withdraw.html");
+document.getElementById("inviteBtn")?.addEventListener("click",()=>{
 
-});
+    if(userMachines.length===0){
 
-document.getElementById("buyMachineBtn")?.addEventListener("click",()=>{
+        alert("Buy your first mining machine to unlock referrals.");
 
-    go("machines.html");
+        return;
+
+    }
+
+    openPopup("referralPopup");
 
 });
 
@@ -399,77 +377,67 @@ document.getElementById("settingBtn")?.addEventListener("click",()=>{
 
 });
 
-document.getElementById("inviteBtn")?.addEventListener("click",()=>{
+/*==============================
+COPY REFERRAL
+==============================*/
 
-    if(machines.length===0){
+async function copyText(id){
 
-        alert("Buy your first machine to unlock referrals.");
+    const el=document.getElementById(id);
 
-        return;
+    if(!el) return;
 
-    }
+    try{
 
-    openPopup("referralPopup");
+        await navigator.clipboard.writeText(el.value);
 
-});
+        alert("Copied successfully.");
 
-document.getElementById("teamBtn")?.addEventListener("click",()=>{
+    }catch(e){
 
-    if(machines.length===0){
-
-        alert("No team available yet.");
-
-        return;
+        console.error(e);
 
     }
 
-    openPopup("referralPopup");
+}
+
+document.getElementById("copyCodeBtn")?.addEventListener("click",()=>{
+
+    copyText("referralCode");
 
 });
 
-/*=========================================
-COPY
-=========================================*/
+document.getElementById("copyLinkBtn")?.addEventListener("click",()=>{
 
-document.getElementById("copyCodeBtn")?.addEventListener("click",async()=>{
-
-    const code=document.getElementById("referralCode").value;
-
-    await navigator.clipboard.writeText(code);
-
-    alert("Referral code copied.");
+    copyText("referralLink");
 
 });
 
-document.getElementById("copyLinkBtn")?.addEventListener("click",async()=>{
-
-    const link=document.getElementById("referralLink").value;
-
-    await navigator.clipboard.writeText(link);
-
-    alert("Referral link copied.");
-
-});
-
-/*=========================================
+/*==============================
 SHARE
-=========================================*/
+==============================*/
 
 document.getElementById("shareReferralBtn")?.addEventListener("click",async()=>{
 
-    const link=document.getElementById("referralLink").value;
+    const link=document.getElementById("referralLink")?.value;
+
+    if(!link) return;
 
     if(navigator.share){
 
-        await navigator.share({
+        try{
 
-            title:"Marathon Digital Hub",
+            await navigator.share({
 
-            text:"Join Marathon Digital Hub using my referral link.",
+                title:"Marathon Digital Hub",
 
-            url:link
+                text:"Join Marathon Digital Hub using my referral link.",
 
-        });
+                url:link
+
+            });
+
+        }catch(e){}
 
     }else{
 
@@ -481,58 +449,54 @@ document.getElementById("shareReferralBtn")?.addEventListener("click",async()=>{
 
 });
 
-/*=========================================
+/*==============================
 LOGOUT
-=========================================*/
+==============================*/
 
 document.getElementById("logoutBtn")?.addEventListener("click",async()=>{
 
-    const ok=confirm("Are you sure you want to logout?");
+    if(!confirm("Logout?")) return;
 
-    if(!ok) return;
+    await db.auth.signOut();
 
-    await supabase.auth.signOut();
-
-    location.href="login.html";
+    window.location.href="login.html";
 
 });
 
-/*=========================================
-PLACEHOLDER SETTINGS
-=========================================*/
+/*==============================
+NAVIGATION
+==============================*/
 
-document.getElementById("editProfileBtn")?.addEventListener("click",()=>{
+document.getElementById("buyMachineBtn")?.addEventListener("click",()=>{
 
-    alert("Edit Profile coming soon.");
-
-});
-
-document.getElementById("changePasswordBtn")?.addEventListener("click",()=>{
-
-    alert("Change Password coming soon.");
+    location.href="machines.html";
 
 });
 
-document.getElementById("changePinBtn")?.addEventListener("click",()=>{
+document.getElementById("depositBtn")?.addEventListener("click",()=>{
 
-    alert("Transaction PIN coming soon.");
+    location.href="deposit.html";
 
 });
+
+document.getElementById("withdrawBtn")?.addEventListener("click",()=>{
+
+    location.href="withdraw.html";
+
+});
+
+/*==============================
+PROFILE IMAGE
+==============================*/
 
 document.getElementById("changePhotoBtn")?.addEventListener("click",()=>{
 
-    alert("Change Profile Photo coming soon.");
+    document.getElementById("photoInput")?.click();
 
 });
 
-document.getElementById("changePhotoBtn2")?.addEventListener("click",()=>{
-
-    alert("Change Profile Photo coming soon.");
-
-});
-
-/*=========================================
+/*==============================
 READY
-=========================================*/
+==============================*/
 
-console.log("Profile loaded successfully.");
+console.log("Profile page initialized.");
