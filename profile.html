@@ -4,690 +4,499 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Profile | Marathon Digital Hub</title>
 
+<link rel="stylesheet" href="profile.css">
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-
-background:#050B18;
-color:white;
-padding-bottom:90px;
-overflow-x:hidden;
-
-}
-
-body::before{
-
-content:"";
-
-position:fixed;
-
-left:-40%;
-top:-40%;
-
-width:180%;
-height:180%;
-
-background:
-
-radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
-
-radial-gradient(circle at 80% 20%,rgba(0,140,255,.18),transparent 35%),
-
-radial-gradient(circle at 60% 80%,rgba(0,255,120,.15),transparent 40%);
-
-animation:bgMove 20s linear infinite;
-
-z-index:-2;
-
-}
-
-@keyframes bgMove{
-
-0%{transform:translateX(-2%);}
-50%{transform:translateX(2%);}
-100%{transform:translateX(-2%);}
-
-}
-
-.header{
-
-padding:20px;
-
-}
-
-.header h2{
-
-font-size:28px;
-
-}
-
-.header p{
-
-margin-top:5px;
-
-color:#9fb5d1;
-
-}
-
-.profileCard{
-
-margin:15px;
-
-background:#08142d;
-
-border-radius:20px;
-
-padding:25px;
-
-text-align:center;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.avatar{
-
-width:90px;
-
-height:90px;
-
-border-radius:50%;
-
-background:#00ff88;
-
-color:#001018;
-
-font-size:38px;
-
-font-weight:bold;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-margin:auto;
-
-margin-bottom:15px;
-
-}
-
-.profileCard h2{
-
-margin-bottom:5px;
-
-}
-
-.profileCard p{
-
-color:#9fb5d1;
-
-}
-
-.section{
-
-margin:15px;
-
-background:#08142d;
-
-border-radius:18px;
-
-padding:20px;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.section h3{
-
-margin-bottom:15px;
-
-color:#00ff88;
-
-}
-
-.item{
-
-margin-bottom:18px;
-
-}
-
-.item small{
-
-display:block;
-
-color:#9fb5d1;
-
-margin-bottom:5px;
-
-}
-
-.item span{
-
-font-size:17px;
-
-}
-
-.actionBtn{
-
-width:100%;
-
-height:52px;
-
-margin-top:15px;
-
-border:none;
-
-border-radius:14px;
-
-background:#00ff88;
-
-color:#001018;
-
-font-size:17px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.logoutBtn{
-
-background:#ff4444;
-
-color:white;
-
-}
-
-</style>
 
 </head>
 
 <body>
 
-<div class="header">
+<!-- Animated Background -->
+<div class="bg-animation"></div>
 
-<h2>Profile</h2>
+<!-- ===========================
+PROFILE HEADER
+=========================== -->
 
-<p>Manage your Marathon Digital Hub account.</p>
+<header class="profile-header">
+
+<div class="profile-top">
+
+<button class="back-btn" onclick="history.back()">
+←
+</button>
+
+<h2>My Profile</h2>
+
+<button class="notification-btn" id="notificationBtn">
+🔔
+<span id="notificationCount">0</span>
+</button>
 
 </div>
 
-<div class="profileCard">
+<div class="profile-card">
 
-<div class="avatar" id="avatar">
+<div class="profile-image-wrapper">
 
-U
+<img
+id="profileImage"
+src="images/default-avatar.png"
+alt="Profile">
+
+<button
+class="change-photo-btn"
+id="changePhotoBtn">
+
+📷
+
+</button>
 
 </div>
 
-<h2 id="fullName">
+<div class="profile-details">
 
+<h3 id="fullName">
 Loading...
+</h3>
 
-</h2>
+<p id="memberLevel">
 
-<p id="email">
+STANDARD MEMBER
 
-Loading...
+</p>
+
+<div class="badges">
+
+<span id="kycBadge">
+🛡️ Not Verified
+</span>
+
+<span id="statusBadge">
+🟢 Active
+</span>
+
+</div>
+
+<p id="userId">
+
+ID: Loading...
 
 </p>
 
 </div>
 
-<div class="section">
-
-<h3>Account Information</h3>
-
-<div class="item">
-
-<small>Phone Number</small>
-
-<span id="phone">
-
-Loading...
-
-</span>
-
 </div>
 
-<div class="item">
+</header>
 
-<small>Wallet Balance</small>
+<!-- ===========================
+WALLET SUMMARY
+=========================== -->
 
-<span id="wallet">
+<section class="wallet-summary">
+
+<div class="wallet-card">
+
+<h4>Wallet Balance</h4>
+
+<h2 id="walletBalance">
 
 UGX 0
 
-</span>
+</h2>
+
+<p>
+
+Available Balance
+
+</p>
 
 </div>
 
-<div class="item">
+<div class="summary-grid">
 
-<small>Referral Code</small>
+<div class="summary-item">
 
-<span id="referralCode">
+<span>Total Invested</span>
 
-Loading...
+<h3 id="totalInvested">
 
-</span>
+UGX 0
 
-</div>
-
-<div class="item">
-
-<small>Referred By</small>
-
-<span id="referredBy">
-
-None
-
-</span>
+</h3>
 
 </div>
 
-<div class="item">
+<div class="summary-item">
 
-<small>Account Status</small>
+<span>Total Profit</span>
 
-<span id="accountStatus">
+<h3 id="totalProfit">
 
-Active
+UGX 0
 
-</span>
-
-</div>
-
-<div class="item">
-
-<small>Member Since</small>
-
-<span id="createdDate">
-
-Loading...
-
-</span>
+</h3>
 
 </div>
 
+<div class="summary-item">
+
+<span>Active Machines</span>
+
+<h3 id="activeMachines">
+
+0
+
+</h3>
+
 </div>
 
-<div class="section">
+<div class="summary-item">
 
-<h3>Account Actions</h3>
+<span>Membership</span>
 
-<button
-class="actionBtn"
-id="editProfile">
+<h3 id="membership">
 
-Edit Profile
+Standard
 
+</h3>
+
+</div>
+
+</div>
+
+  </section>
+
+ <!-- ===========================
+QUICK ACTIONS
+=========================== -->
+
+<section class="quick-actions">
+
+<h3 class="section-title">Quick Actions</h3>
+
+<div class="action-grid">
+
+<button class="action-card" id="depositBtn">
+<div class="action-icon">💳</div>
+<span>Deposit</span>
 </button>
 
-<button
-class="actionBtn"
-id="changePassword">
-
-Change Password
-
+<button class="action-card" id="withdrawBtn">
+<div class="action-icon">💸</div>
+<span>Withdraw</span>
 </button>
 
-<button
-class="actionBtn logoutBtn"
-id="logout">
-
-Logout
-
+<button class="action-card" id="inviteBtn">
+<div class="action-icon">👥</div>
+<span>Invite</span>
 </button>
 
-  </div><script>
+<button class="action-card" id="teamBtn">
+<div class="action-icon">👨‍👩‍👧</div>
+<span>My Team</span>
+</button>
 
-const db = window.supabaseClient;
+<button class="action-card" id="rewardBtn">
+<div class="action-icon">🎁</div>
+<span>Rewards</span>
+</button>
 
-let currentUser = null;
-let profile = null;
+<button class="action-card" id="settingBtn">
+<div class="action-icon">⚙️</div>
+<span>Settings</span>
+</button>
 
-/* ===========================
-START
-=========================== */
+</div>
 
-document.addEventListener("DOMContentLoaded", async ()=>{
+</section>
 
-const { data:{ user } } = await db.auth.getUser();
+<!-- ===========================
+ACCOUNT INFORMATION
+=========================== -->
 
-if(!user){
+<section class="profile-section">
 
-window.location.href="login.html";
-return;
+<h3 class="section-title">
 
-}
+Account Information
 
-currentUser=user;
+</h3>
 
-await loadProfile();
+<div class="info-card">
 
-});
+<div class="info-row">
+<span>Full Name</span>
+<strong id="profileName">Loading...</strong>
+</div>
 
-/* ===========================
-LOAD PROFILE
-=========================== */
+<div class="info-row">
+<span>Email</span>
+<strong id="profileEmail">Loading...</strong>
+</div>
 
-async function loadProfile(){
+<div class="info-row">
+<span>Phone</span>
+<strong id="profilePhone">Not Added</strong>
+</div>
 
-const { data,error } = await db
+<div class="info-row">
+<span>Country</span>
+<strong id="profileCountry">Not Set</strong>
+</div>
 
-.from("profiles")
+<div class="info-row">
+<span>Date of Birth</span>
+<strong id="profileDob">Not Set</strong>
+</div>
 
-.select("*")
+<div class="info-row">
+<span>Gender</span>
+<strong id="profileGender">Not Set</strong>
+</div>
 
-.eq("id",currentUser.id)
+<div class="info-row">
+<span>KYC Status</span>
+<strong id="profileKyc">Not Verified</strong>
+</div>
 
-.single();
+<div class="info-row">
+<span>Account Status</span>
+<strong id="profileStatus">Active</strong>
+</div>
 
-if(error){
+<div class="info-row">
+<span>Member Since</span>
+<strong id="memberSince">Loading...</strong>
+</div>
 
-console.log(error);
-return;
+</div>
 
-}
+</section>
 
-profile=data;
+<!-- ===========================
+PROFILE COMPLETION
+=========================== -->
 
-/* Avatar */
+<section class="profile-section">
 
-const initials=data.fullname
-.split(" ")
-.map(n=>n[0])
-.join("")
-.substring(0,2)
-.toUpperCase();
+<h3 class="section-title">
 
-document.getElementById("avatar").innerHTML=initials;
+Profile Completion
 
-/* Basic Details */
+</h3>
 
-document.getElementById("fullName").innerHTML=data.fullname;
+<div class="completion-card">
 
-document.getElementById("email").innerHTML=data.email ?? "No Email";
+<div class="completion-top">
 
-document.getElementById("phone").innerHTML=data.phone ?? "Not Set";
+<span>Complete your profile</span>
 
-document.getElementById("wallet").innerHTML=
+<strong id="profilePercent">
 
-"UGX "+Number(data.wallet_balance).toLocaleString();
+0%
 
-document.getElementById("referralCode").innerHTML=
+</strong>
 
-data.referral_code ?? "Not Available";
+</div>
 
-document.getElementById("referredBy").innerHTML=
+<div class="progress">
 
-data.referred_by ?? "None";
+<div class="progress-fill" id="profileProgress">
 
-document.getElementById("accountStatus").innerHTML=
+</div>
 
-data.account_status ?? "Active";
+</div>
 
-document.getElementById("createdDate").innerHTML=
+<p>
 
-new Date(data.created_at).toLocaleDateString();
+Complete your profile to unlock all Marathon Digital Hub features.
 
-}
+</p>
 
-/* ===========================
-EDIT PROFILE
-=========================== */
+</div>
 
-document.getElementById("editProfile").onclick = async ()=>{
-
-const fullname=prompt(
-
-"Enter New Full Name",
-
-profile.fullname
-
-);
-
-if(fullname==null)return;
-
-const phone=prompt(
-
-"Enter Phone Number",
-
-profile.phone
-
-);
-
-if(phone==null)return;
-
-const { error } = await db
-
-.from("profiles")
-
-.update({
-
-fullname:fullname,
-
-phone:phone
-
-})
-
-.eq("id",currentUser.id);
-
-if(error){
-
-alert(error.message);
-
-return;
-
-}
-
-alert("Profile Updated Successfully");
-
-await loadProfile();
-
-};
-
-/* ===========================
-CHANGE PASSWORD
-=========================== */
-
-document.getElementById("changePassword").onclick = async ()=>{
-
-const password=prompt(
-
-"Enter New Password"
-
-);
-
-if(password==null)return;
-
-if(password.length<6){
-
-alert("Password must be at least 6 characters");
-
-return;
-
-}
-
-const { error } = await db.auth.updateUser({
-
-password:password
-
-});
-
-if(error){
-
-alert(error.message);
-
-return;
-
-}
-
-alert("Password Changed Successfully");
-
-};
-
-/* ===========================
-LOGOUT
-=========================== */
-
-document.getElementById("logout").onclick = async ()=>{
-
-if(!confirm("Logout from Marathon Digital Hub?")){
-
-return;
-
-}
-
-await db.auth.signOut();
-
-window.location.href="login.html";
-
-};
-
-  </script>
+  </section>
 
   <!-- ===========================
+REFERRAL LOCK CARD
+=========================== -->
+
+<section class="profile-section" id="referralLockCard">
+
+<div class="lock-card">
+
+<div class="lock-icon">🔒</div>
+
+<h3>Referral Locked</h3>
+
+<p>
+
+Buy your first mining machine to unlock referrals,
+build your team and earn referral rewards.
+
+</p>
+
+<button id="buyMachineBtn" class="primary-btn">
+
+Buy Machine
+
+</button>
+
+</div>
+
+</section>
+
+<!-- ===========================
+POPUPS
+=========================== -->
+
+<!-- Overlay -->
+<div id="popupOverlay" class="popup-overlay"></div>
+
+<!-- Referral Popup -->
+<div class="popup" id="referralPopup">
+
+<div class="popup-header">
+
+<h3>Referral & Team</h3>
+
+<button class="closePopup">&times;</button>
+
+</div>
+
+<div class="popup-body">
+
+<p><strong>Your Referral Code</strong></p>
+
+<div class="copy-box">
+
+<input id="referralCode" readonly>
+
+<button id="copyCodeBtn">Copy</button>
+
+</div>
+
+<p><strong>Your Referral Link</strong></p>
+
+<div class="copy-box">
+
+<input id="referralLink" readonly>
+
+<button id="copyLinkBtn">Copy</button>
+
+</div>
+
+<button class="primary-btn" id="shareReferralBtn">
+
+Share Referral Link
+
+</button>
+
+<hr>
+
+<div class="team-stats">
+
+<div>
+<h4 id="teamMembers">0</h4>
+<span>Team Members</span>
+</div>
+
+<div>
+<h4 id="activeTeam">0</h4>
+<span>Active Team</span>
+</div>
+
+<div>
+<h4 id="referralBonus">UGX 0</h4>
+<span>Total Bonus</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Settings Popup -->
+
+<div class="popup" id="settingsPopup">
+
+<div class="popup-header">
+
+<h3>Settings</h3>
+
+<button class="closePopup">&times;</button>
+
+</div>
+
+<div class="popup-body">
+
+<button class="menu-btn" id="editProfileBtn">
+✏ Edit Profile
+</button>
+
+<button class="menu-btn" id="changePasswordBtn">
+🔒 Change Password
+</button>
+
+<button class="menu-btn" id="changePinBtn">
+🔑 Change PIN
+</button>
+
+<button class="menu-btn" id="changePhotoBtn2">
+📷 Change Photo
+</button>
+
+<button class="menu-btn logout" id="logoutBtn">
+🚪 Logout
+</button>
+
+</div>
+
+</div>
+
+<!-- ===========================
 BOTTOM NAVIGATION
 =========================== -->
 
-<style>
-
-.bottom-nav{
-
-position:fixed;
-
-left:0;
-
-bottom:0;
-
-width:100%;
-
-height:70px;
-
-background:#08142d;
-
-border-top:1px solid rgba(255,255,255,.08);
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-backdrop-filter:blur(10px);
-
-z-index:999;
-
-}
-
-.bottom-nav a{
-
-text-decoration:none;
-
-color:#cfd8ea;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-font-size:12px;
-
-transition:.3s;
-
-}
-
-.bottom-nav a i{
-
-font-style:normal;
-
-font-size:24px;
-
-margin-bottom:4px;
-
-}
-
-.bottom-nav a.active{
-
-color:#00ff88;
-
-font-weight:bold;
-
-}
-
-.bottom-nav a:hover{
-
-color:#00ff88;
-
-}
-
-</style>
-
-<div class="bottom-nav">
+<nav class="bottom-nav">
 
 <a href="dashboard.html">
-
-<i>🏠</i>
-
+🏠
 <span>Home</span>
-
 </a>
 
 <a href="machines.html">
-
-<i>⚙️</i>
-
+⚙️
 <span>Machines</span>
-
 </a>
 
 <a href="deposit.html">
-
-<i>💳</i>
-
+💳
 <span>Deposit</span>
-
 </a>
 
 <a href="income.html">
-
-<i>📈</i>
-
+📈
 <span>Income</span>
-
 </a>
 
 <a href="profile.html" class="active">
-
-<i>👤</i>
-
+👤
 <span>Profile</span>
-
 </a>
 
-</div>
+</nav>
+
+<script src="profile.js"></script>
 
 </body>
-
-</html>
+  </html>
