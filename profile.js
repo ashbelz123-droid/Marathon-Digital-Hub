@@ -1,311 +1,351 @@
-/* ==========================================
-PROFILE.JS
-PART 1
-========================================== */
+/*=========================================
+PROFILE.JS - PART 1
+=========================================*/
 
-const db = window.supabaseClient;
+const supabase = window.supabaseClient;
 
-let currentUser = null;
+let user = null;
 let profile = null;
-let userMachines = [];
 
-document.addEventListener("DOMContentLoaded", init);
+/*=========================================
+START
+=========================================*/
 
-async function init() {
+document.addEventListener("DOMContentLoaded", () => {
+    initializeProfile();
+});
+
+async function initializeProfile() {
 
     try {
 
-        const { data: { user } } = await db.auth.getUser();
+        const {
+            data: { session },
+            error
+        } = await supabase.auth.getSession();
 
-        if (!user) {
+        if (error) throw error;
 
-            window.location.href = "login.html";
+        if (!session) {
+            location.href = "login.html";
             return;
-
         }
 
-        currentUser = user;
+        user = session.user;
 
         await loadProfile();
-
-        await loadMachines();
-
-        updateReferralLock();
 
     } catch (err) {
 
         console.error(err);
 
-        alert("Failed to load profile.");
+        alert("Error: " + err.message);
 
     }
 
 }
 
-/* ==========================================
+/*=========================================
 LOAD PROFILE
-========================================== */
+=========================================*/
 
 async function loadProfile() {
 
-    const { data, error } = await db
+    const { data, error } = await supabase
 
         .from("profiles")
 
         .select("*")
 
-        .eq("id", currentUser.id)
+        .eq("id", user.id)
 
         .single();
 
-    if (error) {
-
-        console.error(error);
-        return;
-
-    }
+    if (error) throw error;
 
     profile = data;
 
-    document.getElementById("fullName").textContent =
-        profile.fullname || "User";
+    updateProfileUI();
 
-    document.getElementById("profileName").textContent =
-        profile.fullname || "-";
+}
 
-    document.getElementById("profileEmail").textContent =
-        profile.email || "-";
+/*=========================================
+UPDATE PROFILE UI
+=========================================*/
 
-    document.getElementById("profilePhone").textContent =
-        profile.phone || "Not Added";
+function updateProfileUI() {
 
-    document.getElementById("profileCountry").textContent =
-        profile.country || "Not Set";
+    const set = (id, value) => {
 
-    document.getElementById("profileDob").textContent =
-        profile.date_of_birth || "Not Set";
+        const el = document.getElementById(id);
 
-    document.getElementById("profileGender").textContent =
-        profile.gender || "Not Set";
+        if (el) el.textContent = value;
 
-    document.getElementById("membership").textContent =
-        profile.membership || "Standard";
+    };
 
-    document.getElementById("memberLevel").textContent =
-        (profile.membership || "STANDARD") + " MEMBER";
+    set("fullName", profile.fullname || "User");
 
-    document.getElementById("walletBalance").textContent =
-        "UGX " + Number(profile.wallet_balance || 0).toLocaleString();
+    set("profileName", profile.fullname || "-");
 
-    document.getElementById("totalInvested").textContent =
-        "UGX " + Number(profile.total_invested || 0).toLocaleString();
+    set("profileEmail", profile.email || "-");
 
-    document.getElementById("totalProfit").textContent =
-        "UGX " + Number(profile.total_profit || 0).toLocaleString();
+    set("profilePhone", profile.phone || "Not Added");
 
-    document.getElementById("profileKyc").textContent =
-        profile.kyc_status || "Not Verified";
+    set("profileCountry", profile.country || "Not Set");
 
-    document.getElementById("profileStatus").textContent =
-        profile.account_status || "Active";
+    set("profileDob", profile.date_of_birth || "Not Set");
 
-    document.getElementById("statusBadge").textContent =
-        profile.account_status === "active"
-            ? "🟢 Active"
-            : "🔴 Suspended";
+    set("profileGender", profile.gender || "Not Set");
 
-    document.getElementById("kycBadge").textContent =
-        profile.kyc_status === "Verified"
-            ? "🛡️ Verified"
-            : "🛡️ Not Verified";
+    set("profileStatus", profile.account_status || "Active");
 
-    document.getElementById("userId").textContent =
-        "ID: " + currentUser.id.substring(0,8).toUpperCase();
+    set("profileKyc", profile.kyc_status || "Not Verified");
 
-    document.getElementById("memberSince").textContent =
-        new Date(profile.created_at).toLocaleDateString();
+    set("membership", profile.membership || "Standard");
 
-    if(profile.avatar_url){
+    set("memberLevel",
+        (profile.membership || "Standard").toUpperCase() + " MEMBER"
+    );
 
-        document.getElementById("profileImage").src =
-        profile.avatar_url;
+    set(
+        "walletBalance",
+        "UGX " + Number(profile.wallet_balance || 0).toLocaleString()
+    );
+
+    set(
+        "totalInvested",
+        "UGX " + Number(profile.total_invested || 0).toLocaleString()
+    );
+
+    set(
+        "totalProfit",
+        "UGX " + Number(profile.total_profit || 0).toLocaleString()
+    );
+
+    set(
+        "memberSince",
+        new Date(profile.created_at).toLocaleDateString()
+    );
+
+    set(
+        "userId",
+        "ID: " + user.id.substring(0,8).toUpperCase()
+    );
+
+    if (profile.avatar_url) {
+
+        const img = document.getElementById("profileImage");
+
+        if (img) img.src = profile.avatar_url;
 
     }
 
-          }
+    loadMachines();
 
-/* ==========================================
-PROFILE.JS
-PART 2
-========================================== */
+}
 
-/* ==========================================
-LOAD USER MACHINES
-========================================== */
+/*=========================================
+PROFILE.JS - PART 2
+=========================================*/
+
+let machines = [];
+let referralCount = 0;
+
+/*=========================================
+LOAD MACHINES
+=========================================*/
 
 async function loadMachines() {
 
-    const { data, error } = await db
+    const { data, error } = await supabase
+
         .from("user_machines")
+
         .select("*")
-        .eq("user_id", currentUser.id)
-        .eq("status", "active");
+
+        .eq("user_id", user.id);
 
     if (error) {
+
         console.error(error);
-        return;
+
+        machines = [];
+
+    } else {
+
+        machines = data || [];
+
     }
 
-    userMachines = data || [];
+    const active = machines.filter(m =>
+        m.status === "active" && !m.completed
+    ).length;
 
-    document.getElementById("activeMachines").textContent =
-        userMachines.length;
+    const activeMachines =
+        document.getElementById("activeMachines");
 
-    loadReferralData();
+    if (activeMachines)
+        activeMachines.textContent = active;
+
+    checkReferralAccess();
+
+    await loadReferralData();
+
+    calculateProfileCompletion();
 
 }
 
-/* ==========================================
-LOAD REFERRAL DATA
-========================================== */
+/*=========================================
+REFERRAL ACCESS
+=========================================*/
+
+function checkReferralAccess() {
+
+    const lock =
+        document.getElementById("referralLockCard");
+
+    if (!lock) return;
+
+    if (machines.length > 0) {
+
+        lock.style.display = "none";
+
+    } else {
+
+        lock.style.display = "block";
+
+    }
+
+}
+
+/*=========================================
+LOAD REFERRALS
+=========================================*/
 
 async function loadReferralData() {
 
-    /* Team Members */
+    if (!profile.referral_code) return;
 
-    const { data: team } = await db
+    const { data, error } = await supabase
+
         .from("profiles")
+
         .select("id")
+
         .eq("referred_by", profile.referral_code);
 
-    const totalTeam = team ? team.length : 0;
+    if (error) {
 
-    document.getElementById("teamMembers").textContent =
-        totalTeam;
+        console.error(error);
 
-    /* Active Team */
-
-    let active = 0;
-
-    if (team && team.length > 0) {
-
-        for (const member of team) {
-
-            const { data } = await db
-                .from("user_machines")
-                .select("id")
-                .eq("user_id", member.id)
-                .limit(1);
-
-            if (data && data.length > 0) {
-
-                active++;
-
-            }
-
-        }
+        return;
 
     }
 
-    document.getElementById("activeTeam").textContent =
-        active;
+    referralCount = data ? data.length : 0;
 
-    /* Referral Bonus */
+    const team =
+        document.getElementById("teamMembers");
 
-    document.getElementById("referralBonus").textContent =
-        "UGX " +
-        Number(profile.total_referral_bonus || 0).toLocaleString();
+    if (team)
+        team.textContent = referralCount;
 
-    /* Referral Code */
+    const activeTeam =
+        document.getElementById("activeTeam");
 
-    document.getElementById("referralCode").value =
-        profile.referral_code || "";
+    if (activeTeam)
+        activeTeam.textContent = referralCount;
 
-    /* Referral Link */
+    const bonus =
+        document.getElementById("referralBonus");
 
-    const referralLink =
-        "https://marathon-digital-hub-lwb4.vercel.app/register.html?ref=" +
-        encodeURIComponent(profile.referral_code || "");
+    if (bonus)
 
-    document.getElementById("referralLink").value =
-        referralLink;
+        bonus.textContent =
+            "UGX " +
+            Number(
+                profile.total_referral_bonus || 0
+            ).toLocaleString();
+
+    const code =
+        document.getElementById("referralCode");
+
+    if (code)
+
+        code.value =
+            profile.referral_code;
+
+    const link =
+        document.getElementById("referralLink");
+
+    if (link)
+
+        link.value =
+`https://marathon-digital-hub-lwb4.vercel.app/register.html?ref=${profile.referral_code}`;
 
 }
 
-/* ==========================================
+/*=========================================
 PROFILE COMPLETION
-========================================== */
+=========================================*/
 
-function updateProfileCompletion() {
+function calculateProfileCompletion() {
 
     let score = 0;
 
     if (profile.fullname) score += 10;
-    if (profile.email) score += 10;
     if (profile.phone) score += 10;
+    if (profile.email) score += 10;
     if (profile.country) score += 10;
     if (profile.gender) score += 10;
     if (profile.date_of_birth) score += 10;
     if (profile.avatar_url) score += 10;
-    if (profile.transaction_pin) score += 10;
-    if (profile.kyc_status === "Verified") score += 20;
+    if (profile.transaction_pin) score += 20;
+    if (profile.profile_completed) score += 20;
 
-    document.getElementById("profilePercent").textContent =
-        score + "%";
+    if (score > 100) score = 100;
 
-    document.getElementById("profileProgress").style.width =
-        score + "%";
+    const percent =
+        document.getElementById("profilePercent");
 
-                        }
+    if (percent)
+        percent.textContent = score + "%";
 
-/* ==========================================
-PROFILE.JS
-PART 3
-========================================== */
+    const bar =
+        document.getElementById("profileProgress");
 
-/* ==========================================
-REFERRAL LOCK
-========================================== */
-
-function updateReferralLock() {
-
-    const lockCard = document.getElementById("referralLockCard");
-
-    if (!lockCard) return;
-
-    if (userMachines.length > 0) {
-
-        lockCard.style.display = "none";
-
-    } else {
-
-        lockCard.style.display = "block";
-
-    }
-
-    updateProfileCompletion();
+    if (bar)
+        bar.style.width = score + "%";
 
 }
 
-/* ==========================================
+/*=========================================
+PROFILE.JS - PART 3
+=========================================*/
+
+/*=========================================
 POPUPS
-========================================== */
+=========================================*/
 
 const overlay = document.getElementById("popupOverlay");
 
-function openPopup(id){
+function openPopup(id) {
 
-    overlay.style.display = "block";
+    const popup = document.getElementById(id);
 
-    document.getElementById(id).classList.add("active");
+    if (!popup) return;
+
+    if (overlay) overlay.style.display = "block";
+
+    popup.classList.add("active");
 
 }
 
-function closeAllPopups(){
+function closePopups() {
 
-    overlay.style.display = "none";
+    if (overlay) overlay.style.display = "none";
 
-    document.querySelectorAll(".popup").forEach(p=>{
+    document.querySelectorAll(".popup").forEach(p => {
 
         p.classList.remove("active");
 
@@ -313,25 +353,43 @@ function closeAllPopups(){
 
 }
 
-document.querySelectorAll(".closePopup").forEach(btn=>{
+document.querySelectorAll(".closePopup").forEach(btn => {
 
-    btn.addEventListener("click",closeAllPopups);
+    btn.addEventListener("click", closePopups);
 
 });
 
-overlay.addEventListener("click",closeAllPopups);
+if (overlay) {
 
-document.getElementById("inviteBtn")?.addEventListener("click",()=>{
+    overlay.addEventListener("click", closePopups);
 
-    if(userMachines.length===0){
+}
 
-        alert("Buy your first mining machine to unlock referrals.");
+/*=========================================
+BUTTON EVENTS
+=========================================*/
 
-        return;
+function go(page){
 
-    }
+    window.location.href = page;
 
-    openPopup("referralPopup");
+}
+
+document.getElementById("depositBtn")?.addEventListener("click",()=>{
+
+    go("deposit.html");
+
+});
+
+document.getElementById("withdrawBtn")?.addEventListener("click",()=>{
+
+    go("withdraw.html");
+
+});
+
+document.getElementById("buyMachineBtn")?.addEventListener("click",()=>{
+
+    go("machines.html");
 
 });
 
@@ -341,37 +399,61 @@ document.getElementById("settingBtn")?.addEventListener("click",()=>{
 
 });
 
-/* ==========================================
-COPY REFERRAL
-========================================== */
+document.getElementById("inviteBtn")?.addEventListener("click",()=>{
 
-document.getElementById("copyCodeBtn")?.addEventListener("click",()=>{
+    if(machines.length===0){
 
-    navigator.clipboard.writeText(
+        alert("Buy your first machine to unlock referrals.");
 
-        document.getElementById("referralCode").value
+        return;
 
-    );
+    }
+
+    openPopup("referralPopup");
+
+});
+
+document.getElementById("teamBtn")?.addEventListener("click",()=>{
+
+    if(machines.length===0){
+
+        alert("No team available yet.");
+
+        return;
+
+    }
+
+    openPopup("referralPopup");
+
+});
+
+/*=========================================
+COPY
+=========================================*/
+
+document.getElementById("copyCodeBtn")?.addEventListener("click",async()=>{
+
+    const code=document.getElementById("referralCode").value;
+
+    await navigator.clipboard.writeText(code);
 
     alert("Referral code copied.");
 
 });
 
-document.getElementById("copyLinkBtn")?.addEventListener("click",()=>{
+document.getElementById("copyLinkBtn")?.addEventListener("click",async()=>{
 
-    navigator.clipboard.writeText(
+    const link=document.getElementById("referralLink").value;
 
-        document.getElementById("referralLink").value
-
-    );
+    await navigator.clipboard.writeText(link);
 
     alert("Referral link copied.");
 
 });
 
-/* ==========================================
-SHARE REFERRAL
-========================================== */
+/*=========================================
+SHARE
+=========================================*/
 
 document.getElementById("shareReferralBtn")?.addEventListener("click",async()=>{
 
@@ -391,7 +473,7 @@ document.getElementById("shareReferralBtn")?.addEventListener("click",async()=>{
 
     }else{
 
-        navigator.clipboard.writeText(link);
+        await navigator.clipboard.writeText(link);
 
         alert("Referral link copied.");
 
@@ -399,60 +481,58 @@ document.getElementById("shareReferralBtn")?.addEventListener("click",async()=>{
 
 });
 
-/* ==========================================
-BUY MACHINE
-========================================== */
-
-document.getElementById("buyMachineBtn")?.addEventListener("click",()=>{
-
-    window.location.href="machines.html";
-
-});
-
-/* ==========================================
+/*=========================================
 LOGOUT
-========================================== */
+=========================================*/
 
 document.getElementById("logoutBtn")?.addEventListener("click",async()=>{
 
-    if(!confirm("Logout from your account?")) return;
+    const ok=confirm("Are you sure you want to logout?");
 
-    await db.auth.signOut();
+    if(!ok) return;
 
-    window.location.href="login.html";
+    await supabase.auth.signOut();
+
+    location.href="login.html";
 
 });
 
-/* ==========================================
-PLACEHOLDER BUTTONS
-========================================== */
+/*=========================================
+PLACEHOLDER SETTINGS
+=========================================*/
 
-document.getElementById("depositBtn")?.onclick=()=>location.href="deposit.html";
+document.getElementById("editProfileBtn")?.addEventListener("click",()=>{
 
-document.getElementById("withdrawBtn")?.onclick=()=>location.href="withdraw.html";
+    alert("Edit Profile coming soon.");
 
-document.getElementById("rewardBtn")?.onclick=()=>{
+});
 
-    alert("Rewards feature coming soon.");
+document.getElementById("changePasswordBtn")?.addEventListener("click",()=>{
 
-};
+    alert("Change Password coming soon.");
 
-document.getElementById("teamBtn")?.onclick=()=>{
+});
 
-    if(userMachines.length===0){
+document.getElementById("changePinBtn")?.addEventListener("click",()=>{
 
-        alert("Buy a machine first to unlock your team.");
+    alert("Transaction PIN coming soon.");
 
-        return;
+});
 
-    }
+document.getElementById("changePhotoBtn")?.addEventListener("click",()=>{
 
-    openPopup("referralPopup");
+    alert("Change Profile Photo coming soon.");
 
-};
+});
 
-/* ==========================================
-END
-========================================== */
+document.getElementById("changePhotoBtn2")?.addEventListener("click",()=>{
 
-console.log("Profile page loaded successfully.");
+    alert("Change Profile Photo coming soon.");
+
+});
+
+/*=========================================
+READY
+=========================================*/
+
+console.log("Profile loaded successfully.");
