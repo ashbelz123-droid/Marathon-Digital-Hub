@@ -4,13 +4,19 @@
 <head>
 
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<title>My Profile | Marathon Digital Hub</title>
 
-<title>Referral | Marathon Digital Hub</title>
+<link rel="stylesheet" href="profile.css">
 
-<link rel="stylesheet" href="referral.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -20,273 +26,373 @@ content="width=device-width,initial-scale=1.0">
 
 <body>
 
-<div class="heroBackground">
+<div class="background-glow"></div>
 
-<canvas id="waveCanvas"></canvas>
+<div class="page">
 
-</div>
-
-<div class="container">
-
-<!-- ==========================
+<!-- =========================
 HEADER
-========================== -->
+========================= -->
 
-<header class="header">
+<header class="top-bar">
 
-<button
-class="backButton"
-onclick="history.back()">
-
-←
-
+<button id="backBtn" class="circle-btn">
+<i class="fas fa-arrow-left"></i>
 </button>
 
-<div>
+<h2>My Profile</h2>
 
-<h2>
-
-Referral Program
-
-</h2>
-
-<p>
-
-Invite friends and earn rewards
-
-</p>
-
-</div>
+<button id="settingsBtn" class="circle-btn">
+<i class="fas fa-gear"></i>
+</button>
 
 </header>
 
-<!-- ==========================
-REFERRAL HERO
-========================== -->
+<!-- =========================
+PROFILE CARD
+========================= -->
 
-<section class="heroCard">
+<section class="profile-card">
 
-<h1>
+<div class="cover"></div>
 
-👥 Invite Friends
+<div class="avatar-wrapper">
 
+<img
+id="profileAvatar"
+src="images/avatar.png"
+alt="Profile">
+
+<button
+id="changeAvatar"
+class="avatar-camera">
+
+<i class="fas fa-camera"></i>
+
+</button>
+
+<input
+type="file"
+id="avatarInput"
+accept="image/*"
+hidden>
+
+</div>
+
+<div class="profile-info">
+
+<h2 id="fullName">
+Loading...
+</h2>
+
+<p id="email">
+Loading...
+</p>
+
+<div class="badge-row">
+
+<span id="membershipBadge">
+STANDARD
+</span>
+
+<span id="statusBadge">
+ACTIVE
+</span>
+
+<span id="kycBadge">
+NOT VERIFIED
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+WALLET
+========================= -->
+
+<section class="wallet-card">
+
+<p>Total Wallet Balance</p>
+
+<h1 id="walletBalance">
+UGX 0
 </h1>
 
-<p>
+<div class="wallet-actions">
 
-Share your referral link with friends.
+<button id="depositBtn">
+<i class="fas fa-download"></i>
+Deposit
+</button>
 
-When they purchase an <strong>R-Series Machine</strong>,
-you automatically receive
-<strong>15 Raffle Chances</strong>.
+<button id="withdrawBtn">
+<i class="fas fa-upload"></i>
+Withdraw
+</button>
 
-</p>
+<button id="machineBtn">
+<i class="fas fa-microchip"></i>
+Machines
+</button>
+
+</div>
 
 </section>
 
-<!-- ==========================
-STATISTICS
-========================== -->
+<!-- =========================
+QUICK STATS
+========================= -->
 
-<section class="statsGrid">
+<section class="stats-grid">
 
-<div class="glassCard">
+<div class="stat-card">
 
-<p>
-
-Total Referrals
-
-</p>
-
-<h2 id="totalReferrals">
-
+<h2 id="activeMachines">
 0
-
 </h2>
+
+<p>Active Machines</p>
 
 </div>
 
-<div class="glassCard">
+<div class="stat-card">
 
-<p>
-
-Active Referrals
-
-</p>
-
-<h2 id="activeReferrals">
-
+<h2 id="teamMembers">
 0
-
 </h2>
+
+<p>Team Members</p>
 
 </div>
 
-<div class="glassCard">
+<div class="stat-card">
 
-<p>
-
-Referral Earnings
-
-</p>
-
-<h2 id="referralIncome">
-
+<h2 id="totalProfit">
 UGX 0
-
 </h2>
+
+<p>Total Profit</p>
 
 </div>
 
-<div class="glassCard">
+<div class="stat-card">
 
-<p>
-
-Raffle Chances
-
-</p>
-
-<h2 id="raffleChances">
-
-0
-
+<h2 id="totalInvested">
+UGX 0
 </h2>
+
+<p>Total Invested</p>
 
 </div>
 
 </section>
 
-<!-- ==========================
-MY REFERRAL LINK
-========================== -->
+  <!-- =========================
+REFERRAL PROGRAM
+========================= -->
 
-<section class="glassSection">
+<section class="card">
 
-<h3>
+<div class="card-header">
 
-🔗 My Referral Link
+<h3>Referral Program</h3>
 
-</h3>
+<span class="reward-tag">Earn Rewards</span>
 
-<div class="referralBox">
+</div>
+
+<div id="referralLocked">
+
+<div class="locked-box">
+
+<i class="fas fa-lock lock-icon"></i>
+
+<h4>Referral Locked</h4>
+
+<p>
+Purchase your first mining machine to unlock your referral code and start earning referral bonuses.
+</p>
+
+<button id="buyFirstMachineBtn">
+Buy First Machine
+</button>
+
+</div>
+
+</div>
+
+<div id="referralContent" style="display:none;">
+
+<div class="input-group">
+
+<label>Your Referral Code</label>
+
+<div class="copy-group">
+
+<input
+type="text"
+id="referralCode"
+readonly>
+
+<button id="copyCodeBtn">
+<i class="fas fa-copy"></i>
+</button>
+
+</div>
+
+</div>
+
+<div class="input-group">
+
+<label>Your Referral Link</label>
+
+<div class="copy-group">
 
 <input
 type="text"
 id="referralLink"
 readonly>
 
-<button
-id="copyReferral">
+<button id="copyLinkBtn">
+<i class="fas fa-copy"></i>
+</button>
 
-Copy
+</div>
+
+</div>
+
+<div class="share-row">
+
+<button id="shareReferralBtn">
+
+<i class="fas fa-share-alt"></i>
+
+Share
+
+</button>
+
+<button id="inviteFriendsBtn">
+
+<i class="fas fa-user-plus"></i>
+
+Invite
 
 </button>
 
 </div>
 
-<button
-id="shareReferral"
-class="shareButton">
+<div class="team-grid">
 
-Share Referral Link
+<div class="team-card">
+
+<h2 id="totalTeam">0</h2>
+
+<p>Total Team</p>
+
+</div>
+
+<div class="team-card">
+
+<h2 id="activeTeam">0</h2>
+
+<p>Active Team</p>
+
+</div>
+
+<div class="team-card">
+
+<h2 id="referralBonus">UGX 0</h2>
+
+<p>Bonus Earned</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+PERSONAL INFORMATION
+========================= -->
+
+<section class="card">
+
+<div class="card-header">
+
+<h3>Personal Information</h3>
+
+<button id="editProfileBtn">
+
+<i class="fas fa-pen"></i>
 
 </button>
 
-  </section><!-- ==========================
-REFERRAL REWARDS
-========================== -->
+</div>
 
-<section class="glassSection">
+<div class="info-list">
 
-<h3>
+<div class="info-row">
 
-🎁 Referral Rewards
+<span>Phone Number</span>
 
-</h3>
-
-<div class="rewardCard">
-
-<div class="rewardIcon">
-
-🎟️
+<strong id="phoneNumber">
+Not Added
+</strong>
 
 </div>
 
-<div class="rewardInfo">
+<div class="info-row">
 
-<h4>
+<span>Email Address</span>
 
-15 Raffle Chances
-
-</h4>
-
-<p>
-
-When your referred member purchases
-an R-Series Machine.
-
-</p>
+<strong id="emailAddress">
+Loading...
+</strong>
 
 </div>
 
-</div>
+<div class="info-row">
 
-<div class="rewardCard">
+<span>Country</span>
 
-<div class="rewardIcon">
-
-💰
-
-</div>
-
-<div class="rewardInfo">
-
-<h4>
-
-Referral Commission
-
-</h4>
-
-<p>
-
-Referral income is automatically
-credited to your account.
-
-</p>
+<strong id="country">
+Not Set
+</strong>
 
 </div>
 
-</div>
+<div class="info-row">
 
-</section>
+<span>Gender</span>
 
-<!-- ==========================
-MY REFERRALS
-========================== -->
-
-<section class="glassSection">
-
-<div class="sectionHeader">
-
-<h3>
-
-👥 My Referrals
-
-</h3>
-
-<span id="referralCount">
-
-0
-
-</span>
+<strong id="gender">
+Not Set
+</strong>
 
 </div>
 
-<div id="referralList">
+<div class="info-row">
 
-<div class="loadingCard">
+<span>Date of Birth</span>
 
-No referrals yet.
+<strong id="dob">
+Not Set
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>Member Since</span>
+
+<strong id="memberSince">
+Loading...
+</strong>
 
 </div>
 
@@ -294,27 +400,127 @@ No referrals yet.
 
 </section>
 
-<!-- ==========================
-TOP REFERRERS
-========================== -->
+<!-- =========================
+ACCOUNT SECURITY
+========================= -->
 
-<section class="glassSection">
+<section class="card">
 
-<div class="sectionHeader">
+<div class="card-header">
 
-<h3>
-
-🏆 Top Referrers
-
-</h3>
+<h3>Account Security</h3>
 
 </div>
 
-<div id="leaderboard">
+<button id="changePasswordBtn" class="menu-btn">
 
-<div class="loadingCard">
+<i class="fas fa-lock"></i>
 
-Leaderboard will appear here.
+Change Password
+
+</button>
+
+<button id="changePinBtn" class="menu-btn">
+
+<i class="fas fa-key"></i>
+
+Transaction PIN
+
+</button>
+
+<button id="verifyKycBtn" class="menu-btn">
+
+<i class="fas fa-shield-alt"></i>
+
+Verify KYC
+
+</button>
+
+<button id="notificationSettingsBtn" class="menu-btn">
+
+<i class="fas fa-bell"></i>
+
+Notification Settings
+
+</button>
+
+</section>
+
+<!-- =========================
+INVESTMENT SUMMARY
+========================= -->
+
+<section class="card">
+
+<div class="card-header">
+
+<h3>Investment Summary</h3>
+
+</div>
+
+<div class="investment-grid">
+
+<div class="investment-item">
+
+<h2 id="runningMachines">0</h2>
+
+<p>Running Machines</p>
+
+</div>
+
+<div class="investment-item">
+
+<h2 id="completedMachines">0</h2>
+
+<p>Completed</p>
+
+</div>
+
+<div class="investment-item">
+
+<h2 id="dailyIncome">UGX 0</h2>
+
+<p>Total Earned</p>
+
+</div>
+
+<div class="investment-item">
+
+<h2 id="nextProfitTime">--:--</h2>
+
+<p>Next Profit</p>
+
+</div>
+
+</div>
+
+  </section>
+
+  <!-- =========================
+RECENT NOTIFICATIONS
+========================= -->
+
+<section class="card">
+
+<div class="card-header">
+
+<h3>Recent Notifications</h3>
+
+<button id="viewAllNotifications">
+
+View All
+
+</button>
+
+</div>
+
+<div id="notificationContainer">
+
+<div class="empty-box">
+
+<i class="fas fa-bell-slash"></i>
+
+<p>No notifications available.</p>
 
 </div>
 
@@ -322,105 +528,143 @@ Leaderboard will appear here.
 
 </section>
 
-<!-- ==========================
-REFERRAL NOTICE
-========================== -->
+<!-- =========================
+SETTINGS POPUP
+========================= -->
 
-<section class="glassSection">
+<div id="popupOverlay" class="popup-overlay"></div>
 
-<h3>
+<div id="settingsPopup" class="popup">
 
-📢 Important Notice
+<div class="popup-header">
 
-</h3>
+<h3>Settings</h3>
 
-<p>
+<button id="closePopup">
 
-Invite your friends using your personal referral link.
+<i class="fas fa-times"></i>
 
-Whenever a referred member purchases an
-<strong>R-Series Machine</strong>,
-you automatically receive
-<strong>15 Raffle Chances</strong>.
+</button>
 
-Your raffle chances are added automatically,
-so there is nothing else you need to do.
+</div>
 
-</p>
+<div class="popup-content">
 
-</section>
+<button id="editProfilePopup" class="popup-btn">
 
-<!-- ==========================
+<i class="fas fa-user-edit"></i>
+
+Edit Profile
+
+</button>
+
+<button id="changePhotoPopup" class="popup-btn">
+
+<i class="fas fa-camera"></i>
+
+Change Profile Photo
+
+</button>
+
+<button id="changePasswordPopup" class="popup-btn">
+
+<i class="fas fa-lock"></i>
+
+Change Password
+
+</button>
+
+<button id="transactionPinPopup" class="popup-btn">
+
+<i class="fas fa-key"></i>
+
+Transaction PIN
+
+</button>
+
+<button id="helpSupportPopup" class="popup-btn">
+
+<i class="fas fa-headset"></i>
+
+Help & Support
+
+</button>
+
+<button id="aboutPopup" class="popup-btn">
+
+<i class="fas fa-circle-info"></i>
+
+About Marathon Digital Hub
+
+</button>
+
+<button id="logoutBtn" class="popup-btn logout">
+
+<i class="fas fa-right-from-bracket"></i>
+
+Logout
+
+</button>
+
+</div>
+
+</div>
+
+<!-- =========================
+LOADING SCREEN
+========================= -->
+
+<div id="loadingScreen" class="loading-screen">
+
+<div class="spinner"></div>
+
+<p>Loading Profile...</p>
+
+</div>
+
+<!-- =========================
 BOTTOM NAVIGATION
-========================== -->
+========================= -->
 
-<nav class="bottomNav">
+<nav class="bottom-nav">
 
 <a href="dashboard.html">
 
-🏠
+<i class="fas fa-house"></i>
 
-<span>
-
-Home
-
-</span>
+<span>Home</span>
 
 </a>
 
 <a href="machines.html">
 
-⚙️
+<i class="fas fa-microchip"></i>
 
-<span>
-
-Machines
-
-</span>
+<span>Machines</span>
 
 </a>
 
-<a href="referral.html" class="active">
+<a href="wallet.html">
 
-👥
+<i class="fas fa-wallet"></i>
 
-<span>
-
-Referral
-
-</span>
+<span>Wallet</span>
 
 </a>
 
-<a href="income.html">
+<a href="profile.html" class="active">
 
-📈
+<i class="fas fa-user"></i>
 
-<span>
-
-Income
-
-</span>
-
-</a>
-
-<a href="profile.html">
-
-👤
-
-<span>
-
-Profile
-
-</span>
+<span>Profile</span>
 
 </a>
 
 </nav>
 
-<script src="referral.js"></script>
-
 </div>
+
+<script src="profile.js"></script>
 
 </body>
 
