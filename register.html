@@ -1,248 +1,263 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub - Register</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+<title>Create Account | Marathon Digital Hub</title>
 
-body{
-background:#020b1f;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-}
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 
-.container{
-width:100%;
-max-width:430px;
-background:#07152f;
-padding:25px;
-border-radius:25px;
-border:1px solid rgba(0,200,255,.3);
-box-shadow:0 0 25px rgba(0,200,255,.2);
-}
+<link rel="stylesheet" href="register.css">
 
-.logo{
-text-align:center;
-font-size:28px;
-font-weight:bold;
-color:#00c8ff;
-margin-bottom:10px;
-}
+</head>
 
-.subtitle{
-text-align:center;
-color:white;
-margin-bottom:25px;
-opacity:.8;
-}
+<body>
 
-.input-group{
-margin-bottom:15px;
-}
+<div class="background"></div>
 
-input{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#0b2148;
-color:white;
-font-size:15px;
-}
+<div class="container">
 
-input:focus{
-outline:1px solid #00c8ff;
-}
+<div class="logo">
 
-.checkbox{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:15px;
-color:white;
-}
+<h1>MARATHON</h1>
 
-.checkbox input{
-width:auto;
-}
+<p>Digital Hub</p>
 
-button{
-width:100%;
-padding:15px;
-border:none;
-border-radius:12px;
-background:#00c8ff;
-color:black;
-font-weight:bold;
-font-size:16px;
-cursor:pointer;
-}
+</div>
 
-#error{
-color:#ff6b6b;
-text-align:center;
-margin-bottom:10px;
-}
+<h2>Create Account</h2>
 
-#success{
-color:#66ff99;
-text-align:center;
-margin-bottom:10px;
-}
+<p class="subtitle">
 
-.login-link{
-text-align:center;
-margin-top:15px;
-color:white;
-}
+Join the world's fastest growing crypto mining community.
 
-.login-link a{
-color:#00c8ff;
-text-decoration:none;
-}
+</p>
 
-</style></head><body><div class="container"><div class="logo">
-Marathon Digital Hub
-</div><div class="subtitle">
-Create Your Account
-</div><div id="error"></div>
-<div id="success"></div><div class="input-group">
-<input type="text" id="fullname" placeholder="Full Name">
-</div><div class="input-group">
-<input type="text" id="phone" placeholder="Phone Number">
-</div><div class="input-group">
-<input type="email" id="email" placeholder="Email Address">
-</div><div class="input-group">
-<input type="password" id="password" placeholder="Password">
-</div><div class="input-group">
-<input type="password" id="confirmPassword" placeholder="Confirm Password">
-</div><div class="input-group">
-<input type="text" id="referral" placeholder="Referral Code (Optional)">
-</div><div class="checkbox">
-<input type="checkbox" id="showPasswords">
-<label for="showPasswords">Show Passwords</label>
-</div><button id="registerBtn">
-CREATE ACCOUNT
-</button><div class="login-link">
+<div id="messageBox"></div>
+
+<form id="registerForm">
+
+<div class="input-group">
+
+<label>Full Name</label>
+
+<input
+type="text"
+id="fullname"
+placeholder="Enter your full name"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Phone Number</label>
+
+<input
+type="tel"
+id="phone"
+placeholder="+256700000000"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Email Address</label>
+
+<input
+type="email"
+id="email"
+placeholder="example@email.com"
+required>
+
+</div>
+
+<div class="input-group">
+
+<label>Referral Code</label>
+
+<input
+type="text"
+id="referral"
+placeholder="Referral Code"
+required>
+
+<small class="hint">
+
+A valid referral code is required to create an account.
+
+</small>
+
+</div>
+
+  <!-- PASSWORD -->
+
+<div class="input-group">
+
+<label>Password</label>
+
+<input
+type="password"
+id="password"
+placeholder="Create a strong password"
+required>
+
+<div class="strength">
+
+<div id="strengthBar"></div>
+
+</div>
+
+<small id="strengthText">
+
+Password Strength
+
+</small>
+
+</div>
+
+<!-- CONFIRM PASSWORD -->
+
+<div class="input-group">
+
+<label>Confirm Password</label>
+
+<input
+type="password"
+id="confirmPassword"
+placeholder="Confirm your password"
+required>
+
+</div>
+
+<!-- SHOW PASSWORD -->
+
+<div class="checkbox">
+
+<label>
+
+<input
+type="checkbox"
+id="showPassword">
+
+Show Passwords
+
+</label>
+
+</div>
+
+<!-- PASSWORD REQUIREMENTS -->
+
+<div class="requirements">
+
+<p id="ruleLength">❌ At least 8 characters</p>
+
+<p id="ruleUpper">❌ One uppercase letter</p>
+
+<p id="ruleLower">❌ One lowercase letter</p>
+
+<p id="ruleNumber">❌ One number</p>
+
+<p id="ruleSpecial">❌ One special character</p>
+
+</div>
+
+<!-- TERMS -->
+
+<div class="checkbox">
+
+<label>
+
+<input
+type="checkbox"
+id="agreeTerms"
+required>
+
+I agree to the Terms & Conditions and Privacy Policy.
+
+</label>
+
+</div>
+
+<!-- REGISTER BUTTON -->
+
+<button
+type="submit"
+id="registerBtn">
+
+Create Account
+
+  </button>
+
+  <!-- LOGIN -->
+
+<div class="login-box">
+
+<p>
+
 Already have an account?
-<a href="login.html">Login</a>
-</div></div><script src="supabase-config.js"></script><script>
 
-document.getElementById("showPasswords")
-.addEventListener("change", function(){
+<a href="login.html">
 
-const type = this.checked ? "text" : "password";
+Login
 
-document.getElementById("password").type = type;
-document.getElementById("confirmPassword").type = type;
+</a>
 
-});
+</p>
 
-document.getElementById("registerBtn")
-.addEventListener("click", async function(){
+</div>
 
-const fullname =
-document.getElementById("fullname").value.trim();
+<!-- SECURITY NOTICE -->
 
-const phone =
-document.getElementById("phone").value.trim();
+<div class="security-box">
 
-const email =
-document.getElementById("email").value.trim();
+<div class="security-item">
 
-const password =
-document.getElementById("password").value;
+🛡️ Your information is protected with secure encryption.
 
-const confirmPassword =
-document.getElementById("confirmPassword").value;
+</div>
 
-const referral =
-document.getElementById("referral").value.trim();
+<div class="security-item">
 
-document.getElementById("error").innerText = "";
-document.getElementById("success").innerText = "";
+🔗 Registration requires a valid Marathon Digital Hub referral code.
 
-if(!fullname || !phone || !email || !password || !confirmPassword){
+</div>
 
-document.getElementById("error").innerText =
-"Please fill all required fields";
+<div class="security-item">
 
-return;
-}
+⚡ Strong passwords help keep your account safe.
 
-if(password.length < 8){
+</div>
 
-document.getElementById("error").innerText =
-"Password must be at least 8 characters";
+</div>
 
-return;
-}
+</form>
 
-if(password !== confirmPassword){
+</div>
 
-document.getElementById("error").innerText =
-"Passwords do not match";
+<!-- LOADING -->
 
-return;
-}
+<div id="loadingScreen" class="loading-screen">
 
-try{
+<div class="loader"></div>
 
-const { data, error } =
-await supabaseClient.auth.signUp({
-email: email,
-password: password
-});
+<p>
 
-if(error){
-throw error;
-}
+Creating your account...
 
-if(!data.user){
-throw new Error("Registration failed");
-}
+</p>
 
-const { error: profileError } =
-await supabaseClient
-.from("profiles")
-.insert([
-{
-id: data.user.id,
-fullname: fullname,
-phone: phone,
-email: email,
-wallet_balance: 0,
-referral_code: referral
-}
-]);
+</div>
 
-if(profileError){
-throw profileError;
-}
+<!-- JAVASCRIPT -->
 
-document.getElementById("success").innerText =
-"Account Created Successfully";
+<script src="register.js"></script>
 
-setTimeout(function(){
-window.location.href = "login.html";
-},1500);
+</body>
 
-}catch(err){
-
-document.getElementById("error").innerText =
-err.message;
-
-}
-
-});
-
-</script></body>
 </html>
