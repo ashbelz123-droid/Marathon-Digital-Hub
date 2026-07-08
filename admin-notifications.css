@@ -1,8 +1,3 @@
-/* ==========================================
-MARATHON DIGITAL HUB
-ADMIN MACHINES
-========================================== */
-
 *{
 margin:0;
 padding:0;
@@ -10,658 +5,139 @@ box-sizing:border-box;
 font-family:Arial,sans-serif;
 }
 
-:root{
-
---bg:#050B18;
---card:#08142D;
---card2:#102040;
---primary:#00C8FF;
---success:#00FF88;
---danger:#FF4B4B;
---warning:#FFD54A;
---text:#FFFFFF;
---text2:#AFC7E8;
---border:rgba(255,255,255,.08);
-
-}
-
 body{
-
-background:var(--bg);
-color:var(--text);
-
+background:#050B18;
+color:#fff;
 }
 
-/* =============================
-CONTAINER
-============================= */
+.header{
+height:70px;
+background:#08142d;
+display:flex;
+align-items:center;
+padding:0 15px;
+box-shadow:0 2px 10px rgba(0,0,0,.3);
+}
+
+.backBtn{
+width:42px;
+height:42px;
+border:none;
+border-radius:50%;
+background:#111f3d;
+color:#fff;
+font-size:22px;
+cursor:pointer;
+margin-right:15px;
+}
+
+.header h2{
+font-size:20px;
+}
 
 .container{
-
-max-width:1400px;
-
-margin:auto;
-
 padding:20px;
-
 }
 
-/* =============================
-HEADER
-============================= */
-
-.topHeader{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:25px;
-
-flex-wrap:wrap;
-
-gap:15px;
-
-}
-
-.topHeader h1{
-
-font-size:34px;
-
-font-weight:700;
-
-}
-
-.topHeader p{
-
-color:var(--text2);
-
-margin-top:6px;
-
-}
-
-#openForm{
-
-background:linear-gradient(90deg,#00C8FF,#00FF88);
-
-border:none;
-
-padding:14px 26px;
-
-border-radius:14px;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-color:#001018;
-
-transition:.25s;
-
-}
-
-#openForm:hover{
-
-transform:translateY(-2px);
-
-}
-
-/* =============================
-STATISTICS
-============================= */
-
-.stats{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:18px;
-
-margin-bottom:25px;
-
-}
-
-.statCard{
-
-background:var(--card);
-
-border:1px solid var(--border);
-
+.card{
+background:#08142d;
+padding:20px;
 border-radius:18px;
-
-padding:22px;
-
-}
-
-.statCard h2{
-
-font-size:34px;
-
-color:var(--success);
-
-margin-bottom:8px;
-
-}
-
-.statCard p{
-
-color:var(--text2);
-
-font-size:15px;
-
-}
-
-/* =============================
-SEARCH
-============================= */
-
-.searchSection{
-
-margin-bottom:25px;
-
-}
-
-.searchSection input{
-
-width:100%;
-
-padding:16px;
-
-border:none;
-
-outline:none;
-
-border-radius:14px;
-
-background:var(--card);
-
-color:white;
-
-font-size:16px;
-
-border:1px solid var(--border);
-
-}
-
-/* =============================
-FORM
-============================= */
-
-.machineForm{
-
-display:none;
-
-background:var(--card);
-
-border-radius:20px;
-
-padding:25px;
-
-margin-bottom:30px;
-
-border:1px solid var(--border);
-
-}
-
-.machineForm h2{
-
 margin-bottom:20px;
-
 }
 
-.machineForm input,
-
-.machineForm select{
-
-width:100%;
-
-padding:15px;
-
-margin-bottom:15px;
-
-border:none;
-
-outline:none;
-
-background:var(--card2);
-
-color:white;
-
-border-radius:12px;
-
-font-size:15px;
-
-  }
-
-/* ==========================================
-IMAGE UPLOAD
-========================================== */
-
-.uploadArea{
-
-margin:20px 0;
-
+.card h3{
+color:#00ff88;
+margin-bottom:20px;
 }
 
-.uploadButton{
-
+label{
 display:block;
-
-width:100%;
-
-padding:16px;
-
-text-align:center;
-
-background:#102040;
-
-border:2px dashed #00C8FF;
-
-border-radius:14px;
-
-cursor:pointer;
-
-color:#00C8FF;
-
-font-weight:bold;
-
-transition:.3s;
-
-}
-
-.uploadButton:hover{
-
-background:#16305A;
-
-}
-
-#previewImage{
-
-width:100%;
-
-height:220px;
-
-object-fit:cover;
-
-border-radius:14px;
-
 margin-top:15px;
-
-display:none;
-
-background:#08142D;
-
+margin-bottom:8px;
+font-size:14px;
 }
 
-.vipRow{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-margin:15px 0;
-
-font-size:16px;
-
-}
-
-.vipRow input{
-
-width:20px;
-
-height:20px;
-
-}
-
-.formButtons{
-
-display:flex;
-
-gap:15px;
-
-margin-top:20px;
-
-}
-
-#saveMachine,
-
-#cancelMachine{
-
-flex:1;
-
-padding:15px;
-
+input,
+textarea,
+select{
+width:100%;
+background:#111f3d;
 border:none;
-
+outline:none;
 border-radius:12px;
+padding:14px;
+color:#fff;
+font-size:15px;
+}
 
-font-size:16px;
+textarea{
+resize:none;
+}
 
-font-weight:bold;
-
+select{
 cursor:pointer;
-
 }
 
-#saveMachine{
-
-background:#00FF88;
-
-color:#001018;
-
-}
-
-#cancelMachine{
-
-background:#FF4B4B;
-
-color:white;
-
-}
-
-/* ==========================================
-MACHINE GRID
-========================================== */
-
-.sectionTitle{
-
-margin:30px 0 20px;
-
-font-size:28px;
-
-}
-
-.machineGrid{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
-
-gap:20px;
-
-}
-
-.machineCard{
-
-background:#08142D;
-
-border-radius:18px;
-
-overflow:hidden;
-
-border:1px solid rgba(255,255,255,.08);
-
-transition:.3s;
-
-}
-
-.machineCard:hover{
-
-transform:translateY(-5px);
-
-}
-
-.machineCard img{
-
-width:100%;
-
-height:220px;
-
-object-fit:cover;
-
-background:#102040;
-
-}
-
-.machineInfo{
-
-padding:20px;
-
-}
-
-.machineInfo h3{
-
-font-size:24px;
-
-margin-bottom:10px;
-
-color:#00FF88;
-
-}
-
-.machineInfo p{
-
-margin:8px 0;
-
-color:#C8D7F0;
-
-}
-
-.badges{
-
+.switchBox{
 display:flex;
-
-gap:10px;
-
-margin:15px 0;
-
-flex-wrap:wrap;
-
-}
-
-.badge{
-
-padding:6px 12px;
-
-border-radius:20px;
-
-font-size:13px;
-
-font-weight:bold;
-
-}
-
-.badge.vip{
-
-background:#FFD54A;
-
-color:#111;
-
-}
-
-.badge.active{
-
-background:#00FF88;
-
-color:#001018;
-
-}
-
-.badge.disabled{
-
-background:#FF4B4B;
-
-color:#FFF;
-
-}
-
-.cardButtons{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:10px;
-
-margin-top:20px;
-
-}
-
-.cardButtons button{
-
-padding:12px;
-
-border:none;
-
-border-radius:10px;
-
-cursor:pointer;
-
-font-weight:bold;
-
-}
-
-.editBtn{
-
-background:#00C8FF;
-
-color:#001018;
-
-}
-
-.deleteBtn{
-
-background:#FF4B4B;
-
-color:white;
-
-}
-
-.enableBtn{
-
-background:#00FF88;
-
-color:#001018;
-
-}
-
-.disableBtn{
-
-background:#666;
-
-color:white;
-
-}
-
-/* ==========================================
-POPUPS
-========================================== */
-
-.popup{
-
-display:none;
-
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:100%;
-
-background:rgba(0,0,0,.65);
-
-justify-content:center;
-
+justify-content:space-between;
 align-items:center;
-
-z-index:999;
-
-}
-
-.popupContent{
-
-background:#08142D;
-
-padding:25px;
-
-border-radius:18px;
-
-width:90%;
-
-max-width:420px;
-
-text-align:center;
-
-}
-
-.popupButtons{
-
-display:flex;
-
-gap:12px;
-
 margin-top:20px;
-
 }
 
-.popupButtons button,
+.switchBox input{
+width:22px;
+height:22px;
+accent-color:#00ff88;
+}
 
-#closePopup{
-
-flex:1;
-
-padding:12px;
-
+#sendBtn{
+width:100%;
+height:52px;
+margin-top:25px;
 border:none;
-
-border-radius:10px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-#confirmDelete{
-
-background:#FF4B4B;
-
-color:white;
-
-}
-
-#cancelDelete,
-
-#closePopup{
-
-background:#00C8FF;
-
+border-radius:12px;
+background:#00ff88;
 color:#001018;
-
+font-size:17px;
+font-weight:bold;
+cursor:pointer;
 }
 
-@media(max-width:768px){
+#statusMessage{
+margin-top:15px;
+text-align:center;
+color:#00ff88;
+}
 
-.formButtons,
+.listTitle{
+margin:20px 0 10px;
+font-size:20px;
+}
 
-.popupButtons{
-
+#notificationList{
+display:flex;
 flex-direction:column;
-
+gap:12px;
 }
 
-.machineGrid{
-
-grid-template-columns:1fr;
-
+.notification-card{
+background:#08142d;
+padding:15px;
+border-radius:14px;
 }
 
-.topHeader{
-
-flex-direction:column;
-
-align-items:flex-start;
-
+.notification-card h4{
+margin-bottom:8px;
+color:#00ff88;
 }
 
+.notification-card p{
+color:#c7d4e8;
+margin-bottom:10px;
+}
+
+.notification-card small{
+color:#8da5c5;
   }
