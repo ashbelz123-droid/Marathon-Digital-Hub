@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
 <meta charset="UTF-8">
@@ -16,57 +15,43 @@
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
 
-<div class="background-glow"></div>
+<div class="background"></div>
 
 <div class="page">
 
-<!-- ===========================
-HEADER
-=========================== -->
+<!-- HEADER -->
 
 <header class="header glass">
 
 <button id="backBtn" class="icon-btn">
-
 <i class="fas fa-arrow-left"></i>
-
 </button>
 
-<div class="header-info">
+<div>
 
 <h2>My Profile</h2>
 
-<p>
-
-Manage your Marathon Digital Hub account
-
-</p>
+<p>Marathon Digital Hub</p>
 
 </div>
 
 <button id="settingsBtn" class="icon-btn">
-
 <i class="fas fa-gear"></i>
-
 </button>
 
 </header>
 
-<!-- ===========================
-PROFILE CARD
-=========================== -->
+<!-- PROFILE CARD -->
 
 <section class="profile-card glass">
 
-<div class="profile-cover"></div>
+<div class="cover"></div>
 
-<div class="avatar-wrapper">
+<div class="avatar-box">
 
 <img
 id="profileAvatar"
@@ -74,9 +59,7 @@ src="images/avatar.png"
 alt="Profile">
 
 <button id="changeAvatar">
-
 <i class="fas fa-camera"></i>
-
 </button>
 
 <input
@@ -87,51 +70,41 @@ hidden>
 
 </div>
 
-<div class="profile-details">
+<div class="profile-content">
 
 <h2 id="fullName">
-
 Loading...
-
 </h2>
 
 <p id="email">
-
 Loading...
-
 </p>
 
-<div class="badge-row">
+<div class="badges">
 
 <span id="membershipBadge">
-
 STANDARD
-
 </span>
 
 <span id="statusBadge">
-
 ACTIVE
-
 </span>
 
 <span id="kycBadge">
-
 NOT VERIFIED
-
 </span>
 
 </div>
 
-<div class="level-card">
+<div class="level">
 
-<span>Level</span>
+Level
 
-<h3 id="userLevel">
+<span id="userLevel">
 
 1
 
-</h3>
+</span>
 
 </div>
 
@@ -139,17 +112,11 @@ NOT VERIFIED
 
 </section>
 
-<!-- ===========================
-WALLET CARD
-=========================== -->
+<!-- WALLET -->
 
 <section class="wallet-card">
 
-<p>
-
-Wallet Balance
-
-</p>
+<p>Wallet Balance</p>
 
 <h1 id="walletBalance">
 
@@ -185,83 +152,59 @@ Machines
 
 </div>
 
-</section>
+  </section>
 
-<!-- ===========================
+ <!-- ==========================================
 QUICK STATISTICS
-=========================== -->
+========================================== -->
 
 <section class="stats-grid">
 
 <div class="stat-card glass">
 
-<h2 id="activeMachines">
+<i class="fas fa-microchip"></i>
 
-0
+<h2 id="activeMachines">0</h2>
 
-</h2>
-
-<p>
-
-Active Machines
-
-</p>
+<p>Active Machines</p>
 
 </div>
 
 <div class="stat-card glass">
 
-<h2 id="completedMachines">
+<i class="fas fa-circle-check"></i>
 
-0
+<h2 id="completedMachines">0</h2>
 
-</h2>
-
-<p>
-
-Completed Machines
-
-</p>
+<p>Completed Machines</p>
 
 </div>
 
 <div class="stat-card glass">
 
-<h2 id="teamMembers">
+<i class="fas fa-users"></i>
 
-0
+<h2 id="teamMembers">0</h2>
 
-</h2>
-
-<p>
-
-Team Members
-
-</p>
+<p>Team Members</p>
 
 </div>
 
 <div class="stat-card glass">
 
-<h2 id="referralBonus">
+<i class="fas fa-gift"></i>
 
-UGX 0
+<h2 id="referralBonus">UGX 0</h2>
 
-</h2>
-
-<p>
-
-Referral Bonus
-
-</p>
+<p>Referral Bonus</p>
 
 </div>
 
-  </section>
+</section>
 
-  <!-- ===========================
+<!-- ==========================================
 INVESTMENT SUMMARY
-=========================== -->
+========================================== -->
 
 <section class="card glass">
 
@@ -325,9 +268,9 @@ UGX 0
 
 </section>
 
-<!-- ===========================
+<!-- ==========================================
 REFERRAL CENTER
-=========================== -->
+========================================== -->
 
 <section class="card glass">
 
@@ -337,11 +280,13 @@ REFERRAL CENTER
 
 <span class="reward-badge">
 
-Referral Rewards
+Earn Rewards
 
 </span>
 
 </div>
+
+<!-- LOCKED -->
 
 <div id="referralLocked">
 
@@ -353,7 +298,7 @@ Referral Rewards
 
 <p>
 
-Buy your first mining machine to unlock your referral system and start earning commissions.
+Purchase your first mining machine to unlock your referral link and start earning referral commissions.
 
 </p>
 
@@ -366,6 +311,8 @@ Buy First Machine
 </div>
 
 </div>
+
+<!-- UNLOCKED -->
 
 <div id="referralContent" style="display:none;">
 
@@ -423,7 +370,7 @@ Share
 
 <i class="fas fa-user-plus"></i>
 
-Invite Friends
+Invite
 
 </button>
 
@@ -433,11 +380,7 @@ Invite Friends
 
 <div class="team-card">
 
-<h2 id="totalTeam">
-
-0
-
-</h2>
+<h2 id="totalTeam">0</h2>
 
 <p>Total Team</p>
 
@@ -445,11 +388,7 @@ Invite Friends
 
 <div class="team-card">
 
-<h2 id="activeTeam">
-
-0
-
-</h2>
+<h2 id="activeTeam">0</h2>
 
 <p>Active Team</p>
 
@@ -463,7 +402,7 @@ UGX 0
 
 </h2>
 
-<p>Referral Earnings</p>
+<p>Team Earnings</p>
 
 </div>
 
@@ -471,11 +410,11 @@ UGX 0
 
 </div>
 
-</section>
+  </section>
 
-<!-- ===========================
+  <!-- ==========================================
 PERSONAL INFORMATION
-=========================== -->
+========================================== -->
 
 <section class="card glass">
 
@@ -483,7 +422,7 @@ PERSONAL INFORMATION
 
 <h3>Personal Information</h3>
 
-<button id="editProfileBtn">
+<button id="editProfileBtn" class="edit-btn">
 
 <i class="fas fa-pen"></i>
 
@@ -494,120 +433,42 @@ PERSONAL INFORMATION
 <div class="info-list">
 
 <div class="info-item">
-
-<span>Phone Number</span>
-
-<strong id="phoneNumber">
-
-Loading...
-
-</strong>
-
+<span>Phone</span>
+<strong id="phoneNumber">Loading...</strong>
 </div>
 
 <div class="info-item">
-
-<span>Email Address</span>
-
-<strong id="emailAddress">
-
-Loading...
-
-</strong>
-
+<span>Email</span>
+<strong id="emailAddress">Loading...</strong>
 </div>
 
 <div class="info-item">
-
 <span>Country</span>
-
-<strong id="country">
-
-Not Set
-
-</strong>
-
+<strong id="country">Not Set</strong>
 </div>
 
 <div class="info-item">
-
 <span>Gender</span>
-
-<strong id="gender">
-
-Not Set
-
-</strong>
-
+<strong id="gender">Not Set</strong>
 </div>
 
 <div class="info-item">
-
 <span>Date of Birth</span>
-
-<strong id="dateOfBirth">
-
-Not Set
-
-</strong>
-
+<strong id="dob">Not Set</strong>
 </div>
 
 <div class="info-item">
-
 <span>Member Since</span>
-
-<strong id="memberSince">
-
-Loading...
-
-</strong>
-
-</div>
-
-<div class="info-item">
-
-<span>Last Login</span>
-
-<strong id="lastLogin">
-
-Never
-
-</strong>
-
-</div>
-
-<div class="info-item">
-
-<span>Timezone</span>
-
-<strong id="timezone">
-
-Africa/Kampala
-
-</strong>
-
-</div>
-
-<div class="info-item">
-
-<span>Language</span>
-
-<strong id="language">
-
-English
-
-</strong>
-
+<strong id="memberSince">Loading...</strong>
 </div>
 
 </div>
 
-  </section>
+</section>
 
-  <!-- ===========================
+<!-- ==========================================
 SECURITY CENTER
-=========================== -->
+========================================== -->
 
 <section class="card glass">
 
@@ -618,40 +479,50 @@ SECURITY CENTER
 </div>
 
 <button class="menu-btn" id="verifyEmailBtn">
-<i class="fas fa-envelope-circle-check"></i>
-<span>Verify Email</span>
+
+<i class="fas fa-envelope"></i>
+
+Verify Email
+
 </button>
 
 <button class="menu-btn" id="verifyPhoneBtn">
+
 <i class="fas fa-mobile-screen"></i>
-<span>Verify Phone</span>
+
+Verify Phone
+
 </button>
 
 <button class="menu-btn" id="changePasswordBtn">
+
 <i class="fas fa-lock"></i>
-<span>Change Password</span>
+
+Change Password
+
 </button>
 
 <button class="menu-btn" id="changePinBtn">
+
 <i class="fas fa-key"></i>
-<span>Transaction PIN</span>
+
+Transaction PIN
+
 </button>
 
 <button class="menu-btn" id="kycBtn">
-<i class="fas fa-id-card"></i>
-<span>Complete KYC</span>
-</button>
 
-<button class="menu-btn" id="notificationBtn">
-<i class="fas fa-bell"></i>
-<span>Notification Settings</span>
+<i class="fas fa-id-card"></i>
+
+Complete KYC
+
 </button>
 
 </section>
 
-<!-- ===========================
-LATEST NOTIFICATIONS
-=========================== -->
+<!-- ==========================================
+NOTIFICATIONS
+========================================== -->
 
 <section class="card glass">
 
@@ -673,11 +544,7 @@ View All
 
 <i class="fas fa-bell-slash"></i>
 
-<p>
-
-No notifications available.
-
-</p>
+<p>No notifications available.</p>
 
 </div>
 
@@ -685,27 +552,17 @@ No notifications available.
 
 </section>
 
-<!-- ===========================
+<!-- ==========================================
 SETTINGS POPUP
-=========================== -->
+========================================== -->
 
-<div
-id="popupOverlay"
-class="popup-overlay">
+<div id="popupOverlay" class="popup-overlay"></div>
 
-</div>
-
-<div
-id="settingsPopup"
-class="popup">
+<div id="settingsPopup" class="popup">
 
 <div class="popup-header">
 
-<h3>
-
-Settings
-
-</h3>
+<h3>Settings</h3>
 
 <button id="closePopup">
 
@@ -717,53 +574,43 @@ Settings
 
 <div class="popup-content">
 
-<button
-class="popup-btn"
-id="editProfilePopup">
+<button class="popup-btn">
 
 <i class="fas fa-user-edit"></i>
 
-<span>Edit Profile</span>
+Edit Profile
 
 </button>
 
-<button
-class="popup-btn"
-id="changeAvatarPopup">
+<button class="popup-btn">
 
 <i class="fas fa-camera"></i>
 
-<span>Change Profile Photo</span>
+Change Photo
 
 </button>
 
-<button
-class="popup-btn"
-id="helpPopup">
+<button class="popup-btn">
 
 <i class="fas fa-headset"></i>
 
-<span>Help & Support</span>
+Support
 
 </button>
 
-<button
-class="popup-btn"
-id="aboutPopup">
+<button class="popup-btn">
 
 <i class="fas fa-circle-info"></i>
 
-<span>About Marathon Digital Hub</span>
+About
 
 </button>
 
-<button
-class="popup-btn logout"
-id="logoutBtn">
+<button id="logoutBtn" class="popup-btn logout">
 
 <i class="fas fa-right-from-bracket"></i>
 
-<span>Logout</span>
+Logout
 
 </button>
 
@@ -771,33 +618,27 @@ id="logoutBtn">
 
 </div>
 
-<!-- ===========================
-LOADING SCREEN
-=========================== -->
+<!-- ==========================================
+LOADING
+========================================== -->
 
-<div
-id="loadingScreen"
-class="loading-screen">
+<div id="loadingScreen" class="loading-screen">
 
 <div class="spinner"></div>
 
-<p>
-
-Loading Profile...
-
-</p>
+<p>Loading Profile...</p>
 
 </div>
 
-<!-- ===========================
+<!-- ==========================================
 BOTTOM NAVIGATION
-=========================== -->
+========================================== -->
 
 <nav class="bottom-nav">
 
 <a href="dashboard.html">
 
-<i class="fas fa-house"></i>
+<i>🏠</i>
 
 <span>Home</span>
 
@@ -805,7 +646,7 @@ BOTTOM NAVIGATION
 
 <a href="machines.html">
 
-<i class="fas fa-microchip"></i>
+<i>⚙️</i>
 
 <span>Machines</span>
 
@@ -813,7 +654,7 @@ BOTTOM NAVIGATION
 
 <a href="deposit.html">
 
-<i class="fas fa-credit-card"></i>
+<i>💳</i>
 
 <span>Deposit</span>
 
@@ -821,17 +662,15 @@ BOTTOM NAVIGATION
 
 <a href="income.html">
 
-<i class="fas fa-chart-line"></i>
+<i>📈</i>
 
 <span>Income</span>
 
 </a>
 
-<a
-href="profile.html"
-class="active">
+<a href="profile.html" class="active">
 
-<i class="fas fa-user"></i>
+<i>👤</i>
 
 <span>Profile</span>
 
@@ -844,4 +683,5 @@ class="active">
 <script src="profile.js"></script>
 
 </body>
+
   </html>
