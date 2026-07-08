@@ -11,34 +11,31 @@ let profile = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-try{
+    try {
 
-const { data:{ user } } = await db.auth.getUser();
+        const { data: { user } } = await db.auth.getUser();
 
-if(!user){
+        if (!user) {
+            window.location.href = "login.html";
+            return;
+        }
 
-window.location.href="login.html";
-return;
+        currentUser = user;
 
-}
+        await loadProfile();
+        await loadWallet();
+        await loadStats();
+        await loadPersonalInformation();
+        await loadNotifications();
 
-currentUser = user;
+        hideLoader();
 
-await loadProfile();
+    } catch (err) {
 
-await loadWallet();
+        console.error(err);
+        alert("Unable to load profile.");
 
-await loadStats();
-
-await loadPersonalInfo();
-
-hideLoader();
-
-}catch(err){
-
-console.error(err);
-
-}
+    }
 
 });
 
@@ -46,62 +43,49 @@ console.error(err);
 LOAD PROFILE
 =========================================*/
 
-async function loadProfile(){
+async function loadProfile() {
 
-const { data,error } = await db
+    const { data, error } = await db
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .single();
 
-.from("profiles")
+    if (error) {
+        console.log(error);
+        return;
+    }
 
-.select("*")
+    profile = data;
 
-.eq("id",currentUser.id)
+    /* Profile Card */
 
-.single();
+    document.getElementById("fullName").textContent =
+        data.fullname || "User";
 
-if(error){
+    document.getElementById("email").textContent =
+        data.email || "";
 
-console.log(error);
-return;
+    document.getElementById("membershipBadge").textContent =
+        data.membership || "STANDARD";
 
-}
+    document.getElementById("statusBadge").textContent =
+        data.account_status || "ACTIVE";
 
-profile = data;
+    document.getElementById("kycBadge").textContent =
+        data.kyc_status || "NOT VERIFIED";
 
-/* Profile */
+    document.getElementById("userLevel").textContent =
+        data.level || 1;
 
-document.getElementById("fullName").textContent =
-data.fullname || "User";
+    /* Avatar */
 
-document.getElementById("email").textContent =
-data.email || "";
+    if (data.avatar_url) {
 
-document.getElementById("membershipBadge").textContent =
-data.membership || "Standard";
+        document.getElementById("profileAvatar").src =
+            data.avatar_url;
 
-document.getElementById("statusBadge").textContent =
-data.account_status || "Active";
-
-document.getElementById("kycBadge").textContent =
-data.kyc_status || "Not Verified";
-
-/* Avatar */
-
-if(data.avatar_url){
-
-document.getElementById("profileAvatar").src =
-data.avatar_url;
-
-}
-
-/* Level */
-
-const level=document.getElementById("userLevel");
-
-if(level){
-
-level.textContent=data.level || 1;
-
-}
+    }
 
 }
 
@@ -109,347 +93,301 @@ level.textContent=data.level || 1;
 LOAD WALLET
 =========================================*/
 
-async function loadWallet(){
+async function loadWallet() {
 
-const balance =
-Number(profile.wallet_balance || 0);
-
-document.getElementById("walletBalance").textContent =
-"UGX " + balance.toLocaleString();
+    document.getElementById("walletBalance").textContent =
+        "UGX " +
+        Number(profile.wallet_balance || 0).toLocaleString();
 
 }
 
 /*=========================================
-LOAD PERSONAL INFO
+LOAD PERSONAL INFORMATION
 =========================================*/
 
-async function loadPersonalInfo(){
+async function loadPersonalInformation() {
 
-document.getElementById("phoneNumber").textContent =
-profile.phone || "Not Added";
+    document.getElementById("phoneNumber").textContent =
+        profile.phone || "Not Added";
 
-document.getElementById("emailAddress").textContent =
-profile.email || "-";
+    document.getElementById("emailAddress").textContent =
+        profile.email || "-";
 
-document.getElementById("country").textContent =
-profile.country || "Not Set";
+    document.getElementById("country").textContent =
+        profile.country || "Not Set";
 
-document.getElementById("gender").textContent =
-profile.gender || "Not Set";
+    document.getElementById("gender").textContent =
+        profile.gender || "Not Set";
 
-document.getElementById("dob").textContent =
-profile.date_of_birth || "Not Set";
+    document.getElementById("dateOfBirth").textContent =
+        profile.date_of_birth || "Not Set";
 
-document.getElementById("memberSince").textContent =
-new Date(profile.created_at).toLocaleDateString();
+    document.getElementById("timezone").textContent =
+        profile.timezone || "Africa/Kampala";
 
-              }
+    document.getElementById("language").textContent =
+        profile.language || "English";
+
+    document.getElementById("memberSince").textContent =
+        new Date(profile.created_at).toLocaleDateString();
+
+    document.getElementById("lastLogin").textContent =
+        profile.last_login
+            ? new Date(profile.last_login).toLocaleString()
+            : "Never";
+
+            }
 
 /*=========================================
+MARATHON DIGITAL HUB
 PROFILE.JS
 PART 2
 =========================================*/
 
 /*=========================================
-LOAD MACHINE STATISTICS
+LOAD USER STATISTICS
 =========================================*/
 
-async function loadStats(){
+async function loadStats() {
 
-const { data:userMachines, error } = await db
+    /* Active Machines */
 
-.from("user_machines")
+    const { data: machines, error } = await db
+        .from("user_machines")
+        .select("*")
+        .eq("user_id", currentUser.id);
 
-.select("*")
+    if (error) {
+        console.log(error);
+        return;
+    }
 
-.eq("user_id", currentUser.id);
+    const activeMachines = machines.filter(m => m.status === "active");
+    const completedMachines = machines.filter(m => m.completed === true);
 
-if(error){
+    document.getElementById("activeMachines").textContent =
+        activeMachines.length;
 
-console.log(error);
-return;
+    document.getElementById("completedMachines").textContent =
+        completedMachines.length;
 
-}
+    /* Investment */
 
-const active =
-userMachines.filter(m => m.status === "active");
+    document.getElementById("totalInvested").textContent =
+        "UGX " +
+        Number(profile.total_invested || 0).toLocaleString();
 
-const completed =
-userMachines.filter(m => m.completed === true);
+    document.getElementById("totalProfit").textContent =
+        "UGX " +
+        Number(profile.total_profit || 0).toLocaleString();
 
-let totalIncome = 0;
+    /* Daily Income */
 
-active.forEach(machine=>{
+    let dailyIncome = 0;
 
-totalIncome += Number(machine.earned_amount || 0);
+    activeMachines.forEach(machine => {
 
-});
+        dailyIncome += Number(machine.earned_amount || 0);
 
-/* Active Machines */
+    });
 
-document.getElementById("activeMachines").textContent =
-active.length;
+    document.getElementById("dailyIncome").textContent =
+        "UGX " +
+        dailyIncome.toLocaleString();
 
-/* Completed Machines */
+    /* Next Profit */
 
-document.getElementById("completedMachines").textContent =
-completed.length;
+    const nextProfit = new Date();
 
-/* Investment */
+    nextProfit.setHours(nextProfit.getHours() + 24);
 
-document.getElementById("totalInvested").textContent =
-"UGX " +
-Number(profile.total_invested || 0).toLocaleString();
+    document.getElementById("nextProfit").textContent =
+        nextProfit.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
 
-/* Profit */
-
-document.getElementById("totalProfit").textContent =
-"UGX " +
-Number(profile.total_profit || 0).toLocaleString();
-
-/* Daily Income */
-
-document.getElementById("dailyIncome").textContent =
-"UGX " +
-totalIncome.toLocaleString();
-
-/*=========================================
-NEXT PROFIT TIMER
-=========================================*/
-
-const next=document.getElementById("nextProfit");
-
-if(next && active.length>0){
-
-const nextTime=new Date();
-
-nextTime.setHours(nextTime.getHours()+24);
-
-next.textContent=
-nextTime.toLocaleTimeString([],{
-
-hour:"2-digit",
-minute:"2-digit"
-
-});
-
-}
-
-await loadReferral();
+    await loadReferral();
 
 }
 
 /*=========================================
-LOAD REFERRALS
+LOAD REFERRAL
 =========================================*/
 
-async function loadReferral(){
+async function loadReferral() {
 
-const { data:referrals,error } = await db
+    const { data: referrals, error } = await db
+        .from("referrals")
+        .select("*")
+        .eq("referrer_id", currentUser.id);
 
-.from("referrals")
+    if (error) {
+        console.log(error);
+        return;
+    }
 
-.select("*")
+    document.getElementById("teamMembers").textContent =
+        referrals.length;
 
-.eq("referrer_id",currentUser.id);
+    document.getElementById("totalTeam").textContent =
+        referrals.length;
 
-if(error){
+    const activeTeam =
+        referrals.filter(item => item.first_machine_purchased);
 
-console.log(error);
-return;
+    document.getElementById("activeTeam").textContent =
+        activeTeam.length;
 
-}
+    document.getElementById("referralBonus").textContent =
+        "UGX " +
+        Number(profile.total_referral_bonus || 0).toLocaleString();
 
-document.getElementById("teamMembers").textContent =
-referrals.length;
+    document.getElementById("teamInvestment").textContent =
+        "UGX " +
+        Number(profile.total_referral_bonus || 0).toLocaleString();
 
-document.getElementById("totalTeam").textContent =
-referrals.length;
+    /* Generate Referral Code */
 
-const activeTeam = referrals.filter(r =>
-r.first_machine_purchased === true
-);
+    if (!profile.referral_code) {
 
-document.getElementById("activeTeam").textContent =
-activeTeam.length;
+        const referralCode =
+            "MDH" +
+            Math.random()
+                .toString(36)
+                .substring(2, 8)
+                .toUpperCase();
 
-document.getElementById("referralBonus").textContent =
-"UGX " +
-Number(profile.total_referral_bonus || 0)
-.toLocaleString();
+        await db
+            .from("profiles")
+            .update({
+                referral_code: referralCode
+            })
+            .eq("id", currentUser.id);
 
-document.getElementById("teamInvestment").textContent =
-"UGX " +
-Number(profile.total_referral_bonus || 0)
-.toLocaleString();
-
-/*=========================================
-REFERRAL CODE
-=========================================*/
-
-if(!profile.referral_code){
-
-const code =
-"MDH" +
-Math.random()
-.toString(36)
-.substring(2,8)
-.toUpperCase();
-
-await db
-
-.from("profiles")
-
-.update({
-
-referral_code:code
-
-})
-
-.eq("id",currentUser.id);
-
-profile.referral_code=code;
-
-}
-
-document.getElementById("referralCode").value =
-profile.referral_code;
-
-document.getElementById("referralLink").value =
-window.location.origin +
-"/register.html?ref=" +
-profile.referral_code;
-
-/*=========================================
-UNLOCK REFERRAL
-=========================================*/
-
-const { data:machines } = await db
-
-.from("user_machines")
-
-.select("id")
-
-.eq("user_id",currentUser.id)
-
-.eq("status","active");
-
-if(machines.length>0){
-
-document.getElementById("referralLocked").style.display="none";
-
-document.getElementById("referralContent").style.display="block";
-
-}else{
-
-document.getElementById("referralLocked").style.display="block";
-
-document.getElementById("referralContent").style.display="none";
-
-}
+        profile.referral_code = referralCode;
 
     }
 
+    document.getElementById("referralCode").value =
+        profile.referral_code;
+
+    document.getElementById("referralLink").value =
+        window.location.origin +
+        "/register.html?ref=" +
+        profile.referral_code;
+
+    /* Lock / Unlock Referral */
+
+    if (activeMachinesExist(machines)) {
+
+        document.getElementById("referralLocked").style.display = "none";
+        document.getElementById("referralContent").style.display = "block";
+
+    } else {
+
+        document.getElementById("referralLocked").style.display = "block";
+        document.getElementById("referralContent").style.display = "none";
+
+    }
+
+}
+
 /*=========================================
+CHECK ACTIVE MACHINE
+=========================================*/
+
+function activeMachinesExist(machineList) {
+
+    return machineList.some(machine =>
+        machine.status === "active"
+    );
+
+}
+
+/*=========================================
+MARATHON DIGITAL HUB
 PROFILE.JS
 PART 3
 =========================================*/
 
 /*=========================================
-LOAD USER NOTIFICATIONS
+LOAD NOTIFICATIONS
 =========================================*/
 
-async function loadNotifications(){
+async function loadNotifications() {
 
-const { data,error } = await db
+    const { data, error } = await db
+        .from("user_notifications")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false })
+        .limit(5);
 
-.from("user_notifications")
+    if (error) {
+        console.log(error);
+        return;
+    }
 
-.select("*")
+    const container =
+        document.getElementById("notificationContainer");
 
-.eq("user_id",currentUser.id)
+    if (!container) return;
 
-.order("created_at",{ascending:false})
+    container.innerHTML = "";
 
-.limit(5);
+    if (data.length === 0) {
 
-if(error){
+        container.innerHTML = `
+        <div class="empty-box">
+            <i class="fas fa-bell-slash"></i>
+            <p>No notifications available.</p>
+        </div>
+        `;
 
-console.log(error);
-return;
+        return;
+    }
 
-}
+    data.forEach(item => {
 
-const container =
-document.getElementById("notificationContainer");
+        container.innerHTML += `
+        <div class="info-item">
+            <span>${item.title}</span>
+            <strong>${item.message}</strong>
+        </div>
+        `;
 
-if(!container) return;
-
-container.innerHTML="";
-
-if(data.length===0){
-
-container.innerHTML=`
-
-<div class="empty-box">
-
-<i class="fas fa-bell-slash"></i>
-
-<p>No notifications available.</p>
-
-</div>
-
-`;
-
-return;
-
-}
-
-data.forEach(item=>{
-
-container.innerHTML+=`
-
-<div class="notification-item">
-
-<h4>${item.title}</h4>
-
-<p>${item.message}</p>
-
-<small>${new Date(item.created_at).toLocaleString()}</small>
-
-</div>
-
-`;
-
-});
+    });
 
 }
 
 /*=========================================
-COPY BUTTONS
+COPY REFERRAL CODE
 =========================================*/
 
 document.getElementById("copyCodeBtn")
-?.addEventListener("click",()=>{
+?.addEventListener("click", async () => {
 
-navigator.clipboard.writeText(profile.referral_code);
+    await navigator.clipboard.writeText(
+        profile.referral_code
+    );
 
-alert("Referral code copied.");
+    alert("Referral code copied.");
 
 });
 
+/*=========================================
+COPY REFERRAL LINK
+=========================================*/
+
 document.getElementById("copyLinkBtn")
-?.addEventListener("click",()=>{
+?.addEventListener("click", async () => {
 
-navigator.clipboard.writeText(
+    await navigator.clipboard.writeText(
+        document.getElementById("referralLink").value
+    );
 
-window.location.origin+
-"/register.html?ref="+
-profile.referral_code
-
-);
-
-alert("Referral link copied.");
+    alert("Referral link copied.");
 
 });
 
@@ -458,72 +396,69 @@ SHARE REFERRAL
 =========================================*/
 
 document.getElementById("shareReferralBtn")
-?.addEventListener("click",async()=>{
+?.addEventListener("click", async () => {
 
-const link=
+    const link =
+        document.getElementById("referralLink").value;
 
-window.location.origin+
-"/register.html?ref="+
-profile.referral_code;
+    if (navigator.share) {
 
-if(navigator.share){
+        await navigator.share({
 
-await navigator.share({
+            title: "Marathon Digital Hub",
 
-title:"Marathon Digital Hub",
+            text: "Join Marathon Digital Hub using my referral link.",
 
-text:"Join Marathon Digital Hub using my referral link.",
+            url: link
 
-url:link
+        });
 
-});
+    } else {
 
-}else{
+        await navigator.clipboard.writeText(link);
 
-navigator.clipboard.writeText(link);
+        alert("Referral link copied.");
 
-alert("Referral link copied.");
-
-}
+    }
 
 });
 
 /*=========================================
-NAVIGATION BUTTONS
+BUTTON NAVIGATION
 =========================================*/
 
 document.getElementById("depositBtn")
-?.addEventListener("click",()=>{
+?.addEventListener("click", () => {
 
-location.href="deposit.html";
+    location.href = "deposit.html";
 
 });
 
 document.getElementById("withdrawBtn")
-?.addEventListener("click",()=>{
+?.addEventListener("click", () => {
 
-location.href="withdraw.html";
-
-});
-
-document.getElementById("machineBtn")
-?.addEventListener("click",()=>{
-
-location.href="machines.html";
+    location.href = "withdraw.html";
 
 });
 
-document.getElementById("buyFirstMachineBtn")
-?.addEventListener("click",()=>{
+document.getElementById("machinesBtn")
+?.addEventListener("click", () => {
 
-location.href="machines.html";
+    location.href = "machines.html";
+
+});
+
+document.getElementById("buyMachineBtn")
+?.addEventListener("click", () => {
+
+    location.href = "machines.html";
 
 });
 
 document.getElementById("backBtn")
-?.addEventListener("click",()=>{
+?.addEventListener("click", () => {
 
-history.back();
+    history.back();
 
 });
 
@@ -538,46 +473,43 @@ const overlay =
 document.getElementById("popupOverlay");
 
 document.getElementById("settingsBtn")
-?.addEventListener("click",()=>{
+?.addEventListener("click", () => {
 
-popup.classList.add("active");
-
-overlay.classList.add("active");
+    popup.classList.add("active");
+    overlay.classList.add("active");
 
 });
 
 document.getElementById("closePopup")
-?.addEventListener("click",()=>{
+?.addEventListener("click", () => {
 
-popup.classList.remove("active");
-
-overlay.classList.remove("active");
+    popup.classList.remove("active");
+    overlay.classList.remove("active");
 
 });
 
-overlay?.addEventListener("click",()=>{
+overlay?.addEventListener("click", () => {
 
-popup.classList.remove("active");
-
-overlay.classList.remove("active");
+    popup.classList.remove("active");
+    overlay.classList.remove("active");
 
 });
 
 /*=========================================
-AVATAR CHANGE
+CHANGE AVATAR
 =========================================*/
 
 document.getElementById("changeAvatar")
-?.addEventListener("click",()=>{
+?.addEventListener("click", () => {
 
-document.getElementById("avatarInput").click();
+    document.getElementById("avatarInput").click();
 
 });
 
 document.getElementById("avatarInput")
-?.addEventListener("change",()=>{
+?.addEventListener("change", () => {
 
-alert("Avatar upload will be connected after the Storage bucket is ready.");
+    alert("Avatar upload will be connected after Storage is configured.");
 
 });
 
@@ -586,13 +518,14 @@ LOGOUT
 =========================================*/
 
 document.getElementById("logoutBtn")
-?.addEventListener("click",async()=>{
+?.addEventListener("click", async () => {
 
-if(!confirm("Logout from Marathon Digital Hub?")) return;
+    if (!confirm("Logout from Marathon Digital Hub?"))
+        return;
 
-await db.auth.signOut();
+    await db.auth.signOut();
 
-location.href="login.html";
+    location.href = "login.html";
 
 });
 
@@ -600,43 +533,37 @@ location.href="login.html";
 AUTO REFRESH
 =========================================*/
 
-setInterval(async()=>{
+setInterval(async () => {
 
-if(currentUser){
+    if (!currentUser) return;
 
-await loadWallet();
+    await loadWallet();
+    await loadStats();
+    await loadNotifications();
 
-await loadStats();
-
-await loadNotifications();
-
-}
-
-},30000);
+}, 30000);
 
 /*=========================================
 HIDE LOADER
 =========================================*/
 
-function hideLoader(){
+function hideLoader() {
 
-const loader =
-document.getElementById("loadingScreen");
+    const loader =
+        document.getElementById("loadingScreen");
 
-if(loader){
+    if (!loader) return;
 
-setTimeout(()=>{
+    setTimeout(() => {
 
-loader.style.display="none";
+        loader.style.display = "none";
 
-},500);
-
-}
+    }, 500);
 
 }
 
 /*=========================================
-INITIAL NOTIFICATIONS
+INITIALIZE REMAINING DATA
 =========================================*/
 
 loadNotifications();
