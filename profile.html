@@ -30,40 +30,42 @@
 
 <div class="page">
 
-<!-- HEADER -->
+<!-- =========================
+HEADER
+========================= -->
 
 <header class="top-bar">
 
 <button id="backBtn" class="circle-btn">
-
 <i class="fas fa-arrow-left"></i>
-
 </button>
 
 <h2>My Profile</h2>
 
 <button id="settingsBtn" class="circle-btn">
-
-<i class="fas fa-cog"></i>
-
+<i class="fas fa-gear"></i>
 </button>
 
 </header>
 
-<!-- PROFILE CARD -->
+<!-- =========================
+PROFILE CARD
+========================= -->
 
 <section class="profile-card">
 
 <div class="cover"></div>
 
-<div class="avatar-box">
+<div class="avatar-wrapper">
 
 <img
 id="profileAvatar"
 src="images/avatar.png"
 alt="Profile">
 
-<button id="changeAvatar">
+<button
+id="changeAvatar"
+class="avatar-camera">
 
 <i class="fas fa-camera"></i>
 
@@ -77,38 +79,28 @@ hidden>
 
 </div>
 
-<div class="profile-details">
+<div class="profile-info">
 
 <h2 id="fullName">
-
 Loading...
-
 </h2>
 
 <p id="email">
-
 Loading...
-
 </p>
 
-<div class="badges">
+<div class="badge-row">
 
 <span id="membershipBadge">
-
 STANDARD
-
 </span>
 
 <span id="statusBadge">
-
 ACTIVE
-
 </span>
 
 <span id="kycBadge">
-
 NOT VERIFIED
-
 </span>
 
 </div>
@@ -117,103 +109,90 @@ NOT VERIFIED
 
 </section>
 
-<!-- WALLET -->
+<!-- =========================
+WALLET
+========================= -->
 
 <section class="wallet-card">
 
-<p>Wallet Balance</p>
+<p>Total Wallet Balance</p>
 
 <h1 id="walletBalance">
-
 UGX 0
-
 </h1>
 
-<div class="wallet-buttons">
+<div class="wallet-actions">
 
 <button id="depositBtn">
-
 <i class="fas fa-download"></i>
-
 Deposit
-
 </button>
 
 <button id="withdrawBtn">
-
 <i class="fas fa-upload"></i>
-
 Withdraw
-
 </button>
 
 <button id="machineBtn">
-
 <i class="fas fa-microchip"></i>
-
 Machines
-
 </button>
 
 </div>
 
 </section>
 
-<!-- QUICK STATS -->
+<!-- =========================
+QUICK STATS
+========================= -->
 
 <section class="stats-grid">
 
-<div class="stat-box">
+<div class="stat-card">
 
 <h2 id="activeMachines">
-
 0
-
 </h2>
 
 <p>Active Machines</p>
 
 </div>
 
-<div class="stat-box">
+<div class="stat-card">
 
 <h2 id="teamMembers">
-
 0
-
 </h2>
 
 <p>Team Members</p>
 
 </div>
 
-<div class="stat-box">
+<div class="stat-card">
 
 <h2 id="totalProfit">
-
 UGX 0
-
 </h2>
 
 <p>Total Profit</p>
 
 </div>
 
-<div class="stat-box">
+<div class="stat-card">
 
 <h2 id="totalInvested">
-
 UGX 0
-
 </h2>
 
 <p>Total Invested</p>
 
 </div>
 
-  </section>
+</section>
 
-  <!-- REFERRAL PROGRAM -->
+  <!-- =========================
+REFERRAL PROGRAM
+========================= -->
 
 <section class="card">
 
@@ -221,11 +200,9 @@ UGX 0
 
 <h3>Referral Program</h3>
 
-<span class="reward-tag">USAID Reward</span>
+<span class="reward-tag">Earn Rewards</span>
 
 </div>
-
-<!-- LOCKED (Hidden after first machine purchase) -->
 
 <div id="referralLocked">
 
@@ -236,22 +213,16 @@ UGX 0
 <h4>Referral Locked</h4>
 
 <p>
-
-Buy your first mining machine to unlock your referral link and start earning referral rewards.
-
+Purchase your first mining machine to unlock your referral code and start earning referral bonuses.
 </p>
 
 <button id="buyFirstMachineBtn">
-
 Buy First Machine
-
 </button>
 
 </div>
 
 </div>
-
-<!-- UNLOCKED -->
 
 <div id="referralContent" style="display:none;">
 
@@ -262,17 +233,12 @@ Buy First Machine
 <div class="copy-group">
 
 <input
-
 type="text"
-
 id="referralCode"
-
 readonly>
 
 <button id="copyCodeBtn">
-
 <i class="fas fa-copy"></i>
-
 </button>
 
 </div>
@@ -286,17 +252,12 @@ readonly>
 <div class="copy-group">
 
 <input
-
 type="text"
-
 id="referralLink"
-
 readonly>
 
 <button id="copyLinkBtn">
-
 <i class="fas fa-copy"></i>
-
 </button>
 
 </div>
@@ -309,7 +270,7 @@ readonly>
 
 <i class="fas fa-share-alt"></i>
 
-Share Link
+Share
 
 </button>
 
@@ -327,11 +288,7 @@ Invite
 
 <div class="team-card">
 
-<h2 id="totalTeam">
-
-0
-
-</h2>
+<h2 id="totalTeam">0</h2>
 
 <p>Total Team</p>
 
@@ -339,11 +296,7 @@ Invite
 
 <div class="team-card">
 
-<h2 id="activeTeam">
-
-0
-
-</h2>
+<h2 id="activeTeam">0</h2>
 
 <p>Active Team</p>
 
@@ -351,13 +304,9 @@ Invite
 
 <div class="team-card">
 
-<h2 id="referralBonus">
+<h2 id="referralBonus">UGX 0</h2>
 
-UGX 0
-
-</h2>
-
-<p>Referral Bonus</p>
+<p>Bonus Earned</p>
 
 </div>
 
@@ -367,7 +316,9 @@ UGX 0
 
 </section>
 
-<!-- PROFILE INFORMATION -->
+<!-- =========================
+PERSONAL INFORMATION
+========================= -->
 
 <section class="card">
 
@@ -387,24 +338,20 @@ UGX 0
 
 <div class="info-row">
 
-<span>Phone</span>
+<span>Phone Number</span>
 
 <strong id="phoneNumber">
-
 Not Added
-
 </strong>
 
 </div>
 
 <div class="info-row">
 
-<span>Email</span>
+<span>Email Address</span>
 
 <strong id="emailAddress">
-
 Loading...
-
 </strong>
 
 </div>
@@ -414,9 +361,7 @@ Loading...
 <span>Country</span>
 
 <strong id="country">
-
 Not Set
-
 </strong>
 
 </div>
@@ -426,9 +371,7 @@ Not Set
 <span>Gender</span>
 
 <strong id="gender">
-
 Not Set
-
 </strong>
 
 </div>
@@ -438,9 +381,7 @@ Not Set
 <span>Date of Birth</span>
 
 <strong id="dob">
-
 Not Set
-
 </strong>
 
 </div>
@@ -450,9 +391,7 @@ Not Set
 <span>Member Since</span>
 
 <strong id="memberSince">
-
 Loading...
-
 </strong>
 
 </div>
@@ -461,7 +400,9 @@ Loading...
 
 </section>
 
-<!-- ACCOUNT SECURITY -->
+<!-- =========================
+ACCOUNT SECURITY
+========================= -->
 
 <section class="card">
 
@@ -471,7 +412,7 @@ Loading...
 
 </div>
 
-<button class="menu-btn" id="changePasswordBtn">
+<button id="changePasswordBtn" class="menu-btn">
 
 <i class="fas fa-lock"></i>
 
@@ -479,7 +420,7 @@ Change Password
 
 </button>
 
-<button class="menu-btn" id="changePinBtn">
+<button id="changePinBtn" class="menu-btn">
 
 <i class="fas fa-key"></i>
 
@@ -487,7 +428,7 @@ Transaction PIN
 
 </button>
 
-<button class="menu-btn" id="verifyKycBtn">
+<button id="verifyKycBtn" class="menu-btn">
 
 <i class="fas fa-shield-alt"></i>
 
@@ -495,7 +436,7 @@ Verify KYC
 
 </button>
 
-<button class="menu-btn" id="notificationSettingsBtn">
+<button id="notificationSettingsBtn" class="menu-btn">
 
 <i class="fas fa-bell"></i>
 
@@ -503,11 +444,11 @@ Notification Settings
 
 </button>
 
-  </section>
+</section>
 
-  <!-- ==========================
+<!-- =========================
 INVESTMENT SUMMARY
-=========================== -->
+========================= -->
 
 <section class="card">
 
@@ -523,7 +464,7 @@ INVESTMENT SUMMARY
 
 <h2 id="runningMachines">0</h2>
 
-<p>Running</p>
+<p>Running Machines</p>
 
 </div>
 
@@ -537,23 +478,15 @@ INVESTMENT SUMMARY
 
 <div class="investment-item">
 
-<h2 id="dailyIncome">
+<h2 id="dailyIncome">UGX 0</h2>
 
-UGX 0
-
-</h2>
-
-<p>Daily Income</p>
+<p>Total Earned</p>
 
 </div>
 
 <div class="investment-item">
 
-<h2 id="nextProfitTime">
-
---:--
-
-</h2>
+<h2 id="nextProfitTime">--:--</h2>
 
 <p>Next Profit</p>
 
@@ -561,11 +494,11 @@ UGX 0
 
 </div>
 
-</section>
+  </section>
 
-<!-- ==========================
+  <!-- =========================
 RECENT NOTIFICATIONS
-=========================== -->
+========================= -->
 
 <section class="card">
 
@@ -595,9 +528,9 @@ View All
 
 </section>
 
-<!-- ==========================
+<!-- =========================
 SETTINGS POPUP
-=========================== -->
+========================= -->
 
 <div id="popupOverlay" class="popup-overlay"></div>
 
@@ -677,9 +610,9 @@ Logout
 
 </div>
 
-<!-- ==========================
+<!-- =========================
 LOADING SCREEN
-=========================== -->
+========================= -->
 
 <div id="loadingScreen" class="loading-screen">
 
@@ -689,9 +622,9 @@ LOADING SCREEN
 
 </div>
 
-<!-- ==========================
+<!-- =========================
 BOTTOM NAVIGATION
-=========================== -->
+========================= -->
 
 <nav class="bottom-nav">
 
@@ -734,4 +667,5 @@ BOTTOM NAVIGATION
 <script src="profile.js"></script>
 
 </body>
+
   </html>
