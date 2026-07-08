@@ -4,458 +4,418 @@ PROFILE.JS
 PART 1
 =========================================*/
 
+const db = window.supabaseClient;
+
+let currentUser = null;
+let profile = null;
+
 document.addEventListener("DOMContentLoaded", async () => {
-
-const supabase = window.supabaseClient;
-
-const loadingScreen = document.getElementById("loadingScreen");
 
 try{
 
-/*==========================
-CHECK LOGIN
-==========================*/
+const { data:{ user } } = await db.auth.getUser();
 
-const {
-data:{session},
-error
-}=await supabase.auth.getSession();
-
-if(error) throw error;
-
-if(!session){
+if(!user){
 
 window.location.href="login.html";
 return;
 
 }
 
-const user=session.user;
-const userId=user.id;
+currentUser = user;
 
-/*==========================
-GET HTML ELEMENTS
-==========================*/
+await loadProfile();
 
-const fullName=document.getElementById("fullName");
-const email=document.getElementById("email");
-const emailAddress=document.getElementById("emailAddress");
+await loadWallet();
 
-const phoneNumber=document.getElementById("phoneNumber");
-const country=document.getElementById("country");
-const gender=document.getElementById("gender");
-const dob=document.getElementById("dob");
-const memberSince=document.getElementById("memberSince");
+await loadStats();
 
-const walletBalance=document.getElementById("walletBalance");
+await loadPersonalInfo();
 
-const membershipBadge=document.getElementById("membershipBadge");
-const statusBadge=document.getElementById("statusBadge");
-const kycBadge=document.getElementById("kycBadge");
+hideLoader();
 
-const totalProfit=document.getElementById("totalProfit");
-const totalInvested=document.getElementById("totalInvested");
+}catch(err){
 
-/*==========================
+console.error(err);
+
+}
+
+});
+
+/*=========================================
 LOAD PROFILE
-==========================*/
+=========================================*/
 
-const {
-data:profile,
-error:profileError
-}=await supabase
+async function loadProfile(){
+
+const { data,error } = await db
 
 .from("profiles")
 
 .select("*")
 
-.eq("id",userId)
+.eq("id",currentUser.id)
 
-.maybeSingle();
+.single();
 
-if(profileError) throw profileError;
+if(error){
 
-if(!profile){
-
-alert("Profile not found.");
-
-window.location.href="login.html";
-
+console.log(error);
 return;
 
 }
 
-/*==========================
-SHOW PROFILE
-==========================*/
+profile = data;
 
-fullName.textContent=profile.fullname||"User";
+/* Profile */
 
-email.textContent=profile.email||"";
+document.getElementById("fullName").textContent =
+data.fullname || "User";
 
-emailAddress.textContent=profile.email||"";
+document.getElementById("email").textContent =
+data.email || "";
 
-phoneNumber.textContent=profile.phone||"Not Added";
+document.getElementById("membershipBadge").textContent =
+data.membership || "Standard";
 
-country.textContent=profile.country||"Not Set";
+document.getElementById("statusBadge").textContent =
+data.account_status || "Active";
 
-gender.textContent=profile.gender||"Not Set";
+document.getElementById("kycBadge").textContent =
+data.kyc_status || "Not Verified";
 
-dob.textContent=profile.date_of_birth||"Not Set";
+/* Avatar */
 
-membershipBadge.textContent=profile.membership||"STANDARD";
+if(data.avatar_url){
 
-statusBadge.textContent=profile.account_status||"ACTIVE";
-
-kycBadge.textContent=profile.kyc_status||"NOT VERIFIED";
-
-walletBalance.textContent=
-"UGX "+
-Number(profile.wallet_balance||0).toLocaleString();
-
-totalProfit.textContent=
-"UGX "+
-Number(profile.total_profit||0).toLocaleString();
-
-totalInvested.textContent=
-"UGX "+
-Number(profile.total_invested||0).toLocaleString();
-
-if(profile.created_at){
-
-memberSince.textContent=
-new Date(profile.created_at)
-.toLocaleDateString();
+document.getElementById("profileAvatar").src =
+data.avatar_url;
 
 }
 
-    /*=========================================
+/* Level */
+
+const level=document.getElementById("userLevel");
+
+if(level){
+
+level.textContent=data.level || 1;
+
+}
+
+}
+
+/*=========================================
+LOAD WALLET
+=========================================*/
+
+async function loadWallet(){
+
+const balance =
+Number(profile.wallet_balance || 0);
+
+document.getElementById("walletBalance").textContent =
+"UGX " + balance.toLocaleString();
+
+}
+
+/*=========================================
+LOAD PERSONAL INFO
+=========================================*/
+
+async function loadPersonalInfo(){
+
+document.getElementById("phoneNumber").textContent =
+profile.phone || "Not Added";
+
+document.getElementById("emailAddress").textContent =
+profile.email || "-";
+
+document.getElementById("country").textContent =
+profile.country || "Not Set";
+
+document.getElementById("gender").textContent =
+profile.gender || "Not Set";
+
+document.getElementById("dob").textContent =
+profile.date_of_birth || "Not Set";
+
+document.getElementById("memberSince").textContent =
+new Date(profile.created_at).toLocaleDateString();
+
+              }
+
+/*=========================================
 PROFILE.JS
 PART 2
 =========================================*/
 
-/*==========================
-AUTO CREATE REFERRAL CODE
-==========================*/
+/*=========================================
+LOAD MACHINE STATISTICS
+=========================================*/
 
-if(!profile.referral_code){
+async function loadStats(){
 
-const referralCodeValue=
-"MDH"+
-Math.random().toString(36)
-.substring(2,8)
-.toUpperCase();
-
-const {error:updateError}=await supabase
-
-.from("profiles")
-
-.update({
-
-referral_code:referralCodeValue
-
-})
-
-.eq("id",userId);
-
-if(!updateError){
-
-profile.referral_code=referralCodeValue;
-
-}
-
-}
-
-/*==========================
-REFERRAL DETAILS
-==========================*/
-
-const referralCodeInput=
-document.getElementById("referralCode");
-
-const referralLinkInput=
-document.getElementById("referralLink");
-
-const referralLocked=
-document.getElementById("referralLocked");
-
-const referralContent=
-document.getElementById("referralContent");
-
-const referralLink=
-
-window.location.origin+
-"/register.html?ref="+
-profile.referral_code;
-
-if(referralCodeInput){
-
-referralCodeInput.value=
-profile.referral_code||"";
-
-}
-
-if(referralLinkInput){
-
-referralLinkInput.value=
-referralLink;
-
-}
-
-/*==========================
-CHECK MACHINE PURCHASE
-==========================*/
-
-const {
-
-data:userMachines
-
-}=await supabase
+const { data:userMachines, error } = await db
 
 .from("user_machines")
 
-.select("id,status")
+.select("*")
 
-.eq("user_id",userId);
+.eq("user_id", currentUser.id);
 
-const hasMachine=
-userMachines &&
-userMachines.length>0;
+if(error){
 
-if(hasMachine){
-
-referralLocked.style.display="none";
-
-referralContent.style.display="block";
-
-}else{
-
-referralLocked.style.display="block";
-
-referralContent.style.display="none";
+console.log(error);
+return;
 
 }
 
-/*==========================
+const active =
+userMachines.filter(m => m.status === "active");
+
+const completed =
+userMachines.filter(m => m.completed === true);
+
+let totalIncome = 0;
+
+active.forEach(machine=>{
+
+totalIncome += Number(machine.earned_amount || 0);
+
+});
+
+/* Active Machines */
+
+document.getElementById("activeMachines").textContent =
+active.length;
+
+/* Completed Machines */
+
+document.getElementById("completedMachines").textContent =
+completed.length;
+
+/* Investment */
+
+document.getElementById("totalInvested").textContent =
+"UGX " +
+Number(profile.total_invested || 0).toLocaleString();
+
+/* Profit */
+
+document.getElementById("totalProfit").textContent =
+"UGX " +
+Number(profile.total_profit || 0).toLocaleString();
+
+/* Daily Income */
+
+document.getElementById("dailyIncome").textContent =
+"UGX " +
+totalIncome.toLocaleString();
+
+/*=========================================
+NEXT PROFIT TIMER
+=========================================*/
+
+const next=document.getElementById("nextProfit");
+
+if(next && active.length>0){
+
+const nextTime=new Date();
+
+nextTime.setHours(nextTime.getHours()+24);
+
+next.textContent=
+nextTime.toLocaleTimeString([],{
+
+hour:"2-digit",
+minute:"2-digit"
+
+});
+
+}
+
+await loadReferral();
+
+}
+
+/*=========================================
 LOAD REFERRALS
-==========================*/
+=========================================*/
 
-const {
+async function loadReferral(){
 
-data:referrals
-
-}=await supabase
+const { data:referrals,error } = await db
 
 .from("referrals")
 
 .select("*")
 
-.eq("referrer_id",userId);
+.eq("referrer_id",currentUser.id);
 
-const totalTeam=
-document.getElementById("totalTeam");
+if(error){
 
-const activeTeam=
-document.getElementById("activeTeam");
-
-const referralBonus=
-document.getElementById("referralBonus");
-
-const teamMembers=
-document.getElementById("teamMembers");
-
-const totalReferralCount=
-referrals?referrals.length:0;
-
-if(totalTeam)
-totalTeam.textContent=
-totalReferralCount;
-
-if(teamMembers)
-teamMembers.textContent=
-totalReferralCount;
-
-const activeReferralCount=
-(referrals||[])
-.filter(r=>r.first_machine_purchased)
-.length;
-
-if(activeTeam)
-activeTeam.textContent=
-activeReferralCount;
-
-if(referralBonus){
-
-referralBonus.textContent=
-
-"UGX "+Number(
-
-profile.total_referral_bonus||0
-
-).toLocaleString();
+console.log(error);
+return;
 
 }
 
-/*==========================
-COPY BUTTONS
-==========================*/
+document.getElementById("teamMembers").textContent =
+referrals.length;
 
-document
-.getElementById("copyCodeBtn")
-?.addEventListener("click",()=>{
+document.getElementById("totalTeam").textContent =
+referrals.length;
 
-navigator.clipboard.writeText(
-profile.referral_code
+const activeTeam = referrals.filter(r =>
+r.first_machine_purchased === true
 );
 
-alert("Referral code copied.");
+document.getElementById("activeTeam").textContent =
+activeTeam.length;
 
-});
+document.getElementById("referralBonus").textContent =
+"UGX " +
+Number(profile.total_referral_bonus || 0)
+.toLocaleString();
 
-document
-.getElementById("copyLinkBtn")
-?.addEventListener("click",()=>{
+document.getElementById("teamInvestment").textContent =
+"UGX " +
+Number(profile.total_referral_bonus || 0)
+.toLocaleString();
 
-navigator.clipboard.writeText(
-referralLink
-);
+/*=========================================
+REFERRAL CODE
+=========================================*/
 
-alert("Referral link copied.");
+if(!profile.referral_code){
 
-});
+const code =
+"MDH" +
+Math.random()
+.toString(36)
+.substring(2,8)
+.toUpperCase();
 
-/*==========================
-SHARE BUTTON
-==========================*/
+await db
 
-document
-.getElementById("shareReferralBtn")
-?.addEventListener("click",async()=>{
+.from("profiles")
 
-if(navigator.share){
+.update({
 
-await navigator.share({
+referral_code:code
 
-title:"Marathon Digital Hub",
+})
 
-text:"Join Marathon Digital Hub using my referral link.",
+.eq("id",currentUser.id);
 
-url:referralLink
+profile.referral_code=code;
 
-});
+}
+
+document.getElementById("referralCode").value =
+profile.referral_code;
+
+document.getElementById("referralLink").value =
+window.location.origin +
+"/register.html?ref=" +
+profile.referral_code;
+
+/*=========================================
+UNLOCK REFERRAL
+=========================================*/
+
+const { data:machines } = await db
+
+.from("user_machines")
+
+.select("id")
+
+.eq("user_id",currentUser.id)
+
+.eq("status","active");
+
+if(machines.length>0){
+
+document.getElementById("referralLocked").style.display="none";
+
+document.getElementById("referralContent").style.display="block";
 
 }else{
 
-navigator.clipboard.writeText(
-referralLink
-);
+document.getElementById("referralLocked").style.display="block";
 
-alert("Referral link copied.");
+document.getElementById("referralContent").style.display="none";
 
 }
 
-});
+    }
 
-    /*=========================================
+/*=========================================
 PROFILE.JS
 PART 3
 =========================================*/
 
-/*==========================
-ACTIVE MACHINES
-==========================*/
+/*=========================================
+LOAD USER NOTIFICATIONS
+=========================================*/
 
-const activeMachines =
-document.getElementById("activeMachines");
+async function loadNotifications(){
 
-const runningMachines =
-document.getElementById("runningMachines");
-
-const completedMachines =
-document.getElementById("completedMachines");
-
-const dailyIncome =
-document.getElementById("dailyIncome");
-
-let activeCount = 0;
-let completedCount = 0;
-let income = 0;
-
-(userMachines || []).forEach(machine=>{
-
-if(machine.status==="active"){
-
-activeCount++;
-
-}
-
-if(machine.completed){
-
-completedCount++;
-
-}
-
-income += Number(machine.earned_amount || 0);
-
-});
-
-if(activeMachines)
-activeMachines.textContent = activeCount;
-
-if(runningMachines)
-runningMachines.textContent = activeCount;
-
-if(completedMachines)
-completedMachines.textContent = completedCount;
-
-if(dailyIncome){
-
-dailyIncome.textContent =
-"UGX " + income.toLocaleString();
-
-}
-
-/*==========================
-NOTIFICATIONS
-==========================*/
-
-const notificationContainer =
-document.getElementById("notificationContainer");
-
-const { data: notifications } =
-await supabase
+const { data,error } = await db
 
 .from("user_notifications")
 
 .select("*")
 
-.eq("user_id",userId)
+.eq("user_id",currentUser.id)
 
 .order("created_at",{ascending:false})
 
 .limit(5);
 
-if(notificationContainer){
+if(error){
 
-if(notifications && notifications.length){
+console.log(error);
+return;
 
-notificationContainer.innerHTML="";
+}
 
-notifications.forEach(item=>{
+const container =
+document.getElementById("notificationContainer");
 
-notificationContainer.innerHTML += `
+if(!container) return;
 
-<div class="info-row">
+container.innerHTML="";
 
-<div>
+if(data.length===0){
 
-<strong>${item.title}</strong>
+container.innerHTML=`
+
+<div class="empty-box">
+
+<i class="fas fa-bell-slash"></i>
+
+<p>No notifications available.</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+data.forEach(item=>{
+
+container.innerHTML+=`
+
+<div class="notification-item">
+
+<h4>${item.title}</h4>
 
 <p>${item.message}</p>
 
-<small>${new Date(item.created_at).toLocaleDateString()}</small>
-
-</div>
+<small>${new Date(item.created_at).toLocaleString()}</small>
 
 </div>
 
@@ -465,11 +425,111 @@ notificationContainer.innerHTML += `
 
 }
 
+/*=========================================
+COPY BUTTONS
+=========================================*/
+
+document.getElementById("copyCodeBtn")
+?.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(profile.referral_code);
+
+alert("Referral code copied.");
+
+});
+
+document.getElementById("copyLinkBtn")
+?.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(
+
+window.location.origin+
+"/register.html?ref="+
+profile.referral_code
+
+);
+
+alert("Referral link copied.");
+
+});
+
+/*=========================================
+SHARE REFERRAL
+=========================================*/
+
+document.getElementById("shareReferralBtn")
+?.addEventListener("click",async()=>{
+
+const link=
+
+window.location.origin+
+"/register.html?ref="+
+profile.referral_code;
+
+if(navigator.share){
+
+await navigator.share({
+
+title:"Marathon Digital Hub",
+
+text:"Join Marathon Digital Hub using my referral link.",
+
+url:link
+
+});
+
+}else{
+
+navigator.clipboard.writeText(link);
+
+alert("Referral link copied.");
+
 }
 
-/*==========================
+});
+
+/*=========================================
+NAVIGATION BUTTONS
+=========================================*/
+
+document.getElementById("depositBtn")
+?.addEventListener("click",()=>{
+
+location.href="deposit.html";
+
+});
+
+document.getElementById("withdrawBtn")
+?.addEventListener("click",()=>{
+
+location.href="withdraw.html";
+
+});
+
+document.getElementById("machineBtn")
+?.addEventListener("click",()=>{
+
+location.href="machines.html";
+
+});
+
+document.getElementById("buyFirstMachineBtn")
+?.addEventListener("click",()=>{
+
+location.href="machines.html";
+
+});
+
+document.getElementById("backBtn")
+?.addEventListener("click",()=>{
+
+history.back();
+
+});
+
+/*=========================================
 SETTINGS POPUP
-==========================*/
+=========================================*/
 
 const popup =
 document.getElementById("settingsPopup");
@@ -481,6 +541,7 @@ document.getElementById("settingsBtn")
 ?.addEventListener("click",()=>{
 
 popup.classList.add("active");
+
 overlay.classList.add("active");
 
 });
@@ -489,6 +550,7 @@ document.getElementById("closePopup")
 ?.addEventListener("click",()=>{
 
 popup.classList.remove("active");
+
 overlay.classList.remove("active");
 
 });
@@ -496,64 +558,85 @@ overlay.classList.remove("active");
 overlay?.addEventListener("click",()=>{
 
 popup.classList.remove("active");
+
 overlay.classList.remove("active");
 
 });
 
-/*==========================
-NAVIGATION
-==========================*/
+/*=========================================
+AVATAR CHANGE
+=========================================*/
 
-document.getElementById("depositBtn")
-?.onclick=()=>location.href="deposit.html";
+document.getElementById("changeAvatar")
+?.addEventListener("click",()=>{
 
-document.getElementById("withdrawBtn")
-?.onclick=()=>location.href="withdraw.html";
+document.getElementById("avatarInput").click();
 
-document.getElementById("machineBtn")
-?.onclick=()=>location.href="machines.html";
+});
 
-document.getElementById("buyFirstMachineBtn")
-?.onclick=()=>location.href="machines.html";
+document.getElementById("avatarInput")
+?.addEventListener("change",()=>{
 
-document.getElementById("backBtn")
-?.onclick=()=>location.href="dashboard.html";
+alert("Avatar upload will be connected after the Storage bucket is ready.");
 
-/*==========================
+});
+
+/*=========================================
 LOGOUT
-==========================*/
+=========================================*/
 
 document.getElementById("logoutBtn")
 ?.addEventListener("click",async()=>{
 
-const confirmLogout =
-confirm("Logout from your account?");
+if(!confirm("Logout from Marathon Digital Hub?")) return;
 
-if(!confirmLogout) return;
-
-await supabase.auth.signOut();
+await db.auth.signOut();
 
 location.href="login.html";
 
 });
 
-}catch(err){
+/*=========================================
+AUTO REFRESH
+=========================================*/
 
-console.error(err);
+setInterval(async()=>{
 
-alert(
-err.message ||
-"Failed to load profile."
-);
+if(currentUser){
 
-}finally{
+await loadWallet();
 
-if(loadingScreen){
+await loadStats();
 
-loadingScreen.style.display="none";
+await loadNotifications();
+
+}
+
+},30000);
+
+/*=========================================
+HIDE LOADER
+=========================================*/
+
+function hideLoader(){
+
+const loader =
+document.getElementById("loadingScreen");
+
+if(loader){
+
+setTimeout(()=>{
+
+loader.style.display="none";
+
+},500);
 
 }
 
 }
 
-});
+/*=========================================
+INITIAL NOTIFICATIONS
+=========================================*/
+
+loadNotifications();
