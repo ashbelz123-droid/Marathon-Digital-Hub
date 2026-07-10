@@ -5,11 +5,13 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Deposit Funds | Marathon Digital Hub</title>
 
-<link rel="stylesheet" href="deposit.css">
+<link rel="stylesheet"
+href="deposit.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -21,25 +23,37 @@
 
 <div class="container">
 
-<!-- Header -->
+<!-- HEADER -->
 
 <header class="header">
 
 <h2>Deposit Funds</h2>
 
-<p>Securely fund your Marathon wallet.</p>
+<p>
+
+Securely fund your Marathon wallet using MTN Mobile Money or Airtel Money.
+
+</p>
 
 </header>
 
-<!-- Wallet Card -->
+<!-- WALLET -->
 
 <section class="wallet-card">
 
 <div>
 
-<p class="wallet-title">Wallet Balance</p>
+<p class="wallet-title">
 
-<h1 id="walletBalance">UGX 0</h1>
+Available Wallet Balance
+
+</p>
+
+<h1 id="walletBalance">
+
+UGX 0
+
+</h1>
 
 </div>
 
@@ -51,33 +65,93 @@
 
 </section>
 
-<!-- Payment Accounts -->
+<!-- SECURITY NOTICE -->
+
+<section class="security-box">
+
+<h3>
+
+🔒 Secure Deposit
+
+</h3>
+
+<p>
+
+Only send money to the official payment numbers displayed below.
+
+Never send money to numbers shared through WhatsApp, Telegram or social media.
+
+</p>
+
+</section>
+
+<!-- PAYMENT ACCOUNTS -->
 
 <section class="card">
 
-<h3>Payment Accounts</h3>
+<h3>
 
-<!-- MTN -->
+Official Payment Accounts
 
-<div class="payment-card">
+</h3>
 
-<div class="network-header">
+<!-- MTN CARD -->
 
-<img src="images/mtn.png" alt="MTN" class="network-logo">
+<div class="payment-card mtn-card">
 
-<h4>MTN Mobile Money</h4>
+<div class="network-title">
+
+<div class="network-badge mtn">
+
+MTN
 
 </div>
 
-<p class="label">Account Name</p>
+<div>
 
-<p id="mtnName">Loading...</p>
+<h4>
 
-<p class="label">Account Number</p>
+MTN Mobile Money
 
-<p id="mtnNumber">Loading...</p>
+</h4>
 
-<button id="copyMTN" class="copy-btn">
+<small>
+
+Fast & Secure
+
+</small>
+
+</div>
+
+</div>
+
+<p class="label">
+
+Account Name
+
+</p>
+
+<p id="mtnName">
+
+Loading...
+
+</p>
+
+<p class="label">
+
+Mobile Number
+
+</p>
+
+<p id="mtnNumber">
+
+Loading...
+
+</p>
+
+<button
+id="copyMTN"
+class="copy-btn">
 
 Copy Number
 
@@ -85,27 +159,63 @@ Copy Number
 
 </div>
 
-<!-- Airtel -->
+<!-- AIRTEL CARD -->
 
-<div class="payment-card">
+<div class="payment-card airtel-card">
 
-<div class="network-header">
+<div class="network-title">
 
-<img src="images/airtel.png" alt="Airtel" class="network-logo">
+<div class="network-badge airtel">
 
-<h4>Airtel Money</h4>
+A
 
 </div>
 
-<p class="label">Account Name</p>
+<div>
 
-<p id="airtelName">Loading...</p>
+<h4>
 
-<p class="label">Account Number</p>
+Airtel Money
 
-<p id="airtelNumber">Loading...</p>
+</h4>
 
-<button id="copyAirtel" class="copy-btn">
+<small>
+
+Fast & Secure
+
+</small>
+
+</div>
+
+</div>
+
+<p class="label">
+
+Account Name
+
+</p>
+
+<p id="airtelName">
+
+Loading...
+
+</p>
+
+<p class="label">
+
+Mobile Number
+
+</p>
+
+<p id="airtelNumber">
+
+Loading...
+
+</p>
+
+<button
+id="copyAirtel"
+class="copy-btn">
 
 Copy Number
 
@@ -115,59 +225,87 @@ Copy Number
 
   </section>
 
-<!-- Payment Instructions -->
+ <!-- PAYMENT GUIDE -->
 
 <section class="card">
 
-<h3>Payment Instructions</h3>
+<h3>
 
-<div class="instructions">
+How to Deposit
 
-<h4>🟡 MTN Mobile Money</h4>
+</h3>
 
-<ol>
+<div class="steps">
 
-<li>Dial <strong>*165#</strong>.</li>
+<div class="step">
 
-<li>Select <strong>Send Money</strong>.</li>
+<div class="step-no">1</div>
 
-<li>Enter the MTN number shown above.</li>
+<div>
 
-<li>Enter the deposit amount.</li>
+<h4>Send Money</h4>
 
-<li>Confirm using your PIN.</li>
+<p>
 
-<li>Wait for the confirmation SMS.</li>
+Send money to the official MTN or Airtel account above.
 
-<li>Copy the <strong>Transaction ID</strong> from the SMS.</li>
+</p>
 
-</ol>
+</div>
 
-<hr>
+</div>
 
-<h4>🔴 Airtel Money</h4>
+<div class="step">
 
-<ol>
+<div class="step-no">2</div>
 
-<li>Dial <strong>*185#</strong>.</li>
+<div>
 
-<li>Select <strong>Send Money</strong>.</li>
+<h4>Receive SMS</h4>
 
-<li>Enter the Airtel number shown above.</li>
+<p>
 
-<li>Enter the deposit amount.</li>
+Wait for the Mobile Money confirmation SMS.
 
-<li>Confirm using your PIN.</li>
+</p>
 
-<li>Wait for the confirmation SMS.</li>
+</div>
 
-<li>Copy the <strong>Transaction ID</strong> from the SMS.</li>
+</div>
 
-</ol>
+<div class="step">
 
-<div class="notice">
+<div class="step-no">3</div>
 
-⚠️ After sending the money, enter the exact amount and Transaction ID below, then submit your request for verification.
+<div>
+
+<h4>Submit Request</h4>
+
+<p>
+
+Enter the exact amount, sender phone number and SMS Transaction ID.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="step">
+
+<div class="step-no">4</div>
+
+<div>
+
+<h4>Wallet Credit</h4>
+
+<p>
+
+After admin verification your wallet will be credited automatically.
+
+</p>
+
+</div>
 
 </div>
 
@@ -175,40 +313,112 @@ Copy Number
 
 </section>
 
-<!-- Deposit Form -->
+<!-- DEPOSIT FORM -->
 
 <section class="card">
 
-<h3>Submit Deposit</h3>
+<h3>
+
+Submit Deposit Request
+
+</h3>
+
+<div class="review-time">
+
+⏱ Average review time:
+
+<strong>5 - 30 Minutes</strong>
+
+</div>
 
 <div class="method-buttons">
 
-<button id="mtnMethod" class="active">
+<button
 
-MTN
+id="mtnMethod"
+
+class="active">
+
+🟡 MTN
 
 </button>
 
-<button id="airtelMethod">
+<button
 
-Airtel
+id="airtelMethod">
+
+🔴 Airtel
 
 </button>
 
 </div>
 
 <input
+
 type="number"
+
 id="depositAmount"
-placeholder="Enter Deposit Amount">
+
+placeholder="Deposit Amount (UGX)">
 
 <input
+
+type="tel"
+
+id="senderNumber"
+
+placeholder="Sender Mobile Money Number">
+
+<input
+
 type="text"
+
 id="transactionId"
-placeholder="Enter SMS Transaction ID">
+
+placeholder="SMS Transaction ID">
+
+<textarea
+
+id="depositMessage"
+
+rows="3"
+
+maxlength="200"
+
+placeholder="Optional message to admin...">
+
+</textarea>
+
+<div class="deposit-rules">
+
+<h4>
+
+Deposit Requirements
+
+</h4>
+
+<ul>
+
+<li>✔ Only one pending deposit request is allowed.</li>
+
+<li>✔ Sender phone number is required.</li>
+
+<li>✔ Transaction ID must be unique.</li>
+
+<li>✔ Enter the exact amount sent.</li>
+
+<li>✔ Minimum deposit: UGX 10,000.</li>
+
+<li>✔ Do not submit the same payment twice.</li>
+
+</ul>
+
+</div>
 
 <button
+
 id="submitDeposit"
+
 class="submit-btn">
 
 Submit Deposit Request
@@ -217,15 +427,21 @@ Submit Deposit Request
 
   </section>
 
- <!-- Latest Deposit Request -->
+  <!-- LATEST DEPOSIT -->
 
 <section class="card">
 
-<h3>Latest Deposit Request</h3>
+<h3>
+
+Latest Deposit Request
+
+</h3>
 
 <div class="latest-request">
 
-<div id="latestStatus" class="status pending">
+<div
+id="latestStatus"
+class="status pending">
 
 🟡 No Request
 
@@ -259,6 +475,18 @@ UGX 0
 
 <p>
 
+<strong>Sender Number</strong>
+
+</p>
+
+<span id="latestSender">
+
+-
+
+</span>
+
+<p>
+
 <strong>Transaction ID</strong>
 
 </p>
@@ -271,7 +499,7 @@ UGX 0
 
 <p>
 
-<strong>Request Time</strong>
+<strong>Submitted</strong>
 
 </p>
 
@@ -283,21 +511,38 @@ UGX 0
 
 </div>
 
+<div class="request-actions">
+
+<button
+id="cancelDeposit"
+
+class="cancel-btn">
+
+Cancel Pending Request
+
+</button>
+
+</div>
+
 </div>
 
 </section>
 
-<!-- Deposit History -->
+<!-- DEPOSIT HISTORY -->
 
 <section class="card">
 
-<h3>Deposit History</h3>
+<h3>
+
+Deposit History
+
+</h3>
 
 <div id="depositHistory">
 
 <div class="history-empty">
 
-No deposit requests found.
+No deposit history available.
 
 </div>
 
@@ -305,9 +550,35 @@ No deposit requests found.
 
 </section>
 
+<!-- IMPORTANT NOTICE -->
+
+<section class="card notice-card">
+
+<h3>
+
+Important Notice
+
+</h3>
+
+<ul>
+
+<li>✅ Only one pending deposit request is allowed at a time.</li>
+
+<li>✅ Deposits are reviewed in the order they are received.</li>
+
+<li>✅ Wallet balance is updated only after approval.</li>
+
+<li>✅ Keep your Mobile Money SMS until your deposit is approved.</li>
+
+<li>✅ Contact support if your request remains pending longer than expected.</li>
+
+</ul>
+
+</section>
+
 </div>
 
-<!-- Bottom Navigation -->
+<!-- BOTTOM NAVIGATION -->
 
 <nav class="bottom-nav">
 
@@ -359,4 +630,4 @@ No deposit requests found.
 
 </body>
 
-                                    </html> 
+  </html>
