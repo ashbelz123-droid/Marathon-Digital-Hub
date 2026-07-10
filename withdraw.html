@@ -5,9 +5,12 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Withdraw | Marathon Digital Hub</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -15,48 +18,51 @@
 
 <link rel="stylesheet" href="withdraw.css">
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
 </head>
 
 <body>
 
-<div class="background-glow"></div>
+<div class="bg-animation"></div>
 
 <div class="page">
 
 <!-- HEADER -->
 
-<header class="header glass">
+<header class="topbar">
 
-<button id="backBtn" class="icon-btn">
+<div class="back-btn">
+
+<a href="dashboard.html">
 
 <i class="fas fa-arrow-left"></i>
 
-</button>
-
-<div class="header-title">
-
-<h2>Withdraw Funds</h2>
-
-<p>Secure wallet withdrawal</p>
+</a>
 
 </div>
 
-<button id="historyBtn" class="icon-btn">
+<div class="page-title">
 
-<i class="fas fa-clock-rotate-left"></i>
+<h2>Withdraw</h2>
 
-</button>
+<p>Withdraw your wallet balance securely</p>
+
+</div>
+
+<div class="notify-btn">
+
+<i class="fas fa-bell"></i>
+
+<span id="notificationCount">0</span>
+
+</div>
 
 </header>
 
 <!-- WALLET CARD -->
 
-<section class="wallet-card glass">
+<section class="wallet-card">
 
-<p>Available Wallet Balance</p>
+<p>Available Balance</p>
 
 <h1 id="walletBalance">
 
@@ -64,12 +70,13 @@ UGX 0
 
 </h1>
 
-<div class="processing-time">
+<div class="processing-box">
 
-<i class="fas fa-circle-info"></i>
+<i class="fas fa-clock"></i>
 
-Estimated Processing Time:
-<strong>5 Minutes - 24 Hours</strong>
+Estimated Processing
+
+<strong>10 Minutes - 24 Hours</strong>
 
 </div>
 
@@ -77,9 +84,10 @@ Estimated Processing Time:
 
 <!-- PENDING WITHDRAWAL -->
 
-<section
-id="pendingWithdrawalCard"
-class="glass pending-card"
+<section id="pendingCard"
+
+class="pending-card"
+
 style="display:none;">
 
 <div class="pending-header">
@@ -92,7 +100,7 @@ Pending Withdrawal
 
 </h3>
 
-<span class="status pending">
+<span class="pending-status">
 
 Pending
 
@@ -100,61 +108,61 @@ Pending
 
 </div>
 
-<div class="pending-details">
+<div class="pending-body">
 
-<p>
+<div class="row">
 
-<strong>Amount:</strong>
+<span>Amount</span>
 
-<span id="pendingAmount">
-
-UGX 0
-
-</span>
-
-</p>
-
-<p>
-
-<strong>Processing Fee:</strong>
-
-<span id="pendingFee">
+<strong id="pendingAmount">
 
 UGX 0
 
-</span>
-
-</p>
-
-<p>
-
-<strong>You Will Receive:</strong>
-
-<span id="pendingNet">
-
-UGX 0
-
-</span>
-
-</p>
-
-<p>
-
-<strong>Mobile Number:</strong>
-
-<span id="pendingPhone">
-
--
-
-</span>
-
-</p>
+</strong>
 
 </div>
 
-<div class="pending-buttons">
+<div class="row">
 
-<button id="refreshStatusBtn">
+<span>Fee (9.5%)</span>
+
+<strong id="pendingFee">
+
+UGX 0
+
+</strong>
+
+</div>
+
+<div class="row">
+
+<span>You Receive</span>
+
+<strong id="pendingReceive">
+
+UGX 0
+
+</strong>
+
+</div>
+
+<div class="row">
+
+<span>Phone Number</span>
+
+<strong id="pendingPhone">
+
+-
+
+</strong>
+
+</div>
+
+</div>
+
+<div class="pending-actions">
+
+<button id="refreshBtn">
 
 <i class="fas fa-rotate"></i>
 
@@ -162,11 +170,11 @@ Refresh
 
 </button>
 
-<button id="cancelWithdrawalBtn">
+<button id="cancelBtn">
 
-<i class="fas fa-ban"></i>
+<i class="fas fa-xmark"></i>
 
-Cancel Withdrawal
+Cancel
 
 </button>
 
@@ -176,30 +184,36 @@ Cancel Withdrawal
 
 <!-- WITHDRAW FORM -->
 
-<section
-id="withdrawFormCard"
-class="glass form-card">
+<section id="withdrawForm"
 
-  <!-- WITHDRAWAL FORM -->
+class="withdraw-card">
+
+<!-- WITHDRAWAL FORM -->
 
 <div class="input-group">
 
-<label>Withdrawal Amount (UGX)</label>
+<label>
+Withdrawal Amount (UGX)
+</label>
 
 <input
 type="number"
 id="withdrawAmount"
-placeholder="Enter amount">
+placeholder="Enter withdrawal amount">
 
 </div>
 
 <div class="input-group">
 
-<label>Mobile Money Network</label>
+<label>
+Payment Method
+</label>
 
 <select id="withdrawMethod">
 
-<option value="">Select Network</option>
+<option value="">
+Select Mobile Money Network
+</option>
 
 <option value="MTN Mobile Money">
 MTN Mobile Money
@@ -215,26 +229,28 @@ Airtel Money
 
 <div class="input-group">
 
-<label>Receiver Phone Number</label>
+<label>
+Receiver Phone Number
+</label>
 
 <input
 type="tel"
-id="receiverPhone"
+id="phoneNumber"
 placeholder="+2567XXXXXXXX">
 
 <small>
 
-Enter the Mobile Money number where you want to receive your money.
+Your money will be sent to this Mobile Money number after approval.
 
 </small>
 
 </div>
 
-<!-- CALCULATION CARD -->
+<!-- LIVE CALCULATION -->
 
-<div class="summary-card">
+<div class="calculation-card">
 
-<div class="summary-row">
+<div class="calc-row">
 
 <span>Withdrawal Amount</span>
 
@@ -246,7 +262,7 @@ UGX 0
 
 </div>
 
-<div class="summary-row">
+<div class="calc-row">
 
 <span>Processing Fee (9.5%)</span>
 
@@ -258,7 +274,7 @@ UGX 0
 
 </div>
 
-<div class="summary-row total">
+<div class="calc-row total">
 
 <span>You Will Receive</span>
 
@@ -272,23 +288,46 @@ UGX 0
 
 </div>
 
-<div class="warning-box">
+<!-- NOTICE -->
 
-<i class="fas fa-circle-exclamation"></i>
+<div class="notice-box">
 
-<span>
+<i class="fas fa-circle-info"></i>
 
-Marathon Digital Hub deducts a <strong>9.5%</strong> processing fee from every withdrawal request.
+<p>
 
-</span>
+<strong>Notice:</strong>
+
+Marathon Digital Hub deducts a
+<strong>9.5%</strong> processing fee from every withdrawal.
+
+After your request is approved, you'll receive a notification showing:
+
+<br><br>
+
+✔ Withdrawal Amount
+
+<br>
+
+✔ Processing Fee
+
+<br>
+
+✔ Amount Received
+
+<br>
+
+✔ Updated Wallet Balance
+
+</p>
 
 </div>
 
-<button id="withdrawBtn" class="primary-btn">
+<button id="withdrawBtn" class="withdraw-btn">
 
 <i class="fas fa-paper-plane"></i>
 
-Submit Withdrawal Request
+Continue Withdrawal
 
 </button>
 
@@ -308,15 +347,15 @@ Confirm Withdrawal
 
 <p>
 
-Please review your withdrawal details before submitting.
+Please review your withdrawal details.
 
 </p>
 
 <div class="popup-summary">
 
-<p>
+<div class="popup-row">
 
-Withdrawal:
+<span>Withdrawal</span>
 
 <strong id="popupAmount">
 
@@ -324,11 +363,11 @@ UGX 0
 
 </strong>
 
-</p>
+</div>
 
-<p>
+<div class="popup-row">
 
-Fee (9.5%):
+<span>Fee (9.5%)</span>
 
 <strong id="popupFee">
 
@@ -336,11 +375,11 @@ UGX 0
 
 </strong>
 
-</p>
+</div>
 
-<p>
+<div class="popup-row">
 
-You Will Receive:
+<span>You Receive</span>
 
 <strong id="popupReceive">
 
@@ -348,19 +387,19 @@ UGX 0
 
 </strong>
 
-</p>
+</div>
 
 </div>
 
 <p class="popup-note">
 
-Marathon Digital Hub deducts a <strong>9.5%</strong> processing fee from every withdrawal request. Once submitted, your request will be reviewed by our finance team.
+By confirming, Marathon Digital Hub will submit your withdrawal request for review. You cannot create another withdrawal until this one is approved or cancelled.
 
 </p>
 
 <div class="popup-buttons">
 
-<button id="closePopup">
+<button id="cancelPopup">
 
 Cancel
 
@@ -368,7 +407,7 @@ Cancel
 
 <button id="confirmWithdrawal">
 
-Confirm Withdrawal
+Confirm
 
 </button>
 
@@ -378,31 +417,27 @@ Confirm Withdrawal
 
   </div>
 
-  <!-- ==========================
+  <!-- ===========================
 WITHDRAWAL HISTORY
-========================== -->
+=========================== -->
 
-<section class="glass history-card">
+<section class="history-card">
 
-<div class="section-header">
-
-<h3>
+<div class="card-title">
 
 <i class="fas fa-clock-rotate-left"></i>
 
-Recent Withdrawals
-
-</h3>
+<span>Withdrawal History</span>
 
 </div>
 
 <div id="withdrawHistory">
 
-<div class="empty-box">
+<div class="empty-history">
 
 <i class="fas fa-wallet"></i>
 
-<p>No withdrawal history available.</p>
+<p>No withdrawals yet.</p>
 
 </div>
 
@@ -410,31 +445,33 @@ Recent Withdrawals
 
 </section>
 
-<!-- ==========================
-SUCCESS POPUP
-========================== -->
+<!-- SUCCESS POPUP -->
 
 <div id="successPopup" class="popup">
 
-<div class="popup-card success">
+<div class="popup-card success-card">
 
-<i class="fas fa-circle-check success-icon"></i>
+<div class="success-icon">
+
+<i class="fas fa-circle-check"></i>
+
+</div>
 
 <h2>Withdrawal Submitted</h2>
 
 <p>
 
-Your withdrawal request has been submitted successfully.
+Your withdrawal request has been sent successfully.
 
 </p>
 
 <p>
 
-You will receive a notification once your request has been reviewed.
+You'll receive a notification once your withdrawal has been approved.
 
 </p>
 
-<button id="successOkBtn">
+<button id="successOk">
 
 OK
 
@@ -444,9 +481,7 @@ OK
 
 </div>
 
-<!-- ==========================
-LOADING SCREEN
-========================== -->
+<!-- LOADING -->
 
 <div id="loadingScreen" class="loading-screen">
 
@@ -454,15 +489,13 @@ LOADING SCREEN
 
 <p>
 
-Processing Withdrawal...
+Submitting Withdrawal...
 
 </p>
 
 </div>
 
-<!-- ==========================
-BOTTOM NAVIGATION
-========================== -->
+<!-- BOTTOM NAVIGATION -->
 
 <nav class="bottom-nav">
 
@@ -513,4 +546,5 @@ BOTTOM NAVIGATION
 <script src="withdraw.js"></script>
 
 </body>
-</html>
+
+  </html>
