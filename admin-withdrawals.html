@@ -51,7 +51,6 @@ Approve, reject and manage all withdrawal requests.
 </div>
 
 <a href="admin-dashboard.html"
-
 class="dashboard-btn">
 
 <i class="fas fa-arrow-left"></i>
@@ -74,11 +73,7 @@ Dashboard
 
 <p>Pending</p>
 
-<small id="pendingAmount">
-
-UGX 0
-
-</small>
+<small id="pendingAmount">UGX 0</small>
 
 </div>
 
@@ -90,11 +85,7 @@ UGX 0
 
 <p>Approved</p>
 
-<small id="approvedAmount">
-
-UGX 0
-
-</small>
+<small id="approvedAmount">UGX 0</small>
 
 </div>
 
@@ -106,11 +97,7 @@ UGX 0
 
 <p>Rejected</p>
 
-<small id="rejectedAmount">
-
-UGX 0
-
-</small>
+<small id="rejectedAmount">UGX 0</small>
 
 </div>
 
@@ -122,11 +109,7 @@ UGX 0
 
 <p>Total Requests</p>
 
-<small id="totalAmount">
-
-UGX 0
-
-</small>
+<small id="totalAmount">UGX 0</small>
 
 </div>
 
@@ -139,11 +122,8 @@ UGX 0
 <i class="fas fa-search"></i>
 
 <input
-
 type="text"
-
 id="searchInput"
-
 placeholder="Search by name, email or phone...">
 
 </div>
@@ -154,35 +134,15 @@ placeholder="Search by name, email or phone...">
 
 <select id="statusFilter">
 
-<option value="all">
+<option value="all">All Withdrawals</option>
 
-All Withdrawals
+<option value="pending">Pending</option>
 
-</option>
+<option value="approved">Approved</option>
 
-<option value="pending">
+<option value="rejected">Rejected</option>
 
-Pending
-
-</option>
-
-<option value="approved">
-
-Approved
-
-</option>
-
-<option value="rejected">
-
-Rejected
-
-</option>
-
-<option value="cancelled">
-
-Cancelled
-
-</option>
+<option value="cancelled">Cancelled</option>
 
 </select>
 
@@ -196,213 +156,21 @@ Refresh
 
 </div>
 
-<!-- WITHDRAWAL LIST -->
+  <!-- ==========================
+WITHDRAWAL LIST
+(JS WILL GENERATE ALL CARDS)
+========================== -->
 
 <div id="withdrawalsContainer">
 
-  <!-- ===========================
-WITHDRAWAL CARD TEMPLATE
-(JS will generate these)
-=========================== -->
-
-<div class="withdraw-card">
-
-<div class="card-header">
-
-<div class="withdraw-id">
-
-<h3 id="withdrawId">
-
-#WD-000001
-
-</h3>
-
-<span class="status pending">
-
-Pending
-
-</span>
-
 </div>
 
-<div class="request-time">
-
-<i class="fas fa-clock"></i>
-
-<span id="requestTime">
-
-2 minutes ago
-
-</span>
-
-</div>
-
-</div>
-
-<!-- USER DETAILS -->
-
-<div class="user-section">
-
-<div class="avatar">
-
-A
-
-</div>
-
-<div class="user-info">
-
-<h3 id="userName">
-
-Ash Belz
-
-</h3>
-
-<p id="userEmail">
-
-ash@gmail.com
-
-</p>
-
-<p id="userPhone">
-
-+256700123456
-
-</p>
-
-</div>
-
-</div>
-
-<!-- FINANCIAL DETAILS -->
-
-<div class="finance-box">
-
-<div class="finance-row">
-
-<span>
-
-Withdrawal Amount
-
-</span>
-
-<strong id="withdrawAmount">
-
-UGX 100,000
-
-</strong>
-
-</div>
-
-<div class="finance-row">
-
-<span>
-
-Processing Fee (9.5%)
-
-</span>
-
-<strong id="withdrawFee">
-
-UGX 9,500
-
-</strong>
-
-</div>
-
-<div class="finance-row receive">
-
-<span>
-
-Amount To Send
-
-</span>
-
-<strong id="withdrawReceive">
-
-UGX 90,500
-
-</strong>
-
-</div>
-
-<div class="finance-row">
-
-<span>
-
-Wallet Balance
-
-</span>
-
-<strong id="walletBalance">
-
-UGX 450,000
-
-</strong>
-
-</div>
-
-</div>
-
-<!-- PAYMENT DETAILS -->
-
-<div class="payment-box">
-
-<div>
-
-<i class="fas fa-mobile-screen"></i>
-
-<span id="paymentMethod">
-
-MTN Mobile Money
-
-</span>
-
-</div>
-
-<div>
-
-<i class="fas fa-phone"></i>
-
-<span id="receiverPhone">
-
-+256700123456
-
-</span>
-
-</div>
-
-</div>
-
-<!-- ACTIONS -->
-
-<div class="action-buttons">
-
-<button class="approve-btn">
-
-<i class="fas fa-circle-check"></i>
-
-Approve
-
-</button>
-
-<button class="reject-btn">
-
-<i class="fas fa-circle-xmark"></i>
-
-Reject
-
-</button>
-
-</div>
-
-</div>
-
-<!-- EMPTY STATE -->
+<!-- ==========================
+EMPTY STATE
+========================== -->
 
 <div id="emptyState"
-
 class="empty-state"
-
 style="display:none;">
 
 <i class="fas fa-wallet"></i>
@@ -415,16 +183,17 @@ No Withdrawal Requests
 
 <p>
 
-There are currently no withdrawal requests matching your search.
+There are currently no withdrawal requests matching your search or filter.
 
 </p>
 
 </div>
 
-<!-- APPROVAL POPUP -->
+<!-- ==========================
+APPROVE POPUP
+========================== -->
 
 <div id="approvePopup"
-
 class="popup">
 
 <div class="popup-card">
@@ -447,11 +216,7 @@ Please confirm this withdrawal request.
 
 <span>User</span>
 
-<strong id="popupUser">
-
--
-
-</strong>
+<strong id="popupUser">-</strong>
 
 </div>
 
@@ -459,11 +224,7 @@ Please confirm this withdrawal request.
 
 <span>Requested</span>
 
-<strong id="popupAmount">
-
-UGX 0
-
-</strong>
+<strong id="popupAmount">UGX 0</strong>
 
 </div>
 
@@ -471,11 +232,7 @@ UGX 0
 
 <span>Fee (9.5%)</span>
 
-<strong id="popupFee">
-
-UGX 0
-
-</strong>
+<strong id="popupFee">UGX 0</strong>
 
 </div>
 
@@ -483,11 +240,7 @@ UGX 0
 
 <span>Amount To Send</span>
 
-<strong id="popupReceive">
-
-UGX 0
-
-</strong>
+<strong id="popupReceive">UGX 0</strong>
 
 </div>
 
@@ -495,7 +248,7 @@ UGX 0
 
 <p class="warning">
 
-Approving this request will deduct the user's wallet balance and mark this withdrawal as approved.
+Approving this withdrawal will deduct the user's wallet balance and mark this request as completed.
 
 </p>
 
@@ -509,7 +262,7 @@ Cancel
 
 <button id="confirmApprove">
 
-Approve
+Approve Withdrawal
 
 </button>
 
@@ -517,7 +270,7 @@ Approve
 
 </div>
 
-  </div>
+                           </div>
 
   <!-- ==========================
 REJECT POPUP
@@ -535,7 +288,7 @@ Reject Withdrawal
 
 <p>
 
-You can optionally enter a reason that will be sent to the user.
+Optionally enter a reason that will be sent to the user.
 
 </p>
 
@@ -543,9 +296,9 @@ You can optionally enter a reason that will be sent to the user.
 
 id="rejectReason"
 
-placeholder="Example: Incorrect phone number or suspicious activity."
+rows="5"
 
-rows="5">
+placeholder="Example: Incorrect phone number or suspicious activity.">
 
 </textarea>
 
@@ -595,6 +348,8 @@ Request processed successfully.
 
 </p>
 
+<div class="popup-buttons">
+
 <button id="closeSuccess">
 
 OK
@@ -605,11 +360,15 @@ OK
 
 </div>
 
+</div>
+
 <!-- ==========================
-LOADING
+LOADING SCREEN
 ========================== -->
 
-<div id="loadingScreen" class="loading-screen">
+<div id="loadingScreen"
+
+class="loading-screen">
 
 <div class="loader"></div>
 
@@ -621,7 +380,7 @@ Processing Request...
 
 <p>
 
-Please wait while Marathon Digital Hub updates the withdrawal.
+Please wait while Marathon Digital Hub updates the withdrawal request.
 
 </p>
 
