@@ -1,6 +1,6 @@
 /*=========================================
 MARATHON DIGITAL HUB
-WITHDRAW.JS
+withdraw.js
 PART 1
 =========================================*/
 
@@ -10,48 +10,33 @@ const db = window.supabaseClient;
 ELEMENTS
 ==============================*/
 
-const walletBalance =
-document.getElementById("walletBalance");
+const walletBalance = document.getElementById("walletBalance");
 
-const withdrawAmount =
-document.getElementById("withdrawAmount");
+const withdrawForm = document.getElementById("withdrawForm");
 
-const withdrawMethod =
-document.getElementById("withdrawMethod");
+const pendingCard = document.getElementById("pendingCard");
 
-const receiverPhone =
-document.getElementById("receiverPhone");
+const withdrawAmount = document.getElementById("withdrawAmount");
 
-const summaryAmount =
-document.getElementById("summaryAmount");
+const withdrawMethod = document.getElementById("withdrawMethod");
 
-const summaryFee =
-document.getElementById("summaryFee");
+const phoneNumber = document.getElementById("phoneNumber");
 
-const summaryReceive =
-document.getElementById("summaryReceive");
+const summaryAmount = document.getElementById("summaryAmount");
 
-const popupAmount =
-document.getElementById("popupAmount");
+const summaryFee = document.getElementById("summaryFee");
 
-const popupFee =
-document.getElementById("popupFee");
+const summaryReceive = document.getElementById("summaryReceive");
 
-const popupReceive =
-document.getElementById("popupReceive");
+const popupAmount = document.getElementById("popupAmount");
 
-const withdrawFormCard =
-document.getElementById("withdrawFormCard");
+const popupFee = document.getElementById("popupFee");
 
-const pendingCard =
-document.getElementById("pendingWithdrawalCard");
+const popupReceive = document.getElementById("popupReceive");
 
-const loadingScreen =
-document.getElementById("loadingScreen");
+const confirmPopup = document.getElementById("confirmPopup");
 
-/*==============================
-CURRENT USER
-==============================*/
+const loadingScreen = document.getElementById("loadingScreen");
 
 let currentUser = null;
 
@@ -81,26 +66,35 @@ async function loadUser(){
 
 showLoading();
 
-const {data:{user}} =
-await db.auth.getUser();
+const {data:{user},error}=await db.auth.getUser();
 
-if(!user){
+if(error || !user){
 
-location.href="login.html";
+window.location.href="login.html";
 
 return;
 
 }
 
-currentUser = user;
+currentUser=user;
 
-const {data,error} = await db
+await loadProfile();
+
+}
+
+/*==============================
+LOAD PROFILE
+==============================*/
+
+async function loadProfile(){
+
+const {data,error}=await db
 
 .from("profiles")
 
 .select("*")
 
-.eq("id",user.id)
+.eq("id",currentUser.id)
 
 .single();
 
@@ -108,20 +102,21 @@ hideLoading();
 
 if(error){
 
-alert("Unable to load profile.");
+alert("Unable to load your profile.");
 
 return;
 
 }
 
-profile = data;
+profile=data;
 
-walletBalance.innerHTML =
-"UGX " +
-Number(profile.wallet_balance)
-.toLocaleString();
+walletBalance.innerHTML=
+
+"UGX "+Number(profile.wallet_balance).toLocaleString();
 
 checkPendingWithdrawal();
+
+loadWithdrawalHistory();
 
 }
 
@@ -137,42 +132,43 @@ loadUser
 
 );
 
-/*=========================================
-WITHDRAW.JS
+  /*=========================================
+MARATHON DIGITAL HUB
+withdraw.js
 PART 2
 =========================================*/
 
 /*==============================
-LIVE CALCULATIONS
+LIVE CALCULATION
 ==============================*/
 
-withdrawAmount.addEventListener("input", calculateWithdrawal);
+withdrawAmount.addEventListener("input",updateSummary);
 
-function calculateWithdrawal(){
+function updateSummary(){
 
-const amount = Number(withdrawAmount.value) || 0;
+const amount=Number(withdrawAmount.value)||0;
 
-const fee = amount * 0.095;
+const fee=amount*0.095;
 
-const receive = amount - fee;
+const receive=amount-fee;
 
-summaryAmount.innerHTML =
-"UGX " + amount.toLocaleString();
+summaryAmount.innerHTML=
+"UGX "+amount.toLocaleString();
 
-summaryFee.innerHTML =
-"UGX " + fee.toLocaleString();
+summaryFee.innerHTML=
+"UGX "+fee.toLocaleString();
 
-summaryReceive.innerHTML =
-"UGX " + receive.toLocaleString();
+summaryReceive.innerHTML=
+"UGX "+receive.toLocaleString();
 
-popupAmount.innerHTML =
-"UGX " + amount.toLocaleString();
+popupAmount.innerHTML=
+"UGX "+amount.toLocaleString();
 
-popupFee.innerHTML =
-"UGX " + fee.toLocaleString();
+popupFee.innerHTML=
+"UGX "+fee.toLocaleString();
 
-popupReceive.innerHTML =
-"UGX " + receive.toLocaleString();
+popupReceive.innerHTML=
+"UGX "+receive.toLocaleString();
 
 }
 
@@ -182,7 +178,7 @@ CHECK PENDING
 
 async function checkPendingWithdrawal(){
 
-const {data,error} = await db
+const {data,error}=await db
 
 .from("withdrawals")
 
@@ -190,7 +186,7 @@ const {data,error} = await db
 
 .eq("user_id",currentUser.id)
 
-.eq("status","Pending")
+.eq("status","pending")
 
 .order("created_at",{ascending:false})
 
@@ -206,27 +202,27 @@ return;
 
 if(data.length>0){
 
-const w = data[0];
+const withdrawal=data[0];
 
-withdrawFormCard.style.display="none";
+withdrawForm.style.display="none";
 
 pendingCard.style.display="block";
 
-document.getElementById("pendingAmount").innerHTML =
-"UGX " + Number(w.amount).toLocaleString();
+document.getElementById("pendingAmount").innerHTML=
+"UGX "+Number(withdrawal.amount).toLocaleString();
 
-document.getElementById("pendingFee").innerHTML =
-"UGX " + Number(w.fee).toLocaleString();
+document.getElementById("pendingFee").innerHTML=
+"UGX "+Number(withdrawal.fee).toLocaleString();
 
-document.getElementById("pendingNet").innerHTML =
-"UGX " + Number(w.net_amount).toLocaleString();
+document.getElementById("pendingReceive").innerHTML=
+"UGX "+Number(withdrawal.net_amount).toLocaleString();
 
-document.getElementById("pendingPhone").innerHTML =
-w.receiver_phone;
+document.getElementById("pendingPhone").innerHTML=
+withdrawal.phone_number;
 
 }else{
 
-withdrawFormCard.style.display="block";
+withdrawForm.style.display="block";
 
 pendingCard.style.display="none";
 
@@ -235,23 +231,18 @@ pendingCard.style.display="none";
 }
 
 /*==============================
-POPUP
+OPEN CONFIRM POPUP
 ==============================*/
 
-const confirmPopup =
-document.getElementById("confirmPopup");
+document.getElementById("withdrawBtn")
 
-document
+.addEventListener("click",()=>{
 
-.getElementById("withdrawBtn")
-
-.onclick = function(){
-
-const amount = Number(withdrawAmount.value);
+const amount=Number(withdrawAmount.value);
 
 if(amount<=0){
 
-alert("Enter a valid amount.");
+alert("Enter a valid withdrawal amount.");
 
 return;
 
@@ -265,17 +256,17 @@ return;
 
 }
 
-if(withdrawMethod.value==""){
+if(withdrawMethod.value===""){
 
-alert("Select Mobile Money network.");
+alert("Please select a payment method.");
 
 return;
 
 }
 
-if(receiverPhone.value.trim()==""){
+if(phoneNumber.value.trim()===""){
 
-alert("Enter receiver phone number.");
+alert("Please enter your phone number.");
 
 return;
 
@@ -283,20 +274,23 @@ return;
 
 confirmPopup.style.display="flex";
 
-};
+});
 
-document
+/*==============================
+CLOSE POPUP
+==============================*/
 
-.getElementById("closePopup")
+document.getElementById("cancelPopup")
 
-.onclick=function(){
+.addEventListener("click",()=>{
 
 confirmPopup.style.display="none";
 
-};
+});
 
 /*=========================================
-WITHDRAW.JS
+MARATHON DIGITAL HUB
+withdraw.js
 PART 3
 =========================================*/
 
@@ -306,7 +300,7 @@ CONFIRM WITHDRAWAL
 
 document.getElementById("confirmWithdrawal")
 
-.addEventListener("click", async ()=>{
+.addEventListener("click",async()=>{
 
 confirmPopup.style.display="none";
 
@@ -314,15 +308,15 @@ showLoading();
 
 try{
 
-const amount = Number(withdrawAmount.value);
+const amount=Number(withdrawAmount.value);
 
-const fee = amount * 0.095;
+const fee=amount*0.095;
 
-const net = amount - fee;
+const net=amount-fee;
 
-/* Prevent duplicate pending withdrawal */
+/* Check if a pending withdrawal already exists */
 
-const {data:pending} = await db
+const {data:pending}=await db
 
 .from("withdrawals")
 
@@ -330,7 +324,7 @@ const {data:pending} = await db
 
 .eq("user_id",currentUser.id)
 
-.eq("status","Pending");
+.eq("status","pending");
 
 if(pending && pending.length>0){
 
@@ -344,7 +338,7 @@ return;
 
 /* Save withdrawal */
 
-const {error} = await db
+const {error}=await db
 
 .from("withdrawals")
 
@@ -360,19 +354,19 @@ net_amount:net,
 
 method:withdrawMethod.value,
 
-receiver_phone:receiverPhone.value,
+phone_number:phoneNumber.value,
 
-status:"Pending"
+status:"pending"
 
 });
 
 if(error) throw error;
 
-/* Notification */
+/* User notification */
 
 await db
 
-.from("notifications")
+.from("user_notifications")
 
 .insert({
 
@@ -380,7 +374,10 @@ user_id:currentUser.id,
 
 title:"Withdrawal Submitted",
 
-message:`Your withdrawal request of UGX ${amount.toLocaleString()} has been received and is awaiting approval.`
+message:
+`Your withdrawal request of UGX ${amount.toLocaleString()} has been received. A 9.5% processing fee has been applied. Please wait for approval.`,
+
+type:"withdraw"
 
 });
 
@@ -390,7 +387,7 @@ document.getElementById("successPopup").style.display="flex";
 
 checkPendingWithdrawal();
 
-loadHistory();
+loadWithdrawalHistory();
 
 }catch(err){
 
@@ -403,30 +400,30 @@ alert(err.message);
 });
 
 /*==============================
-SUCCESS BUTTON
+SUCCESS POPUP
 ==============================*/
 
-document.getElementById("successOkBtn")
+document.getElementById("successOk")
 
-.onclick=function(){
+.addEventListener("click",()=>{
 
 document.getElementById("successPopup").style.display="none";
 
-};
+});
 
 /*==============================
-CANCEL WITHDRAWAL
+CANCEL PENDING
 ==============================*/
 
-document.getElementById("cancelWithdrawalBtn")
+document.getElementById("cancelBtn")
 
 .addEventListener("click",async()=>{
 
-if(!confirm("Cancel this pending withdrawal?")) return;
+if(!confirm("Cancel this withdrawal request?")) return;
 
 showLoading();
 
-const {data} = await db
+const {data}=await db
 
 .from("withdrawals")
 
@@ -434,7 +431,7 @@ const {data} = await db
 
 .eq("user_id",currentUser.id)
 
-.eq("status","Pending")
+.eq("status","pending")
 
 .single();
 
@@ -446,7 +443,7 @@ await db
 
 .update({
 
-status:"Cancelled"
+status:"cancelled"
 
 })
 
@@ -454,7 +451,7 @@ status:"Cancelled"
 
 await db
 
-.from("notifications")
+.from("user_notifications")
 
 .insert({
 
@@ -462,7 +459,9 @@ user_id:currentUser.id,
 
 title:"Withdrawal Cancelled",
 
-message:"Your pending withdrawal request has been cancelled."
+message:"Your pending withdrawal has been cancelled successfully.",
+
+type:"withdraw"
 
 });
 
@@ -472,7 +471,7 @@ hideLoading();
 
 checkPendingWithdrawal();
 
-loadHistory();
+loadWithdrawalHistory();
 
 });
 
@@ -480,9 +479,9 @@ loadHistory();
 WITHDRAWAL HISTORY
 ==============================*/
 
-async function loadHistory(){
+async function loadWithdrawalHistory(){
 
-const {data,error} = await db
+const {data,error}=await db
 
 .from("withdrawals")
 
@@ -494,9 +493,7 @@ const {data,error} = await db
 
 .limit(10);
 
-const history =
-
-document.getElementById("withdrawHistory");
+const history=document.getElementById("withdrawHistory");
 
 history.innerHTML="";
 
@@ -504,13 +501,15 @@ if(error || !data || data.length===0){
 
 history.innerHTML=`
 
-<div class="empty-box">
+<div class="empty-history">
 
 <i class="fas fa-wallet"></i>
 
-<p>No withdrawal history available.</p>
+<p>No withdrawals yet.</p>
 
-</div>`;
+</div>
+
+`;
 
 return;
 
@@ -542,7 +541,9 @@ ${item.status}
 
 </div>
 
-</div>`;
+</div>
+
+`;
 
 });
 
@@ -552,12 +553,12 @@ ${item.status}
 REFRESH STATUS
 ==============================*/
 
-document.getElementById("refreshStatusBtn")
+document.getElementById("refreshBtn")
 
-.onclick=()=>{
+.addEventListener("click",()=>{
 
 checkPendingWithdrawal();
 
-loadHistory();
+loadWithdrawalHistory();
 
-};
+});
