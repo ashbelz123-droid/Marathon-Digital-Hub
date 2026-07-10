@@ -10,272 +10,53 @@
 <title>Withdraw | Marathon Digital Hub</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
 
-<style>
+<link rel="stylesheet" href="withdraw.css">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-
-background:#050B18;
-color:#fff;
-padding-bottom:90px;
-overflow-x:hidden;
-
-}
-
-body::before{
-
-content:"";
-
-position:fixed;
-
-left:-40%;
-top:-40%;
-
-width:180%;
-height:180%;
-
-background:
-
-radial-gradient(circle at 20% 20%,rgba(0,255,255,.18),transparent 35%),
-
-radial-gradient(circle at 80% 20%,rgba(0,140,255,.18),transparent 35%),
-
-radial-gradient(circle at 60% 80%,rgba(0,255,120,.15),transparent 40%);
-
-animation:bgMove 20s linear infinite;
-
-z-index:-2;
-
-}
-
-@keyframes bgMove{
-
-0%{transform:translateX(-2%);}
-50%{transform:translateX(2%);}
-100%{transform:translateX(-2%);}
-
-}
-
-.header{
-
-padding:20px;
-
-}
-
-.header h2{
-
-font-size:28px;
-
-}
-
-.header p{
-
-margin-top:5px;
-
-color:#9fb5d1;
-
-}
-
-.wallet{
-
-margin:15px;
-
-background:#08142d;
-
-border-radius:18px;
-
-padding:20px;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.wallet span{
-
-color:#9fb5d1;
-
-font-size:14px;
-
-}
-
-.wallet h1{
-
-margin-top:10px;
-
-font-size:30px;
-
-color:#00ff88;
-
-}
-
-.section{
-
-margin:15px;
-
-background:#08142d;
-
-padding:20px;
-
-border-radius:18px;
-
-border:1px solid rgba(0,200,255,.15);
-
-}
-
-.section h3{
-
-margin-bottom:15px;
-
-color:#00ff88;
-
-}
-
-.methodButtons{
-
-display:flex;
-
-gap:10px;
-
-margin-bottom:20px;
-
-}
-
-.methodButtons button{
-
-flex:1;
-
-height:50px;
-
-border:none;
-
-border-radius:12px;
-
-background:#111f3d;
-
-color:white;
-
-font-size:16px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.methodButtons button.active{
-
-background:#00ff88;
-
-color:#001018;
-
-}
-
-input{
-
-width:100%;
-
-height:50px;
-
-margin-top:12px;
-
-padding:15px;
-
-border:none;
-
-border-radius:12px;
-
-background:#111f3d;
-
-color:white;
-
-font-size:16px;
-
-outline:none;
-
-}
-
-.submitBtn{
-
-width:100%;
-
-height:55px;
-
-margin-top:18px;
-
-border:none;
-
-border-radius:14px;
-
-background:#00ff88;
-
-color:#001018;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.historyItem{
-
-background:#111f3d;
-
-padding:15px;
-
-border-radius:12px;
-
-margin-top:12px;
-
-}
-
-.pending{
-
-color:#ffcc00;
-font-weight:bold;
-
-}
-
-.approved{
-
-color:#00ff88;
-font-weight:bold;
-
-}
-
-.rejected{
-
-color:#ff4444;
-font-weight:bold;
-
-}
-
-</style>
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<div class="header">
+<div class="background-glow"></div>
 
-<h2>Withdraw</h2>
+<div class="page">
 
-<p>Request a withdrawal from your wallet.</p>
+<!-- HEADER -->
+
+<header class="header glass">
+
+<button id="backBtn" class="icon-btn">
+
+<i class="fas fa-arrow-left"></i>
+
+</button>
+
+<div class="header-title">
+
+<h2>Withdraw Funds</h2>
+
+<p>Secure wallet withdrawal</p>
 
 </div>
 
-<div class="wallet">
+<button id="historyBtn" class="icon-btn">
 
-<span>Available Balance</span>
+<i class="fas fa-clock-rotate-left"></i>
+
+</button>
+
+</header>
+
+<!-- WALLET CARD -->
+
+<section class="wallet-card glass">
+
+<p>Available Wallet Balance</p>
 
 <h1 id="walletBalance">
 
@@ -283,414 +64,411 @@ UGX 0
 
 </h1>
 
+<div class="processing-time">
+
+<i class="fas fa-circle-info"></i>
+
+Estimated Processing Time:
+<strong>5 Minutes - 24 Hours</strong>
+
 </div>
 
-<div class="section">
+</section>
 
-<h3>Withdrawal Request</h3>
+<!-- PENDING WITHDRAWAL -->
 
-<div class="methodButtons">
+<section
+id="pendingWithdrawalCard"
+class="glass pending-card"
+style="display:none;">
 
-<button id="mtnMethod" class="active">
+<div class="pending-header">
 
-MTN
+<h3>
+
+<i class="fas fa-hourglass-half"></i>
+
+Pending Withdrawal
+
+</h3>
+
+<span class="status pending">
+
+Pending
+
+</span>
+
+</div>
+
+<div class="pending-details">
+
+<p>
+
+<strong>Amount:</strong>
+
+<span id="pendingAmount">
+
+UGX 0
+
+</span>
+
+</p>
+
+<p>
+
+<strong>Processing Fee:</strong>
+
+<span id="pendingFee">
+
+UGX 0
+
+</span>
+
+</p>
+
+<p>
+
+<strong>You Will Receive:</strong>
+
+<span id="pendingNet">
+
+UGX 0
+
+</span>
+
+</p>
+
+<p>
+
+<strong>Mobile Number:</strong>
+
+<span id="pendingPhone">
+
+-
+
+</span>
+
+</p>
+
+</div>
+
+<div class="pending-buttons">
+
+<button id="refreshStatusBtn">
+
+<i class="fas fa-rotate"></i>
+
+Refresh
 
 </button>
 
-<button id="airtelMethod">
+<button id="cancelWithdrawalBtn">
 
-Airtel
+<i class="fas fa-ban"></i>
+
+Cancel Withdrawal
 
 </button>
 
 </div>
+
+</section>
+
+<!-- WITHDRAW FORM -->
+
+<section
+id="withdrawFormCard"
+class="glass form-card">
+
+  <!-- WITHDRAWAL FORM -->
+
+<div class="input-group">
+
+<label>Withdrawal Amount (UGX)</label>
 
 <input
 type="number"
 id="withdrawAmount"
-placeholder="Withdrawal Amount">
+placeholder="Enter amount">
+
+</div>
+
+<div class="input-group">
+
+<label>Mobile Money Network</label>
+
+<select id="withdrawMethod">
+
+<option value="">Select Network</option>
+
+<option value="MTN Mobile Money">
+MTN Mobile Money
+</option>
+
+<option value="Airtel Money">
+Airtel Money
+</option>
+
+</select>
+
+</div>
+
+<div class="input-group">
+
+<label>Receiver Phone Number</label>
 
 <input
-type="text"
+type="tel"
 id="receiverPhone"
-placeholder="Receiver Phone Number">
+placeholder="+2567XXXXXXXX">
 
-<button
-class="submitBtn"
-id="submitWithdraw">
+<small>
 
-Submit Withdrawal
+Enter the Mobile Money number where you want to receive your money.
+
+</small>
+
+</div>
+
+<!-- CALCULATION CARD -->
+
+<div class="summary-card">
+
+<div class="summary-row">
+
+<span>Withdrawal Amount</span>
+
+<strong id="summaryAmount">
+
+UGX 0
+
+</strong>
+
+</div>
+
+<div class="summary-row">
+
+<span>Processing Fee (9.5%)</span>
+
+<strong id="summaryFee">
+
+UGX 0
+
+</strong>
+
+</div>
+
+<div class="summary-row total">
+
+<span>You Will Receive</span>
+
+<strong id="summaryReceive">
+
+UGX 0
+
+</strong>
+
+</div>
+
+</div>
+
+<div class="warning-box">
+
+<i class="fas fa-circle-exclamation"></i>
+
+<span>
+
+Marathon Digital Hub deducts a <strong>9.5%</strong> processing fee from every withdrawal request.
+
+</span>
+
+</div>
+
+<button id="withdrawBtn" class="primary-btn">
+
+<i class="fas fa-paper-plane"></i>
+
+Submit Withdrawal Request
+
+</button>
+
+</section>
+
+<!-- CONFIRMATION POPUP -->
+
+<div id="confirmPopup" class="popup">
+
+<div class="popup-card">
+
+<h3>
+
+Confirm Withdrawal
+
+</h3>
+
+<p>
+
+Please review your withdrawal details before submitting.
+
+</p>
+
+<div class="popup-summary">
+
+<p>
+
+Withdrawal:
+
+<strong id="popupAmount">
+
+UGX 0
+
+</strong>
+
+</p>
+
+<p>
+
+Fee (9.5%):
+
+<strong id="popupFee">
+
+UGX 0
+
+</strong>
+
+</p>
+
+<p>
+
+You Will Receive:
+
+<strong id="popupReceive">
+
+UGX 0
+
+</strong>
+
+</p>
+
+</div>
+
+<p class="popup-note">
+
+Marathon Digital Hub deducts a <strong>9.5%</strong> processing fee from every withdrawal request. Once submitted, your request will be reviewed by our finance team.
+
+</p>
+
+<div class="popup-buttons">
+
+<button id="closePopup">
+
+Cancel
+
+</button>
+
+<button id="confirmWithdrawal">
+
+Confirm Withdrawal
 
 </button>
 
 </div>
 
-<div class="section">
+</div>
 
-<h3>Withdrawal History</h3>
+  </div>
+
+  <!-- ==========================
+WITHDRAWAL HISTORY
+========================== -->
+
+<section class="glass history-card">
+
+<div class="section-header">
+
+<h3>
+
+<i class="fas fa-clock-rotate-left"></i>
+
+Recent Withdrawals
+
+</h3>
+
+</div>
 
 <div id="withdrawHistory">
 
-Loading...
+<div class="empty-box">
+
+<i class="fas fa-wallet"></i>
+
+<p>No withdrawal history available.</p>
 
 </div>
 
-</div><script>
+</div>
 
-const db = window.supabaseClient;
+</section>
 
-let currentUser = null;
-let profile = null;
-let selectedMethod = "MTN";
+<!-- ==========================
+SUCCESS POPUP
+========================== -->
 
-/* =====================================
-START
-===================================== */
+<div id="successPopup" class="popup">
 
-document.addEventListener("DOMContentLoaded", async ()=>{
+<div class="popup-card success">
 
-const { data:{ user } } = await db.auth.getUser();
+<i class="fas fa-circle-check success-icon"></i>
 
-if(!user){
+<h2>Withdrawal Submitted</h2>
 
-window.location.href="login.html";
-return;
+<p>
 
-}
+Your withdrawal request has been submitted successfully.
 
-currentUser=user;
+</p>
 
-await loadProfile();
-await loadWithdrawHistory();
+<p>
 
-});
+You will receive a notification once your request has been reviewed.
 
-/* =====================================
-LOAD PROFILE
-===================================== */
+</p>
 
-async function loadProfile(){
+<button id="successOkBtn">
 
-const { data,error } = await db
+OK
 
-.from("profiles")
-
-.select("*")
-
-.eq("id",currentUser.id)
-
-.single();
-
-if(error){
-
-console.log(error);
-return;
-
-}
-
-profile=data;
-
-document.getElementById("walletBalance").innerHTML=
-
-"UGX "+Number(profile.wallet_balance).toLocaleString();
-
-}
-
-/* =====================================
-PAYMENT METHOD
-===================================== */
-
-document.getElementById("mtnMethod").onclick=()=>{
-
-selectedMethod="MTN";
-
-document.getElementById("mtnMethod").classList.add("active");
-document.getElementById("airtelMethod").classList.remove("active");
-
-};
-
-document.getElementById("airtelMethod").onclick=()=>{
-
-selectedMethod="Airtel";
-
-document.getElementById("airtelMethod").classList.add("active");
-document.getElementById("mtnMethod").classList.remove("active");
-
-};
-
-/* =====================================
-LOAD WITHDRAW HISTORY
-===================================== */
-
-async function loadWithdrawHistory(){
-
-const { data,error } = await db
-
-.from("withdrawals")
-
-.select("*")
-
-.eq("user_id",currentUser.id)
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-console.log(error);
-return;
-
-}
-
-const history=document.getElementById("withdrawHistory");
-
-history.innerHTML="";
-
-if(data.length===0){
-
-history.innerHTML=`
-
-<div class="historyItem">
-
-No Withdrawals Yet
+</button>
 
 </div>
 
-`;
+</div>
 
-return;
+<!-- ==========================
+LOADING SCREEN
+========================== -->
 
-}
+<div id="loadingScreen" class="loading-screen">
 
-data.forEach(item=>{
+<div class="loader"></div>
 
-let cls="pending";
+<p>
 
-if(item.status=="approved"||item.status=="paid"){
+Processing Withdrawal...
 
-cls="approved";
-
-}
-
-if(item.status=="rejected"){
-
-cls="rejected";
-
-}
-
-history.innerHTML+=`
-
-<div class="historyItem">
-
-<b>
-
-UGX ${Number(item.amount).toLocaleString()}
-
-</b>
-
-<br><br>
-
-Method: ${item.method}
-
-<br>
-
-Status:
-
-<span class="${cls}">
-
-${item.status.toUpperCase()}
-
-</span>
-
-<br><br>
-
-${new Date(item.created_at).toLocaleString()}
+</p>
 
 </div>
 
-`;
-
-});
-
-}
-
-</script><script>
-
-/* =====================================
-SUBMIT WITHDRAWAL
-===================================== */
-
-document.getElementById("submitWithdraw").onclick = async () => {
-
-const amount = document.getElementById("withdrawAmount").value.trim();
-const phone = document.getElementById("receiverPhone").value.trim();
-
-if(amount==""){
-
-alert("Enter withdrawal amount");
-return;
-
-}
-
-if(Number(amount)<=0){
-
-alert("Invalid withdrawal amount");
-return;
-
-}
-
-if(phone==""){
-
-alert("Enter receiver phone number");
-return;
-
-}
-
-/* Check Wallet */
-
-if(Number(amount) > Number(profile.wallet_balance)){
-
-alert("Insufficient Wallet Balance");
-
-return;
-
-}
-
-/* Disable Button */
-
-const btn=document.getElementById("submitWithdraw");
-
-btn.disabled=true;
-
-btn.innerHTML="Submitting...";
-
-/* Save Withdrawal */
-
-const { error } = await db
-
-.from("withdrawals")
-
-.insert({
-
-user_id:currentUser.id,
-
-amount:Number(amount),
-
-method:selectedMethod,
-
-status:"pending"
-
-});
-
-btn.disabled=false;
-
-btn.innerHTML="Submit Withdrawal";
-
-if(error){
-
-alert(error.message);
-
-return;
-
-}
-
-/* Clear Inputs */
-
-document.getElementById("withdrawAmount").value="";
-document.getElementById("receiverPhone").value="";
-
-/* Reload History */
-
-await loadWithdrawHistory();
-
-alert("Withdrawal request submitted successfully.\n\nWait for admin approval.");
-
-};
-
-</script>
-
-  <!-- ===============================
+<!-- ==========================
 BOTTOM NAVIGATION
-=============================== -->
+========================== -->
 
-<style>
-
-.bottom-nav{
-
-position:fixed;
-
-left:0;
-
-bottom:0;
-
-width:100%;
-
-height:70px;
-
-background:#08142d;
-
-display:flex;
-
-justify-content:space-around;
-
-align-items:center;
-
-border-top:1px solid rgba(255,255,255,.08);
-
-z-index:999;
-
-backdrop-filter:blur(10px);
-
-}
-
-.bottom-nav a{
-
-text-decoration:none;
-
-color:#cfd8ea;
-
-font-size:12px;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-transition:.3s;
-
-}
-
-.bottom-nav a i{
-
-font-style:normal;
-
-font-size:24px;
-
-margin-bottom:4px;
-
-}
-
-.bottom-nav a.active{
-
-color:#00ff88;
-
-font-weight:bold;
-
-}
-
-.bottom-nav a:hover{
-
-color:#00ff88;
-
-}
-
-</style>
-
-<div class="bottom-nav">
+<nav class="bottom-nav">
 
 <a href="dashboard.html">
 
-<i>🏠</i>
+<i class="fas fa-house"></i>
 
 <span>Home</span>
 
@@ -698,7 +476,7 @@ color:#00ff88;
 
 <a href="machines.html">
 
-<i>⚙️</i>
+<i class="fas fa-microchip"></i>
 
 <span>Machines</span>
 
@@ -706,29 +484,33 @@ color:#00ff88;
 
 <a href="deposit.html">
 
-<i>💳</i>
+<i class="fas fa-wallet"></i>
 
 <span>Deposit</span>
 
 </a>
 
-<a href="income.html">
+<a href="withdraw.html" class="active">
 
-<i>📈</i>
+<i class="fas fa-money-bill-wave"></i>
 
-<span>Income</span>
+<span>Withdraw</span>
 
 </a>
 
-<a href="profile.html" class="active">
+<a href="profile.html">
 
-<i>👤</i>
+<i class="fas fa-user"></i>
 
 <span>Profile</span>
 
 </a>
 
+</nav>
+
 </div>
+
+<script src="withdraw.js"></script>
 
 </body>
 </html>
