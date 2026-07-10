@@ -4,531 +4,343 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Deposit Management | Marathon Digital Hub</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Deposit Management</title>
+
+<link rel="stylesheet"
+href="admin-deposits.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#050B18;
-color:#fff;
-}
-
-.header{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-padding:20px;
-
-background:#08142d;
-
-}
-
-.header h2{
-
-font-size:28px;
-
-}
-
-.backBtn{
-
-background:#00ff88;
-
-color:#001018;
-
-padding:10px 18px;
-
-border-radius:10px;
-
-text-decoration:none;
-
-font-weight:bold;
-
-}
-
-.summary{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-
-gap:15px;
-
-padding:20px;
-
-}
-
-.card{
-
-background:#08142d;
-
-padding:20px;
-
-border-radius:15px;
-
-border:1px solid rgba(255,255,255,.08);
-
-}
-
-.card h4{
-
-color:#9fb5d1;
-
-margin-bottom:10px;
-
-}
-
-.card h1{
-
-font-size:32px;
-
-color:#00ff88;
-
-}
-
-.controls{
-
-padding:0 20px 20px;
-
-display:flex;
-
-gap:15px;
-
-flex-wrap:wrap;
-
-}
-
-.controls input,
-.controls select{
-
-flex:1;
-
-min-width:220px;
-
-height:48px;
-
-background:#08142d;
-
-border:none;
-
-border-radius:12px;
-
-padding:0 15px;
-
-color:#fff;
-
-outline:none;
-
-}
-
-.depositContainer{
-
-padding:20px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
-}
-
-.depositCard{
-
-background:#08142d;
-
-border-radius:18px;
-
-padding:20px;
-
-border:1px solid rgba(255,255,255,.08);
-
-}
-
-.depositTop{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:15px;
-
-}
-
-.userName{
-
-font-size:20px;
-
-font-weight:bold;
-
-}
-
-.status{
-
-padding:6px 15px;
-
-border-radius:20px;
-
-font-size:12px;
-
-font-weight:bold;
-
-text-transform:uppercase;
-
-}
-
-.pending{
-
-background:#ffc107;
-
-color:#000;
-
-}
-
-.approved{
-
-background:#00c853;
-
-}
-
-.rejected{
-
-background:#ff3b30;
-
-}
-
-.info{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-
-gap:10px;
-
-margin-bottom:18px;
-
-}
-
-.info div{
-
-background:#111f3d;
-
-padding:12px;
-
-border-radius:10px;
-
-}
-
-.info span{
-
-display:block;
-
-color:#9fb5d1;
-
-font-size:12px;
-
-margin-bottom:5px;
-
-}
-
-.actions{
-
-display:flex;
-
-gap:10px;
-
-}
-
-.actions button{
-
-flex:1;
-
-height:45px;
-
-border:none;
-
-border-radius:10px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.approveBtn{
-
-background:#00ff88;
-
-color:#001018;
-
-}
-
-.rejectBtn{
-
-background:#ff3b30;
-
-color:white;
-
-}
-
-</style>
 
 </head>
 
 <body>
 
-<div class="header">
+<div class="bg-animation"></div>
 
-<h2>Deposit Management</h2>
+<div class="container">
 
-<a href="admin-dashboard.html" class="backBtn">
+<!-- HEADER -->
 
-⬅ Dashboard
+<header class="page-header">
+
+<div>
+
+<h1>
+
+<i class="fas fa-wallet"></i>
+
+Deposit Management
+
+</h1>
+
+<p>
+
+Approve, reject and manage all user deposits.
+
+</p>
+
+</div>
+
+<a href="admin-dashboard.html"
+
+class="dashboard-btn">
+
+<i class="fas fa-arrow-left"></i>
+
+Dashboard
 
 </a>
 
-</div>
+</header>
 
-<div class="summary">
+<!-- SUMMARY -->
 
-<div class="card">
+<section class="summary-grid">
 
-<h4>Pending Deposits</h4>
+<div class="summary-card pending">
 
-<h1 id="pendingCount">0</h1>
+<i class="fas fa-hourglass-half"></i>
 
-</div>
+<h2 id="pendingCount">0</h2>
 
-<div class="card">
+<p>Pending Deposits</p>
 
-<h4>Approved Deposits</h4>
+<small id="pendingAmount">
 
-<h1 id="approvedCount">0</h1>
+UGX 0
 
-</div>
-
-<div class="card">
-
-<h4>Rejected Deposits</h4>
-
-<h1 id="rejectedCount">0</h1>
+</small>
 
 </div>
 
-<div class="card">
+<div class="summary-card approved">
 
-<h4>Total Deposits</h4>
+<i class="fas fa-circle-check"></i>
 
-<h1 id="totalCount">0</h1>
+<h2 id="approvedCount">0</h2>
+
+<p>Approved Deposits</p>
+
+<small id="approvedAmount">
+
+UGX 0
+
+</small>
 
 </div>
 
+<div class="summary-card rejected">
+
+<i class="fas fa-circle-xmark"></i>
+
+<h2 id="rejectedCount">0</h2>
+
+<p>Rejected Deposits</p>
+
+<small id="rejectedAmount">
+
+UGX 0
+
+</small>
+
 </div>
 
-<div class="controls">
+<div class="summary-card total">
+
+<i class="fas fa-coins"></i>
+
+<h2 id="totalCount">0</h2>
+
+<p>Total Deposits</p>
+
+<small id="totalAmount">
+
+UGX 0
+
+</small>
+
+</div>
+
+</section>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+
+<i class="fas fa-search"></i>
 
 <input
+
 type="text"
+
 id="searchInput"
-placeholder="Search user...">
+
+placeholder="Search by name, email or phone...">
+
+</div>
+
+<!-- FILTER -->
+
+<div class="toolbar">
 
 <select id="statusFilter">
 
-<option value="all">All Deposits</option>
+<option value="all">
 
-<option value="pending">Pending</option>
+All Deposits
 
-<option value="approved">Approved</option>
+</option>
 
-<option value="rejected">Rejected</option>
+<option value="pending">
+
+Pending
+
+</option>
+
+<option value="approved">
+
+Approved
+
+</option>
+
+<option value="rejected">
+
+Rejected
+
+</option>
 
 </select>
 
-</div>
+<button id="refreshBtn">
 
-<div class="depositContainer" id="depositContainer">
+<i class="fas fa-rotate"></i>
 
-<!-- Deposits will appear here -->
-
-</div><script>
-
-const db = window.supabaseClient;
-
-/* ==========================
-PROTECT PAGE
-========================== */
-
-if(localStorage.getItem("admin_logged_in")!=="true"){
-    window.location.href="admin-login.html";
-}
-
-/* ==========================
-LOAD DEPOSITS
-========================== */
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-loadDeposits();
-
-});
-
-async function loadDeposits(){
-
-const container=document.getElementById("depositContainer");
-
-container.innerHTML="Loading deposits...";
-
-const {data,error}=await db
-
-.from("deposits")
-
-.select(`
-id,
-user_id,
-amount,
-method,
-status,
-created_at,
-profiles(
-fullname,
-phone
-)
-`)
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-container.innerHTML="Failed to load deposits.";
-
-console.log(error);
-
-return;
-
-}
-
-/* Statistics */
-
-document.getElementById("totalCount").innerHTML=data.length;
-
-document.getElementById("pendingCount").innerHTML=
-
-data.filter(x=>x.status==="pending").length;
-
-document.getElementById("approvedCount").innerHTML=
-
-data.filter(x=>x.status==="approved").length;
-
-document.getElementById("rejectedCount").innerHTML=
-
-data.filter(x=>x.status==="rejected").length;
-
-/* Empty */
-
-if(data.length===0){
-
-container.innerHTML="<center>No deposits found.</center>";
-
-return;
-
-}
-
-container.innerHTML="";
-
-/* Cards */
-
-data.forEach(item=>{
-
-container.innerHTML+=`
-
-<div class="depositCard">
-
-<div class="depositTop">
-
-<div class="userName">
-
-${item.profiles?.fullname ?? "Unknown User"}
-
-</div>
-
-<div class="status ${item.status}">
-
-${item.status}
-
-</div>
-
-</div>
-
-<div class="info">
-
-<div>
-
-<span>Phone</span>
-
-${item.profiles?.phone ?? "-"}
-
-</div>
-
-<div>
-
-<span>Method</span>
-
-${item.method}
-
-</div>
-
-<div>
-
-<span>Amount</span>
-
-UGX ${Number(item.amount).toLocaleString()}
-
-</div>
-
-<div>
-
-<span>Date</span>
-
-${new Date(item.created_at).toLocaleString()}
-
-</div>
-
-</div>
-
-<div class="actions">
-
-<button
-
-class="approveBtn"
-
-onclick="approveDeposit('${item.id}')">
-
-Approve
+Refresh
 
 </button>
 
-<button
+    </div>
 
-class="rejectBtn"
+    <!-- ==========================
+DEPOSIT LIST
+========================== -->
 
-onclick="rejectDeposit('${item.id}')">
+<div id="depositsContainer"></div>
 
-Reject
+<!-- ==========================
+EMPTY STATE
+========================== -->
+
+<div id="emptyState"
+
+class="empty-state"
+
+style="display:none;">
+
+<i class="fas fa-wallet"></i>
+
+<h2>
+
+No Deposit Requests
+
+</h2>
+
+<p>
+
+There are currently no deposit requests matching your search.
+
+</p>
+
+</div>
+
+<!-- ==========================
+APPROVE / EDIT AMOUNT POPUP
+========================== -->
+
+<div id="approvePopup"
+
+class="popup">
+
+<div class="popup-card">
+
+<h2>
+
+Approve Deposit
+
+</h2>
+
+<p>
+
+Review and edit the deposit amount before approval.
+
+</p>
+
+<div class="popup-summary">
+
+<div>
+
+<span>User</span>
+
+<strong id="popupUser">
+
+-
+
+</strong>
+
+</div>
+
+<div>
+
+<span>Network</span>
+
+<strong id="popupNetwork">
+
+MTN Mobile Money
+
+</strong>
+
+</div>
+
+<div>
+
+<span>Sender Number</span>
+
+<strong id="popupPhone">
+
+-
+
+</strong>
+
+</div>
+
+<div>
+
+<span>Transaction ID</span>
+
+<strong id="popupTransaction">
+
+-
+
+</strong>
+
+</div>
+
+</div>
+
+<div class="edit-box">
+
+<label>
+
+Deposit Amount (UGX)
+
+</label>
+
+<input
+
+type="number"
+
+id="editAmount"
+
+placeholder="Enter amount">
+
+</div>
+
+<div class="popup-message">
+
+<h4>
+
+Payment Message
+
+</h4>
+
+<p id="popupMessage">
+
+No message
+
+</p>
+
+</div>
+
+<div class="popup-buttons">
+
+<button id="closeApprove">
+
+Cancel
+
+</button>
+
+<button id="confirmApprove">
+
+Approve Deposit
 
 </button>
 
@@ -536,318 +348,100 @@ Reject
 
 </div>
 
-`;
+    </div>
 
-});
+    <!-- ==========================
+REJECT POPUP
+========================== -->
 
-}
+<div id="rejectPopup" class="popup">
 
-</script><script>
+<div class="popup-card">
 
-/* ==========================
-APPROVE DEPOSIT
-========================== */
+<h2>
 
-async function approveDeposit(depositId){
+Reject Deposit
 
-if(!confirm("Approve this deposit?")) return;
+</h2>
 
-/* Get Deposit */
+<p>
 
-const {data:deposit,error}=await db
+Optionally provide a reason that will be sent to the user.
 
-.from("deposits")
+</p>
 
-.select("*")
+<textarea
 
-.eq("id",depositId)
+id="rejectReason"
 
-.single();
+rows="5"
 
-if(error || !deposit){
+placeholder="Example: Payment not received or invalid transaction ID.">
 
-alert("Deposit not found.");
+</textarea>
 
-return;
+<div class="popup-buttons">
 
-}
+<button id="closeReject">
 
-/* Prevent Double Approval */
+Cancel
 
-if(deposit.status==="approved"){
+</button>
 
-alert("This deposit is already approved.");
+<button id="confirmReject">
 
-return;
+Reject Deposit
 
-}
+</button>
 
-/* Get User Wallet */
+</div>
 
-const {data:profile}=await db
+</div>
 
-.from("profiles")
+</div>
 
-.select("wallet_balance")
+<!-- ==========================
+SUCCESS POPUP
+========================== -->
 
-.eq("id",deposit.user_id)
+<div id="successPopup" class="popup">
 
-.single();
+<div class="popup-card success">
 
-const newBalance=
+<div class="success-icon">
 
-Number(profile.wallet_balance||0)+
+<i class="fas fa-circle-check"></i>
 
-Number(deposit.amount);
+</div>
 
-/* Update Wallet */
+<h2>
 
-await db
+Success
 
-.from("profiles")
+</h2>
 
-.update({
+<p id="successMessage">
 
-wallet_balance:newBalance
+Deposit processed successfully.
 
-})
+</p>
 
-.eq("id",deposit.user_id);
+<div class="popup-buttons">
 
-/* Update Deposit */
+<button id="closeSuccess">
 
-await db
+OK
 
-.from("deposits")
+</button>
 
-.update({
+</div>
 
-status:"approved"
+</div>
 
-})
+</div>
 
-.eq("id",depositId);
-
-/* Notify User */
-
-await db
-
-.from("user_notifications")
-
-.insert({
-
-user_id:deposit.user_id,
-
-title:"Deposit Approved",
-
-message:`Your deposit of UGX ${Number(deposit.amount).toLocaleString()} has been approved and added to your wallet.`,
-
-type:"success"
-
-});
-
-/* Notify Admin */
-
-await db
-
-.from("admin_notifications")
-
-.insert({
-
-title:"Deposit Approved",
-
-message:`UGX ${Number(deposit.amount).toLocaleString()} approved.`,
-
-type:"success"
-
-});
-
-alert("Deposit Approved Successfully.");
-
-loadDeposits();
-
-}
-
-/* ==========================
-REJECT DEPOSIT
-========================== */
-
-async function rejectDeposit(depositId){
-
-if(!confirm("Reject this deposit?")) return;
-
-const {data:deposit,error}=await db
-
-.from("deposits")
-
-.select("*")
-
-.eq("id",depositId)
-
-.single();
-
-if(error){
-
-alert("Deposit not found.");
-
-return;
-
-}
-
-/* Update Status */
-
-await db
-
-.from("deposits")
-
-.update({
-
-status:"rejected"
-
-})
-
-.eq("id",depositId);
-
-/* Notify User */
-
-await db
-
-.from("user_notifications")
-
-.insert({
-
-user_id:deposit.user_id,
-
-title:"Deposit Rejected",
-
-message:`Your deposit request of UGX ${Number(deposit.amount).toLocaleString()} was rejected.`,
-
-type:"error"
-
-});
-
-/* Notify Admin */
-
-await db
-
-.from("admin_notifications")
-
-.insert({
-
-title:"Deposit Rejected",
-
-message:`UGX ${Number(deposit.amount).toLocaleString()} rejected.`,
-
-type:"warning"
-
-});
-
-alert("Deposit Rejected.");
-
-loadDeposits();
-
-}
-
-</script><script>
-
-/* ==========================
-SEARCH
-========================== */
-
-document.getElementById("searchInput")
-
-.addEventListener("keyup",function(){
-
-const value=this.value.toLowerCase();
-
-const cards=document.querySelectorAll(".depositCard");
-
-cards.forEach(card=>{
-
-card.style.display=
-
-card.innerText.toLowerCase().includes(value)
-
-? "block"
-
-: "none";
-
-});
-
-});
-
-/* ==========================
-STATUS FILTER
-========================== */
-
-document.getElementById("statusFilter")
-
-.addEventListener("change",function(){
-
-const value=this.value;
-
-const cards=document.querySelectorAll(".depositCard");
-
-cards.forEach(card=>{
-
-const status=card.querySelector(".status")
-
-.innerText
-
-.toLowerCase()
-
-.trim();
-
-if(value==="all"){
-
-card.style.display="block";
-
-}else{
-
-card.style.display=
-
-status===value
-
-? "block"
-
-: "none";
-
-}
-
-});
-
-});
-
-/* ==========================
-AUTO REFRESH
-========================== */
-
-/* ==========================
-DISABLE BUTTONS
-========================== */
-
-document.addEventListener("click",function(e){
-
-if(e.target.classList.contains("approveBtn") ||
-
-e.target.classList.contains("rejectBtn")){
-
-e.target.disabled=true;
-
-e.target.innerHTML="Processing...";
-
-}
-
-});
-
-/* ==========================
-PAGE READY
-========================== */
-
-console.log("Admin Deposit Page Ready.");
-
-</script>
+<script src="admin-deposits.js"></script>
 
 </body>
 
-</html>
+    </html>
