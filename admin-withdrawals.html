@@ -4,406 +4,390 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Withdrawal Management | Marathon Digital Hub</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Withdrawal Management</title>
+
+<link rel="stylesheet"
+href="admin-withdrawals.css">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script src="supabase-config.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#050B18;
-color:#fff;
-}
-
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:20px;
-background:#08142d;
-}
-
-.header h2{
-font-size:28px;
-}
-
-.backBtn{
-background:#00ff88;
-color:#001018;
-padding:10px 18px;
-border-radius:10px;
-text-decoration:none;
-font-weight:bold;
-}
-
-.summary{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:15px;
-padding:20px;
-}
-
-.card{
-background:#08142d;
-padding:20px;
-border-radius:15px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.card h4{
-color:#9fb5d1;
-margin-bottom:10px;
-}
-
-.card h1{
-font-size:32px;
-color:#00ff88;
-}
-
-.controls{
-padding:0 20px 20px;
-display:flex;
-gap:15px;
-flex-wrap:wrap;
-}
-
-.controls input,
-.controls select{
-flex:1;
-min-width:220px;
-height:48px;
-background:#08142d;
-border:none;
-border-radius:12px;
-padding:0 15px;
-color:white;
-outline:none;
-}
-
-.withdrawContainer{
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-.withdrawCard{
-background:#08142d;
-border-radius:18px;
-padding:20px;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.withdrawTop{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:15px;
-}
-
-.userName{
-font-size:20px;
-font-weight:bold;
-}
-
-.status{
-padding:6px 15px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-text-transform:uppercase;
-}
-
-.pending{
-background:#ffc107;
-color:#000;
-}
-
-.approved{
-background:#00c853;
-}
-
-.rejected{
-background:#ff3b30;
-}
-
-.info{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:10px;
-margin-bottom:18px;
-}
-
-.info div{
-background:#111f3d;
-padding:12px;
-border-radius:10px;
-}
-
-.info span{
-display:block;
-color:#9fb5d1;
-font-size:12px;
-margin-bottom:5px;
-}
-
-.actions{
-display:flex;
-gap:10px;
-}
-
-.actions button{
-flex:1;
-height:45px;
-border:none;
-border-radius:10px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.approveBtn{
-background:#00ff88;
-color:#001018;
-}
-
-.rejectBtn{
-background:#ff3b30;
-color:white;
-}
-
-</style>
 
 </head>
 
 <body>
 
-<div class="header">
+<div class="bg-animation"></div>
 
-<h2>Withdrawal Management</h2>
+<div class="container">
 
-<a href="admin-dashboard.html" class="backBtn">
+<!-- HEADER -->
 
-⬅ Dashboard
+<header class="page-header">
+
+<div>
+
+<h1>
+
+<i class="fas fa-money-check-dollar"></i>
+
+Withdrawal Management
+
+</h1>
+
+<p>
+
+Approve, reject and manage all withdrawal requests.
+
+</p>
+
+</div>
+
+<a href="admin-dashboard.html"
+
+class="dashboard-btn">
+
+<i class="fas fa-arrow-left"></i>
+
+Dashboard
 
 </a>
 
-</div>
+</header>
 
-<div class="summary">
+<!-- SUMMARY -->
 
-<div class="card">
-<h4>Pending Withdrawals</h4>
-<h1 id="pendingCount">0</h1>
-</div>
+<section class="summary-grid">
 
-<div class="card">
-<h4>Approved Withdrawals</h4>
-<h1 id="approvedCount">0</h1>
-</div>
+<div class="summary-card pending">
 
-<div class="card">
-<h4>Rejected Withdrawals</h4>
-<h1 id="rejectedCount">0</h1>
-</div>
+<i class="fas fa-hourglass-half"></i>
 
-<div class="card">
-<h4>Total Withdrawals</h4>
-<h1 id="totalCount">0</h1>
-</div>
+<h2 id="pendingCount">0</h2>
+
+<p>Pending</p>
+
+<small id="pendingAmount">
+
+UGX 0
+
+</small>
 
 </div>
 
-<div class="controls">
+<div class="summary-card approved">
+
+<i class="fas fa-circle-check"></i>
+
+<h2 id="approvedCount">0</h2>
+
+<p>Approved</p>
+
+<small id="approvedAmount">
+
+UGX 0
+
+</small>
+
+</div>
+
+<div class="summary-card rejected">
+
+<i class="fas fa-circle-xmark"></i>
+
+<h2 id="rejectedCount">0</h2>
+
+<p>Rejected</p>
+
+<small id="rejectedAmount">
+
+UGX 0
+
+</small>
+
+</div>
+
+<div class="summary-card total">
+
+<i class="fas fa-wallet"></i>
+
+<h2 id="totalCount">0</h2>
+
+<p>Total Requests</p>
+
+<small id="totalAmount">
+
+UGX 0
+
+</small>
+
+</div>
+
+</section>
+
+<!-- SEARCH -->
+
+<div class="search-box">
+
+<i class="fas fa-search"></i>
 
 <input
+
 type="text"
+
 id="searchInput"
-placeholder="Search user...">
+
+placeholder="Search by name, email or phone...">
+
+</div>
+
+<!-- FILTER -->
+
+<div class="toolbar">
 
 <select id="statusFilter">
 
-<option value="all">All Withdrawals</option>
-<option value="pending">Pending</option>
-<option value="approved">Approved</option>
-<option value="rejected">Rejected</option>
+<option value="all">
+
+All Withdrawals
+
+</option>
+
+<option value="pending">
+
+Pending
+
+</option>
+
+<option value="approved">
+
+Approved
+
+</option>
+
+<option value="rejected">
+
+Rejected
+
+</option>
+
+<option value="cancelled">
+
+Cancelled
+
+</option>
 
 </select>
 
-</div>
+<button id="refreshBtn">
 
-<div class="withdrawContainer" id="withdrawContainer">
+<i class="fas fa-rotate"></i>
 
-<!-- Withdrawals will load here -->
+Refresh
 
-  </div><script>
-
-const db = window.supabaseClient;
-
-/* ==========================
-PROTECT PAGE
-========================== */
-
-if(localStorage.getItem("admin_logged_in")!=="true"){
-    window.location.href="admin-login.html";
-}
-
-/* ==========================
-LOAD WITHDRAWALS
-========================== */
-
-document.addEventListener("DOMContentLoaded",()=>{
-
-loadWithdrawals();
-
-});
-
-async function loadWithdrawals(){
-
-const container=document.getElementById("withdrawContainer");
-
-container.innerHTML="<center>Loading withdrawals...</center>";
-
-const {data,error}=await db
-
-.from("withdrawals")
-
-.select(`
-id,
-user_id,
-amount,
-method,
-phone_number,
-status,
-created_at,
-profiles(
-fullname,
-phone
-)
-`)
-
-.order("created_at",{ascending:false});
-
-if(error){
-
-container.innerHTML="<center>Failed to load withdrawals.</center>";
-
-console.log(error);
-
-return;
-
-}
-
-/* Dashboard Cards */
-
-document.getElementById("totalCount").innerHTML=data.length;
-
-document.getElementById("pendingCount").innerHTML=
-
-data.filter(x=>x.status==="pending").length;
-
-document.getElementById("approvedCount").innerHTML=
-
-data.filter(x=>x.status==="approved").length;
-
-document.getElementById("rejectedCount").innerHTML=
-
-data.filter(x=>x.status==="rejected").length;
-
-container.innerHTML="";
-
-if(data.length===0){
-
-container.innerHTML="<center>No withdrawal requests found.</center>";
-
-return;
-
-}
-
-data.forEach(item=>{
-
-container.innerHTML+=`
-
-<div class="withdrawCard">
-
-<div class="withdrawTop">
-
-<div class="userName">
-
-${item.profiles?.fullname ?? "Unknown User"}
+</button>
 
 </div>
 
-<div class="status ${item.status}">
+<!-- WITHDRAWAL LIST -->
 
-${item.status}
+<div id="withdrawalsContainer">
+
+  <!-- ===========================
+WITHDRAWAL CARD TEMPLATE
+(JS will generate these)
+=========================== -->
+
+<div class="withdraw-card">
+
+<div class="card-header">
+
+<div class="withdraw-id">
+
+<h3 id="withdrawId">
+
+#WD-000001
+
+</h3>
+
+<span class="status pending">
+
+Pending
+
+</span>
+
+</div>
+
+<div class="request-time">
+
+<i class="fas fa-clock"></i>
+
+<span id="requestTime">
+
+2 minutes ago
+
+</span>
 
 </div>
 
 </div>
 
-<div class="info">
+<!-- USER DETAILS -->
+
+<div class="user-section">
+
+<div class="avatar">
+
+A
+
+</div>
+
+<div class="user-info">
+
+<h3 id="userName">
+
+Ash Belz
+
+</h3>
+
+<p id="userEmail">
+
+ash@gmail.com
+
+</p>
+
+<p id="userPhone">
+
++256700123456
+
+</p>
+
+</div>
+
+</div>
+
+<!-- FINANCIAL DETAILS -->
+
+<div class="finance-box">
+
+<div class="finance-row">
+
+<span>
+
+Withdrawal Amount
+
+</span>
+
+<strong id="withdrawAmount">
+
+UGX 100,000
+
+</strong>
+
+</div>
+
+<div class="finance-row">
+
+<span>
+
+Processing Fee (9.5%)
+
+</span>
+
+<strong id="withdrawFee">
+
+UGX 9,500
+
+</strong>
+
+</div>
+
+<div class="finance-row receive">
+
+<span>
+
+Amount To Send
+
+</span>
+
+<strong id="withdrawReceive">
+
+UGX 90,500
+
+</strong>
+
+</div>
+
+<div class="finance-row">
+
+<span>
+
+Wallet Balance
+
+</span>
+
+<strong id="walletBalance">
+
+UGX 450,000
+
+</strong>
+
+</div>
+
+</div>
+
+<!-- PAYMENT DETAILS -->
+
+<div class="payment-box">
 
 <div>
 
-<span>Phone</span>
+<i class="fas fa-mobile-screen"></i>
 
-${item.phone_number}
+<span id="paymentMethod">
 
-</div>
+MTN Mobile Money
 
-<div>
-
-<span>Method</span>
-
-${item.method}
+</span>
 
 </div>
 
 <div>
 
-<span>Amount</span>
+<i class="fas fa-phone"></i>
 
-UGX ${Number(item.amount).toLocaleString()}
+<span id="receiverPhone">
 
-</div>
++256700123456
 
-<div>
-
-<span>Date</span>
-
-${new Date(item.created_at).toLocaleString()}
+</span>
 
 </div>
 
 </div>
 
-<div class="actions">
+<!-- ACTIONS -->
 
-<button
+<div class="action-buttons">
 
-class="approveBtn"
+<button class="approve-btn">
 
-onclick="approveWithdrawal('${item.id}')">
+<i class="fas fa-circle-check"></i>
 
 Approve
 
 </button>
 
-<button
+<button class="reject-btn">
 
-class="rejectBtn"
-
-onclick="rejectWithdrawal('${item.id}')">
+<i class="fas fa-circle-xmark"></i>
 
 Reject
 
@@ -413,324 +397,240 @@ Reject
 
 </div>
 
-`;
+<!-- EMPTY STATE -->
 
-});
+<div id="emptyState"
 
-}
+class="empty-state"
 
-  </script><script>
+style="display:none;">
 
-/* ==========================
-APPROVE WITHDRAWAL
-========================== */
+<i class="fas fa-wallet"></i>
 
-async function approveWithdrawal(withdrawId){
+<h2>
 
-if(!confirm("Approve this withdrawal?")) return;
+No Withdrawal Requests
 
-const {data:withdraw,error}=await db
+</h2>
 
-.from("withdrawals")
+<p>
 
-.select("*")
+There are currently no withdrawal requests matching your search.
 
-.eq("id",withdrawId)
+</p>
 
-.single();
+</div>
 
-if(error || !withdraw){
+<!-- APPROVAL POPUP -->
 
-alert("Withdrawal not found.");
+<div id="approvePopup"
 
-return;
+class="popup">
 
-}
+<div class="popup-card">
 
-if(withdraw.status==="approved"){
+<h2>
 
-alert("Withdrawal already approved.");
+Approve Withdrawal
 
-return;
+</h2>
 
-}
+<p>
 
-/* Get Wallet */
+Please confirm this withdrawal request.
 
-const {data:profile}=await db
+</p>
 
-.from("profiles")
+<div class="popup-summary">
 
-.select("wallet_balance")
+<div>
 
-.eq("id",withdraw.user_id)
+<span>User</span>
 
-.single();
+<strong id="popupUser">
 
-const currentBalance=Number(profile.wallet_balance||0);
+-
 
-/* Prevent Negative Balance */
+</strong>
 
-if(currentBalance<Number(withdraw.amount)){
+</div>
 
-alert("User has insufficient wallet balance.");
+<div>
 
-return;
+<span>Requested</span>
 
-}
+<strong id="popupAmount">
 
-const newBalance=currentBalance-Number(withdraw.amount);
+UGX 0
 
-/* Update Wallet */
+</strong>
 
-await db
+</div>
 
-.from("profiles")
+<div>
 
-.update({
+<span>Fee (9.5%)</span>
 
-wallet_balance:newBalance
+<strong id="popupFee">
 
-})
+UGX 0
 
-.eq("id",withdraw.user_id);
+</strong>
 
-/* Update Withdrawal */
+</div>
 
-await db
+<div>
 
-.from("withdrawals")
+<span>Amount To Send</span>
 
-.update({
+<strong id="popupReceive">
 
-status:"approved"
+UGX 0
 
-})
+</strong>
 
-.eq("id",withdrawId);
+</div>
 
-/* Notify User */
+</div>
 
-await db
+<p class="warning">
 
-.from("user_notifications")
+Approving this request will deduct the user's wallet balance and mark this withdrawal as approved.
 
-.insert({
+</p>
 
-user_id:withdraw.user_id,
+<div class="popup-buttons">
 
-title:"Withdrawal Approved",
+<button id="closeApprove">
 
-message:`Your withdrawal of UGX ${Number(withdraw.amount).toLocaleString()} has been approved.`,
+Cancel
 
-type:"success"
+</button>
 
-});
+<button id="confirmApprove">
 
-/* Notify Admin */
+Approve
 
-await db
+</button>
 
-.from("admin_notifications")
+</div>
 
-.insert({
+</div>
 
-title:"Withdrawal Approved",
+  </div>
 
-message:`UGX ${Number(withdraw.amount).toLocaleString()} withdrawal approved.`,
+  <!-- ==========================
+REJECT POPUP
+========================== -->
 
-type:"success"
+<div id="rejectPopup" class="popup">
 
-});
+<div class="popup-card">
 
-alert("Withdrawal Approved Successfully.");
+<h2>
 
-loadWithdrawals();
+Reject Withdrawal
 
-}
+</h2>
 
-/* ==========================
-REJECT WITHDRAWAL
-========================== */
+<p>
 
-async function rejectWithdrawal(withdrawId){
+You can optionally enter a reason that will be sent to the user.
 
-if(!confirm("Reject this withdrawal?")) return;
+</p>
 
-const {data:withdraw,error}=await db
+<textarea
 
-.from("withdrawals")
+id="rejectReason"
 
-.select("*")
+placeholder="Example: Incorrect phone number or suspicious activity."
 
-.eq("id",withdrawId)
+rows="5">
 
-.single();
+</textarea>
 
-if(error){
+<div class="popup-buttons">
 
-alert("Withdrawal not found.");
+<button id="closeReject">
 
-return;
+Cancel
 
-}
+</button>
 
-/* Update Status */
+<button id="confirmReject">
 
-await db
+Reject Withdrawal
 
-.from("withdrawals")
+</button>
 
-.update({
+</div>
 
-status:"rejected"
+</div>
 
-})
+</div>
 
-.eq("id",withdrawId);
+<!-- ==========================
+SUCCESS POPUP
+========================== -->
 
-/* Notify User */
+<div id="successPopup" class="popup">
 
-await db
+<div class="popup-card success">
 
-.from("user_notifications")
+<div class="success-icon">
 
-.insert({
+<i class="fas fa-circle-check"></i>
 
-user_id:withdraw.user_id,
+</div>
 
-title:"Withdrawal Rejected",
+<h2>
 
-message:`Your withdrawal request of UGX ${Number(withdraw.amount).toLocaleString()} has been rejected.`,
+Success
 
-type:"error"
+</h2>
 
-});
+<p id="successMessage">
 
-/* Notify Admin */
+Request processed successfully.
 
-await db
+</p>
 
-.from("admin_notifications")
+<button id="closeSuccess">
 
-.insert({
+OK
 
-title:"Withdrawal Rejected",
+</button>
 
-message:`UGX ${Number(withdraw.amount).toLocaleString()} withdrawal rejected.`,
+</div>
 
-type:"warning"
+</div>
 
-});
+<!-- ==========================
+LOADING
+========================== -->
 
-alert("Withdrawal Rejected.");
+<div id="loadingScreen" class="loading-screen">
 
-loadWithdrawals();
+<div class="loader"></div>
 
-}
+<h3>
 
-  </script><script>
+Processing Request...
 
-/* ==========================
-LIVE SEARCH
-========================== */
+</h3>
 
-document.getElementById("searchInput")
+<p>
 
-.addEventListener("keyup",function(){
+Please wait while Marathon Digital Hub updates the withdrawal.
 
-const value=this.value.toLowerCase();
+</p>
 
-const cards=document.querySelectorAll(".withdrawCard");
+</div>
 
-cards.forEach(card=>{
+</div>
 
-card.style.display=
-
-card.innerText.toLowerCase().includes(value)
-
-? "block"
-
-: "none";
-
-});
-
-});
-
-/* ==========================
-STATUS FILTER
-========================== */
-
-document.getElementById("statusFilter")
-
-.addEventListener("change",function(){
-
-const value=this.value;
-
-const cards=document.querySelectorAll(".withdrawCard");
-
-cards.forEach(card=>{
-
-const status=card.querySelector(".status")
-
-.innerText
-
-.toLowerCase()
-
-.trim();
-
-if(value==="all"){
-
-card.style.display="block";
-
-}else{
-
-card.style.display=
-
-status===value
-
-? "block"
-
-: "none";
-
-}
-
-});
-
-});
-
-/* ==========================
-AUTO REFRESH
-========================== */
-
-    
-
-/* ==========================
-PROCESS BUTTONS
-========================== */
-
-document.addEventListener("click",function(e){
-
-if(
-
-e.target.classList.contains("approveBtn") ||
-
-e.target.classList.contains("rejectBtn")
-
-){
-
-e.target.disabled=true;
-
-e.target.innerHTML="Processing...";
-
-}
-
-});
-
-console.log("Withdrawal Management Ready");
-
-</script>
+<script src="admin-withdrawals.js"></script>
 
 </body>
 
-</html>
+  </html>
