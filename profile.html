@@ -4,11 +4,14 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>Profile | Marathon Digital Hub</title>
 
-<link rel="stylesheet" href="profile.css">
+<link rel="stylesheet"
+href="assets/css/profile.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
@@ -17,543 +20,597 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
 
 <body>
 
+<div class="background"></div>
+
 <div class="page">
 
-    <!-- Animated Background -->
-    <div class="page-bg"></div>
+<!-- =========================
+HEADER
+========================= -->
 
-    <!-- ==========================
-         HEADER
-    =========================== -->
+<header class="topbar">
 
-    <header class="top-header">
+<a href="dashboard.html" class="back-btn">
 
-        <a href="dashboard.html" class="back-btn">
-            <i class="fas fa-arrow-left"></i>
-        </a>
+<i class="fas fa-arrow-left"></i>
 
-        <h2>Profile</h2>
+</a>
 
-        <button id="notificationBtn" class="icon-btn">
+<h2>Profile</h2>
 
-            <i class="fas fa-bell"></i>
+<button class="notify-btn" id="notificationBtn">
 
-            <span id="notificationCount" class="notification-count">
-                0
-            </span>
+<i class="fas fa-bell"></i>
 
-        </button>
+<span id="notificationCount">0</span>
 
-    </header>
+</button>
 
-    <!-- ==========================
-         SUSPENSION BANNER
-    =========================== -->
+</header>
 
-    <section id="suspensionBanner"
-             class="suspension-banner hidden">
+<!-- =========================
+ACCOUNT STATUS
+========================= -->
 
-        <div class="banner-icon">
+<section id="suspensionBanner"
+class="status-banner hidden">
 
-            <i class="fas fa-circle-exclamation"></i>
+<i class="fas fa-circle-exclamation"></i>
 
-        </div>
+<div>
 
-        <div class="banner-content">
+<h3>Account Suspended</h3>
 
-            <h3>Account Suspended</h3>
-
-            <p id="suspensionReason"></p>
-
-            <button id="supportBtn">
-
-                Contact Support
-
-            </button>
-
-        </div>
-
-    </section>
-
-    <!-- ==========================
-         PROFILE CARD
-    =========================== -->
-
-    <section class="profile-card">
-
-        <div class="profile-cover"></div>
-
-        <div class="profile-avatar">
-
-            <img id="profileImage"
-                 src=""
-                 alt="Profile">
-
-            <button id="changePhotoBtn">
-
-                <i class="fas fa-camera"></i>
-
-            </button>
-
-            <input
-                type="file"
-                id="photoInput"
-                accept="image/*"
-                hidden>
-
-        </div>
-
-        <div class="profile-info">
-
-            <h2 id="fullName"></h2>
-
-            <p id="email"></p>
-
-            <div class="badge-row">
-
-                <span id="membershipBadge"
-                      class="badge membership">
-                </span>
-
-                <span id="kycBadge"
-                      class="badge kyc">
-                </span>
-
-                <span id="statusBadge"
-                      class="badge status">
-                </span>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- ==========================
-         ACCOUNT STATISTICS
-    =========================== -->
-
-    <section class="stats-section">
-
-        <h3 class="section-title">
-
-            Account Statistics
-
-        </h3>
-
-        <div class="stats-grid">
-
-            <div class="stat-card">
-
-                <i class="fas fa-microchip"></i>
-
-                <h2 id="activeMachines">0</h2>
-
-                <span>Active Machines</span>
-
-            </div>
-
-            <div class="stat-card">
-
-                <i class="fas fa-users"></i>
-
-                <h2 id="teamMembers">0</h2>
-
-                <span>Team Members</span>
-
-            </div>
-
-            <div class="stat-card">
-
-                <i class="fas fa-user-check"></i>
-
-                <h2 id="activeReferrals">0</h2>
-
-                <span>Active Referrals</span>
-
-            </div>
-
-            <div class="stat-card">
-
-                <i class="fas fa-gift"></i>
-
-                <h2 id="referralBonus">UGX 0</h2>
-
-                <span>Referral Bonus</span>
-
-            </div>
-
-        </div>
-
-             </section>
-
-     <!-- ==========================
-         PROFILE COMPLETION
-    =========================== -->
-
-    <section class="profile-completion">
-
-        <div class="section-header">
-
-            <h3>Profile Completion</h3>
-
-            <span id="profilePercent">0%</span>
-
-        </div>
-
-        <div class="progress-bar">
-
-            <div id="profileProgress"></div>
-
-        </div>
-
-        <p>
-
-            Complete your profile to unlock all Marathon Digital Hub features.
-
-        </p>
-
-    </section>
-
-    <!-- ==========================
-         REFERRAL CENTRE
-    =========================== -->
-
-    <section class="referral-section">
-
-        <div class="section-header">
-
-            <h3>Referral Centre</h3>
-
-            <i class="fas fa-gift"></i>
-
-        </div>
-
-        <div class="referral-box">
-
-            <label>Your Referral Code</label>
-
-            <div class="copy-box">
-
-                <input
-                    id="referralCode"
-                    type="text"
-                    readonly>
-
-                <button id="copyCodeBtn">
-
-                    <i class="fas fa-copy"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <div class="referral-box">
-
-            <label>Your Referral Link</label>
-
-            <div class="copy-box">
-
-                <input
-                    id="referralLink"
-                    type="text"
-                    readonly>
-
-                <button id="copyLinkBtn">
-
-                    <i class="fas fa-link"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <button id="shareWhatsappBtn" class="share-btn">
-
-            <i class="fab fa-whatsapp"></i>
-
-            Share via WhatsApp
-
-        </button>
-
-    </section>
-
-    <!-- ==========================
-         AUTOMATIC KYC
-    =========================== -->
-
-    <section class="kyc-section">
-
-        <div class="section-header">
-
-            <h3>Automatic KYC</h3>
-
-            <span id="kycStatusText"></span>
-
-        </div>
-
-        <div class="kyc-progress-head">
-
-            <span>Active Referrals</span>
-
-            <strong id="kycProgressText">0 / 10</strong>
-
-        </div>
-
-        <div class="progress-bar">
-
-            <div id="kycProgress"></div>
-
-        </div>
-
-        <p>
-
-            Reach <strong>10 Active Referrals</strong> to automatically unlock KYC verification.
-
-        </p>
-
-    </section>
-
-    <!-- ==========================
-         PURCHASED MACHINES
-    =========================== -->
-
-    <section class="machines-section">
-
-        <div class="section-header">
-
-            <h3>Purchased Machines</h3>
-
-            <a href="machines.html">
-
-                View All
-
-            </a>
-
-        </div>
-
-        <div id="machineList" class="machine-list">
-
-            <!-- Loaded from Supabase -->
-
-        </div>
-
-    </section>
-
-    <!-- ==========================
-         SETTINGS
-    =========================== -->
-
-    <section class="settings-section">
-
-        <button id="settingsBtn" class="settings-btn">
-
-            <div class="left">
-
-                <i class="fas fa-gear"></i>
-
-                <span>Settings</span>
-
-            </div>
-
-            <i class="fas fa-chevron-right"></i>
-
-        </button>
-
-    </section>
-
-     <!-- ==========================
-         SETTINGS POPUP
-    =========================== -->
-
-    <div id="settingsModal" class="bottom-sheet">
-
-        <div class="sheet-content">
-
-            <div class="sheet-handle"></div>
-
-            <h2>Settings</h2>
-
-            <button id="editProfileBtn" class="menu-item">
-
-                <div class="menu-left">
-
-                    <i class="fas fa-user-pen"></i>
-
-                    <span>Edit Profile</span>
-
-                </div>
-
-                <i class="fas fa-chevron-right"></i>
-
-            </button>
-
-            <button id="changePhotoMenuBtn" class="menu-item">
-
-                <div class="menu-left">
-
-                    <i class="fas fa-camera"></i>
-
-                    <span>Change Profile Picture</span>
-
-                </div>
-
-                <i class="fas fa-chevron-right"></i>
-
-            </button>
-
-            <button id="changePasswordMenuBtn" class="menu-item">
-
-                <div class="menu-left">
-
-                    <i class="fas fa-lock"></i>
-
-                    <span>Change Password</span>
-
-                </div>
-
-                <i class="fas fa-chevron-right"></i>
-
-            </button>
-
-            <button id="supportMenuBtn" class="menu-item">
-
-                <div class="menu-left">
-
-                    <i class="fas fa-headset"></i>
-
-                    <span>Support</span>
-
-                </div>
-
-                <i class="fas fa-chevron-right"></i>
-
-            </button>
-
-            <button id="aboutMenuBtn" class="menu-item">
-
-                <div class="menu-left">
-
-                    <i class="fas fa-circle-info"></i>
-
-                    <span>Marathon Digital Hub</span>
-
-                </div>
-
-                <i class="fas fa-chevron-right"></i>
-
-            </button>
-
-            <button id="logoutMenuBtn" class="menu-item logout">
-
-                <div class="menu-left">
-
-                    <i class="fas fa-right-from-bracket"></i>
-
-                    <span>Logout</span>
-
-                </div>
-
-                <i class="fas fa-chevron-right"></i>
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- Overlay -->
-
-    <div id="overlay" class="overlay"></div>
-
-    <!-- Edit Profile Popup -->
-
-    <div id="editProfileModal" class="popup"></div>
-
-    <!-- Change Password Popup -->
-
-    <div id="changePasswordModal" class="popup"></div>
-
-    <!-- Support Popup -->
-
-    <div id="supportModal" class="popup"></div>
-
-    <!-- About Popup -->
-
-    <div id="aboutModal" class="popup"></div>
-
-    <!-- Notifications Popup -->
-
-    <div id="notificationsModal" class="popup"></div>
-
-    <!-- Logout Popup -->
-
-    <div id="logoutModal" class="popup"></div>
-
-    <!-- ==========================
-         BOTTOM NAVIGATION
-         (Use the SAME navigation
-         as dashboard.html so it
-         matches your website.)
-    =========================== -->
-
-    <nav class="bottom-nav">
-
-        <a href="dashboard.html" class="nav-item">
-
-            <i class="fas fa-house"></i>
-
-            <span>Home</span>
-
-        </a>
-
-        <a href="machines.html" class="nav-item">
-
-            <i class="fas fa-microchip"></i>
-
-            <span>Machines</span>
-
-        </a>
-
-        <a href="deposit.html" class="nav-item">
-
-            <i class="fas fa-wallet"></i>
-
-            <span>Deposit</span>
-
-        </a>
-
-        <a href="income.html" class="nav-item">
-
-            <i class="fas fa-chart-line"></i>
-
-            <span>Income</span>
-
-        </a>
-
-        <a href="profile.html" class="nav-item active">
-
-            <i class="fas fa-user"></i>
-
-            <span>Profile</span>
-
-        </a>
-
-    </nav>
+<p id="suspensionReason"></p>
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</section>
 
-<script src="supabase-config.js"></script>
+<!-- =========================
+PROFILE CARD
+========================= -->
 
-<script src="auth.js"></script>
+<section class="profile-card">
 
-<script src="profile.js"></script>
+<div class="cover"></div>
+
+<div class="avatar-box">
+
+<img
+id="profileImage"
+src=""
+alt="Profile">
+
+<button
+id="changePhotoBtn">
+
+<i class="fas fa-camera"></i>
+
+</button>
+
+<input
+type="file"
+id="photoInput"
+accept="image/*"
+hidden>
+
+</div>
+
+<div class="profile-info">
+
+<h2 id="fullName">
+
+Loading...
+
+</h2>
+
+<p id="email"></p>
+
+<div class="badge-row">
+
+<span
+id="membershipBadge"
+class="badge membership">
+
+Standard
+
+</span>
+
+<span
+id="kycBadge"
+class="badge kyc">
+
+Not Verified
+
+</span>
+
+<span
+id="statusBadge"
+class="badge status">
+
+Active
+
+</span>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- =========================
+WALLET
+========================= -->
+
+<section class="wallet-card">
+
+<div>
+
+<p>
+
+Wallet Balance
+
+</p>
+
+<h1 id="walletBalance">
+
+UGX 0
+
+</h1>
+
+</div>
+
+<div class="wallet-icon">
+
+<i class="fas fa-wallet"></i>
+
+</div>
+
+</section>
+
+<!-- =========================
+STATISTICS
+========================= -->
+
+<section class="stats-section">
+
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<i class="fas fa-microchip"></i>
+
+<h2 id="activeMachines">
+
+0
+
+</h2>
+
+<span>
+
+Active Machines
+
+</span>
+
+</div>
+
+<div class="stat-card">
+
+<i class="fas fa-users"></i>
+
+<h2 id="teamMembers">
+
+0
+
+</h2>
+
+<span>
+
+Team Members
+
+</span>
+
+</div>
+
+<div class="stat-card">
+
+<i class="fas fa-coins"></i>
+
+<h2 id="referralBonus">
+
+UGX 0
+
+</h2>
+
+<span>
+
+Referral Bonus
+
+</span>
+
+</div>
+
+<div class="stat-card">
+
+<i class="fas fa-chart-line"></i>
+
+<h2 id="todayIncome">
+
+UGX 0
+
+</h2>
+
+<span>
+
+Today's Income
+
+</span>
+
+</div>
+
+</div>
+
+    </section>
+
+    <!-- =========================
+PROFILE COMPLETION
+========================= -->
+
+<section class="completion-card">
+
+<div class="section-title">
+
+<h3>Profile Completion</h3>
+
+<span id="profilePercent">0%</span>
+
+</div>
+
+<div class="progress-bar">
+
+<div id="profileProgress"></div>
+
+</div>
+
+<p>
+
+Complete your profile to unlock all Marathon Digital Hub features.
+
+</p>
+
+</section>
+
+<!-- =========================
+REFERRAL CENTRE
+========================= -->
+
+<section class="referral-card">
+
+<div class="section-title">
+
+<h3>Referral Centre</h3>
+
+<i class="fas fa-gift"></i>
+
+</div>
+
+<label>
+
+Referral Code
+
+</label>
+
+<div class="copy-box">
+
+<input
+id="referralCode"
+type="text"
+readonly>
+
+<button
+id="copyCodeBtn">
+
+<i class="fas fa-copy"></i>
+
+</button>
+
+</div>
+
+<label>
+
+Referral Link
+
+</label>
+
+<div class="copy-box">
+
+<input
+id="referralLink"
+type="text"
+readonly>
+
+<button
+id="copyLinkBtn">
+
+<i class="fas fa-link"></i>
+
+</button>
+
+</div>
+
+<button
+id="shareWhatsappBtn"
+class="share-btn">
+
+<i class="fab fa-whatsapp"></i>
+
+Share on WhatsApp
+
+</button>
+
+</section>
+
+<!-- =========================
+AUTOMATIC KYC
+========================= -->
+
+<section class="kyc-card">
+
+<div class="section-title">
+
+<h3>Automatic KYC</h3>
+
+<span id="kycStatusText">
+
+Not Verified
+
+</span>
+
+</div>
+
+<div class="kyc-top">
+
+<span>
+
+Active Referrals
+
+</span>
+
+<strong id="kycProgressText">
+
+0 / 10
+
+</strong>
+
+</div>
+
+<div class="progress-bar">
+
+<div id="kycProgress"></div>
+
+</div>
+
+<p>
+
+Reach <strong>10 Active Referrals</strong> to automatically unlock KYC verification.
+
+</p>
+
+</section>
+
+<!-- =========================
+PURCHASED MACHINES
+========================= -->
+
+<section class="machines-card">
+
+<div class="section-title">
+
+<h3>Purchased Machines</h3>
+
+<a href="machines.html">
+
+View All
+
+</a>
+
+</div>
+
+<div id="machineList">
+
+<!-- Loaded from Supabase -->
+
+</div>
+
+</section>
+
+<!-- =========================
+ABOUT MARATHON DIGITAL HUB
+========================= -->
+
+<section class="about-card">
+
+<div class="section-title">
+
+<h3>About Marathon Digital Hub</h3>
+
+</div>
+
+<p>
+
+Learn more about Marathon Digital Hub, frequently asked questions, our Terms & Conditions and Privacy Policy.
+
+</p>
+
+<button id="aboutBtn">
+
+<i class="fas fa-circle-info"></i>
+
+View Information
+
+</button>
+
+</section>
+
+<!-- =========================
+SETTINGS
+========================= -->
+
+<section class="settings-section">
+
+<button id="settingsBtn" class="settings-btn">
+
+<div class="left">
+
+<i class="fas fa-gear"></i>
+
+<span>Settings</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</button>
+
+</section>
+
+    <!-- =========================
+OVERLAY
+========================= -->
+
+<div id="overlay" class="overlay"></div>
+
+<!-- =========================
+SETTINGS BOTTOM SHEET
+========================= -->
+
+<div id="settingsModal" class="bottom-sheet">
+
+<div class="sheet-handle"></div>
+
+<div class="sheet-content">
+
+<h2>Settings</h2>
+
+<button class="menu-item" id="editProfileBtn">
+
+<div class="menu-left">
+
+<i class="fas fa-user-pen"></i>
+
+<span>Edit Profile</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</button>
+
+<button class="menu-item" id="changePhotoMenuBtn">
+
+<div class="menu-left">
+
+<i class="fas fa-camera"></i>
+
+<span>Change Profile Picture</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</button>
+
+<button class="menu-item" id="changePasswordMenuBtn">
+
+<div class="menu-left">
+
+<i class="fas fa-lock"></i>
+
+<span>Change Password</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</button>
+
+<button class="menu-item" id="logoutMenuBtn">
+
+<div class="menu-left">
+
+<i class="fas fa-right-from-bracket"></i>
+
+<span>Logout</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</button>
+
+</div>
+
+</div>
+
+<!-- =========================
+BOTTOM NAVIGATION
+(Same as Dashboard)
+========================= -->
+
+<nav class="bottom-nav">
+
+<a href="dashboard.html" class="nav-item">
+
+<i class="fas fa-house"></i>
+
+<span>Home</span>
+
+</a>
+
+<a href="machines.html" class="nav-item">
+
+<i class="fas fa-microchip"></i>
+
+<span>Machines</span>
+
+</a>
+
+<a href="deposit.html" class="nav-item">
+
+<i class="fas fa-wallet"></i>
+
+<span>Deposit</span>
+
+</a>
+
+<a href="income.html" class="nav-item">
+
+<i class="fas fa-chart-line"></i>
+
+<span>Income</span>
+
+</a>
+
+<a href="profile.html" class="nav-item active">
+
+<i class="fas fa-user"></i>
+
+<span>Profile</span>
+
+</a>
+
+</nav>
+
+<!-- =========================
+SCRIPTS
+========================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<script src="assets/js/supabase-config.js"></script>
+
+<script src="assets/js/profile.js"></script>
 
 </body>
-
 </html>
