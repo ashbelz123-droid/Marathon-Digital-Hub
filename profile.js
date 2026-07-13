@@ -1,411 +1,551 @@
-/*=========================================
-MARATHON DIGITAL HUB
+/* ==========================
 PROFILE.JS
 PART 1
-=========================================*/
+========================== */
 
-const db = window.supabaseClient;
+const supabase = window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
+
+/* ==========================
+GLOBAL VARIABLES
+========================== */
 
 let currentUser = null;
 let profile = null;
 
-/*==============================
-START
-==============================*/
+/* ==========================
+AUTH CHECK
+========================== */
 
-document.addEventListener("DOMContentLoaded", async () => {
+async function checkAuth(){
 
-    try {
+const { data:{ user } } =
+await supabase.auth.getUser();
 
-        const { data: { user }, error } = await db.auth.getUser();
+if(!user){
 
-        if (error || !user) {
+window.location.href="login.html";
 
-            location.href = "login.html";
-            return;
+return;
 
-        }
+}
 
-        currentUser = user;
+currentUser=user;
 
-        await loadProfile();
+loadProfile();
 
-    } catch (err) {
+}
 
-        console.error("Profile Error:", err);
+checkAuth();
 
-        alert("Unable to load your profile.");
+/* ==========================
+LOAD PROFILE
+========================== */
+
+async function loadProfile(){
+
+const { data,error } = await supabase
+
+.from("profiles")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(error){
+
+console.error(error);
+
+return;
+
+}
+
+profile=data;
+
+displayProfile();
+
+loadStatistics();
+
+}
+
+/* ==========================
+DISPLAY PROFILE
+========================== */
+
+function displayProfile(){
+
+document.getElementById("fullName").textContent=
+profile.fullname || "Unknown User";
+
+document.getElementById("username").textContent=
+"@"+(profile.referral_code || "member");
+
+document.getElementById("walletBalance").textContent=
+"UGX "+
+Number(profile.wallet_balance || 0).toLocaleString();
+
+document.getElementById("membershipBadge").textContent=
+profile.membership || "Standard";
+
+document.getElementById("kycBadge").textContent=
+profile.kyc_status || "Not Verified";
+
+document.getElementById("email").textContent=
+profile.email || "-";
+
+document.getElementById("phone").textContent=
+profile.phone || "-";
+
+document.getElementById("country").textContent=
+profile.country || "-";
+
+document.getElementById("memberSince").textContent=
+new Date(profile.created_at)
+.toLocaleDateString();
+
+document.getElementById("lastLogin").textContent=
+profile.last_login
+? new Date(profile.last_login)
+.toLocaleString()
+: "Never";
+
+if(profile.avatar_url){
+
+document.getElementById("profileImage").src=
+profile.avatar_url;
+
+}
+
+/* ==========================
+ACCOUNT STATUS
+========================== */
+
+if(profile.is_frozen ||
+profile.account_status==="suspended"){
+
+document.getElementById("accountStatusCard")
+.style.display="flex";
+
+document.getElementById("accountBadge")
+.textContent="Suspended";
+
+document.getElementById("accountBadge")
+.className="badge suspended";
+
+document.getElementById("suspensionReason")
+.textContent=
+profile.suspension_reason ||
+"Your account has been suspended by the administrator.";
+
+}
 
     }
+
+/* ==========================
+LOAD STATISTICS
+========================== */
+
+async function loadStatistics(){
+
+/* Active Machines */
+
+const { data:machines } =
+await supabase
+.from("user_machines")
+.select("id")
+.eq("user_id",currentUser.id)
+.eq("status","active");
+
+document.getElementById("activeMachines")
+.textContent=machines?.length || 0;
+
+
+/* Total Invested */
+
+document.getElementById("totalInvested")
+.textContent=
+"UGX "+
+Number(profile.total_invested || 0)
+.toLocaleString();
+
+
+/* Total Profit */
+
+document.getElementById("totalProfit")
+.textContent=
+"UGX "+
+Number(profile.total_profit || 0)
+.toLocaleString();
+
+
+/* ==========================
+REFERRALS
+========================== */
+
+const { data:referrals } =
+await supabase
+.from("referrals")
+.select("*")
+.eq("referrer_id",currentUser.id);
+
+const totalTeam=referrals?.length || 0;
+
+const activeTeam=
+referrals?.filter(r=>
+r.first_deposit_completed &&
+r.first_machine_purchased
+).length || 0;
+
+const inactiveTeam=
+totalTeam-activeTeam;
+
+document.getElementById("teamMembers")
+.textContent=totalTeam;
+
+document.getElementById("teamCount")
+.textContent=totalTeam;
+
+document.getElementById("activeTeam")
+.textContent=activeTeam;
+
+document.getElementById("inactiveTeam")
+.textContent=inactiveTeam;
+
+
+/* Referral Bonus */
+
+document.getElementById("referralReward")
+.textContent=
+"UGX "+
+Number(profile.total_referral_bonus || 0)
+.toLocaleString();
+
+
+/* ==========================
+KYC PROGRESS
+========================== */
+
+document.getElementById("kycProgress")
+.textContent=
+activeTeam+"/10";
+
+
+/* Auto Verify KYC */
+
+if(
+activeTeam>=10 &&
+profile.kyc_status!=="Verified"
+){
+
+await supabase
+.from("profiles")
+.update({
+
+kyc_status:"Verified"
+
+})
+.eq("id",currentUser.id);
+
+document.getElementById("kycBadge")
+.textContent="Verified";
+
+document.getElementById("kycStatus")
+.textContent="Verified";
+
+await createNotification(
+
+"🎉 KYC Activated",
+
+"Congratulations! Your KYC has been automatically verified because you reached 10 active referrals."
+
+);
+
+}
+
+
+/* ==========================
+NOTIFICATIONS
+========================== */
+
+const { data:notifications } =
+await supabase
+
+.from("user_notifications")
+
+.select("*")
+
+.eq("user_id",currentUser.id)
+
+.eq("is_read",false);
+
+document.getElementById("notificationBadge")
+.textContent=
+notifications?.length || 0;
+
+}
+
+
+/* ==========================
+CREATE NOTIFICATION
+========================== */
+
+async function createNotification(
+
+title,
+
+message
+
+){
+
+await supabase
+
+.from("user_notifications")
+
+.insert({
+
+user_id:currentUser.id,
+
+title,
+
+message,
+
+type:"success"
 
 });
 
-/*==============================
-LOAD PROFILE
-==============================*/
-
-async function loadProfile() {
-
-    const { data, error } = await db
-
-        .from("profiles")
-
-        .select("*")
-
-        .eq("id", currentUser.id)
-
-        .single();
-
-    if (error) {
-
-        console.error(error);
-
-        return;
-
     }
 
-    profile = data;
-
-    /* Profile */
-
-    setText("fullName", profile.fullname);
-
-    setText("email", profile.email);
-
-    setText("membershipBadge", profile.membership || "Standard");
-
-    setText("kycBadge", profile.kyc_status || "Not Verified");
-
-    /* Wallet */
-
-    setText(
-
-        "walletBalance",
-
-        "UGX " +
-
-        Number(profile.wallet_balance || 0)
-
-        .toLocaleString()
-
-    );
-
-    /* Avatar */
-
-    if (
-
-        profile.avatar_url &&
-
-        document.getElementById("profileAvatar")
-
-    ) {
-
-        document.getElementById("profileAvatar").src =
-
-        profile.avatar_url;
-
-    }
-
-    await loadStatistics();
-
-}
-
-/*==============================
-HELPER
-==============================*/
-
-function setText(id, value) {
-
-    const el = document.getElementById(id);
-
-    if (el) {
-
-        el.textContent = value;
-
-    }
-
-}
-
-/*=========================================
-PROFILE.JS
-PART 2
-Statistics + Referrals
-=========================================*/
-
-async function loadStatistics() {
-
-    /*==============================
-    ACTIVE MACHINES
-    ==============================*/
-
-    const { data: machines, error } = await db
-
-        .from("user_machines")
-
-        .select("*")
-
-        .eq("user_id", currentUser.id)
-
-        .eq("status", "active");
-
-    if (error) {
-
-        console.error(error);
-        return;
-
-    }
-
-    setText("activeMachines", machines.length);
-
-    /*==============================
-    INVESTMENT
-    ==============================*/
-
-    setText(
-
-        "totalInvested",
-
-        "UGX " +
-
-        Number(profile.total_invested || 0)
-
-        .toLocaleString()
-
-    );
-
-    setText(
-
-        "totalProfit",
-
-        "UGX " +
-
-        Number(profile.total_profit || 0)
-
-        .toLocaleString()
-
-    );
-
-    /*==============================
-    TEAM MEMBERS
-    ==============================*/
-
-    const { data: team, error: teamError } = await db
-
-        .from("referrals")
-
-        .select("*")
-
-        .eq("referrer_id", currentUser.id);
-
-    if (teamError) {
-
-        console.error(teamError);
-        return;
-
-    }
-
-    setText("teamMembers", team.length);
-
-    setText("totalTeam", team.length);
-
-    const activeTeam = team.filter(
-
-        member => member.first_machine_purchased
-
-    );
-
-    setText("activeTeam", activeTeam.length);
-
-    setText(
-
-        "referralBonus",
-
-        "UGX " +
-
-        Number(profile.total_referral_bonus || 0)
-
-        .toLocaleString()
-
-    );
-
-    /*==============================
-    REFERRAL CODE
-    ==============================*/
-
-    if (!profile.referral_code) {
-
-        const code =
-
-            "MDH" +
-
-            Math.random()
-
-                .toString(36)
-
-                .substring(2, 8)
-
-                .toUpperCase();
-
-        await db
-
-            .from("profiles")
-
-            .update({
-
-                referral_code: code
-
-            })
-
-            .eq("id", currentUser.id);
-
-        profile.referral_code = code;
-
-    }
-
-    const referralCode =
-
-        document.getElementById("referralCode");
-
-    if (referralCode) {
-
-        referralCode.value = profile.referral_code;
-
-    }
-
-    const referralLink =
-
-        window.location.origin +
-
-        "/register.html?ref=" +
-
-        profile.referral_code;
-
-    const referralInput =
-
-        document.getElementById("referralLink");
-
-    if (referralInput) {
-
-        referralInput.value = referralLink;
-
-    }
-
-            }
-
-/*=========================================
+/* ==========================================
 PROFILE.JS
 PART 3
-Buttons + Logout
-=========================================*/
+========================================== */
 
-/*==============================
-COPY REFERRAL CODE
-==============================*/
+/* ========= PROFILE PICTURE ========= */
 
-document.getElementById("copyCodeBtn")?.addEventListener("click", () => {
+const avatarInput = document.getElementById("avatarInput");
 
-    navigator.clipboard.writeText(profile.referral_code);
+if (avatarInput) {
 
-    alert("Referral code copied.");
+avatarInput.addEventListener("change", uploadAvatar);
 
-});
+}
 
-/*==============================
-COPY REFERRAL LINK
-==============================*/
+async function uploadAvatar(e){
 
-document.getElementById("copyLinkBtn")?.addEventListener("click", () => {
+const file = e.target.files[0];
 
-    const link =
-        window.location.origin +
-        "/register.html?ref=" +
-        profile.referral_code;
+if(!file){
 
-    navigator.clipboard.writeText(link);
+return;
 
-    alert("Referral link copied.");
+}
 
-});
+/* File validation */
 
-/*==============================
-SHARE REFERRAL
-==============================*/
+const allowed = [
 
-document.getElementById("shareReferralBtn")?.addEventListener("click", async () => {
+"image/png",
 
-    const link =
-        window.location.origin +
-        "/register.html?ref=" +
-        profile.referral_code;
+"image/jpeg",
 
-    if (navigator.share) {
+"image/jpg",
 
-        await navigator.share({
+"image/webp"
 
-            title: "Marathon Digital Hub",
+];
 
-            text: "Join Marathon Digital Hub using my referral link.",
+if(!allowed.includes(file.type)){
 
-            url: link
+alert("Only PNG, JPG, JPEG and WEBP images are allowed.");
 
-        });
+return;
 
-    } else {
+}
 
-        navigator.clipboard.writeText(link);
+if(file.size > 2 * 1024 * 1024){
 
-        alert("Referral link copied.");
+alert("Image must be below 2MB.");
 
-    }
+return;
 
-});
+}
 
-/*==============================
-BUTTONS
-==============================*/
+const fileName =
+`avatars/${currentUser.id}_${Date.now()}`;
 
-document.getElementById("depositBtn")?.addEventListener("click", () => {
+const { error:uploadError } =
+await supabase.storage
 
-    location.href = "deposit.html";
+.from("machine-images")
+
+.upload(fileName,file,{
+
+upsert:true
 
 });
 
-document.getElementById("withdrawBtn")?.addEventListener("click", () => {
+if(uploadError){
 
-    location.href = "withdraw.html";
+alert(uploadError.message);
+
+return;
+
+}
+
+const {
+
+data:{ publicUrl }
+
+}
+
+=
+
+supabase.storage
+
+.from("machine-images")
+
+.getPublicUrl(fileName);
+
+await supabase
+
+.from("profiles")
+
+.update({
+
+avatar_url:publicUrl,
+
+updated_at:new Date()
+
+})
+
+.eq("id",currentUser.id);
+
+document.getElementById("profileImage").src=
+
+publicUrl;
+
+alert("Profile picture updated successfully.");
+
+}
+
+/* ========= COPY REFERRAL ========= */
+
+document.getElementById("copyReferralBtn")
+
+?.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(
+
+document.getElementById("referralLink").value
+
+);
+
+alert("Referral link copied.");
 
 });
 
-document.getElementById("machinesBtn")?.addEventListener("click", () => {
+/* ========= SHARE ========= */
 
-    location.href = "machines.html";
+document.getElementById("shareReferralBtn")
 
-});
+?.addEventListener("click",()=>{
 
-/*==============================
-LOGOUT
-==============================*/
+const link=
 
-document.getElementById("logoutBtn")?.addEventListener("click", async () => {
+document.getElementById("referralLink").value;
 
-    const ok = confirm("Logout from Marathon Digital Hub?");
+window.open(
 
-    if (!ok) return;
+`https://wa.me/?text=${encodeURIComponent(link)}`,
 
-    await db.auth.signOut();
+"_blank"
 
-    location.href = "login.html";
+);
 
 });
 
-/*==============================
-AUTO REFRESH
-==============================*/
+/* ========= QUICK ACTIONS ========= */
 
-setInterval(async () => {
+document.getElementById("depositBtn")
 
-    if (!currentUser) return;
+?.addEventListener("click",()=>{
 
-    await loadProfile();
+location.href="deposit.html";
 
-}, 30000);
+});
+
+document.getElementById("withdrawBtn")
+
+?.addEventListener("click",()=>{
+
+location.href="withdraw.html";
+
+});
+
+document.getElementById("machinesBtn")
+
+?.addEventListener("click",()=>{
+
+location.href="my-machines.html";
+
+});
+
+document.getElementById("historyBtn")
+
+?.addEventListener("click",()=>{
+
+location.href="history.html";
+
+});
+
+/* ========= LOGOUT ========= */
+
+document.getElementById("confirmLogout")
+
+?.addEventListener("click",async()=>{
+
+await supabase.auth.signOut();
+
+location.href="login.html";
+
+});
+
+/* ========= AUTO CLEAN OLD NOTIFICATIONS ========= */
+
+async function cleanNotifications(){
+
+const limitDate=new Date();
+
+limitDate.setDate(limitDate.getDate()-30);
+
+await supabase
+
+.from("user_notifications")
+
+.delete()
+
+.eq("user_id",currentUser.id)
+
+.lt(
+
+"created_at",
+
+limitDate.toISOString()
+
+);
+
+}
+
+cleanNotifications();
+
+/* ========= AUTO REFRESH ========= */
+
+setInterval(()=>{
+
+loadStatistics();
+
+},60000);
