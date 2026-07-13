@@ -1,601 +1,552 @@
 // ======================================
+// PROFILE PAGE
 // Marathon Digital Hub
-// Profile Page
 // Part 1
 // ======================================
 
-const supabase = window.supabaseClient;
+const client = window.supabaseClient;
 
-// -------------------------------
-// Check Authentication
-// -------------------------------
+// ---------- DOM ----------
 
-async function getCurrentUser() {
+const userName =
+document.getElementById("userName");
 
-    const {
+const userEmail =
+document.getElementById("userEmail");
 
-        data: { user },
+const walletBalance =
+document.getElementById("walletBalance");
 
-        error
+const profilePhoto =
+document.getElementById("profilePhoto");
 
-    } = await supabase.auth.getUser();
+const memberType =
+document.getElementById("memberType");
 
-    if (error || !user) {
+const verifyBadge =
+document.getElementById("verifyBadge");
 
-        window.location.href = "login.html";
+const accountStatus =
+document.getElementById("accountStatus");
 
-        return null;
+const machineCount =
+document.getElementById("machineCount");
 
-    }
+const teamCount =
+document.getElementById("teamCount");
 
-    return user;
+const bonusBalance =
+document.getElementById("bonusBalance");
 
-}
+const todayIncome =
+document.getElementById("todayIncome");
 
-// -------------------------------
-// Load Profile
-// -------------------------------
+const notificationCount =
+document.getElementById("notificationCount");
 
-async function loadProfile() {
+// ---------- CURRENT USER ----------
 
-    const user = await getCurrentUser();
+let currentUser = null;
 
-    if (!user) return;
+async function loadProfile(){
 
-    const { data, error } = await supabase
+const {
 
-        .from("profiles")
+data:{user},
 
-        .select("*")
+error
 
-        .eq("id", user.id)
+} = await client.auth.getUser();
 
-        .single();
+if(error || !user){
 
-    if (error) {
+window.location.href="login.html";
 
-        console.error(error);
-
-        return;
-
-    }
-
-    // -------------------
-    // Profile Information
-    // -------------------
-
-    document.getElementById("fullName").textContent =
-        data.fullname || "Member";
-
-    document.getElementById("email").textContent =
-        data.email || "";
-
-    document.getElementById("membershipBadge").textContent =
-        data.membership || "Standard";
-
-    document.getElementById("kycBadge").textContent =
-        data.kyc_status || "Not Verified";
-
-    // -------------------
-    // Status
-    // -------------------
-
-    const statusBadge =
-        document.getElementById("statusBadge");
-
-    statusBadge.textContent =
-        data.account_status || "Active";
-
-    if (data.is_frozen) {
-
-        statusBadge.textContent = "Suspended";
-
-        statusBadge.classList.add("suspended");
-
-        document
-            .getElementById("suspensionBanner")
-            .classList.remove("hidden");
-
-        document
-            .getElementById("suspensionReason")
-            .textContent =
-            data.suspension_reason ||
-            "Suspicious activities that may violate Marathon Digital Hub policies have been detected. Your account has been temporarily suspended while under review. Please contact support for assistance.";
-
-    }
-
-    // -------------------
-    // Avatar
-    // -------------------
-
-    document.getElementById("profileImage").src =
-        data.avatar_url ||
-        "https://placehold.co/200x200/png";
-
-    // -------------------
-    // Referral
-    // -------------------
-
-    document.getElementById("referralCode").value =
-        data.referral_code || "";
-
-    document.getElementById("referralLink").value =
-        window.location.origin +
-        "/register.html?ref=" +
-        (data.referral_code || "");
+return;
 
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+currentUser=user;
 
-    loadProfile();
+userEmail.textContent=user.email;
 
-});
-
-// ======================================
-// Load Statistics
-// ======================================
-
-async function loadStatistics() {
-
-    const user = await getCurrentUser();
-
-    if (!user) return;
-
-    // -----------------------------
-    // Active Machines
-    // -----------------------------
-
-    const { count: activeMachines } = await supabase
-        .from("user_machines")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", user.id)
-        .eq("status", "active");
-
-    document.getElementById("activeMachines").textContent =
-        activeMachines || 0;
-
-    // -----------------------------
-    // Team Members
-    // -----------------------------
-
-    const { count: teamMembers } = await supabase
-        .from("referrals")
-        .select("*", { count: "exact", head: true })
-        .eq("referrer_id", user.id);
-
-    document.getElementById("teamMembers").textContent =
-        teamMembers || 0;
-
-    // -----------------------------
-    // Active Referrals
-    // -----------------------------
-
-    const { count: activeReferrals } = await supabase
-        .from("referrals")
-        .select("*", { count: "exact", head: true })
-        .eq("referrer_id", user.id)
-        .eq("first_deposit_completed", true)
-        .eq("first_machine_purchased", true);
-
-    document.getElementById("activeReferrals").textContent =
-        activeReferrals || 0;
-
-    // -----------------------------
-    // Referral Bonus
-    // -----------------------------
-
-    const { data: profile } = await supabase
-        .from("profiles")
-        .select("total_referral_bonus")
-        .eq("id", user.id)
-        .single();
-
-    document.getElementById("referralBonus").textContent =
-        "UGX " +
-        Number(profile?.total_referral_bonus || 0)
-        .toLocaleString();
-
-    // -----------------------------
-    // Profile Completion
-    // -----------------------------
-
-    const { data: userProfile } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
-
-    let completed = 0;
-
-    if (userProfile.fullname) completed++;
-    if (userProfile.email) completed++;
-    if (userProfile.phone) completed++;
-    if (userProfile.country) completed++;
-    if (userProfile.gender) completed++;
-    if (userProfile.date_of_birth) completed++;
-    if (userProfile.avatar_url) completed++;
-
-    const percent = Math.round((completed / 7) * 100);
-
-    document.getElementById("profilePercent").textContent =
-        percent + "%";
-
-    document.getElementById("profileProgress").style.width =
-        percent + "%";
-
-    // -----------------------------
-    // Automatic KYC Progress
-    // -----------------------------
-
-    document.getElementById("kycProgressText").textContent =
-        `${activeReferrals || 0} / 10`;
-
-    const kycWidth =
-        Math.min((activeReferrals || 0) * 10, 100);
-
-    document.getElementById("kycProgress").style.width =
-        kycWidth + "%";
-
-    if ((activeReferrals || 0) >= 10) {
-
-        document.getElementById("kycStatusText").textContent =
-            "Verified";
-
-    } else {
-
-        document.getElementById("kycStatusText").textContent =
-            "In Progress";
-
-    }
+// Load profile data
+await loadUserData();
 
 }
 
-// ======================================
-// Load Purchased Machines
-// ======================================
+// ---------- LOAD USER DATA ----------
 
-async function loadPurchasedMachines() {
+async function loadUserData(){
 
-    const user = await getCurrentUser();
+const {
 
-    if (!user) return;
+data,
 
-    const { data, error } = await supabase
+error
 
-        .from("user_machines")
+}=await client
 
-        .select("*")
+.from("users")
 
-        .eq("user_id", user.id)
+.select("*")
 
-        .order("purchase_date", { ascending: false })
+.eq("id",currentUser.id)
 
-        .limit(3);
+.single();
 
-    if (error) {
+if(error){
 
-        console.error(error);
+console.log(error);
 
-        return;
-
-    }
-
-    const container =
-        document.getElementById("machineList");
-
-    container.innerHTML = "";
-
-    if (!data.length) {
-
-        container.innerHTML = `
-
-        <div class="empty-card">
-
-            No purchased machines yet.
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-    data.forEach(machine => {
-
-        container.innerHTML += `
-
-        <div class="machine-card">
-
-            <div>
-
-                <h4>${machine.machine_name}</h4>
-
-                <small>${machine.status}</small>
-
-            </div>
-
-            <strong>
-
-                UGX ${Number(machine.amount_paid)
-                .toLocaleString()}
-
-            </strong>
-
-        </div>
-
-        `;
-
-    });
+return;
 
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+userName.textContent=
+data.full_name || "Member";
 
-    loadStatistics();
+walletBalance.textContent=
+"UGX " + Number(
+data.wallet || 0
+).toLocaleString();
 
-    loadPurchasedMachines();
+memberType.textContent=
+data.membership || "Standard";
 
-});
+verifyBadge.textContent=
+data.kyc
+? "Verified"
+: "Not Verified";
+
+accountStatus.textContent=
+data.status || "Active";
+
+if(data.photo){
+
+profilePhoto.src=data.photo;
+
+}
+
+}
+
+// ---------- START ----------
+
+loadProfile();
 
 // ======================================
-// Marathon Digital Hub
-// Profile Page
+// PROFILE PAGE
+// Part 2
+// ======================================
+
+// ---------- PROFILE COMPLETION ----------
+
+const completionPercent =
+document.getElementById("completionPercent");
+
+const progressBar =
+document.getElementById("progressBar");
+
+function updateProfileCompletion(user){
+
+let total = 6;
+
+let completed = 0;
+
+if(user.full_name) completed++;
+
+if(user.email) completed++;
+
+if(user.phone) completed++;
+
+if(user.photo) completed++;
+
+if(user.country) completed++;
+
+if(user.kyc) completed++;
+
+const percent =
+Math.round((completed / total) * 100);
+
+completionPercent.textContent =
+percent + "%";
+
+progressBar.style.width =
+percent + "%";
+
+}
+
+// ---------- LOAD STATISTICS ----------
+
+async function loadStatistics(){
+
+// Active Machines
+
+const {
+
+count:machines
+
+}=await client
+
+.from("machines")
+
+.select("*",{count:"exact",head:true})
+
+.eq("user_id",currentUser.id);
+
+machineCount.textContent =
+machines || 0;
+
+// Team Members
+
+const {
+
+count:team
+
+}=await client
+
+.from("users")
+
+.select("*",{count:"exact",head:true})
+
+.eq("referred_by",currentUser.id);
+
+teamCount.textContent =
+team || 0;
+
+// Referral Bonus
+
+const {
+
+data:bonus
+
+}=await client
+
+.from("users")
+
+.select("referral_bonus")
+
+.eq("id",currentUser.id)
+
+.single();
+
+bonusBalance.textContent =
+"UGX " +
+Number(
+bonus?.referral_bonus || 0
+).toLocaleString();
+
+// Today's Income
+
+const {
+
+data:income
+
+}=await client
+
+.from("users")
+
+.select("today_income")
+
+.eq("id",currentUser.id)
+
+.single();
+
+todayIncome.textContent =
+"UGX " +
+Number(
+income?.today_income || 0
+).toLocaleString();
+
+}
+
+// ---------- REFERRAL ----------
+
+const referralCode =
+document.getElementById("referralCode");
+
+const referralLink =
+document.getElementById("referralLink");
+
+const copyReferralBtn =
+document.getElementById("copyReferralBtn");
+
+const copyLinkBtn =
+document.getElementById("copyLinkBtn");
+
+async function loadReferral(){
+
+const {
+
+data
+
+}=await client
+
+.from("users")
+
+.select("referral_code")
+
+.eq("id",currentUser.id)
+
+.single();
+
+referralCode.value =
+data?.referral_code || "";
+
+referralLink.value =
+location.origin +
+"/register.html?ref=" +
+(data?.referral_code || "");
+
+}
+
+copyReferralBtn.onclick = ()=>{
+
+navigator.clipboard.writeText(
+referralCode.value
+);
+
+alert("Referral code copied.");
+
+};
+
+copyLinkBtn.onclick = ()=>{
+
+navigator.clipboard.writeText(
+referralLink.value
+);
+
+alert("Referral link copied.");
+
+};
+
+// ---------- UPDATE PAGE ----------
+
+async function updatePage(){
+
+await loadStatistics();
+
+await loadReferral();
+
+const {
+
+data
+
+}=await client
+
+.from("users")
+
+.select("*")
+
+.eq("id",currentUser.id)
+
+.single();
+
+if(data){
+
+updateProfileCompletion(data);
+
+}
+
+}
+
+updatePage();
+
+// ======================================
+// PROFILE PAGE
 // Part 3
 // ======================================
 
-// ---------- Copy Referral Code ----------
-
-document.getElementById("copyCodeBtn").onclick = () => {
-
-    navigator.clipboard.writeText(
-        document.getElementById("referralCode").value
-    );
-
-    alert("Referral code copied.");
-
-};
-
-// ---------- Copy Referral Link ----------
-
-document.getElementById("copyLinkBtn").onclick = () => {
-
-    navigator.clipboard.writeText(
-        document.getElementById("referralLink").value
-    );
-
-    alert("Referral link copied.");
-
-};
-
-// ---------- WhatsApp Share ----------
-
-document.getElementById("shareWhatsappBtn").onclick = () => {
-
-    const link =
-        document.getElementById("referralLink").value;
-
-    const text =
-`Join Marathon Digital Hub using my referral link and start earning today.
-
-${link}`;
-
-    window.open(
-
-        "https://wa.me/?text=" +
-
-        encodeURIComponent(text),
-
-        "_blank"
-
-    );
-
-};
-
-// ======================================
-// Settings Bottom Sheet
-// ======================================
-
-const settingsModal =
-document.getElementById("settingsModal");
+// ---------- ELEMENTS ----------
 
 const overlay =
 document.getElementById("overlay");
 
-document.getElementById("settingsBtn").onclick = () => {
+const aboutPopup =
+document.getElementById("aboutPopup");
 
-    settingsModal.classList.add("show");
+const settingsPopup =
+document.getElementById("settingsPopup");
 
-    overlay.classList.add("show");
+const openAbout =
+document.getElementById("openAbout");
 
-};
+const closeAbout =
+document.getElementById("closeAbout");
 
-overlay.onclick = () => {
+const openSettings =
+document.getElementById("openSettings");
 
-    settingsModal.classList.remove("show");
+const closeSettings =
+document.getElementById("closeSettings");
 
-    overlay.classList.remove("show");
+// ---------- POPUPS ----------
 
-};
+function openPopup(popup){
 
-// ======================================
-// Change Profile Picture
-// ======================================
+overlay.classList.add("active");
 
-document.getElementById("changePhotoBtn").onclick = () => {
-
-    document.getElementById("photoInput").click();
-
-};
-
-document.getElementById("changePhotoMenuBtn").onclick = () => {
-
-    document.getElementById("photoInput").click();
-
-};
-
-document.getElementById("photoInput").addEventListener(
-
-"change",
-
-async function () {
-
-    const file = this.files[0];
-
-    if (!file) return;
-
-    const user = await getCurrentUser();
-
-    if (!user) return;
-
-    const fileName =
-        `${user.id}-${Date.now()}`;
-
-    const { error: uploadError } =
-    await supabase.storage
-
-        .from("machine-images")
-
-        .upload(fileName, file, {
-
-            upsert: true
-
-        });
-
-    if (uploadError) {
-
-        alert(uploadError.message);
-
-        return;
-
-    }
-
-    const {
-
-        data: publicData
-
-    } = supabase.storage
-
-        .from("machine-images")
-
-        .getPublicUrl(fileName);
-
-    await supabase
-
-        .from("profiles")
-
-        .update({
-
-            avatar_url:
-
-            publicData.publicUrl
-
-        })
-
-        .eq("id", user.id);
-
-    document.getElementById("profileImage").src =
-        publicData.publicUrl;
+popup.classList.add("active");
 
 }
 
-// ======================================
-// Notifications
-// ======================================
+function closePopup(popup){
 
-async function loadNotifications(){
+overlay.classList.remove("active");
 
-    const user = await getCurrentUser();
-
-    if(!user) return;
-
-    const { data } = await supabase
-
-    .from("user_notifications")
-
-    .select("*")
-
-    .eq("user_id",user.id)
-
-    .eq("is_read",false);
-
-    document.getElementById("notificationCount").textContent =
-    data ? data.length : 0;
+popup.classList.remove("active");
 
 }
 
-loadNotifications();
+if(openAbout){
 
-// ======================================
-// Logout
-// ======================================
+openAbout.onclick=()=>{
 
-document.getElementById("logoutMenuBtn").onclick =
-async()=>{
-
-    await supabase.auth.signOut();
-
-    window.location.href="login.html";
+openPopup(aboutPopup);
 
 };
 
-// ======================================
-// About Marathon Digital Hub
-// ======================================
+}
 
-document.getElementById("aboutMenuBtn").onclick=()=>{
+if(closeAbout){
 
-alert(`Marathon Digital Hub
+closeAbout.onclick=()=>{
 
-• About Us
-
-Marathon Digital Hub is a digital investment platform designed to provide members with secure mining investment opportunities, referral rewards and transparent earnings.
-
-• FAQ
-
-Visit the FAQ section inside the website for common questions.
-
-• Terms & Conditions
-
-Using Marathon Digital Hub means you agree to follow all platform rules and policies.
-
-• Privacy Policy
-
-Your personal information is protected and used only for operating your account securely.`);
+closePopup(aboutPopup);
 
 };
 
-// ======================================
-// Support
-// ======================================
+}
 
-document.getElementById("supportMenuBtn").onclick=()=>{
+if(openSettings){
 
-window.location.href="support.html";
+openSettings.onclick=()=>{
 
-};
-
-// ======================================
-// Edit Profile
-// ======================================
-
-document.getElementById("editProfileBtn").onclick=()=>{
-
-window.location.href="edit-profile.html";
+openPopup(settingsPopup);
 
 };
 
-// ======================================
-// Change Password
-// ======================================
+}
 
-document.getElementById("changePasswordMenuBtn").onclick=()=>{
+if(closeSettings){
 
-window.location.href="change-password.html";
+closeSettings.onclick=()=>{
+
+closePopup(settingsPopup);
 
 };
 
-console.log(
-"Marathon Digital Hub Profile Loaded Successfully"
-);
+}
+
+overlay.onclick=()=>{
+
+overlay.classList.remove("active");
+
+aboutPopup.classList.remove("active");
+
+settingsPopup.classList.remove("active");
+
+};
+
+// ---------- PROFILE PHOTO ----------
+
+const photoInput =
+document.getElementById("photoInput");
+
+const changePhoto =
+document.getElementById("changePhoto");
+
+if(changePhoto){
+
+changePhoto.onclick=()=>{
+
+photoInput.click();
+
+};
+
+}
+
+photoInput?.addEventListener("change",()=>{
+
+const file=photoInput.files[0];
+
+if(!file) return;
+
+const reader=new FileReader();
+
+reader.onload=function(e){
+
+profilePhoto.src=e.target.result;
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+// ---------- CHANGE PASSWORD ----------
+
+const changePasswordBtn =
+document.getElementById("changePasswordBtn");
+
+if(changePasswordBtn){
+
+changePasswordBtn.onclick=async()=>{
+
+const password=prompt("Enter new password");
+
+if(!password) return;
+
+const {error}=await client.auth.updateUser({
+
+password:password
+
+});
+
+if(error){
+
+alert(error.message);
+
+}else{
+
+alert("Password changed successfully.");
+
+}
+
+};
+
+}
+
+// ---------- LOGOUT ----------
+
+const logoutBtn =
+document.getElementById("logoutBtn");
+
+if(logoutBtn){
+
+logoutBtn.onclick=async()=>{
+
+await client.auth.signOut();
+
+window.location.href="login.html";
+
+};
+
+}
+
+// ---------- ABOUT TEXT ----------
+
+const aboutContent =
+document.getElementById("aboutContent");
+
+if(aboutContent){
+
+aboutContent.textContent=
+
+"Marathon Digital Hub is a digital mining platform designed to provide secure mining plans, referral rewards, daily earnings, team growth, and transparent account management for every member.";
+
+}
+
+// ---------- PAGE READY ----------
+
+console.log("Profile page loaded successfully.");
