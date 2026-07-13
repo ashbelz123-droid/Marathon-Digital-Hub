@@ -1,16 +1,10 @@
 /* ==========================
 PROFILE.JS
-PART 1
 ========================== */
 
-const supabase = window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_ANON_KEY
-);
+// Use the client from supabase-config.js
 
-/* ==========================
-GLOBAL VARIABLES
-========================== */
+// Do NOT create another client here.
 
 let currentUser = null;
 let profile = null;
