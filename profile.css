@@ -1,713 +1,1091 @@
-/* ==========================
-PROFILE.CSS
-PART 1
-========================== */
+/* ===========================
+   MARATHON DIGITAL HUB
+   PROFILE PAGE - PART 1
+=========================== */
+
+:root{
+
+--bg:#07162B;
+--card:#0D2142;
+--card2:#10294F;
+--green:#00D26A;
+--red:#ff4d4f;
+--orange:#ffb547;
+--white:#ffffff;
+--text:#dfe8ff;
+--muted:#8ea4c7;
+--border:rgba(255,255,255,.06);
+--shadow:0 10px 30px rgba(0,0,0,.30);
+
+}
 
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial,Helvetica,sans-serif;
+font-family:Inter,sans-serif;
+-webkit-tap-highlight-color:transparent;
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
-background:#07162b;
-color:#fff;
+
+background:var(--bg);
+color:var(--white);
 padding-bottom:110px;
+overflow-x:hidden;
+
 }
 
-.container{
-width:100%;
-max-width:500px;
+.profile-page{
+
+max-width:520px;
 margin:auto;
 padding:18px;
+
 }
 
-/* ==========================
-PROFILE HEADER
-========================== */
+/* Background */
 
-.profile-header{
-position:relative;
-background:linear-gradient(135deg,#0d2d58,#123d74);
-border-radius:25px;
-padding:25px 20px 35px;
-text-align:center;
-overflow:hidden;
-margin-bottom:20px;
-box-shadow:0 15px 40px rgba(0,0,0,.35);
-}
+.profile-bg{
 
-.cover-bg{
-position:absolute;
+position:fixed;
 top:0;
 left:0;
 width:100%;
-height:120px;
+height:100%;
+z-index:-2;
+
 background:
 radial-gradient(circle at top right,
-rgba(255,255,255,.18),
-transparent 60%);
+rgba(0,210,106,.14),
+transparent 45%),
+
+radial-gradient(circle at bottom left,
+rgba(0,170,255,.10),
+transparent 40%),
+
+#07162B;
+
 }
 
-.profile-avatar{
-position:relative;
-width:110px;
-height:110px;
-margin:auto;
-margin-bottom:15px;
-}
+/* =====================
+HEADER
+===================== */
 
-.profile-avatar img{
-width:110px;
-height:110px;
-border-radius:50%;
-object-fit:cover;
-border:5px solid #fff;
-background:#fff;
-box-shadow:0 8px 25px rgba(0,0,0,.35);
-}
+.profile-header{
 
-.profile-avatar button{
-position:absolute;
-right:0;
-bottom:0;
-width:36px;
-height:36px;
-border:none;
-border-radius:50%;
-background:#00d26a;
-color:#fff;
-font-size:15px;
-cursor:pointer;
-box-shadow:0 5px 15px rgba(0,0,0,.35);
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+margin-bottom:18px;
+
 }
 
 .profile-header h2{
-font-size:24px;
-margin-bottom:5px;
+
+font-size:22px;
 font-weight:700;
+
 }
 
-.profile-header p{
+.header-btn{
+
+width:44px;
+height:44px;
+
+border:none;
+outline:none;
+
+border-radius:14px;
+
+background:var(--card);
+
+color:white;
+
+font-size:18px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+position:relative;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.header-btn:active{
+
+transform:scale(.96);
+
+}
+
+#notificationCount{
+
+position:absolute;
+
+top:6px;
+right:6px;
+
+min-width:18px;
+height:18px;
+
+border-radius:50%;
+
+background:var(--green);
+
+color:#07162B;
+
+font-size:11px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-weight:700;
+
+}
+
+/* =====================
+SUSPENSION CARD
+===================== */
+
+.suspension-banner{
+
+display:flex;
+
+gap:15px;
+
+padding:18px;
+
+margin-bottom:20px;
+
+background:rgba(255,77,79,.12);
+
+border:1px solid rgba(255,77,79,.45);
+
+border-radius:22px;
+
+box-shadow:var(--shadow);
+
+}
+
+.hidden{
+
+display:none!important;
+
+}
+
+.banner-icon{
+
+width:58px;
+height:58px;
+
+flex-shrink:0;
+
+border-radius:18px;
+
+background:rgba(255,77,79,.18);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:26px;
+
+color:var(--red);
+
+}
+
+.banner-content h3{
+
+margin-bottom:8px;
+
+font-size:18px;
+
+}
+
+.banner-content p{
+
+color:#ffd8d8;
+
 font-size:14px;
-opacity:.85;
-margin-bottom:15px;
+
+line-height:1.6;
+
 }
 
-/* ==========================
-BADGES
-========================== */
+.reason-box{
 
-.profile-badges{
+margin:14px 0;
+
+padding:14px;
+
+border-radius:16px;
+
+background:rgba(255,255,255,.05);
+
+}
+
+.reason-box strong{
+
+display:block;
+
+margin-bottom:6px;
+
+}
+
+.status-row{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+margin-top:10px;
+
+}
+
+.status{
+
+padding:8px 16px;
+
+border-radius:50px;
+
+font-size:13px;
+
+font-weight:600;
+
+display:flex;
+align-items:center;
+gap:8px;
+
+}
+
+.status.suspended{
+
+background:rgba(255,77,79,.20);
+
+color:#ff8d8d;
+
+}
+
+#contactSupportBtn{
+
+width:100%;
+
+margin-top:18px;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--red);
+
+color:white;
+
+font-size:15px;
+
+font-weight:700;
+
+}
+
+/* =====================
+PROFILE CARD
+===================== */
+
+.profile-card{
+
+position:relative;
+
+overflow:hidden;
+
+background:linear-gradient(180deg,#10294F,#0B1F3C);
+
+border-radius:28px;
+
+padding:28px 20px;
+
+text-align:center;
+
+box-shadow:var(--shadow);
+
+margin-bottom:22px;
+
+}
+
+.cover-gradient{
+
+position:absolute;
+
+top:-80px;
+left:-30px;
+
+width:220px;
+height:220px;
+
+background:rgba(0,210,106,.15);
+
+filter:blur(70px);
+
+}
+
+.profile-image-wrapper{
+
+position:relative;
+
+width:120px;
+height:120px;
+
+margin:auto;
+
+margin-bottom:18px;
+
+}
+
+.profile-image-wrapper img{
+
+width:120px;
+height:120px;
+
+object-fit:cover;
+
+border-radius:50%;
+
+border:5px solid rgba(255,255,255,.10);
+
+background:#142f5c;
+
+}
+
+#changePhotoBtn{
+
+position:absolute;
+
+bottom:4px;
+right:4px;
+
+width:38px;
+height:38px;
+
+border:none;
+
+border-radius:50%;
+
+background:var(--green);
+
+color:#07162B;
+
+font-size:15px;
+
+font-weight:700;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+box-shadow:0 5px 15px rgba(0,210,106,.40);
+
+}
+
+#fullname{
+
+font-size:24px;
+
+font-weight:700;
+
+margin-bottom:6px;
+
+}
+
+#username{
+
+color:var(--muted);
+
+font-size:14px;
+
+margin-bottom:18px;
+
+  }
+
+/*==========================
+BADGES
+==========================*/
+
+.badge-row{
 display:flex;
 justify-content:center;
-gap:10px;
 flex-wrap:wrap;
+gap:10px;
+margin-bottom:18px;
 }
 
-.badge{
-padding:8px 15px;
+.member-badge,
+.kyc-badge,
+.level-badge{
+padding:8px 14px;
 border-radius:50px;
-font-size:12px;
-font-weight:700;
+font-size:13px;
+font-weight:600;
+background:rgba(255,255,255,.06);
+border:1px solid rgba(255,255,255,.08);
 }
 
-.membership{
-background:#ffc107;
-color:#000;
+.kyc-badge{
+background:rgba(0,210,106,.12);
+color:var(--green);
 }
 
-.kyc{
-background:#2979ff;
+.profile-id{
+margin-top:10px;
+color:var(--muted);
 }
 
-.active{
-background:#00c853;
+.profile-id strong{
+display:block;
+margin-top:5px;
+color:var(--white);
+font-size:16px;
 }
 
-.suspended{
-background:#ff3b30;
+.profile-completion{
+margin-top:22px;
+text-align:left;
 }
 
-/* ==========================
-ACCOUNT STATUS
-========================== */
-
-.status-card{
+.completion-top{
 display:flex;
-align-items:flex-start;
-gap:15px;
-background:#4b0d14;
-border-left:5px solid #ff3b30;
-padding:18px;
-border-radius:18px;
-margin-bottom:20px;
-}
-
-.status-icon{
-font-size:28px;
-color:#ff5252;
-}
-
-.status-card h3{
+justify-content:space-between;
 margin-bottom:8px;
-color:#fff;
+font-size:13px;
 }
 
-.status-card p{
-font-size:14px;
-line-height:1.6;
-color:#ddd;
+.completion-bar{
+height:8px;
+border-radius:50px;
+background:rgba(255,255,255,.08);
+overflow:hidden;
 }
 
-.status-card button{
-margin-top:12px;
-padding:10px 18px;
-border:none;
-border-radius:10px;
-background:#00c853;
-color:#fff;
-font-weight:bold;
-cursor:pointer;
+.completion-fill{
+width:0%;
+height:100%;
+background:linear-gradient(90deg,#00D26A,#00ff9d);
+border-radius:50px;
+transition:.5s;
 }
 
-/* ==========================
+/*==========================
 WALLET CARD
-========================== */
+==========================*/
 
 .wallet-card{
-background:linear-gradient(135deg,#122f5f,#184785);
-padding:22px;
-border-radius:22px;
+background:var(--card);
+border-radius:24px;
+padding:20px;
+margin-bottom:22px;
+box-shadow:var(--shadow);
+}
+
+.wallet-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:22px;
-box-shadow:0 10px 30px rgba(0,0,0,.35);
+margin-bottom:20px;
 }
 
-.wallet-card p{
-opacity:.8;
+.wallet-top p{
+color:var(--muted);
 font-size:14px;
+margin-bottom:6px;
 }
 
-.wallet-card h1{
-font-size:30px;
-margin-top:8px;
+.wallet-top h2{
+font-size:28px;
 }
 
 .wallet-icon{
-font-size:42px;
-color:#00d26a;
+font-size:34px;
+color:var(--green);
 }
 
-/* ==========================
-OVERVIEW GRID
-========================== */
-
-.overview-grid{
+.wallet-grid{
 display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-margin-bottom:20px;
-}
-
-.overview-card{
-background:#0d2243;
-padding:20px;
-border-radius:18px;
-text-align:center;
-transition:.3s;
-}
-
-.overview-card:hover{
-transform:translateY(-4px);
-}
-
-.overview-card i{
-font-size:28px;
-color:#00d26a;
-margin-bottom:10px;
-}
-
-.overview-card h2{
-font-size:22px;
-margin-bottom:8px;
-}
-
-.overview-card p{
-font-size:13px;
-opacity:.75;
-}
-
-/* ==========================
-CARDS
-========================== */
-
-.card{
-background:#0d2243;
-border-radius:20px;
-padding:20px;
-margin-bottom:20px;
-box-shadow:0 8px 25px rgba(0,0,0,.25);
-}
-
-.card h3{
-font-size:18px;
-margin-bottom:18px;
-font-weight:700;
-}
-
-/* ==========================
-QUICK ACTIONS
-========================== */
-
-.quick-actions{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-}
-
-.action-card{
-background:#122c56;
-border:none;
-border-radius:18px;
-padding:20px 12px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
+grid-template-columns:repeat(3,1fr);
 gap:12px;
-color:#fff;
+margin-bottom:18px;
+}
+
+.wallet-grid div{
+background:rgba(255,255,255,.04);
+padding:14px;
+border-radius:16px;
+text-align:center;
+}
+
+.wallet-grid span{
+font-size:12px;
+color:var(--muted);
+}
+
+.wallet-grid h3{
+margin-top:8px;
+font-size:16px;
+}
+
+.wallet-buttons{
+display:flex;
+gap:12px;
+}
+
+.wallet-buttons button{
+flex:1;
+height:48px;
+border:none;
+border-radius:14px;
+font-size:15px;
+font-weight:700;
 cursor:pointer;
 transition:.3s;
 }
 
-.action-card:hover{
-background:#184785;
-transform:translateY(-5px);
+#depositBtn{
+background:var(--green);
+color:#07162B;
 }
 
-.action-card i{
-font-size:28px;
-color:#00d26a;
+#withdrawBtn{
+background:#173865;
+color:white;
 }
 
-.action-card span{
-font-size:14px;
-font-weight:600;
-text-align:center;
+.wallet-buttons button:active{
+transform:scale(.97);
 }
 
-/* ==========================
-REFERRAL
-========================== */
+/*==========================
+SECTION TITLE
+==========================*/
 
-.referral-card{
-background:#081a35;
+.section-title{
+margin-bottom:16px;
+font-size:18px;
+font-weight:700;
+}
+
+/*==========================
+STATISTICS
+==========================*/
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+margin-bottom:24px;
+}
+
+.stat-card{
+background:var(--card);
+border-radius:20px;
 padding:18px;
-border-radius:18px;
+text-align:center;
+box-shadow:var(--shadow);
+}
+
+.stat-card i{
+font-size:28px;
+color:var(--green);
+margin-bottom:12px;
+}
+
+.stat-card h2{
+font-size:22px;
+margin-bottom:6px;
+}
+
+.stat-card p{
+font-size:13px;
+color:var(--muted);
+}
+
+/*==========================
+CARDS
+==========================*/
+
+.referral-card,
+.machines-card,
+.reward-card,
+.notification-card,
+.info-card,
+.menu-card,
+.support-card{
+background:var(--card);
+border-radius:24px;
+padding:20px;
+margin-bottom:22px;
+box-shadow:var(--shadow);
+}
+
+.card-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
 margin-bottom:18px;
 }
 
-.referral-card label{
-display:block;
-margin-bottom:8px;
-font-size:13px;
-color:#bfc8d8;
+.card-header h3{
+font-size:18px;
+}
+
+.card-header i{
+color:var(--green);
+font-size:20px;
 }
 
 .copy-box{
 display:flex;
-align-items:center;
-margin-bottom:15px;
+margin-top:8px;
+margin-bottom:16px;
 }
 
 .copy-box input{
 flex:1;
-background:#10294f;
+height:46px;
+background:#091b34;
 border:none;
 outline:none;
-padding:12px;
+color:white;
+padding:0 15px;
 border-radius:12px 0 0 12px;
-color:#fff;
 }
 
 .copy-box button{
 width:55px;
 border:none;
-background:#00c853;
-color:#fff;
+background:var(--green);
+color:#07162B;
 border-radius:0 12px 12px 0;
-cursor:pointer;
 font-size:18px;
 }
 
-.share-btn{
+.share-buttons button,
+#viewMachines,
+#supportBtn{
 width:100%;
+height:48px;
 border:none;
-padding:14px;
-border-radius:12px;
-background:#25D366;
-color:#fff;
+border-radius:14px;
+background:var(--green);
+color:#07162B;
 font-weight:700;
-cursor:pointer;
-font-size:15px;
+margin-top:10px;
 }
 
-/* ==========================
-TEAM STATS
-========================== */
-
-.team-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
-margin-top:18px;
+.progress-bar{
+height:8px;
+background:rgba(255,255,255,.08);
+border-radius:50px;
+overflow:hidden;
+margin:12px 0;
 }
 
-.team-card{
-background:#10294f;
-border-radius:16px;
-padding:18px;
-text-align:center;
+.progress-fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00D26A,#00ff9d);
+transition:.5s;
 }
 
-.team-card h2{
-font-size:24px;
-color:#00d26a;
-margin-bottom:8px;
-}
-
-.team-card p{
+.progress-note{
 font-size:13px;
-color:#c9d5e5;
+color:var(--muted);
+line-height:1.5;
 }
 
-/* ==========================
-ACCOUNT INFO
-========================== */
-
-.info-list{
-display:flex;
-flex-direction:column;
-gap:14px;
-}
-
-.info-item{
+.info-item,
+.menu-item{
 display:flex;
 justify-content:space-between;
 align-items:center;
-padding:14px;
-background:#10294f;
-border-radius:14px;
-}
-
-.info-item span{
-color:#b9c8dc;
-font-size:14px;
-}
-
-.info-item strong{
-font-size:14px;
-color:#fff;
-}
-
-/* ==========================
-MENU
-========================== */
-
-.menu-list{
-display:flex;
-flex-direction:column;
-gap:12px;
+padding:14px 0;
+border-bottom:1px solid rgba(255,255,255,.05);
 }
 
 .menu-item{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:16px;
-border:none;
-border-radius:16px;
-background:#10294f;
-color:#fff;
+background:none;
+border-left:none;
+border-right:none;
+border-top:none;
+color:white;
+font-size:15px;
 cursor:pointer;
-transition:.3s;
-}
-
-.menu-item:hover{
-background:#184785;
-}
-
-.menu-item i:first-child{
-width:30px;
-font-size:18px;
-color:#00d26a;
 }
 
 .menu-item span{
 flex:1;
+margin-left:14px;
 text-align:left;
-font-size:15px;
-font-weight:600;
 }
 
-.logout{
-background:#4b0d14;
+.info-item span{
+color:var(--muted);
 }
 
-.logout i:first-child{
-color:#ff5252;
-}
-
-#notificationBadge{
-background:#ff3b30;
-color:#fff;
-padding:4px 9px;
-border-radius:50px;
-font-size:12px;
-font-weight:bold;
-  }
-
-/* ==========================
-MODALS / POPUPS
-========================== */
-
-.modal{
-display:none;
-position:fixed;
-left:0;
-top:0;
+.logout-btn{
 width:100%;
-height:100%;
-background:rgba(0,0,0,.65);
-backdrop-filter:blur(6px);
-justify-content:center;
-align-items:flex-end;
-z-index:9999;
-padding:15px;
-}
-
-.modal.active{
-display:flex;
-animation:fadeIn .25s ease;
-}
-
-.modal-content{
-width:100%;
-max-width:500px;
-background:#0d2243;
-border-radius:25px 25px 0 0;
-padding:22px;
-animation:slideUp .25s ease;
-max-height:90vh;
-overflow-y:auto;
-}
-
-.modal-content.large{
-height:80vh;
-}
-
-.modal-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px;
-}
-
-.modal-header h2{
-font-size:22px;
-}
-
-.closeModal{
-border:none;
-background:none;
-font-size:30px;
-color:#fff;
-cursor:pointer;
-}
-
-.modal input,
-.modal select,
-.modal textarea{
-width:100%;
-margin-bottom:15px;
-padding:14px;
-border:none;
-outline:none;
-border-radius:14px;
-background:#10294f;
-color:#fff;
-font-size:15px;
-}
-
-.modal textarea{
-resize:none;
-}
-
-.modal button{
-width:100%;
-padding:15px;
-border:none;
-border-radius:14px;
-background:#00c853;
-color:#fff;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-}
-
-.logout-actions{
-display:flex;
-gap:12px;
-margin-top:20px;
-}
-
-.logout-actions button{
-flex:1;
-}
-
-.logout-actions button:first-child{
-background:#3b4b66;
-}
-
-.settings-menu{
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.settings-menu button{
-display:flex;
-align-items:center;
-gap:15px;
-background:#10294f;
-padding:16px;
+height:54px;
+background:var(--red);
+color:white;
 border:none;
 border-radius:16px;
-color:#fff;
-font-size:15px;
-font-weight:600;
-cursor:pointer;
+font-size:16px;
+font-weight:700;
+margin-bottom:110px;
 }
 
-.settings-menu button i{
-font-size:20px;
-color:#00c853;
-width:25px;
-}
-
-/* ==========================
+/*==========================
 BOTTOM NAVIGATION
-========================== */
+==========================*/
 
 .bottom-nav{
 position:fixed;
 left:0;
 right:0;
 bottom:0;
-height:78px;
-background:#07162b;
+height:75px;
+background:#091b34;
 display:flex;
 justify-content:space-around;
 align-items:center;
-border-top:1px solid rgba(255,255,255,.08);
-box-shadow:0 -8px 30px rgba(0,0,0,.35);
+border-top:1px solid rgba(255,255,255,.05);
 z-index:999;
 }
 
-.bottom-nav a{
-flex:1;
-height:100%;
+.nav-item{
 display:flex;
 flex-direction:column;
-justify-content:center;
 align-items:center;
 text-decoration:none;
-color:#9bb2d1;
-transition:.25s;
+color:#8ea4c7;
 font-size:12px;
 font-weight:600;
+transition:.3s;
 }
 
-.bottom-nav a i{
+.nav-item i{
 font-size:22px;
 margin-bottom:5px;
 }
 
-.bottom-nav a.active{
-color:#00d26a;
+.nav-item.active{
+color:var(--green);
 }
 
-.bottom-nav a.active i{
+.nav-item.active i{
+color:var(--green);
 transform:translateY(-2px);
-text-shadow:0 0 12px rgba(0,210,106,.5);
 }
 
-.bottom-nav a:hover{
-color:#00d26a;
+/*==========================
+POPUPS
+==========================*/
+
+.popup-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+backdrop-filter:blur(5px);
+z-index:1000;
 }
 
-/* ==========================
+.popup{
+position:fixed;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:92%;
+max-width:420px;
+background:var(--card);
+border-radius:24px;
+padding:22px;
+z-index:1001;
+box-shadow:var(--shadow);
+}
+
+.popup.hidden,
+.popup-overlay.hidden{
+display:none;
+  }
+
+/*==========================
 ANIMATIONS
-========================== */
+==========================*/
 
-@keyframes slideUp{
-
-from{
-transform:translateY(100%);
+@keyframes fadeUp{
+0%{
+opacity:0;
+transform:translateY(30px);
 }
-
-to{
+100%{
+opacity:1;
 transform:translateY(0);
 }
+}
+
+@keyframes pulseGlow{
+0%{
+box-shadow:0 0 0 rgba(0,210,106,.25);
+}
+50%{
+box-shadow:0 0 28px rgba(0,210,106,.55);
+}
+100%{
+box-shadow:0 0 0 rgba(0,210,106,.25);
+}
+}
+
+@keyframes rotateBorder{
+0%{
+transform:rotate(0deg);
+}
+100%{
+transform:rotate(360deg);
+}
+}
+
+.profile-card,
+.wallet-card,
+.stats-section,
+.referral-card,
+.machines-card,
+.reward-card,
+.notification-card,
+.info-card,
+.menu-card,
+.support-card{
+animation:fadeUp .6s ease;
+}
+
+/*==========================
+PROFILE IMAGE EFFECT
+==========================*/
+
+.profile-image-wrapper::before{
+
+content:"";
+
+position:absolute;
+
+top:-6px;
+left:-6px;
+
+width:132px;
+height:132px;
+
+border-radius:50%;
+
+background:linear-gradient(
+45deg,
+transparent,
+#00D26A,
+transparent
+);
+
+z-index:-1;
+
+animation:rotateBorder 6s linear infinite;
 
 }
 
-@keyframes fadeIn{
+.profile-image-wrapper img{
 
-from{
-opacity:0;
-}
-
-to{
-opacity:1;
-}
+animation:pulseGlow 3s infinite;
 
 }
 
-/* ==========================
+/*==========================
+SCROLLBAR
+==========================*/
+
+::-webkit-scrollbar{
+width:5px;
+}
+
+::-webkit-scrollbar-thumb{
+background:#00D26A;
+border-radius:20px;
+}
+
+/*==========================
+EMPTY STATES
+==========================*/
+
+.empty-text{
+
+text-align:center;
+
+color:var(--muted);
+
+padding:20px 0;
+
+font-size:14px;
+
+}
+
+/*==========================
+DISABLED BUTTONS
+==========================*/
+
+button:disabled{
+
+opacity:.45;
+
+cursor:not-allowed;
+
+filter:grayscale(100%);
+
+}
+
+/*==========================
+SUCCESS STATUS
+==========================*/
+
+.status.active{
+
+background:rgba(0,210,106,.15);
+
+color:var(--green);
+
+}
+
+/*==========================
+WARNING STATUS
+==========================*/
+
+.status.warning{
+
+background:rgba(255,181,71,.15);
+
+color:var(--orange);
+
+}
+
+/*==========================
 RESPONSIVE
-========================== */
+==========================*/
 
-@media(max-width:380px){
+@media(max-width:420px){
 
-.quick-actions,
-.team-grid,
-.overview-grid{
+.profile-page{
+padding:15px;
+}
 
+.wallet-grid{
 grid-template-columns:1fr;
+}
+
+.stats-grid{
+grid-template-columns:1fr 1fr;
+}
+
+.profile-image-wrapper,
+.profile-image-wrapper img{
+width:105px;
+height:105px;
+}
+
+.profile-image-wrapper::before{
+width:117px;
+height:117px;
+}
+
+.wallet-top h2{
+font-size:24px;
+}
+
+#fullname{
+font-size:21px;
+}
+
+.bottom-nav{
+height:78px;
+padding-bottom:env(safe-area-inset-bottom);
+}
 
 }
 
-.profile-header h2{
+/*==========================
+TABLETS
+==========================*/
 
-font-size:20px;
+@media(min-width:768px){
+
+.profile-page{
+max-width:650px;
+}
+
+.stats-grid{
+grid-template-columns:repeat(3,1fr);
+}
+
+.wallet-grid{
+grid-template-columns:repeat(3,1fr);
+}
 
 }
 
-.wallet-card h1{
+/*==========================
+ACTIVE TOUCH EFFECT
+==========================*/
 
-font-size:25px;
+button,
+.nav-item,
+.stat-card,
+.menu-item{
+
+transition:.25s ease;
 
 }
 
-.bottom-nav a span{
+button:active,
+.nav-item:active,
+.stat-card:active{
 
-font-size:11px;
+transform:scale(.97);
 
 }
 
-  }
+/*==========================
+FOCUS
+==========================*/
+
+input:focus,
+button:focus{
+
+outline:none;
+
+}
+
+/*==========================
+SAFE AREA
+==========================*/
+
+body{
+
+padding-bottom:calc(95px + env(safe-area-inset-bottom));
+
+}
+
+/*==========================
+END OF PROFILE CSS
+==========================*/
