@@ -20,15 +20,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
 
 <body>
 
-<div class="background"></div>
-
 <div class="page">
 
-<!-- =========================
+<!-- ==========================
 HEADER
-========================= -->
+=========================== -->
 
-<header class="topbar">
+<header class="top-header">
 
 <a href="dashboard.html" class="back-btn">
 
@@ -42,48 +40,28 @@ HEADER
 
 <i class="fas fa-bell"></i>
 
-<span id="notificationCount">0</span>
+<span id="notificationBadge">0</span>
 
 </button>
 
 </header>
 
-<!-- =========================
-ACCOUNT STATUS
-========================= -->
-
-<section id="suspensionBanner"
-class="status-banner hidden">
-
-<i class="fas fa-circle-exclamation"></i>
-
-<div>
-
-<h3>Account Suspended</h3>
-
-<p id="suspensionReason"></p>
-
-</div>
-
-</section>
-
-<!-- =========================
+<!-- ==========================
 PROFILE CARD
-========================= -->
+=========================== -->
 
 <section class="profile-card">
 
-<div class="cover"></div>
+<div class="profile-cover"></div>
 
-<div class="avatar-box">
+<div class="profile-photo">
 
 <img
 id="profileImage"
-src=""
+src="assets/images/default-avatar.png"
 alt="Profile">
 
-<button
-id="changePhotoBtn">
+<button id="changePhotoBtn">
 
 <i class="fas fa-camera"></i>
 
@@ -105,29 +83,27 @@ Loading...
 
 </h2>
 
-<p id="email"></p>
+<p id="email">
 
-<div class="badge-row">
+loading@email.com
 
-<span
-id="membershipBadge"
-class="badge membership">
+</p>
+
+<div class="profile-badges">
+
+<span id="membershipBadge">
 
 Standard
 
 </span>
 
-<span
-id="kycBadge"
-class="badge kyc">
+<span id="kycBadge">
 
 Not Verified
 
 </span>
 
-<span
-id="statusBadge"
-class="badge status">
+<span id="statusBadge">
 
 Active
 
@@ -139,19 +115,15 @@ Active
 
 </section>
 
-<!-- =========================
+<!-- ==========================
 WALLET
-========================= -->
+=========================== -->
 
 <section class="wallet-card">
 
 <div>
 
-<p>
-
-Wallet Balance
-
-</p>
+<p>Wallet Balance</p>
 
 <h1 id="walletBalance">
 
@@ -169,13 +141,11 @@ UGX 0
 
 </section>
 
-<!-- =========================
+<!-- ==========================
 STATISTICS
-========================= -->
+=========================== -->
 
-<section class="stats-section">
-
-<div class="stats-grid">
+<section class="stats-grid">
 
 <div class="stat-card">
 
@@ -187,11 +157,7 @@ STATISTICS
 
 </h2>
 
-<span>
-
-Active Machines
-
-</span>
+<p>Active Machines</p>
 
 </div>
 
@@ -205,11 +171,7 @@ Active Machines
 
 </h2>
 
-<span>
-
-Team Members
-
-</span>
+<p>Team Members</p>
 
 </div>
 
@@ -223,11 +185,7 @@ UGX 0
 
 </h2>
 
-<span>
-
-Referral Bonus
-
-</span>
+<p>Referral Bonus</p>
 
 </div>
 
@@ -241,35 +199,33 @@ UGX 0
 
 </h2>
 
-<span>
-
-Today's Income
-
-</span>
-
-</div>
+<p>Today's Income</p>
 
 </div>
 
     </section>
 
-    <!-- =========================
+   <!-- ==========================
 PROFILE COMPLETION
-========================= -->
+=========================== -->
 
-<section class="completion-card">
+<section class="profile-completion">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Profile Completion</h3>
 
-<span id="profilePercent">0%</span>
+<span id="completionPercent">0%</span>
 
 </div>
 
 <div class="progress-bar">
 
-<div id="profileProgress"></div>
+<div
+id="completionBar"
+class="progress-fill">
+
+</div>
 
 </div>
 
@@ -281,25 +237,19 @@ Complete your profile to unlock all Marathon Digital Hub features.
 
 </section>
 
-<!-- =========================
+<!-- ==========================
 REFERRAL CENTRE
-========================= -->
+=========================== -->
 
 <section class="referral-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Referral Centre</h3>
 
-<i class="fas fa-gift"></i>
-
 </div>
 
-<label>
-
-Referral Code
-
-</label>
+<label>Your Referral Code</label>
 
 <div class="copy-box">
 
@@ -308,8 +258,7 @@ id="referralCode"
 type="text"
 readonly>
 
-<button
-id="copyCodeBtn">
+<button id="copyReferralBtn">
 
 <i class="fas fa-copy"></i>
 
@@ -317,11 +266,7 @@ id="copyCodeBtn">
 
 </div>
 
-<label>
-
-Referral Link
-
-</label>
+<label>Your Referral Link</label>
 
 <div class="copy-box">
 
@@ -330,8 +275,7 @@ id="referralLink"
 type="text"
 readonly>
 
-<button
-id="copyLinkBtn">
+<button id="copyLinkBtn">
 
 <i class="fas fa-link"></i>
 
@@ -341,7 +285,7 @@ id="copyLinkBtn">
 
 <button
 id="shareWhatsappBtn"
-class="share-btn">
+class="main-btn">
 
 <i class="fab fa-whatsapp"></i>
 
@@ -351,17 +295,17 @@ Share on WhatsApp
 
 </section>
 
-<!-- =========================
+<!-- ==========================
 AUTOMATIC KYC
-========================= -->
+=========================== -->
 
 <section class="kyc-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Automatic KYC</h3>
 
-<span id="kycStatusText">
+<span id="kycStatus">
 
 Not Verified
 
@@ -369,43 +313,37 @@ Not Verified
 
 </div>
 
-<div class="kyc-top">
+<p>
 
-<span>
+Invite <strong>10 active members</strong> to automatically unlock KYC verification.
 
-Active Referrals
-
-</span>
-
-<strong id="kycProgressText">
-
-0 / 10
-
-</strong>
-
-</div>
+</p>
 
 <div class="progress-bar">
 
-<div id="kycProgress"></div>
+<div
+id="kycBar"
+class="progress-fill">
 
 </div>
 
-<p>
+</div>
 
-Reach <strong>10 Active Referrals</strong> to automatically unlock KYC verification.
+<p id="kycProgress">
+
+0 / 10 Active Referrals
 
 </p>
 
 </section>
 
-<!-- =========================
+<!-- ==========================
 PURCHASED MACHINES
-========================= -->
+=========================== -->
 
 <section class="machines-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>Purchased Machines</h3>
 
@@ -419,19 +357,19 @@ View All
 
 <div id="machineList">
 
-<!-- Loaded from Supabase -->
+<!-- Loaded by JavaScript -->
 
 </div>
 
 </section>
 
-<!-- =========================
-ABOUT MARATHON DIGITAL HUB
-========================= -->
+<!-- ==========================
+ABOUT
+=========================== -->
 
 <section class="about-card">
 
-<div class="section-title">
+<div class="section-header">
 
 <h3>About Marathon Digital Hub</h3>
 
@@ -439,113 +377,121 @@ ABOUT MARATHON DIGITAL HUB
 
 <p>
 
-Learn more about Marathon Digital Hub, frequently asked questions, our Terms & Conditions and Privacy Policy.
+Learn about Marathon Digital Hub, our Frequently Asked Questions, Terms & Conditions and Privacy Policy.
 
 </p>
 
-<button id="aboutBtn">
+<button
+id="aboutBtn"
+class="main-btn">
 
-<i class="fas fa-circle-info"></i>
-
-View Information
+About Us
 
 </button>
 
 </section>
 
-<!-- =========================
+<!-- ==========================
 SETTINGS
-========================= -->
+=========================== -->
 
-<section class="settings-section">
+<section class="settings-card">
 
-<button id="settingsBtn" class="settings-btn">
+<button id="settingsBtn">
 
-<div class="left">
-
-<i class="fas fa-gear"></i>
+<i class="fas fa-cog"></i>
 
 <span>Settings</span>
 
-</div>
-
 <i class="fas fa-chevron-right"></i>
 
 </button>
 
-</section>
+    </section>
 
-    <!-- =========================
+    <!-- ==========================
 OVERLAY
-========================= -->
+=========================== -->
 
 <div id="overlay" class="overlay"></div>
 
-<!-- =========================
-SETTINGS BOTTOM SHEET
-========================= -->
+<!-- ==========================
+ABOUT POPUP
+=========================== -->
 
-<div id="settingsModal" class="bottom-sheet">
+<div id="aboutModal" class="modal">
 
-<div class="sheet-handle"></div>
+<div class="modal-content">
 
-<div class="sheet-content">
+<h2>About Marathon Digital Hub</h2>
+
+<p>
+
+Marathon Digital Hub is a digital mining platform designed to provide users with a secure investment experience, referral rewards, machine management and real-time earnings.
+
+</p>
+
+<div class="modal-buttons">
+
+<button id="faqBtn">FAQ</button>
+
+<button id="termsBtn">Terms</button>
+
+<button id="privacyBtn">Privacy</button>
+
+<button id="closeAboutBtn">Close</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ==========================
+SETTINGS POPUP
+=========================== -->
+
+<div id="settingsModal" class="modal">
+
+<div class="modal-content">
 
 <h2>Settings</h2>
 
-<button class="menu-item" id="editProfileBtn">
+<button id="editProfileBtn">
 
-<div class="menu-left">
+<i class="fas fa-user-edit"></i>
 
-<i class="fas fa-user-pen"></i>
-
-<span>Edit Profile</span>
-
-</div>
-
-<i class="fas fa-chevron-right"></i>
+Edit Profile
 
 </button>
 
-<button class="menu-item" id="changePhotoMenuBtn">
-
-<div class="menu-left">
+<button id="changePhotoMenuBtn">
 
 <i class="fas fa-camera"></i>
 
-<span>Change Profile Picture</span>
-
-</div>
-
-<i class="fas fa-chevron-right"></i>
+Change Profile Picture
 
 </button>
 
-<button class="menu-item" id="changePasswordMenuBtn">
-
-<div class="menu-left">
+<button id="changePasswordBtn">
 
 <i class="fas fa-lock"></i>
 
-<span>Change Password</span>
-
-</div>
-
-<i class="fas fa-chevron-right"></i>
+Change Password
 
 </button>
 
-<button class="menu-item" id="logoutMenuBtn">
-
-<div class="menu-left">
+<button id="logoutBtn">
 
 <i class="fas fa-right-from-bracket"></i>
 
-<span>Logout</span>
+Logout
 
-</div>
+</button>
 
-<i class="fas fa-chevron-right"></i>
+<button id="closeSettingsBtn">
+
+Close
 
 </button>
 
@@ -553,16 +499,15 @@ SETTINGS BOTTOM SHEET
 
 </div>
 
-<!-- =========================
+<!-- ==========================
 BOTTOM NAVIGATION
-(Same as Dashboard)
-========================= -->
+=========================== -->
 
 <nav class="bottom-nav">
 
 <a href="dashboard.html" class="nav-item">
 
-<i class="fas fa-house"></i>
+<i class="fas fa-home"></i>
 
 <span>Home</span>
 
@@ -602,9 +547,9 @@ BOTTOM NAVIGATION
 
 </nav>
 
-<!-- =========================
-SCRIPTS
-========================= -->
+<!-- ==========================
+JAVASCRIPT
+=========================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
@@ -613,4 +558,4 @@ SCRIPTS
 <script src="assets/js/profile.js"></script>
 
 </body>
-</html>
+    </html>
