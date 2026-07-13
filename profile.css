@@ -1,33 +1,43 @@
-/*==================================
+/*====================================
 MARATHON DIGITAL HUB
 PROFILE PAGE
-==================================*/
+====================================*/
 
 :root{
 
 --primary:#00D26A;
---primary-dark:#00B85C;
+--primary-dark:#00b65b;
+
 --bg:#07162B;
---card:#0D2142;
---card2:#10294F;
---text:#FFFFFF;
---muted:#8EA4C7;
---danger:#FF4D4F;
---warning:#F5B942;
+
+--card:#0E2345;
+
+--card2:#12305C;
+
+--text:#ffffff;
+
+--muted:#9DB2D1;
+
+--danger:#ff4d4f;
+
 --border:rgba(255,255,255,.08);
 
 --radius:22px;
 
---shadow:
-0 10px 35px rgba(0,0,0,.28);
+--shadow:0 10px 35px rgba(0,0,0,.25);
 
 }
 
 *{
+
 margin:0;
+
 padding:0;
+
 box-sizing:border-box;
+
 font-family:Inter,sans-serif;
+
 }
 
 body{
@@ -40,9 +50,9 @@ overflow-x:hidden;
 
 }
 
-.page{
+.profile-page{
 
-max-width:550px;
+max-width:560px;
 
 margin:auto;
 
@@ -50,9 +60,9 @@ padding:18px 18px 120px;
 
 }
 
-/*========================
+/*==============================
 BACKGROUND
-========================*/
+==============================*/
 
 .page-bg{
 
@@ -66,27 +76,27 @@ background:
 
 radial-gradient(circle at top right,
 rgba(0,210,106,.12),
-transparent 35%),
+transparent 32%),
 
 radial-gradient(circle at bottom left,
-rgba(30,90,255,.08),
-transparent 30%),
+rgba(20,90,255,.10),
+transparent 35%),
 
-#07162B;
+var(--bg);
 
 }
 
-/*========================
+/*==============================
 HEADER
-========================*/
+==============================*/
 
 .profile-header{
 
 display:flex;
 
-align-items:center;
-
 justify-content:space-between;
+
+align-items:center;
 
 margin-bottom:20px;
 
@@ -94,13 +104,14 @@ margin-bottom:20px;
 
 .profile-header h2{
 
-font-size:23px;
+font-size:24px;
 
 font-weight:700;
 
 }
 
-.header-btn{
+.back-btn,
+.notification-btn{
 
 width:46px;
 
@@ -112,45 +123,35 @@ border-radius:14px;
 
 background:var(--card);
 
-color:white;
-
 display:flex;
 
 align-items:center;
 
 justify-content:center;
 
-font-size:18px;
+color:white;
 
 text-decoration:none;
+
+font-size:18px;
 
 position:relative;
 
 cursor:pointer;
 
-transition:.25s;
-
 }
 
-.header-btn:active{
-
-transform:scale(.95);
-
-}
-
-.badge{
+.notification-count{
 
 position:absolute;
 
-top:6px;
+top:5px;
 
-right:6px;
+right:5px;
 
 min-width:18px;
 
 height:18px;
-
-padding:0 5px;
 
 border-radius:50px;
 
@@ -170,17 +171,17 @@ justify-content:center;
 
 }
 
+/*==============================
+SUSPENSION
+==============================*/
+
 .hidden{
 
-display:none!important;
+display:none !important;
 
 }
 
-/*========================
-SUSPENSION
-========================*/
-
-.suspension-banner{
+.suspension-card{
 
 display:flex;
 
@@ -188,17 +189,17 @@ gap:16px;
 
 padding:18px;
 
-background:rgba(255,77,79,.12);
+margin-bottom:20px;
 
-border:1px solid rgba(255,77,79,.25);
+background:rgba(255,77,79,.10);
+
+border:1px solid rgba(255,77,79,.30);
 
 border-radius:20px;
 
-margin-bottom:20px;
-
 }
 
-.banner-left{
+.warning-icon{
 
 width:58px;
 
@@ -206,47 +207,45 @@ height:58px;
 
 border-radius:18px;
 
-background:rgba(255,77,79,.15);
-
 display:flex;
 
 align-items:center;
 
 justify-content:center;
 
-font-size:24px;
+background:rgba(255,77,79,.15);
+
+font-size:26px;
 
 color:var(--danger);
 
 }
 
-.banner-right{
+.warning-content{
 
 flex:1;
 
 }
 
-.banner-right h3{
+.warning-content h3{
 
 margin-bottom:8px;
 
-font-size:18px;
-
 }
 
-.banner-right p{
+.warning-content p{
 
 font-size:14px;
 
 line-height:1.6;
 
-color:#FFDADA;
+color:#ffdcdc;
+
+margin-bottom:15px;
 
 }
 
-#contactSupportBtn{
-
-margin-top:16px;
+#supportBtn{
 
 width:100%;
 
@@ -268,151 +267,129 @@ cursor:pointer;
 
 }
 
-/*========================
+/*==============================
 PROFILE CARD
-========================*/
+==============================*/
 
 .profile-card{
 
-position:relative;
-
-overflow:hidden;
-
-background:linear-gradient(180deg,#12315F,#0D2142);
+background:linear-gradient(180deg,var(--card2),var(--card));
 
 border-radius:26px;
 
-padding:26px 20px;
-
-text-align:center;
-
-box-shadow:var(--shadow);
+padding:22px;
 
 margin-bottom:20px;
 
-}
-
-.cover{
-
-position:absolute;
-
-top:-70px;
-
-right:-70px;
-
-width:180px;
-
-height:180px;
-
-border-radius:50%;
-
-background:rgba(0,210,106,.10);
-
-filter:blur(40px);
+box-shadow:var(--shadow);
 
 }
 
-.profile-image-area{
+.profile-top{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+}
+
+.avatar-box{
 
 position:relative;
 
-width:120px;
-
-height:120px;
-
-margin:auto;
-
-margin-bottom:18px;
-
 }
 
-#profileImage{
+#profileAvatar{
 
-width:120px;
+width:95px;
 
-height:120px;
+height:95px;
 
 border-radius:50%;
 
 object-fit:cover;
 
-border:4px solid rgba(255,255,255,.10);
+border:4px solid rgba(255,255,255,.08);
 
-background:#16325D;
+background:#173864;
 
 }
 
-#changePhotoButton{
+.camera-btn{
 
 position:absolute;
 
-bottom:2px;
+bottom:0;
 
-right:2px;
+right:0;
 
-width:40px;
+width:36px;
 
-height:40px;
-
-border:none;
+height:36px;
 
 border-radius:50%;
 
 background:var(--primary);
 
-color:#07162B;
-
-font-size:16px;
-
-font-weight:700;
-
-cursor:pointer;
-
-box-shadow:0 5px 15px rgba(0,210,106,.35);
-
-}
-
-.profile-details h2{
-
-font-size:24px;
-
-margin-bottom:6px;
-
-}
-
-.profile-details p{
-
-color:var(--muted);
-
-margin-bottom:16px;
-
-font-size:14px;
-
-}
-
-.profile-badges{
-
 display:flex;
+
+align-items:center;
 
 justify-content:center;
 
-gap:10px;
+cursor:pointer;
 
-flex-wrap:wrap;
+color:#07162B;
 
-margin-bottom:18px;
+font-size:15px;
+
+font-weight:700;
 
 }
 
-.member-badge,
-.kyc-badge,
-.level-badge{
+.user-details{
 
-padding:8px 14px;
+flex:1;
+
+}
+
+.user-details h2{
+
+font-size:22px;
+
+margin-bottom:5px;
+
+}
+
+.user-details p{
+
+font-size:14px;
+
+color:var(--muted);
+
+margin-bottom:14px;
+
+}
+
+.badge-row{
+
+display:flex;
+
+gap:8px;
+
+flex-wrap:wrap;
+
+}
+
+.badge{
+
+padding:7px 14px;
 
 border-radius:50px;
 
-font-size:13px;
+font-size:12px;
 
 font-weight:600;
 
@@ -420,49 +397,73 @@ background:rgba(255,255,255,.08);
 
 }
 
-.user-id{
+.membership{
 
-margin-top:10px;
+color:#FFD54F;
 
 }
 
-.user-id span{
+.kyc{
 
-display:block;
+color:var(--primary);
 
-font-size:13px;
+}
+
+.status{
+
+color:#4FC3F7;
+
+}
+
+.profile-id{
+
+margin-top:18px;
+
+padding-top:18px;
+
+border-top:1px solid var(--border);
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.profile-id span{
 
 color:var(--muted);
 
-margin-bottom:4px;
+font-size:14px;
 
 }
 
-.user-id strong{
+.profile-id strong{
 
-font-size:16px;
+font-size:15px;
 
-   }
+}
 
-/*==================================
+/*==============================
 PROFILE COMPLETION
-==================================*/
+==============================*/
 
 .completion-card{
 
 background:var(--card);
 
-border-radius:var(--radius);
+border-radius:20px;
 
-padding:20px;
+padding:18px;
 
-margin-bottom:18px;
+margin-bottom:20px;
 
 box-shadow:var(--shadow);
 
 }
 
-.completion-top{
+.title-row{
 
 display:flex;
 
@@ -474,11 +475,9 @@ margin-bottom:12px;
 
 }
 
-.completion-top h3{
+.title-row h3{
 
 font-size:17px;
-
-font-weight:600;
 
 }
 
@@ -490,9 +489,7 @@ font-weight:700;
 
 }
 
-.completion-bar{
-
-width:100%;
+.progress-bar{
 
 height:10px;
 
@@ -512,9 +509,9 @@ width:0%;
 
 height:100%;
 
-background:linear-gradient(90deg,#00D26A,#38ef7d);
+background:linear-gradient(90deg,#00D26A,#43F18E);
 
-transition:width .4s ease;
+transition:.4s;
 
 }
 
@@ -526,19 +523,19 @@ color:var(--muted);
 
 line-height:1.6;
 
-}
+   }
 
-/*==================================
+/*====================================
 WALLET CARD
-==================================*/
+====================================*/
 
 .wallet-card{
 
-background:linear-gradient(180deg,#12315F,#0D2142);
+background:linear-gradient(135deg,#12305C,#0E2345);
 
-border-radius:var(--radius);
+border-radius:22px;
 
-padding:22px;
+padding:20px;
 
 margin-bottom:20px;
 
@@ -546,7 +543,7 @@ box-shadow:var(--shadow);
 
 }
 
-.wallet-header{
+.wallet-top{
 
 display:flex;
 
@@ -554,29 +551,29 @@ justify-content:space-between;
 
 align-items:center;
 
-margin-bottom:22px;
+margin-bottom:20px;
 
 }
 
-.wallet-header span{
+.wallet-top p{
 
 font-size:13px;
 
 color:var(--muted);
 
+margin-bottom:6px;
+
 }
 
-.wallet-header h1{
+.wallet-top h1{
 
-margin-top:8px;
-
-font-size:31px;
+font-size:30px;
 
 font-weight:700;
 
 }
 
-.wallet-header i{
+.wallet-icon{
 
 font-size:34px;
 
@@ -584,7 +581,7 @@ color:var(--primary);
 
 }
 
-.wallet-stats{
+.wallet-grid{
 
 display:grid;
 
@@ -592,23 +589,23 @@ grid-template-columns:repeat(3,1fr);
 
 gap:12px;
 
-margin-bottom:22px;
+margin-bottom:20px;
 
 }
 
-.wallet-stats div{
+.wallet-grid div{
 
 background:rgba(255,255,255,.05);
 
-padding:14px;
-
 border-radius:16px;
+
+padding:14px;
 
 text-align:center;
 
 }
 
-.wallet-stats span{
+.wallet-grid span{
 
 display:block;
 
@@ -620,21 +617,23 @@ margin-bottom:8px;
 
 }
 
-.wallet-stats strong{
+.wallet-grid strong{
 
 font-size:15px;
 
+font-weight:700;
+
 }
 
-.wallet-actions{
+.wallet-buttons{
 
 display:flex;
 
-gap:14px;
+gap:12px;
 
 }
 
-.wallet-actions button{
+.wallet-buttons button{
 
 flex:1;
 
@@ -664,23 +663,23 @@ color:#07162B;
 
 #withdrawBtn{
 
-background:#16345F;
+background:#183C73;
 
-color:#fff;
-
-}
-
-.wallet-actions button:active{
-
-transform:scale(.96);
+color:white;
 
 }
 
-/*==================================
-SECTION HEADER
-==================================*/
+.wallet-buttons button:active{
 
-.section-header{
+transform:scale(.97);
+
+}
+
+/*====================================
+SECTION TITLES
+====================================*/
+
+.section-title{
 
 display:flex;
 
@@ -692,7 +691,7 @@ margin-bottom:18px;
 
 }
 
-.section-header h3{
+.section-title h3{
 
 font-size:18px;
 
@@ -700,8 +699,8 @@ font-weight:700;
 
 }
 
-.section-header a,
-.section-header button{
+.section-title a,
+.section-title button{
 
 background:none;
 
@@ -717,9 +716,27 @@ text-decoration:none;
 
 }
 
-/*==================================
+/*====================================
+COMMON CARD
+====================================*/
+
+.card{
+
+background:var(--card);
+
+border-radius:20px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+box-shadow:var(--shadow);
+
+}
+
+/*====================================
 STATISTICS
-==================================*/
+====================================*/
 
 .stats-section{
 
@@ -741,7 +758,7 @@ gap:14px;
 
 background:var(--card);
 
-border-radius:20px;
+border-radius:18px;
 
 padding:18px;
 
@@ -761,9 +778,7 @@ width:52px;
 
 height:52px;
 
-border-radius:16px;
-
-background:rgba(0,210,106,.10);
+border-radius:15px;
 
 display:flex;
 
@@ -771,57 +786,61 @@ align-items:center;
 
 justify-content:center;
 
+font-size:22px;
+
 }
 
-.stat-icon i{
+.stat-icon.green{
 
-font-size:22px;
+background:rgba(0,210,106,.15);
 
 color:var(--primary);
 
 }
 
-.stat-info span{
+.stat-icon.blue{
 
-display:block;
+background:rgba(0,153,255,.15);
+
+color:#3BA4FF;
+
+}
+
+.stat-icon.gold{
+
+background:rgba(255,193,7,.15);
+
+color:#FFC107;
+
+}
+
+.stat-icon.purple{
+
+background:rgba(173,90,255,.15);
+
+color:#B56CFF;
+
+}
+
+.stat-card h2{
+
+font-size:22px;
+
+margin-bottom:5px;
+
+}
+
+.stat-card p{
 
 font-size:13px;
 
 color:var(--muted);
 
-margin-bottom:6px;
-
 }
 
-.stat-info h2{
-
-font-size:22px;
-
-}
-
-/*==================================
-COMMON CARDS
-==================================*/
-
-.referral-card,
-.kyc-card,
-.machines-card,
-.reward-card,
-.notification-card,
-.profile-section,
-.support-card{
-
-background:var(--card);
-
-border-radius:var(--radius);
-
-padding:20px;
-
-margin-bottom:20px;
-
-box-shadow:var(--shadow);
-
-}
+/*====================================
+REFERRAL
+====================================*/
 
 .referral-box{
 
@@ -859,7 +878,7 @@ outline:none;
 
 padding:0 14px;
 
-background:#091C36;
+background:#091D38;
 
 color:white;
 
@@ -883,7 +902,7 @@ cursor:pointer;
 
 }
 
-.share-buttons button{
+.green-btn{
 
 width:100%;
 
@@ -897,19 +916,21 @@ background:var(--primary);
 
 color:#07162B;
 
+font-size:15px;
+
 font-weight:700;
 
 cursor:pointer;
 
-margin-top:8px;
+margin-top:10px;
 
-   }
+}
 
-/*==================================
-KYC PROGRESS
-==================================*/
+/*====================================
+KYC
+====================================*/
 
-.progress-head{
+.progress-header{
 
 display:flex;
 
@@ -917,21 +938,21 @@ justify-content:space-between;
 
 align-items:center;
 
-margin-bottom:10px;
+margin-bottom:12px;
 
 }
 
-.progress-head span{
+.progress-header span{
 
-font-size:14px;
+font-size:13px;
 
 color:var(--muted);
 
 }
 
-#kycStatus{
+#kycStatusBadge{
 
-padding:6px 14px;
+padding:6px 12px;
 
 border-radius:50px;
 
@@ -947,8 +968,6 @@ font-weight:600;
 
 .progress{
 
-width:100%;
-
 height:10px;
 
 background:rgba(255,255,255,.08);
@@ -957,23 +976,23 @@ border-radius:50px;
 
 overflow:hidden;
 
-margin-bottom:10px;
+margin-bottom:12px;
 
 }
 
-#kycProgressFill{
+#kycProgressBar{
 
 width:0%;
 
 height:100%;
 
-background:linear-gradient(90deg,#00D26A,#35F58B);
+background:linear-gradient(90deg,#00D26A,#48F28F);
 
-transition:width .4s ease;
+transition:.4s;
 
 }
 
-.kyc-card p{
+.small-text{
 
 font-size:13px;
 
@@ -983,53 +1002,63 @@ color:var(--muted);
 
 }
 
-/*==================================
-MACHINE SUMMARY
-==================================*/
+/*====================================
+MACHINES
+====================================*/
 
-.machine-summary{
+#machinePreview{
 
-display:grid;
+display:flex;
 
-grid-template-columns:repeat(2,1fr);
+flex-direction:column;
 
-gap:14px;
+gap:12px;
 
-}
-
-.machine-summary div{
-
-background:rgba(255,255,255,.05);
-
-padding:16px;
-
-border-radius:16px;
-
-text-align:center;
+min-height:70px;
 
 }
 
-.machine-summary span{
+/*====================================
+REWARD HISTORY
+====================================*/
 
-display:block;
+#rewardHistory{
 
-font-size:13px;
+display:flex;
 
-color:var(--muted);
+flex-direction:column;
 
-margin-bottom:8px;
+gap:12px;
 
-}
-
-.machine-summary h2{
-
-font-size:22px;
+min-height:70px;
 
 }
 
-/*==================================
+/*====================================
+NOTIFICATIONS
+====================================*/
+
+#notificationList{
+
+display:flex;
+
+flex-direction:column;
+
+gap:12px;
+
+min-height:70px;
+
+   }
+
+/*====================================
 ACCOUNT INFORMATION
-==================================*/
+====================================*/
+
+.account-card{
+
+margin-bottom:20px;
+
+}
 
 .info-list{
 
@@ -1037,9 +1066,11 @@ display:flex;
 
 flex-direction:column;
 
+gap:2px;
+
 }
 
-.info-item{
+.info-row{
 
 display:flex;
 
@@ -1047,27 +1078,27 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:15px 0;
+padding:16px 0;
 
-border-bottom:1px solid var(--border);
+border-bottom:1px solid rgba(255,255,255,.08);
 
 }
 
-.info-item:last-child{
+.info-row:last-child{
 
 border-bottom:none;
 
 }
 
-.info-item span{
-
-color:var(--muted);
+.info-row span{
 
 font-size:14px;
 
+color:var(--muted);
+
 }
 
-.info-item strong{
+.info-row strong{
 
 font-size:15px;
 
@@ -1081,17 +1112,17 @@ word-break:break-word;
 
 }
 
-.edit-btn{
+.icon-btn{
 
-width:40px;
+width:42px;
 
-height:40px;
+height:42px;
 
 border:none;
 
 border-radius:12px;
 
-background:rgba(0,210,106,.10);
+background:rgba(0,210,106,.12);
 
 color:var(--primary);
 
@@ -1099,31 +1130,37 @@ cursor:pointer;
 
 }
 
-/*==================================
-MENU BUTTONS
-==================================*/
+/*====================================
+SETTINGS
+====================================*/
 
-.menu-item{
+.settings-card{
+
+margin-bottom:20px;
+
+}
+
+.setting-item{
+
+width:100%;
 
 display:flex;
 
 align-items:center;
 
-gap:14px;
-
-width:100%;
+gap:16px;
 
 padding:16px;
 
-margin-bottom:10px;
+margin-bottom:12px;
 
 border:none;
 
 border-radius:16px;
 
-background:rgba(255,255,255,.05);
+background:rgba(255,255,255,.04);
 
-color:white;
+color:#fff;
 
 cursor:pointer;
 
@@ -1131,29 +1168,29 @@ transition:.25s;
 
 }
 
-.menu-item:last-child{
+.setting-item:last-child{
 
 margin-bottom:0;
 
 }
 
-.menu-item:hover{
+.setting-item:hover{
 
 background:rgba(255,255,255,.08);
 
 }
 
-.menu-item i:first-child{
+.setting-item i:first-child{
 
 width:22px;
 
-color:var(--primary);
-
 font-size:18px;
+
+color:var(--primary);
 
 }
 
-.menu-item span{
+.setting-item span{
 
 flex:1;
 
@@ -1161,17 +1198,21 @@ text-align:left;
 
 font-size:15px;
 
+font-weight:500;
+
 }
 
-.menu-item i:last-child{
+.setting-item i:last-child{
+
+font-size:13px;
 
 color:var(--muted);
 
 }
 
-/*==================================
+/*====================================
 SUPPORT
-==================================*/
+====================================*/
 
 .support-card{
 
@@ -1179,56 +1220,29 @@ text-align:center;
 
 }
 
-.support-card h3{
-
-margin-bottom:10px;
-
-}
-
 .support-card p{
+
+margin:15px 0 20px;
+
+font-size:14px;
+
+line-height:1.7;
 
 color:var(--muted);
 
-margin-bottom:18px;
-
-line-height:1.6;
-
 }
 
-#openSupportButton,
-#contactSupportBtn{
-
-width:100%;
-
-height:50px;
-
-border:none;
-
-border-radius:14px;
-
-background:var(--primary);
-
-color:#07162B;
-
-font-size:15px;
-
-font-weight:700;
-
-cursor:pointer;
-
-}
-
-/*==================================
+/*====================================
 LOGOUT
-==================================*/
+====================================*/
 
-.logout-section{
+.logout-area{
 
-margin-bottom:20px;
+margin-bottom:100px;
 
 }
 
-#logoutButton{
+.logout-btn{
 
 width:100%;
 
@@ -1240,7 +1254,7 @@ border-radius:16px;
 
 background:linear-gradient(135deg,#FF4D4F,#E53935);
 
-color:white;
+color:#fff;
 
 font-size:16px;
 
@@ -1248,23 +1262,37 @@ font-weight:700;
 
 cursor:pointer;
 
+transition:.25s;
+
 }
 
-/*==================================
+.logout-btn:active{
+
+transform:scale(.97);
+
+}
+
+/*====================================
 POPUPS
-==================================*/
+====================================*/
 
 .popup-overlay{
 
 position:fixed;
 
-inset:0;
+left:0;
+
+top:0;
+
+width:100%;
+
+height:100%;
 
 background:rgba(0,0,0,.65);
 
-backdrop-filter:blur(5px);
+backdrop-filter:blur(6px);
 
-z-index:1000;
+z-index:9998;
 
 }
 
@@ -1280,7 +1308,7 @@ transform:translate(-50%,-50%);
 
 width:92%;
 
-max-width:430px;
+max-width:420px;
 
 background:var(--card);
 
@@ -1288,11 +1316,17 @@ border-radius:24px;
 
 padding:22px;
 
-box-shadow:var(--shadow);
+box-shadow:0 20px 50px rgba(0,0,0,.35);
 
-z-index:1001;
+z-index:9999;
 
 animation:popupShow .25s ease;
+
+}
+
+.hidden{
+
+display:none !important;
 
 }
 
@@ -1316,21 +1350,33 @@ transform:translate(-50%,-50%) scale(1);
 
 }
 
-/*==================================
+/*====================================
+SCROLLBAR
+====================================*/
+
+::-webkit-scrollbar{
+
+width:5px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:rgba(255,255,255,.15);
+
+border-radius:10px;
+
+}
+
+/*====================================
 ANIMATIONS
-==================================*/
+====================================*/
 
 .profile-card,
 .wallet-card,
-.completion-card,
+.card,
 .stat-card,
-.referral-card,
-.kyc-card,
-.machines-card,
-.reward-card,
-.notification-card,
-.profile-section,
-.support-card{
+.completion-card{
 
 animation:fadeUp .45s ease;
 
@@ -1356,25 +1402,33 @@ transform:translateY(0);
 
 }
 
-/*==================================
+/*====================================
 RESPONSIVE
-==================================*/
+====================================*/
 
-@media(max-width:420px){
+@media(max-width:480px){
 
-.page{
+.profile-page{
 
-padding:15px 15px 120px;
-
-}
-
-.wallet-stats{
-
-grid-template-columns:1fr;
+padding:16px 16px 120px;
 
 }
 
-.machine-summary{
+.profile-top{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.badge-row{
+
+justify-content:center;
+
+}
+
+.wallet-grid{
 
 grid-template-columns:1fr;
 
@@ -1384,20 +1438,37 @@ grid-template-columns:1fr;
 
 grid-template-columns:1fr 1fr;
 
-}
-
-.profile-image-area,
-#profileImage{
-
-width:100px;
-
-height:100px;
+gap:12px;
 
 }
 
-.wallet-header h1{
+.stat-card{
+
+padding:15px;
+
+}
+
+.wallet-top h1{
 
 font-size:26px;
+
+}
+
+.info-row{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:6px;
+
+}
+
+.info-row strong{
+
+max-width:100%;
+
+text-align:left;
 
 }
 
@@ -1405,20 +1476,14 @@ font-size:26px;
 
 @media(min-width:768px){
 
-.page{
+.profile-page{
 
 max-width:650px;
 
 }
 
-.stats-grid{
-
-grid-template-columns:repeat(2,1fr);
-
 }
 
-}
-
-/*==================================
-END OF PROFILE.CSS
-==================================*/
+/*====================================
+END PROFILE.CSS
+====================================*/
