@@ -5,13 +5,11 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Profile | Marathon Digital Hub</title>
 
-<link rel="stylesheet"
-href="assets/css/profile.css">
+<link rel="stylesheet" href="profile.css">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
@@ -20,13 +18,11 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
 
 <body>
 
-<div class="page">
+<div class="container">
 
-<!-- ==========================
-HEADER
-=========================== -->
+<!-- HEADER -->
 
-<header class="top-header">
+<header class="header">
 
 <a href="dashboard.html" class="back-btn">
 
@@ -36,32 +32,30 @@ HEADER
 
 <h2>Profile</h2>
 
-<button class="notify-btn" id="notificationBtn">
+<div class="notification">
 
 <i class="fas fa-bell"></i>
 
-<span id="notificationBadge">0</span>
+<span id="notificationCount">0</span>
 
-</button>
+</div>
 
 </header>
 
-<!-- ==========================
-PROFILE CARD
-=========================== -->
+<!-- PROFILE CARD -->
 
 <section class="profile-card">
 
-<div class="profile-cover"></div>
+<div class="cover"></div>
 
-<div class="profile-photo">
+<div class="profile-image">
 
 <img
-id="profileImage"
-src="assets/images/default-avatar.png"
+id="profilePhoto"
+src="default-avatar.png"
 alt="Profile">
 
-<button id="changePhotoBtn">
+<button id="changePhoto">
 
 <i class="fas fa-camera"></i>
 
@@ -75,35 +69,35 @@ hidden>
 
 </div>
 
-<div class="profile-info">
+<div class="profile-details">
 
-<h2 id="fullName">
+<h2 id="userName">
 
 Loading...
 
 </h2>
 
-<p id="email">
+<p id="userEmail">
 
 loading@email.com
 
 </p>
 
-<div class="profile-badges">
+<div class="badges">
 
-<span id="membershipBadge">
+<span id="memberType">
 
 Standard
 
 </span>
 
-<span id="kycBadge">
+<span id="verifyBadge">
 
 Not Verified
 
 </span>
 
-<span id="statusBadge">
+<span id="accountStatus">
 
 Active
 
@@ -115,9 +109,7 @@ Active
 
 </section>
 
-<!-- ==========================
-WALLET
-=========================== -->
+<!-- WALLET -->
 
 <section class="wallet-card">
 
@@ -133,17 +125,11 @@ UGX 0
 
 </div>
 
-<div class="wallet-icon">
-
-<i class="fas fa-wallet"></i>
-
-</div>
+<i class="fas fa-wallet wallet-icon"></i>
 
 </section>
 
-<!-- ==========================
-STATISTICS
-=========================== -->
+<!-- STATISTICS -->
 
 <section class="stats-grid">
 
@@ -151,11 +137,7 @@ STATISTICS
 
 <i class="fas fa-microchip"></i>
 
-<h2 id="activeMachines">
-
-0
-
-</h2>
+<h3 id="machineCount">0</h3>
 
 <p>Active Machines</p>
 
@@ -165,11 +147,7 @@ STATISTICS
 
 <i class="fas fa-users"></i>
 
-<h2 id="teamMembers">
-
-0
-
-</h2>
+<h3 id="teamCount">0</h3>
 
 <p>Team Members</p>
 
@@ -179,11 +157,7 @@ STATISTICS
 
 <i class="fas fa-coins"></i>
 
-<h2 id="referralBonus">
-
-UGX 0
-
-</h2>
+<h3 id="bonusBalance">UGX 0</h3>
 
 <p>Referral Bonus</p>
 
@@ -193,25 +167,19 @@ UGX 0
 
 <i class="fas fa-chart-line"></i>
 
-<h2 id="todayIncome">
-
-UGX 0
-
-</h2>
+<h3 id="todayIncome">UGX 0</h3>
 
 <p>Today's Income</p>
 
 </div>
 
-    </section>
+</section>
 
-   <!-- ==========================
-PROFILE COMPLETION
-=========================== -->
+   <!-- PROFILE COMPLETION -->
 
 <section class="profile-completion">
 
-<div class="section-header">
+<div class="section-title">
 
 <h3>Profile Completion</h3>
 
@@ -219,17 +187,13 @@ PROFILE COMPLETION
 
 </div>
 
-<div class="progress-bar">
+<div class="progress">
 
-<div
-id="completionBar"
-class="progress-fill">
+<div id="progressBar"></div>
 
 </div>
 
-</div>
-
-<p>
+<p class="section-text">
 
 Complete your profile to unlock all Marathon Digital Hub features.
 
@@ -237,211 +201,125 @@ Complete your profile to unlock all Marathon Digital Hub features.
 
 </section>
 
-<!-- ==========================
-REFERRAL CENTRE
-=========================== -->
+<!-- REFERRAL CENTRE -->
 
-<section class="referral-card">
+<section class="menu-card">
 
-<div class="section-header">
+<div class="menu-item" id="openReferral">
 
-<h3>Referral Centre</h3>
+<div>
 
-</div>
+<i class="fas fa-user-plus"></i>
 
-<label>Your Referral Code</label>
-
-<div class="copy-box">
-
-<input
-id="referralCode"
-type="text"
-readonly>
-
-<button id="copyReferralBtn">
-
-<i class="fas fa-copy"></i>
-
-</button>
+<span>Referral Centre</span>
 
 </div>
-
-<label>Your Referral Link</label>
-
-<div class="copy-box">
-
-<input
-id="referralLink"
-type="text"
-readonly>
-
-<button id="copyLinkBtn">
-
-<i class="fas fa-link"></i>
-
-</button>
-
-</div>
-
-<button
-id="shareWhatsappBtn"
-class="main-btn">
-
-<i class="fab fa-whatsapp"></i>
-
-Share on WhatsApp
-
-</button>
-
-</section>
-
-<!-- ==========================
-AUTOMATIC KYC
-=========================== -->
-
-<section class="kyc-card">
-
-<div class="section-header">
-
-<h3>Automatic KYC</h3>
-
-<span id="kycStatus">
-
-Not Verified
-
-</span>
-
-</div>
-
-<p>
-
-Invite <strong>10 active members</strong> to automatically unlock KYC verification.
-
-</p>
-
-<div class="progress-bar">
-
-<div
-id="kycBar"
-class="progress-fill">
-
-</div>
-
-</div>
-
-<p id="kycProgress">
-
-0 / 10 Active Referrals
-
-</p>
-
-</section>
-
-<!-- ==========================
-PURCHASED MACHINES
-=========================== -->
-
-<section class="machines-card">
-
-<div class="section-header">
-
-<h3>Purchased Machines</h3>
-
-<a href="machines.html">
-
-View All
-
-</a>
-
-</div>
-
-<div id="machineList">
-
-<!-- Loaded by JavaScript -->
-
-</div>
-
-</section>
-
-<!-- ==========================
-ABOUT
-=========================== -->
-
-<section class="about-card">
-
-<div class="section-header">
-
-<h3>About Marathon Digital Hub</h3>
-
-</div>
-
-<p>
-
-Learn about Marathon Digital Hub, our Frequently Asked Questions, Terms & Conditions and Privacy Policy.
-
-</p>
-
-<button
-id="aboutBtn"
-class="main-btn">
-
-About Us
-
-</button>
-
-</section>
-
-<!-- ==========================
-SETTINGS
-=========================== -->
-
-<section class="settings-card">
-
-<button id="settingsBtn">
-
-<i class="fas fa-cog"></i>
-
-<span>Settings</span>
 
 <i class="fas fa-chevron-right"></i>
 
-</button>
+</div>
+
+</section>
+
+<!-- AUTOMATIC KYC -->
+
+<section class="menu-card">
+
+<div class="menu-item" id="openKyc">
+
+<div>
+
+<i class="fas fa-id-card"></i>
+
+<span>Automatic KYC</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+</section>
+
+<!-- PURCHASED MACHINES -->
+
+<section class="menu-card">
+
+<div class="menu-item" id="openMachines">
+
+<div>
+
+<i class="fas fa-microchip"></i>
+
+<span>Purchased Machines</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="menu-card">
+
+<div class="menu-item" id="openAbout">
+
+<div>
+
+<i class="fas fa-circle-info"></i>
+
+<span>About Marathon Digital Hub</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
+
+</section>
+
+<!-- SETTINGS -->
+
+<section class="menu-card">
+
+<div class="menu-item" id="openSettings">
+
+<div>
+
+<i class="fas fa-gear"></i>
+
+<span>Settings</span>
+
+</div>
+
+<i class="fas fa-chevron-right"></i>
+
+</div>
 
     </section>
 
     <!-- ==========================
-OVERLAY
-=========================== -->
+POPUP OVERLAY
+========================== -->
 
 <div id="overlay" class="overlay"></div>
 
 <!-- ==========================
 ABOUT POPUP
-=========================== -->
+========================== -->
 
-<div id="aboutModal" class="modal">
+<div id="aboutPopup" class="popup">
 
-<div class="modal-content">
+<div class="popup-content">
 
 <h2>About Marathon Digital Hub</h2>
 
-<p>
+<p id="aboutContent"></p>
 
-Marathon Digital Hub is a digital mining platform designed to provide users with a secure investment experience, referral rewards, machine management and real-time earnings.
-
-</p>
-
-<div class="modal-buttons">
-
-<button id="faqBtn">FAQ</button>
-
-<button id="termsBtn">Terms</button>
-
-<button id="privacyBtn">Privacy</button>
-
-<button id="closeAboutBtn">Close</button>
-
-</div>
+<button id="closeAbout">Close</button>
 
 </div>
 
@@ -449,50 +327,36 @@ Marathon Digital Hub is a digital mining platform designed to provide users with
 
 <!-- ==========================
 SETTINGS POPUP
-=========================== -->
+========================== -->
 
-<div id="settingsModal" class="modal">
+<div id="settingsPopup" class="popup">
 
-<div class="modal-content">
+<div class="popup-content">
 
 <h2>Settings</h2>
 
 <button id="editProfileBtn">
-
 <i class="fas fa-user-edit"></i>
-
 Edit Profile
-
 </button>
 
-<button id="changePhotoMenuBtn">
-
+<button id="changePhotoBtn">
 <i class="fas fa-camera"></i>
-
 Change Profile Picture
-
 </button>
 
 <button id="changePasswordBtn">
-
 <i class="fas fa-lock"></i>
-
 Change Password
-
 </button>
 
 <button id="logoutBtn">
-
 <i class="fas fa-right-from-bracket"></i>
-
 Logout
-
 </button>
 
-<button id="closeSettingsBtn">
-
+<button id="closeSettings">
 Close
-
 </button>
 
 </div>
@@ -501,7 +365,8 @@ Close
 
 <!-- ==========================
 BOTTOM NAVIGATION
-=========================== -->
+(SAME AS DASHBOARD)
+========================== -->
 
 <nav class="bottom-nav">
 
@@ -515,7 +380,7 @@ BOTTOM NAVIGATION
 
 <a href="machines.html" class="nav-item">
 
-<i class="fas fa-microchip"></i>
+<i class="fas fa-cog"></i>
 
 <span>Machines</span>
 
@@ -523,7 +388,7 @@ BOTTOM NAVIGATION
 
 <a href="deposit.html" class="nav-item">
 
-<i class="fas fa-wallet"></i>
+<i class="fas fa-credit-card"></i>
 
 <span>Deposit</span>
 
@@ -549,13 +414,14 @@ BOTTOM NAVIGATION
 
 <!-- ==========================
 JAVASCRIPT
-=========================== -->
+========================== -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<script src="assets/js/supabase-config.js"></script>
+<script src="supabase-config.js"></script>
 
-<script src="assets/js/profile.js"></script>
+<script src="profile.js"></script>
 
 </body>
+
     </html>
