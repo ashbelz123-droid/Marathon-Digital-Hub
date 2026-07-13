@@ -1,6 +1,6 @@
 /*==================================
-MARATHON DIGITAL HUB
 PROFILE PAGE
+Marathon Digital Hub
 ==================================*/
 
 *{
@@ -11,11 +11,15 @@ box-sizing:border-box;
 
 :root{
 
---bg:#071321;
---card:#0d1d31;
---green:#19d66f;
---text:#ffffff;
---text2:#b8c4d4;
+--bg:#071320;
+--card:#0d1c2f;
+--card2:#13253d;
+
+--green:#18d26e;
+
+--white:#ffffff;
+--text:#b8c4d4;
+
 --border:rgba(255,255,255,.08);
 
 }
@@ -26,15 +30,15 @@ background:var(--bg);
 
 font-family:Arial,Helvetica,sans-serif;
 
-color:var(--text);
-
-padding-bottom:90px;
+color:var(--white);
 
 overflow-x:hidden;
 
+padding-bottom:90px;
+
 }
 
-.page{
+.container{
 
 width:100%;
 
@@ -42,15 +46,15 @@ max-width:600px;
 
 margin:auto;
 
-padding:16px;
+padding:18px;
 
 }
 
-/*==============================
+/*==========================
 HEADER
-==============================*/
+==========================*/
 
-.top-header{
+.header{
 
 display:flex;
 
@@ -62,28 +66,24 @@ margin-bottom:20px;
 
 }
 
-.top-header h2{
+.header h2{
 
-font-size:22px;
+font-size:30px;
 
 font-weight:700;
 
 }
 
 .back-btn,
-.notify-btn{
+.notification{
 
-width:42px;
+width:45px;
 
-height:42px;
+height:45px;
 
-border:none;
+border-radius:50%;
 
-border-radius:12px;
-
-background:#13253d;
-
-color:#fff;
+background:#10233b;
 
 display:flex;
 
@@ -91,63 +91,69 @@ align-items:center;
 
 justify-content:center;
 
+color:#fff;
+
 text-decoration:none;
 
 position:relative;
 
 }
 
-#notificationBadge{
+#notificationCount{
 
 position:absolute;
 
-top:4px;
+top:-3px;
 
-right:4px;
+right:-3px;
 
-background:#ff4444;
+background:#ff3b5c;
 
 color:#fff;
 
-font-size:10px;
+font-size:11px;
 
-padding:2px 5px;
+width:18px;
 
-border-radius:20px;
+height:18px;
 
-min-width:16px;
+border-radius:50%;
 
-text-align:center;
+display:flex;
+
+align-items:center;
+
+justify-content:center;
 
 }
 
-/*==============================
+/*==========================
 PROFILE CARD
-==============================*/
+==========================*/
 
 .profile-card{
 
 background:var(--card);
 
-border-radius:18px;
+border-radius:20px;
 
 overflow:hidden;
 
-margin-bottom:20px;
-
 border:1px solid var(--border);
 
-}
-
-.profile-cover{
-
-height:95px;
-
-background:linear-gradient(135deg,#19d66f,#0f8f55);
+margin-bottom:18px;
 
 }
 
-.profile-photo{
+.cover{
+
+height:120px;
+
+background:linear-gradient(135deg,#184f7a,#245d95);
+
+}
+
+.profile-image{
 
 position:relative;
 
@@ -157,7 +163,7 @@ margin:-50px auto 15px;
 
 }
 
-.profile-photo img{
+.profile-image img{
 
 width:100px;
 
@@ -169,11 +175,11 @@ border:4px solid var(--card);
 
 object-fit:cover;
 
-background:#15283f;
+background:#1b2f47;
 
 }
 
-#changePhotoBtn{
+#changePhoto{
 
 position:absolute;
 
@@ -193,61 +199,65 @@ background:var(--green);
 
 color:#fff;
 
+cursor:pointer;
+
 }
 
-.profile-info{
+.profile-details{
 
 text-align:center;
 
-padding:0 18px 20px;
+padding:0 20px 22px;
 
 }
 
-.profile-info h2{
+.profile-details h2{
 
-font-size:22px;
+font-size:24px;
 
 margin-bottom:6px;
 
 }
 
-.profile-info p{
-
-color:var(--text2);
+.profile-details p{
 
 font-size:14px;
 
-margin-bottom:14px;
+color:var(--text);
+
+margin-bottom:16px;
 
 }
 
-.profile-badges{
+.badges{
 
 display:flex;
 
 justify-content:center;
 
-gap:8px;
+gap:10px;
 
 flex-wrap:wrap;
 
 }
 
-.profile-badges span{
+.badges span{
 
-padding:6px 12px;
+padding:7px 14px;
 
-border-radius:20px;
+border-radius:30px;
+
+background:#16304d;
 
 font-size:12px;
 
-background:#15283f;
+font-weight:600;
 
-}
+   }
 
-/*==============================
+/*==========================
 WALLET CARD
-==============================*/
+==========================*/
 
 .wallet-card{
 
@@ -257,15 +267,15 @@ justify-content:space-between;
 
 align-items:center;
 
-background:#13253d;
+background:var(--card);
 
-border-radius:18px;
+border:1px solid var(--border);
+
+border-radius:20px;
 
 padding:18px;
 
-margin-bottom:20px;
-
-border:1px solid var(--border);
+margin-bottom:18px;
 
 }
 
@@ -273,7 +283,7 @@ border:1px solid var(--border);
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--text);
 
 margin-bottom:6px;
 
@@ -291,29 +301,15 @@ color:var(--green);
 
 .wallet-icon{
 
-width:55px;
-
-height:55px;
-
-border-radius:14px;
-
-background:#1b3150;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:24px;
+font-size:34px;
 
 color:var(--green);
 
 }
 
-/*==============================
+/*==========================
 STATISTICS
-==============================*/
+==========================*/
 
 .stats-grid{
 
@@ -323,7 +319,7 @@ grid-template-columns:repeat(2,1fr);
 
 gap:15px;
 
-margin-bottom:20px;
+margin-bottom:18px;
 
 }
 
@@ -333,7 +329,7 @@ background:var(--card);
 
 border:1px solid var(--border);
 
-border-radius:16px;
+border-radius:18px;
 
 padding:18px;
 
@@ -351,7 +347,7 @@ margin-bottom:10px;
 
 }
 
-.stat-card h2{
+.stat-card h3{
 
 font-size:22px;
 
@@ -363,34 +359,29 @@ margin-bottom:6px;
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--text);
 
 }
 
-/*==============================
-SECTION CARDS
-==============================*/
+/*==========================
+PROFILE COMPLETION
+==========================*/
 
-.profile-completion,
-.referral-card,
-.kyc-card,
-.machines-card,
-.about-card,
-.settings-card{
+.profile-completion{
 
 background:var(--card);
 
 border:1px solid var(--border);
 
-border-radius:18px;
+border-radius:20px;
 
 padding:18px;
 
-margin-bottom:20px;
+margin-bottom:18px;
 
 }
 
-.section-header{
+.section-title{
 
 display:flex;
 
@@ -398,47 +389,39 @@ justify-content:space-between;
 
 align-items:center;
 
-margin-bottom:16px;
+margin-bottom:15px;
 
 }
 
-.section-header h3{
+.section-title h3{
 
 font-size:18px;
 
 }
 
-.section-header a{
-
-text-decoration:none;
+.section-title span{
 
 color:var(--green);
 
-font-size:13px;
+font-weight:700;
 
 }
 
-/*==============================
-PROGRESS BAR
-==============================*/
-
-.progress-bar{
-
-width:100%;
+.progress{
 
 height:8px;
 
 background:#15283f;
 
-border-radius:20px;
+border-radius:30px;
 
 overflow:hidden;
 
-margin:12px 0;
+margin-bottom:12px;
 
 }
 
-.progress-fill{
+#progressBar{
 
 width:0%;
 
@@ -450,77 +433,79 @@ transition:.4s;
 
 }
 
-/*==============================
-COPY BOX
-==============================*/
+.section-text{
 
-.copy-box{
+font-size:13px;
+
+color:var(--text);
+
+line-height:1.6;
+
+}
+
+/*==========================
+MENU CARDS
+==========================*/
+
+.menu-card{
+
+background:var(--card);
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+margin-bottom:14px;
+
+overflow:hidden;
+
+}
+
+.menu-item{
 
 display:flex;
 
-margin:10px 0 15px;
+justify-content:space-between;
+
+align-items:center;
+
+padding:18px;
+
+cursor:pointer;
 
 }
 
-.copy-box input{
+.menu-item div{
 
-flex:1;
+display:flex;
 
-height:46px;
+align-items:center;
 
-background:#15283f;
-
-border:none;
-
-outline:none;
-
-padding:0 12px;
-
-color:#fff;
-
-border-radius:10px 0 0 10px;
+gap:14px;
 
 }
 
-.copy-box button{
+.menu-item i:first-child{
 
-width:50px;
+font-size:20px;
 
-border:none;
-
-background:var(--green);
-
-color:#fff;
-
-border-radius:0 10px 10px 0;
+color:var(--green);
 
 }
 
-/*==============================
-BUTTONS
-==============================*/
-
-.main-btn{
-
-width:100%;
-
-height:48px;
-
-border:none;
-
-border-radius:12px;
-
-background:var(--green);
-
-color:#fff;
+.menu-item span{
 
 font-size:15px;
 
 font-weight:600;
 
-margin-top:10px;
+}
 
-cursor:pointer;
+.menu-item .fa-chevron-right{
+
+color:var(--text);
+
+font-size:14px;
 
    }
 
@@ -533,30 +518,32 @@ OVERLAY
 position:fixed;
 
 top:0;
+
 left:0;
 
 width:100%;
+
 height:100%;
 
-background:rgba(0,0,0,.6);
+background:rgba(0,0,0,.65);
 
 display:none;
 
-z-index:999;
+z-index:998;
 
 }
 
-.overlay.show{
+.overlay.active{
 
 display:block;
 
 }
 
 /*==============================
-MODAL
+POPUP
 ==============================*/
 
-.modal{
+.popup{
 
 position:fixed;
 
@@ -566,7 +553,7 @@ top:50%;
 
 transform:translate(-50%,-50%);
 
-width:92%;
+width:90%;
 
 max-width:420px;
 
@@ -580,17 +567,17 @@ padding:20px;
 
 display:none;
 
-z-index:1000;
+z-index:999;
 
 }
 
-.modal.show{
+.popup.active{
 
 display:block;
 
 }
 
-.modal h2{
+.popup h2{
 
 font-size:20px;
 
@@ -598,85 +585,49 @@ margin-bottom:15px;
 
 }
 
-.modal p{
+.popup p{
 
-color:var(--text2);
-
-font-size:14px;
+color:var(--text);
 
 line-height:1.7;
 
-margin-bottom:20px;
+margin-bottom:18px;
 
 }
 
-.modal button{
+.popup button{
 
 width:100%;
 
-height:46px;
-
-margin-top:10px;
+height:48px;
 
 border:none;
 
 border-radius:12px;
 
-background:#15283f;
+background:#13253d;
 
 color:#fff;
 
 font-size:15px;
 
+margin-top:10px;
+
 cursor:pointer;
+
+transition:.3s;
 
 }
 
-.modal button:hover{
+.popup button:hover{
 
 background:var(--green);
 
 }
 
 /*==============================
-SETTINGS BUTTONS
-==============================*/
-
-.settings-card button{
-
-width:100%;
-
-height:54px;
-
-background:transparent;
-
-border:none;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-color:#fff;
-
-font-size:15px;
-
-cursor:pointer;
-
-}
-
-.settings-card button i:first-child{
-
-color:var(--green);
-
-font-size:18px;
-
-}
-
-/*==============================
 BOTTOM NAVIGATION
-(Same style as Dashboard)
+(Match Dashboard)
 ==============================*/
 
 .bottom-nav{
@@ -685,13 +636,13 @@ position:fixed;
 
 left:0;
 
-right:0;
-
 bottom:0;
 
-height:72px;
+width:100%;
 
-background:#0b1730;
+height:70px;
+
+background:#0d1c2f;
 
 border-top:1px solid rgba(255,255,255,.08);
 
@@ -719,17 +670,19 @@ justify-content:center;
 
 text-decoration:none;
 
-color:#9ca9b8;
+color:#9fb0c3;
 
 font-size:12px;
 
 font-weight:600;
 
+transition:.3s;
+
 }
 
 .nav-item i{
 
-font-size:21px;
+font-size:22px;
 
 margin-bottom:4px;
 
@@ -745,11 +698,17 @@ color:var(--green);
 RESPONSIVE
 ==============================*/
 
-@media(max-width:480px){
+@media (max-width:480px){
 
-.page{
+.container{
 
-padding:14px;
+padding:15px;
+
+}
+
+.header h2{
+
+font-size:24px;
 
 }
 
@@ -759,21 +718,31 @@ font-size:24px;
 
 }
 
-.profile-info h2{
-
-font-size:20px;
-
-}
-
-.stat-card h2{
+.stat-card h3{
 
 font-size:18px;
 
 }
 
+.profile-image img{
+
+width:90px;
+
+height:90px;
+
+}
+
+.profile-image{
+
+width:90px;
+
+margin-top:-45px;
+
+}
+
 .bottom-nav{
 
-height:70px;
+height:68px;
 
 }
 
