@@ -1,24 +1,44 @@
 /* ==========================
 PROFILE.JS
+PART 1
 ========================== */
 
-// Use the client from supabase-config.js
-
-// Do NOT create another client here.
+// Supabase client
+const supabase = window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_ANON_KEY
+);
 
 let currentUser = null;
 let profile = null;
 
 /* ==========================
-AUTH CHECK
+START
 ========================== */
 
-async function checkAuth(){
+document.addEventListener("DOMContentLoaded", async () => {
 
-const { data:{ user } } =
-await supabase.auth.getUser();
+await checkSession();
 
-if(!user){
+if(currentUser){
+
+await loadProfile();
+
+await loadStatistics();
+
+}
+
+});
+
+/* ==========================
+CHECK LOGIN
+========================== */
+
+async function checkSession(){
+
+const { data, error } = await supabase.auth.getUser();
+
+if(error || !data.user){
 
 window.location.href="login.html";
 
@@ -26,13 +46,9 @@ return;
 
 }
 
-currentUser=user;
-
-loadProfile();
+currentUser = data.user;
 
 }
-
-checkAuth();
 
 /* ==========================
 LOAD PROFILE
@@ -40,13 +56,13 @@ LOAD PROFILE
 
 async function loadProfile(){
 
-const { data,error } = await supabase
+const { data, error } = await supabase
 
 .from("profiles")
 
 .select("*")
 
-.eq("id",currentUser.id)
+.eq("id", currentUser.id)
 
 .single();
 
@@ -60,56 +76,41 @@ return;
 
 profile=data;
 
-displayProfile();
-
-loadStatistics();
-
-}
-
 /* ==========================
-DISPLAY PROFILE
+PROFILE DETAILS
 ========================== */
 
-function displayProfile(){
+document.getElementById("fullName").textContent =
+profile.fullname || "User";
 
-document.getElementById("fullName").textContent=
-profile.fullname || "Unknown User";
+document.getElementById("username").textContent =
+profile.email || "";
 
-document.getElementById("username").textContent=
-"@"+(profile.referral_code || "member");
+document.getElementById("walletBalance").textContent =
+"UGX " + Number(profile.wallet_balance || 0).toLocaleString();
 
-document.getElementById("walletBalance").textContent=
-"UGX "+
-Number(profile.wallet_balance || 0).toLocaleString();
-
-document.getElementById("membershipBadge").textContent=
+document.getElementById("membershipBadge").textContent =
 profile.membership || "Standard";
 
-document.getElementById("kycBadge").textContent=
+document.getElementById("kycBadge").textContent =
 profile.kyc_status || "Not Verified";
 
-document.getElementById("email").textContent=
+document.getElementById("email").textContent =
 profile.email || "-";
 
-document.getElementById("phone").textContent=
+document.getElementById("phone").textContent =
 profile.phone || "-";
 
-document.getElementById("country").textContent=
+document.getElementById("country").textContent =
 profile.country || "-";
 
-document.getElementById("memberSince").textContent=
-new Date(profile.created_at)
-.toLocaleDateString();
-
-document.getElementById("lastLogin").textContent=
-profile.last_login
-? new Date(profile.last_login)
-.toLocaleString()
-: "Never";
+/* ==========================
+PROFILE IMAGE
+========================== */
 
 if(profile.avatar_url){
 
-document.getElementById("profileImage").src=
+document.getElementById("profileImage").src =
 profile.avatar_url;
 
 }
@@ -118,26 +119,32 @@ profile.avatar_url;
 ACCOUNT STATUS
 ========================== */
 
-if(profile.is_frozen ||
-profile.account_status==="suspended"){
+if(profile.is_frozen){
 
-document.getElementById("accountStatusCard")
-.style.display="flex";
+document.getElementById("accountBadge").textContent =
+"Suspended";
 
-document.getElementById("accountBadge")
-.textContent="Suspended";
+document.getElementById("accountBadge").className =
+"badge suspended";
 
-document.getElementById("accountBadge")
-.className="badge suspended";
+document.getElementById("accountStatusCard").style.display =
+"flex";
 
-document.getElementById("suspensionReason")
-.textContent=
+document.getElementById("suspensionReason").textContent =
 profile.suspension_reason ||
 "Your account has been suspended by the administrator.";
 
+}else{
+
+document.getElementById("accountBadge").textContent =
+"Active";
+
+document.getElementById("accountBadge").className =
+"badge active";
+
 }
 
-    }
+}
 
 /* ==========================
 LOAD STATISTICS
@@ -145,242 +152,223 @@ LOAD STATISTICS
 
 async function loadStatistics(){
 
-/* Active Machines */
+// This function will be completed
+// in Part 2.
 
-const { data:machines } =
-await supabase
+   }
+
+/* ==========================
+LOAD STATISTICS
+========================== */
+
+async function loadStatistics(){
+
+/* --------------------------
+ACTIVE MACHINES
+-------------------------- */
+
+const { data: machines } = await supabase
+
 .from("user_machines")
-.select("id")
-.eq("user_id",currentUser.id)
-.eq("status","active");
 
-document.getElementById("activeMachines")
-.textContent=machines?.length || 0;
+.select("id,status,amount_paid,earned_amount")
 
+.eq("user_id", currentUser.id);
 
-/* Total Invested */
+const activeMachines =
+machines?.filter(m=>m.status==="active").length || 0;
 
-document.getElementById("totalInvested")
-.textContent=
-"UGX "+
-Number(profile.total_invested || 0)
-.toLocaleString();
+document.getElementById("activeMachines").textContent =
+activeMachines;
 
+/* --------------------------
+TOTAL INVESTED
+-------------------------- */
 
-/* Total Profit */
+let invested = 0;
 
-document.getElementById("totalProfit")
-.textContent=
-"UGX "+
-Number(profile.total_profit || 0)
-.toLocaleString();
+machines?.forEach(machine=>{
 
+invested += Number(machine.amount_paid || 0);
 
-/* ==========================
-REFERRALS
-========================== */
+});
 
-const { data:referrals } =
-await supabase
+document.getElementById("totalInvested").textContent =
+"UGX " + invested.toLocaleString();
+
+/* --------------------------
+TOTAL PROFIT
+-------------------------- */
+
+document.getElementById("totalProfit").textContent =
+"UGX " +
+Number(profile.total_profit || 0).toLocaleString();
+
+/* --------------------------
+TEAM MEMBERS
+-------------------------- */
+
+const { data: referrals } = await supabase
+
 .from("referrals")
+
 .select("*")
-.eq("referrer_id",currentUser.id);
 
-const totalTeam=referrals?.length || 0;
+.eq("referrer_id", currentUser.id);
 
-const activeTeam=
-referrals?.filter(r=>
-r.first_deposit_completed &&
-r.first_machine_purchased
-).length || 0;
+document.getElementById("teamMembers").textContent =
+referrals?.length || 0;
 
-const inactiveTeam=
-totalTeam-activeTeam;
+document.getElementById("teamCount").textContent =
+referrals?.length || 0;
 
-document.getElementById("teamMembers")
-.textContent=totalTeam;
+/* --------------------------
+ACTIVE TEAM
+-------------------------- */
 
-document.getElementById("teamCount")
-.textContent=totalTeam;
+const activeTeam =
+referrals?.filter(r=>r.first_machine_purchased===true).length || 0;
 
-document.getElementById("activeTeam")
-.textContent=activeTeam;
+document.getElementById("activeTeam").textContent =
+activeTeam;
 
-document.getElementById("inactiveTeam")
-.textContent=inactiveTeam;
+/* --------------------------
+REFERRAL BONUS
+-------------------------- */
 
+document.getElementById("referralReward").textContent =
+"UGX " +
+Number(profile.total_referral_bonus || 0).toLocaleString();
 
-/* Referral Bonus */
-
-document.getElementById("referralReward")
-.textContent=
-"UGX "+
-Number(profile.total_referral_bonus || 0)
-.toLocaleString();
-
-
-/* ==========================
+/* --------------------------
 KYC PROGRESS
-========================== */
+-------------------------- */
 
-document.getElementById("kycProgress")
-.textContent=
-activeTeam+"/10";
+document.getElementById("kycProgress").textContent =
+activeTeam + "/10";
 
+/* --------------------------
+REFERRAL LINK
+-------------------------- */
 
-/* Auto Verify KYC */
+const referralCode =
+profile.referral_code || currentUser.id.substring(0,8);
 
-if(
-activeTeam>=10 &&
-profile.kyc_status!=="Verified"
-){
+document.getElementById("referralLink").value =
+window.location.origin +
+"/register.html?ref=" +
+referralCode;
 
-await supabase
-.from("profiles")
-.update({
+/* --------------------------
+MEMBER SINCE
+-------------------------- */
 
-kyc_status:"Verified"
+if(profile.created_at){
 
-})
-.eq("id",currentUser.id);
-
-document.getElementById("kycBadge")
-.textContent="Verified";
-
-document.getElementById("kycStatus")
-.textContent="Verified";
-
-await createNotification(
-
-"🎉 KYC Activated",
-
-"Congratulations! Your KYC has been automatically verified because you reached 10 active referrals."
-
-);
+document.getElementById("memberSince").textContent =
+new Date(profile.created_at)
+.toLocaleDateString();
 
 }
 
+/* --------------------------
+LAST LOGIN
+-------------------------- */
 
-/* ==========================
-NOTIFICATIONS
-========================== */
+document.getElementById("lastLogin").textContent =
+profile.last_login
+? new Date(profile.last_login).toLocaleString()
+: "First Login";
 
-const { data:notifications } =
-await supabase
+/* --------------------------
+NOTIFICATION COUNT
+-------------------------- */
+
+const { count } = await supabase
 
 .from("user_notifications")
 
-.select("*")
+.select("*",{count:"exact",head:true})
 
 .eq("user_id",currentUser.id)
 
 .eq("is_read",false);
 
-document.getElementById("notificationBadge")
-.textContent=
-notifications?.length || 0;
+document.getElementById("notificationBadge").textContent =
+count || 0;
 
 }
 
-
 /* ==========================
-CREATE NOTIFICATION
+PROFILE.JS
+PART 3
+POPUPS • PROFILE • SUPPORT
 ========================== */
 
-async function createNotification(
+/* --------------------------
+COPY REFERRAL LINK
+-------------------------- */
 
-title,
+document.getElementById("copyReferralBtn")?.addEventListener("click",()=>{
 
-message
+const link=document.getElementById("referralLink");
 
-){
+link.select();
 
-await supabase
+document.execCommand("copy");
 
-.from("user_notifications")
-
-.insert({
-
-user_id:currentUser.id,
-
-title,
-
-message,
-
-type:"success"
+alert("Referral link copied.");
 
 });
 
-    }
+/* --------------------------
+SHARE REFERRAL
+-------------------------- */
 
-/* ==========================================
-PROFILE.JS
-PART 3
-========================================== */
+document.getElementById("shareReferralBtn")?.addEventListener("click",()=>{
 
-/* ========= PROFILE PICTURE ========= */
+const link=document.getElementById("referralLink").value;
 
-const avatarInput = document.getElementById("avatarInput");
+const text=
+`🚀 Join Marathon Digital Hub and start earning today.\n\n${link}`;
 
-if (avatarInput) {
+window.open(
 
-avatarInput.addEventListener("change", uploadAvatar);
+`https://wa.me/?text=${encodeURIComponent(text)}`,
 
-}
+"_blank"
+
+);
+
+});
+
+/* --------------------------
+UPLOAD PROFILE PHOTO
+-------------------------- */
+
+document.getElementById("changeAvatarBtn")?.addEventListener("click",()=>{
+
+document.getElementById("avatarInput").click();
+
+});
+
+document.getElementById("avatarInput")?.addEventListener("change",uploadAvatar);
 
 async function uploadAvatar(e){
 
-const file = e.target.files[0];
+const file=e.target.files[0];
 
-if(!file){
+if(!file) return;
 
-return;
+const fileName=
+`${currentUser.id}_${Date.now()}`;
 
-}
-
-/* File validation */
-
-const allowed = [
-
-"image/png",
-
-"image/jpeg",
-
-"image/jpg",
-
-"image/webp"
-
-];
-
-if(!allowed.includes(file.type)){
-
-alert("Only PNG, JPG, JPEG and WEBP images are allowed.");
-
-return;
-
-}
-
-if(file.size > 2 * 1024 * 1024){
-
-alert("Image must be below 2MB.");
-
-return;
-
-}
-
-const fileName =
-`avatars/${currentUser.id}_${Date.now()}`;
-
-const { error:uploadError } =
+const { error:uploadError }=
 await supabase.storage
 
 .from("machine-images")
 
-.upload(fileName,file,{
-
-upsert:true
-
-});
+.upload(fileName,file,{upsert:true});
 
 if(uploadError){
 
@@ -390,14 +378,7 @@ return;
 
 }
 
-const {
-
-data:{ publicUrl }
-
-}
-
-=
-
+const { data }=
 supabase.storage
 
 .from("machine-images")
@@ -410,7 +391,58 @@ await supabase
 
 .update({
 
-avatar_url:publicUrl,
+avatar_url:data.publicUrl
+
+})
+
+.eq("id",currentUser.id);
+
+document.getElementById("profileImage").src=
+data.publicUrl;
+
+alert("Profile picture updated.");
+
+}
+
+/* --------------------------
+EDIT PROFILE
+-------------------------- */
+
+document.getElementById("saveProfileBtn")?.addEventListener("click",saveProfile);
+
+async function saveProfile(){
+
+const fullname=
+document.getElementById("editName").value.trim();
+
+const phone=
+document.getElementById("editPhone").value.trim();
+
+const country=
+document.getElementById("editCountry").value.trim();
+
+const gender=
+document.getElementById("editGender").value;
+
+const dob=
+document.getElementById("editDob").value;
+
+const { error }=
+await supabase
+
+.from("profiles")
+
+.update({
+
+fullname,
+
+phone,
+
+country,
+
+gender,
+
+date_of_birth:dob,
 
 updated_at:new Date()
 
@@ -418,103 +450,332 @@ updated_at:new Date()
 
 .eq("id",currentUser.id);
 
-document.getElementById("profileImage").src=
+if(error){
 
-publicUrl;
+alert(error.message);
 
-alert("Profile picture updated successfully.");
+return;
 
 }
 
-/* ========= COPY REFERRAL ========= */
+alert("Profile updated.");
 
-document.getElementById("copyReferralBtn")
+loadProfile();
 
-?.addEventListener("click",()=>{
+closeAllModals();
 
-navigator.clipboard.writeText(
+}
 
-document.getElementById("referralLink").value
+/* --------------------------
+CHANGE PASSWORD
+-------------------------- */
 
-);
+document.getElementById("updatePasswordBtn")?.addEventListener("click",async()=>{
 
-alert("Referral link copied.");
+const password=
+document.getElementById("newPassword").value;
 
-});
+const confirm=
+document.getElementById("confirmPassword").value;
 
-/* ========= SHARE ========= */
+if(password!==confirm){
 
-document.getElementById("shareReferralBtn")
+alert("Passwords do not match.");
 
-?.addEventListener("click",()=>{
+return;
 
-const link=
+}
 
-document.getElementById("referralLink").value;
+const { error }=
+await supabase.auth.updateUser({
 
-window.open(
-
-`https://wa.me/?text=${encodeURIComponent(link)}`,
-
-"_blank"
-
-);
-
-});
-
-/* ========= QUICK ACTIONS ========= */
-
-document.getElementById("depositBtn")
-
-?.addEventListener("click",()=>{
-
-location.href="deposit.html";
+password
 
 });
 
-document.getElementById("withdrawBtn")
+if(error){
 
-?.addEventListener("click",()=>{
+alert(error.message);
 
-location.href="withdraw.html";
+return;
 
-});
+}
 
-document.getElementById("machinesBtn")
+alert("Password updated.");
 
-?.addEventListener("click",()=>{
-
-location.href="my-machines.html";
+closeAllModals();
 
 });
 
-document.getElementById("historyBtn")
+/* --------------------------
+CHANGE TRANSACTION PIN
+-------------------------- */
 
-?.addEventListener("click",()=>{
+document.getElementById("updatePinBtn")?.addEventListener("click",async()=>{
 
-location.href="history.html";
+const pin=
+document.getElementById("newPin").value;
+
+const confirm=
+document.getElementById("confirmPin").value;
+
+if(pin.length!==6){
+
+alert("PIN must contain 6 digits.");
+
+return;
+
+}
+
+if(pin!==confirm){
+
+alert("PIN does not match.");
+
+return;
+
+}
+
+const { error }=
+await supabase
+
+.from("profiles")
+
+.update({
+
+transaction_pin:pin
+
+})
+
+.eq("id",currentUser.id);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+alert("Transaction PIN updated.");
+
+closeAllModals();
 
 });
 
-/* ========= LOGOUT ========= */
+/* --------------------------
+SUPPORT
+-------------------------- */
 
-document.getElementById("confirmLogout")
+document.getElementById("sendSupportBtn")?.addEventListener("click",async()=>{
 
-?.addEventListener("click",async()=>{
+const subject=
+document.getElementById("supportSubject").value.trim();
+
+const message=
+document.getElementById("supportMessage").value.trim();
+
+if(!subject||!message){
+
+alert("Complete all fields.");
+
+return;
+
+}
+
+const { error }=
+await supabase
+
+.from("support_messages")
+
+.insert({
+
+user_id:currentUser.id,
+
+subject,
+
+message
+
+});
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+alert("Support message sent.");
+
+closeAllModals();
+
+});
+
+/* --------------------------
+LOGOUT
+-------------------------- */
+
+document.getElementById("confirmLogout")?.addEventListener("click",async()=>{
 
 await supabase.auth.signOut();
 
-location.href="login.html";
+window.location.href="login.html";
 
 });
 
-/* ========= AUTO CLEAN OLD NOTIFICATIONS ========= */
+/* --------------------------
+MODALS
+-------------------------- */
+
+function openModal(id){
+
+document.getElementById(id)?.classList.add("active");
+
+}
+
+function closeAllModals(){
+
+document.querySelectorAll(".modal").forEach(modal=>{
+
+modal.classList.remove("active");
+
+});
+
+}
+
+document.querySelectorAll(".closeModal").forEach(btn=>{
+
+btn.onclick=closeAllModals;
+
+});
+
+window.onclick=(e)=>{
+
+if(e.target.classList.contains("modal")){
+
+closeAllModals();
+
+}
+
+};
+
+/* --------------------------
+OPEN MODALS
+-------------------------- */
+
+document.getElementById("settingsBtn")?.onclick=()=>openModal("settingsModal");
+
+document.getElementById("editProfileBtn")?.onclick=()=>openModal("editProfileModal");
+
+document.getElementById("changePasswordBtn")?.onclick=()=>openModal("passwordModal");
+
+document.getElementById("changePinBtn")?.onclick=()=>openModal("pinModal");
+
+document.getElementById("notificationsBtn")?.onclick=()=>openModal("notificationsModal");
+
+document.getElementById("supportBtn")?.onclick=()=>openModal("supportModal");
+
+document.getElementById("logoutBtn")?.onclick=()=>openModal("logoutModal");
+
+/* ==========================
+PROFILE.JS
+PART 4
+EXTRA FEATURES
+========================== */
+
+/* --------------------------
+LOAD NOTIFICATIONS
+-------------------------- */
+
+async function loadNotifications(){
+
+const { data, error } = await supabase
+
+.from("user_notifications")
+
+.select("*")
+
+.eq("user_id", currentUser.id)
+
+.order("created_at",{ascending:false})
+
+.limit(30);
+
+if(error) return;
+
+const container=document.getElementById("notificationsContainer");
+
+if(!container) return;
+
+container.innerHTML="";
+
+if(!data.length){
+
+container.innerHTML=`
+<div class="empty-card">
+No notifications available.
+</div>`;
+
+return;
+
+}
+
+data.forEach(notification=>{
+
+container.innerHTML+=`
+
+<div class="notification-card">
+
+<h4>${notification.title}</h4>
+
+<p>${notification.message}</p>
+
+<small>
+
+${new Date(notification.created_at).toLocaleString()}
+
+</small>
+
+</div>
+
+`;
+
+});
+
+}
+
+/* --------------------------
+MARK ALL AS READ
+-------------------------- */
+
+async function markNotificationsRead(){
+
+await supabase
+
+.from("user_notifications")
+
+.update({
+
+is_read:true
+
+})
+
+.eq("user_id",currentUser.id)
+
+.eq("is_read",false);
+
+}
+
+/* --------------------------
+AUTO DELETE OLD
+NOTIFICATIONS (30 DAYS)
+-------------------------- */
 
 async function cleanNotifications(){
 
-const limitDate=new Date();
+const date=new Date();
 
-limitDate.setDate(limitDate.getDate()-30);
+date.setDate(date.getDate()-30);
 
 await supabase
 
@@ -524,22 +785,70 @@ await supabase
 
 .eq("user_id",currentUser.id)
 
-.lt(
-
-"created_at",
-
-limitDate.toISOString()
-
-);
+.lt("created_at",date.toISOString());
 
 }
 
-cleanNotifications();
+/* --------------------------
+CONTACT SUPPORT
+-------------------------- */
 
-/* ========= AUTO REFRESH ========= */
+document.getElementById("contactSupportBtn")?.addEventListener("click",()=>{
 
-setInterval(()=>{
+openModal("supportModal");
 
-loadStatistics();
+});
 
-},60000);
+/* --------------------------
+GO TO PURCHASED MACHINES
+-------------------------- */
+
+document.getElementById("machinesBtn")?.addEventListener("click",()=>{
+
+window.location.href="user-machines.html";
+
+});
+
+/* --------------------------
+GO TO DEPOSIT
+-------------------------- */
+
+document.getElementById("depositBtn")?.addEventListener("click",()=>{
+
+window.location.href="deposit.html";
+
+});
+
+/* --------------------------
+GO TO WITHDRAW
+-------------------------- */
+
+document.getElementById("withdrawBtn")?.addEventListener("click",()=>{
+
+window.location.href="withdraw.html";
+
+});
+
+/* --------------------------
+PAGE STARTUP
+-------------------------- */
+
+document.addEventListener("DOMContentLoaded",async()=>{
+
+await cleanNotifications();
+
+await loadNotifications();
+
+});
+
+/* --------------------------
+LIVE PROFILE REFRESH
+-------------------------- */
+
+setInterval(async()=>{
+
+await loadProfile();
+
+await loadStatistics();
+
+},30000);
