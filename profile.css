@@ -1,1124 +1,979 @@
-/*==========================
-  MARATHON DIGITAL HUB
-  PROFILE PAGE
-==========================*/
+/* =====================================
+   Marathon Digital Hub V4
+   Profile Page
+===================================== */
 
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    -webkit-tap-highlight-color:transparent;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 :root{
 
-    --bg:#07162B;
-    --card:#0D223F;
-    --card2:#102A4B;
+--bg:#061320;
+--card:#0d1d2d;
+--card2:#13273b;
 
-    --green:#00D26A;
-    --red:#FF4D4F;
-    --blue:#1D9BF0;
-    --white:#FFFFFF;
+--green:#21d07a;
+--green2:#18b66a;
 
-    --text:#E8EEF8;
-    --muted:#9FB4CF;
+--white:#ffffff;
+--text:#d5dde7;
+--muted:#8f9eb0;
 
-    --border:rgba(255,255,255,.08);
+--border:rgba(255,255,255,.08);
+
+--shadow:0 10px 25px rgba(0,0,0,.30);
+
+--radius:20px;
 
 }
 
 html{
-    scroll-behavior:smooth;
+
+scroll-behavior:smooth;
+
 }
 
 body{
 
-    background:var(--bg);
-    color:var(--text);
-    font-family:Arial,Helvetica,sans-serif;
-    overflow-x:hidden;
+background:var(--bg);
+
+font-family:
+Arial,
+Helvetica,
+sans-serif;
+
+color:var(--white);
+
+padding-bottom:110px;
+
+overflow-x:hidden;
+
+}
+
+/* ==========================
+BACKGROUND
+========================== */
+
+.background{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:
+
+radial-gradient(circle at top right,
+rgba(33,208,122,.18),
+transparent 45%),
+
+radial-gradient(circle at bottom left,
+rgba(39,110,241,.12),
+transparent 40%),
+
+var(--bg);
+
+z-index:-1;
 
 }
 
 .page{
 
-    width:100%;
-    min-height:100vh;
-    padding:18px 16px 110px;
+width:100%;
 
-    position:relative;
+max-width:600px;
 
-}
+margin:auto;
 
-/*==========================
- Animated Background
-==========================*/
-
-.page-bg{
-
-    position:fixed;
-
-    inset:0;
-
-    background:
-    radial-gradient(circle at top left,
-    rgba(0,210,106,.12),
-    transparent 35%),
-
-    radial-gradient(circle at bottom right,
-    rgba(29,155,240,.10),
-    transparent 40%);
-
-    z-index:-1;
+padding:18px;
 
 }
 
-/*==========================
- Header
-==========================*/
+/* ==========================
+TOPBAR
+========================== */
 
-.top-header{
+.topbar{
 
-    display:flex;
+display:flex;
 
-    align-items:center;
+align-items:center;
 
-    justify-content:space-between;
+justify-content:space-between;
 
-    margin-bottom:20px;
+margin-bottom:22px;
 
 }
 
-.top-header h2{
+.topbar h2{
 
-    font-size:22px;
+font-size:24px;
 
-    font-weight:700;
-
-    color:var(--white);
+font-weight:700;
 
 }
 
 .back-btn,
-.icon-btn{
+.notify-btn{
 
-    width:42px;
+width:46px;
+height:46px;
 
-    height:42px;
+border:none;
 
-    border:none;
+border-radius:14px;
 
-    border-radius:12px;
+background:var(--card);
 
-    display:flex;
+color:#fff;
 
-    align-items:center;
+display:flex;
 
-    justify-content:center;
+align-items:center;
 
-    background:var(--card);
+justify-content:center;
 
-    color:var(--white);
+font-size:18px;
 
-    text-decoration:none;
+text-decoration:none;
 
-    cursor:pointer;
+box-shadow:var(--shadow);
 
-}
+cursor:pointer;
 
-.back-btn i,
-.icon-btn i{
+position:relative;
 
-    font-size:18px;
-
-}
-
-.notification-count{
-
-    position:absolute;
-
-    top:6px;
-
-    right:6px;
-
-    min-width:18px;
-
-    height:18px;
-
-    border-radius:50%;
-
-    background:var(--green);
-
-    color:#fff;
-
-    font-size:11px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
+transition:.25s;
 
 }
 
-/*==========================
- Suspension Banner
-==========================*/
+.back-btn:hover,
+.notify-btn:hover{
+
+transform:translateY(-2px);
+
+background:var(--card2);
+
+}
+
+#notificationCount{
+
+position:absolute;
+
+top:6px;
+right:6px;
+
+min-width:18px;
+height:18px;
+
+padding:0 5px;
+
+border-radius:20px;
+
+background:var(--green);
+
+color:#fff;
+
+font-size:10px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+/* ==========================
+SUSPENSION
+========================== */
+
+.status-banner{
+
+display:flex;
+
+gap:15px;
+
+align-items:flex-start;
+
+background:#4b1d1d;
+
+border-left:4px solid #ff5757;
+
+padding:16px;
+
+border-radius:16px;
+
+margin-bottom:22px;
+
+}
+
+.status-banner i{
+
+font-size:24px;
+
+color:#ff6b6b;
+
+margin-top:2px;
+
+}
+
+.status-banner h3{
+
+margin-bottom:6px;
+
+font-size:17px;
+
+}
+
+.status-banner p{
+
+font-size:14px;
+
+color:#ddd;
+
+line-height:1.5;
+
+}
 
 .hidden{
 
-    display:none;
+display:none;
 
-}
+  }
 
-.suspension-banner{
-
-    display:flex;
-
-    gap:15px;
-
-    background:rgba(255,77,79,.15);
-
-    border:1px solid rgba(255,77,79,.45);
-
-    border-radius:18px;
-
-    padding:18px;
-
-    margin-bottom:22px;
-
-}
-
-.banner-icon{
-
-    font-size:28px;
-
-    color:var(--red);
-
-}
-
-.banner-content{
-
-    flex:1;
-
-}
-
-.banner-content h3{
-
-    color:#FF8B8C;
-
-    margin-bottom:8px;
-
-}
-
-.banner-content p{
-
-    color:#FFD7D8;
-
-    line-height:1.5;
-
-    font-size:14px;
-
-    margin-bottom:14px;
-
-}
-
-.banner-content button{
-
-    border:none;
-
-    background:var(--red);
-
-    color:#fff;
-
-    padding:11px 18px;
-
-    border-radius:12px;
-
-    font-weight:600;
-
-}
-
-/*==========================
- Profile Card
-==========================*/
+/* ==========================
+PROFILE CARD
+========================== */
 
 .profile-card{
 
-    background:var(--card);
+position:relative;
 
-    border:1px solid var(--border);
+background:var(--card);
 
-    border-radius:24px;
+border:1px solid var(--border);
 
-    overflow:hidden;
+border-radius:24px;
 
-    margin-bottom:22px;
+overflow:hidden;
 
-}
+margin-bottom:22px;
 
-.profile-cover{
-
-    height:115px;
-
-    background:
-    linear-gradient(135deg,
-    #00D26A,
-    #1D9BF0);
+box-shadow:var(--shadow);
 
 }
 
-.profile-avatar{
+.cover{
 
-    width:120px;
+height:110px;
 
-    height:120px;
-
-    margin:-60px auto 0;
-
-    position:relative;
-
-}
-
-.profile-avatar img{
-
-    width:120px;
-
-    height:120px;
-
-    border-radius:50%;
-
-    border:5px solid var(--card);
-
-    object-fit:cover;
-
-    background:#162D4A;
+background:linear-gradient(
+135deg,
+#1fd17a,
+#0f8d58
+);
 
 }
 
-.profile-avatar button{
+.avatar-box{
 
-    position:absolute;
+position:relative;
 
-    right:5px;
+width:110px;
+height:110px;
 
-    bottom:5px;
+margin:-55px auto 15px;
 
-    width:38px;
+}
 
-    height:38px;
+.avatar-box img{
 
-    border:none;
+width:110px;
+height:110px;
 
-    border-radius:50%;
+border-radius:50%;
 
-    background:var(--green);
+object-fit:cover;
 
-    color:#fff;
+border:5px solid var(--card);
 
-    cursor:pointer;
+background:#09131d;
+
+box-shadow:0 10px 25px rgba(0,0,0,.35);
+
+}
+
+#changePhotoBtn{
+
+position:absolute;
+
+right:0;
+bottom:0;
+
+width:36px;
+height:36px;
+
+border:none;
+
+border-radius:50%;
+
+background:var(--green);
+
+color:#fff;
+
+cursor:pointer;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:15px;
+
+box-shadow:var(--shadow);
 
 }
 
 .profile-info{
 
-    text-align:center;
+text-align:center;
 
-    padding:18px 20px 26px;
+padding:0 20px 25px;
 
 }
 
 .profile-info h2{
 
-    font-size:24px;
+font-size:24px;
 
-    margin-bottom:6px;
+font-weight:700;
+
+margin-bottom:8px;
 
 }
 
 .profile-info p{
 
-    color:var(--muted);
+color:var(--muted);
 
-    margin-bottom:18px;
+font-size:14px;
 
-   }
+margin-bottom:18px;
 
-/*==========================
- Badge Row
-==========================*/
+word-break:break-word;
+
+}
 
 .badge-row{
 
-    display:flex;
+display:flex;
 
-    justify-content:center;
+justify-content:center;
 
-    align-items:center;
+gap:10px;
 
-    gap:10px;
-
-    flex-wrap:wrap;
+flex-wrap:wrap;
 
 }
 
 .badge{
 
-    padding:8px 14px;
+padding:8px 14px;
 
-    border-radius:30px;
+border-radius:30px;
 
-    font-size:12px;
+font-size:12px;
 
-    font-weight:700;
-
-    color:#fff;
+font-weight:700;
 
 }
 
 .membership{
 
-    background:#1D9BF0;
+background:rgba(33,208,122,.15);
+
+color:var(--green);
 
 }
 
 .kyc{
 
-    background:#00D26A;
+background:rgba(37,99,235,.15);
+
+color:#6ab3ff;
 
 }
 
 .status{
 
-    background:#00D26A;
+background:rgba(255,255,255,.08);
+
+color:#fff;
 
 }
 
 .status.suspended{
 
-    background:#FF4D4F;
+background:rgba(255,87,87,.15);
+
+color:#ff6868;
 
 }
 
-/*==========================
- Common Section
-==========================*/
+/* ==========================
+WALLET CARD
+========================== */
 
-.section-title{
+.wallet-card{
 
-    font-size:18px;
+display:flex;
 
-    margin-bottom:15px;
+justify-content:space-between;
 
-    font-weight:700;
+align-items:center;
 
-}
+background:linear-gradient(
+135deg,
+#1fd17a,
+#13985f
+);
 
-.section-header{
+border-radius:22px;
 
-    display:flex;
+padding:22px;
 
-    justify-content:space-between;
+margin-bottom:22px;
 
-    align-items:center;
-
-    margin-bottom:15px;
-
-}
-
-.section-header h3{
-
-    font-size:18px;
-
-    font-weight:700;
+box-shadow:var(--shadow);
 
 }
 
-.section-header a{
+.wallet-card p{
 
-    color:var(--green);
+font-size:13px;
 
-    text-decoration:none;
+opacity:.9;
 
-    font-size:14px;
-
-    font-weight:600;
+margin-bottom:6px;
 
 }
 
-/*==========================
- Statistics
-==========================*/
+.wallet-card h1{
 
-.stats-section{
+font-size:28px;
 
-    margin-bottom:22px;
+font-weight:700;
 
 }
+
+.wallet-icon{
+
+width:60px;
+height:60px;
+
+border-radius:18px;
+
+background:rgba(255,255,255,.15);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:28px;
+
+color:#fff;
+
+}
+
+/* ==========================
+STATISTICS
+========================== */
 
 .stats-grid{
 
-    display:grid;
+display:grid;
 
-    grid-template-columns:repeat(2,1fr);
+grid-template-columns:repeat(2,1fr);
 
-    gap:14px;
+gap:16px;
+
+margin-bottom:22px;
 
 }
 
 .stat-card{
 
-    background:var(--card);
+background:var(--card);
 
-    border:1px solid var(--border);
+border:1px solid var(--border);
 
-    border-radius:18px;
+border-radius:20px;
 
-    padding:20px;
+padding:20px;
 
-    text-align:center;
+text-align:center;
 
-    transition:.3s;
+box-shadow:var(--shadow);
+
+transition:.25s;
 
 }
 
-.stat-card:active{
+.stat-card:hover{
 
-    transform:scale(.97);
+transform:translateY(-3px);
 
 }
 
 .stat-card i{
 
-    font-size:28px;
+font-size:24px;
 
-    color:var(--green);
+color:var(--green);
 
-    margin-bottom:12px;
+margin-bottom:14px;
 
 }
 
 .stat-card h2{
 
-    font-size:22px;
+font-size:22px;
 
-    margin-bottom:6px;
+margin-bottom:8px;
 
 }
 
 .stat-card span{
 
-    font-size:13px;
+font-size:13px;
 
-    color:var(--muted);
+color:var(--muted);
+
+display:block;
+
+line-height:1.4;
+
+  }
+
+/* ==========================
+SECTION CARDS
+========================== */
+
+.completion-card,
+.referral-card,
+.kyc-card,
+.machines-card,
+.about-card{
+
+background:var(--card);
+
+border:1px solid var(--border);
+
+border-radius:20px;
+
+padding:20px;
+
+margin-bottom:20px;
+
+box-shadow:var(--shadow);
+
+}
+
+.section-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
 
 }
 
-/*==========================
- Profile Completion
-==========================*/
+.section-title h3{
 
-.profile-completion{
+font-size:18px;
 
-    background:var(--card);
+font-weight:700;
 
-    border-radius:20px;
-
-    border:1px solid var(--border);
-
-    padding:20px;
-
-    margin-bottom:22px;
+color:var(--white);
 
 }
 
-.profile-completion p{
+.section-title a{
 
-    color:var(--muted);
+text-decoration:none;
 
-    font-size:14px;
+color:var(--green);
 
-    line-height:1.6;
+font-size:14px;
 
-    margin-top:14px;
+font-weight:600;
 
 }
+
+/* ==========================
+PROGRESS BAR
+========================== */
 
 .progress-bar{
 
-    width:100%;
+width:100%;
 
-    height:10px;
+height:10px;
 
-    background:#162F52;
+background:#09131d;
 
-    border-radius:20px;
+border-radius:30px;
 
-    overflow:hidden;
+overflow:hidden;
 
-}
-
-.progress-bar div{
-
-    width:0%;
-
-    height:100%;
-
-    border-radius:20px;
-
-    background:linear-gradient(90deg,#00D26A,#1D9BF0);
-
-    transition:width .5s ease;
+margin:15px 0;
 
 }
 
-/*==========================
- Referral Centre
-==========================*/
+#profileProgress,
+#kycProgress{
 
-.referral-section{
+width:0%;
 
-    background:var(--card);
+height:100%;
 
-    border:1px solid var(--border);
+background:linear-gradient(90deg,var(--green),#47f5a2);
 
-    border-radius:20px;
+border-radius:30px;
 
-    padding:20px;
-
-    margin-bottom:22px;
+transition:.5s;
 
 }
 
-.referral-box{
-
-    margin-bottom:18px;
-
-}
-
-.referral-box label{
-
-    display:block;
-
-    margin-bottom:8px;
-
-    color:var(--muted);
-
-    font-size:13px;
-
-}
+/* ==========================
+REFERRAL
+========================== */
 
 .copy-box{
 
-    display:flex;
+display:flex;
 
-    align-items:center;
-
-    background:#102A4B;
-
-    border-radius:14px;
-
-    overflow:hidden;
+margin:10px 0 18px;
 
 }
 
 .copy-box input{
 
-    flex:1;
+flex:1;
 
-    border:none;
+height:48px;
 
-    outline:none;
+background:#09131d;
 
-    background:none;
+border:1px solid var(--border);
 
-    color:#fff;
+border-right:none;
 
-    padding:14px;
+border-radius:14px 0 0 14px;
 
-    font-size:14px;
+padding:0 15px;
+
+color:#fff;
+
+outline:none;
 
 }
 
 .copy-box button{
 
-    width:52px;
+width:55px;
 
-    height:48px;
+border:none;
 
-    border:none;
+background:var(--green);
 
-    background:var(--green);
+color:#fff;
 
-    color:#fff;
+border-radius:0 14px 14px 0;
 
-    cursor:pointer;
-
-}
-
-.share-btn{
-
-    width:100%;
-
-    border:none;
-
-    margin-top:10px;
-
-    border-radius:14px;
-
-    background:#25D366;
-
-    color:#fff;
-
-    padding:14px;
-
-    font-size:15px;
-
-    font-weight:700;
-
-    cursor:pointer;
+cursor:pointer;
 
 }
 
-.share-btn i{
+.share-btn,
+#aboutBtn{
 
-    margin-right:8px;
+width:100%;
 
-}
+height:50px;
 
-/*==========================
- Automatic KYC
-==========================*/
+border:none;
 
-.kyc-section{
+border-radius:14px;
 
-    background:var(--card);
+background:var(--green);
 
-    border:1px solid var(--border);
+color:#fff;
 
-    border-radius:20px;
+font-size:15px;
 
-    padding:20px;
+font-weight:700;
 
-    margin-bottom:22px;
+cursor:pointer;
 
-}
-
-.kyc-progress-head{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    margin-bottom:12px;
+margin-top:10px;
 
 }
 
-.kyc-progress-head span{
+/* ==========================
+MACHINES
+========================== */
 
-    color:var(--muted);
+.machine-card{
 
-}
+display:flex;
 
-.kyc-section p{
+justify-content:space-between;
 
-    margin-top:14px;
+align-items:center;
 
-    color:var(--muted);
+padding:15px;
 
-    line-height:1.6;
+background:#09131d;
 
-}
+border-radius:14px;
 
-/*==========================
- Purchased Machines
-==========================*/
-
-.machines-section{
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:20px;
-
-    margin-bottom:22px;
+margin-bottom:12px;
 
 }
 
-.machine-list{
+.machine-card strong{
 
-    display:flex;
-
-    flex-direction:column;
-
-    gap:14px;
+color:#fff;
 
 }
 
-/*==========================
- Settings Button
-==========================*/
+.machine-card small{
 
-.settings-section{
-
-    margin-bottom:90px;
+color:var(--muted);
 
 }
 
-.settings-btn{
-
-    width:100%;
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:20px;
-
-    padding:18px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    color:var(--white);
-
-    cursor:pointer;
-
-}
-
-.settings-btn .left{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:14px;
-
-}
-
-.settings-btn i:first-child{
-
-    color:var(--green);
-
-    font-size:20px;
-
-}
-
-.settings-btn span{
-
-    font-size:16px;
-
-    font-weight:600;
-
-}
-
-/*==========================
- Overlay
-==========================*/
-
-.overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,.55);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:998;
-
-}
-
-.overlay.show{
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-/*==========================
- Bottom Sheet
-==========================*/
-
-.bottom-sheet{
-
-    position:fixed;
-
-    left:0;
-
-    right:0;
-
-    bottom:-100%;
-
-    background:var(--card);
-
-    border-radius:28px 28px 0 0;
-
-    padding:22px;
-
-    transition:.35s;
-
-    z-index:999;
-
-    max-height:85vh;
-
-    overflow:auto;
-
-}
-
-.bottom-sheet.show{
-
-    bottom:0;
-
-}
-
-.sheet-handle{
-
-    width:55px;
-
-    height:5px;
-
-    background:#365171;
-
-    border-radius:30px;
-
-    margin:0 auto 20px;
-
-}
-
-.sheet-content h2{
-
-    text-align:center;
-
-    margin-bottom:20px;
-
-}
-
+/* ==========================
+SETTINGS
+========================== */
+
+.settings-btn,
 .menu-item{
 
-    width:100%;
+width:100%;
 
-    display:flex;
+height:56px;
 
-    justify-content:space-between;
+display:flex;
 
-    align-items:center;
+align-items:center;
 
-    padding:16px 0;
+justify-content:space-between;
 
-    border:none;
+padding:0 18px;
 
-    border-bottom:1px solid rgba(255,255,255,.06);
+background:var(--card);
 
-    background:none;
+border:none;
 
-    color:var(--white);
+border-radius:16px;
 
-    cursor:pointer;
+color:#fff;
+
+cursor:pointer;
+
+margin-bottom:12px;
 
 }
 
 .menu-left{
 
-    display:flex;
+display:flex;
 
-    align-items:center;
+align-items:center;
 
-    gap:14px;
-
-}
-
-.menu-left i{
-
-    color:var(--green);
-
-    width:22px;
-
-    text-align:center;
+gap:14px;
 
 }
 
-.logout{
+/* ==========================
+BOTTOM SHEET
+========================== */
 
-    color:#FF4D4F;
+.overlay{
 
-}
+position:fixed;
 
-.logout .menu-left i{
+top:0;
+left:0;
 
-    color:#FF4D4F;
+width:100%;
+height:100%;
 
-}
+background:rgba(0,0,0,.55);
 
-/*==========================
- Popups
-==========================*/
+opacity:0;
 
-.popup{
+visibility:hidden;
 
-    position:fixed;
+transition:.3s;
 
-    top:50%;
-
-    left:50%;
-
-    transform:translate(-50%,-50%) scale(.9);
-
-    width:92%;
-
-    max-width:430px;
-
-    background:var(--card);
-
-    border-radius:22px;
-
-    padding:22px;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:.3s;
-
-    z-index:1000;
-
-    max-height:85vh;
-
-    overflow-y:auto;
+z-index:90;
 
 }
 
-.popup.show{
+.overlay.show{
 
-    opacity:1;
+opacity:1;
 
-    visibility:visible;
-
-    transform:translate(-50%,-50%) scale(1);
+visibility:visible;
 
 }
 
-/*==========================
- Bottom Navigation
-==========================*/
+.bottom-sheet{
+
+position:fixed;
+
+left:0;
+right:0;
+bottom:-100%;
+
+background:var(--card);
+
+border-radius:25px 25px 0 0;
+
+padding:18px;
+
+transition:.35s;
+
+z-index:100;
+
+}
+
+.bottom-sheet.show{
+
+bottom:0;
+
+}
+
+.sheet-handle{
+
+width:55px;
+
+height:5px;
+
+background:#777;
+
+border-radius:20px;
+
+margin:0 auto 18px;
+
+}
+
+/* ==========================
+BOTTOM NAVIGATION
+========================== */
 
 .bottom-nav{
 
-    position:fixed;
+position:fixed;
 
-    left:50%;
+left:0;
+right:0;
+bottom:0;
 
-    transform:translateX(-50%);
+height:75px;
 
-    bottom:18px;
+background:#0b1726;
 
-    width:calc(100% - 24px);
+border-top:1px solid var(--border);
 
-    max-width:460px;
+display:flex;
 
-    height:72px;
+justify-content:space-around;
 
-    background:#081B33;
+align-items:center;
 
-    border:1px solid rgba(255,255,255,.08);
-
-    border-radius:24px;
-
-    display:flex;
-
-    justify-content:space-around;
-
-    align-items:center;
-
-    z-index:100;
-
-    box-shadow:0 15px 35px rgba(0,0,0,.35);
+z-index:999;
 
 }
 
 .nav-item{
 
-    flex:1;
+flex:1;
 
-    display:flex;
+display:flex;
 
-    flex-direction:column;
+flex-direction:column;
 
-    justify-content:center;
+align-items:center;
 
-    align-items:center;
+justify-content:center;
 
-    text-decoration:none;
+text-decoration:none;
 
-    color:#8EA8C7;
+color:#9ba8b8;
 
-    font-size:12px;
+font-size:12px;
 
-    transition:.3s;
+font-weight:600;
+
+transition:.25s;
 
 }
 
 .nav-item i{
 
-    font-size:20px;
+font-size:21px;
 
-    margin-bottom:5px;
+margin-bottom:5px;
 
 }
 
 .nav-item.active{
 
-    color:var(--green);
+color:var(--green);
 
 }
 
-.nav-item.active i{
+/* IMPORTANT:
+Only the icon and text become green.
+No green background.
+Exactly like your dashboard.
+*/
 
-    color:var(--green);
+@media(max-width:420px){
+
+.wallet-card h1{
+
+font-size:23px;
 
 }
 
-/*==========================
- Responsive
-==========================*/
+.profile-info h2{
 
-@media (max-width:380px){
+font-size:21px;
 
-    .profile-info h2{
+}
 
-        font-size:20px;
+.stat-card h2{
 
-    }
+font-size:18px;
 
-    .stat-card{
+}
 
-        padding:16px;
-
-    }
-
-    .stat-card h2{
-
-        font-size:18px;
-
-    }
-
-    .bottom-nav{
-
-        height:68px;
-
-    }
-
-   }
+  }
