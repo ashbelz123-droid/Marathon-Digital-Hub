@@ -5,8 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>My Profile | Marathon Digital Hub</title>
 
@@ -25,22 +24,22 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
 <div class="container">
 
-<!-- PROFILE HEADER -->
+<!-- ==========================
+PROFILE HEADER
+========================== -->
 
 <section class="profile-header">
 
-<div class="profile-cover"></div>
+<div class="cover-bg"></div>
 
-<div class="profile-image-box">
+<div class="profile-avatar">
 
 <img
 id="profileImage"
 src="images/default-avatar.png"
 alt="Profile">
 
-<button
-id="changeAvatarBtn"
-class="camera-btn">
+<button id="changeAvatarBtn">
 
 <i class="fas fa-camera"></i>
 
@@ -60,9 +59,9 @@ Loading...
 
 </h2>
 
-<p id="userEmail">
+<p id="username">
 
-Loading...
+@username
 
 </p>
 
@@ -70,7 +69,7 @@ Loading...
 
 <span
 id="membershipBadge"
-class="badge standard">
+class="badge membership">
 
 Standard
 
@@ -96,7 +95,9 @@ Active
 
 </section>
 
-<!-- ACCOUNT STATUS -->
+<!-- ==========================
+ACCOUNT STATUS
+========================== -->
 
 <section
 id="accountStatusCard"
@@ -119,17 +120,27 @@ Account Suspended
 
 <p id="suspensionReason">
 
-Reason will appear here.
+Your account has been suspended by the administrator.
 
 </p>
+
+<button id="contactSupportBtn">
+
+Contact Support
+
+</button>
 
 </div>
 
 </section>
 
-<!-- WALLET -->
+<!-- ==========================
+WALLET CARD
+========================== -->
 
 <section class="wallet-card">
+
+<div>
 
 <p>
 
@@ -143,33 +154,25 @@ UGX 0
 
 </h1>
 
-<div class="wallet-buttons">
+</div>
 
-<button id="depositBtn">
+<div class="wallet-icon">
 
 <i class="fas fa-wallet"></i>
-
-Deposit
-
-</button>
-
-<button id="withdrawBtn">
-
-<i class="fas fa-money-bill-wave"></i>
-
-Withdraw
-
-</button>
 
 </div>
 
 </section>
 
-<!-- ACCOUNT OVERVIEW -->
+<!-- ==========================
+ACCOUNT OVERVIEW
+========================== -->
 
 <section class="overview-grid">
 
 <div class="overview-card">
+
+<i class="fas fa-microchip"></i>
 
 <h2 id="activeMachines">
 
@@ -187,6 +190,8 @@ Active Machines
 
 <div class="overview-card">
 
+<i class="fas fa-users"></i>
+
 <h2 id="teamMembers">
 
 0
@@ -202,6 +207,8 @@ Team Members
 </div>
 
 <div class="overview-card">
+
+<i class="fas fa-coins"></i>
 
 <h2 id="totalInvested">
 
@@ -219,6 +226,8 @@ Total Invested
 
 <div class="overview-card">
 
+<i class="fas fa-chart-line"></i>
+
 <h2 id="totalProfit">
 
 UGX 0
@@ -233,45 +242,89 @@ Total Profit
 
 </div>
 
-</section>
+ </section>
 
  <!-- ==========================
-REFERRAL CENTER
+QUICK ACTIONS
 ========================== -->
 
 <section class="card">
 
-<h3>👥 Referral Centre</h3>
+<h3>
+
+Quick Actions
+
+</h3>
+
+<div class="quick-actions">
+
+<button id="depositBtn" class="action-card">
+
+<i class="fas fa-wallet"></i>
+
+<span>Deposit</span>
+
+</button>
+
+<button id="withdrawBtn" class="action-card">
+
+<i class="fas fa-money-bill-wave"></i>
+
+<span>Withdraw</span>
+
+</button>
+
+<button id="machinesBtn" class="action-card">
+
+<i class="fas fa-microchip"></i>
+
+<span>Purchased Machines</span>
+
+</button>
+
+<button id="historyBtn" class="action-card">
+
+<i class="fas fa-clock-rotate-left"></i>
+
+<span>History</span>
+
+</button>
+
+</div>
+
+</section>
+
+<!-- ==========================
+REFERRAL CENTRE
+========================== -->
+
+<section class="card">
+
+<h3>
+
+Referral Centre
+
+</h3>
 
 <div class="referral-card">
 
-<label>Referral Code</label>
+<label>
+
+Referral Link
+
+</label>
 
 <div class="copy-box">
 
 <input
+
 type="text"
-id="referralCode"
-readonly>
 
-<button id="copyReferralCode">
-
-<i class="fas fa-copy"></i>
-
-</button>
-
-</div>
-
-<label>Referral Link</label>
-
-<div class="copy-box">
-
-<input
-type="text"
 id="referralLink"
+
 readonly>
 
-<button id="copyReferralLink">
+<button id="copyReferralBtn">
 
 <i class="fas fa-copy"></i>
 
@@ -279,12 +332,13 @@ readonly>
 
 </div>
 
-<button id="shareReferral"
+<button id="shareReferralBtn"
+
 class="share-btn">
 
 <i class="fab fa-whatsapp"></i>
 
-Share Referral Link
+Share on WhatsApp
 
 </button>
 
@@ -294,7 +348,7 @@ Share Referral Link
 
 <div class="team-card">
 
-<h2 id="totalTeam">
+<h2 id="teamCount">
 
 0
 
@@ -318,96 +372,27 @@ Share Referral Link
 
 <div class="team-card">
 
-<h2 id="inactiveTeam">
-
-0
-
-</h2>
-
-<p>Inactive Team</p>
-
-</div>
-
-<div class="team-card">
-
-<h2 id="referralBonus">
+<h2 id="referralReward">
 
 UGX 0
 
 </h2>
 
-<p>Referral Bonus</p>
+<p>Referral Reward</p>
 
 </div>
 
+<div class="team-card">
+
+<h2 id="kycProgress">
+
+0/10
+
+</h2>
+
+<p>KYC Progress</p>
+
 </div>
-
-</section>
-
-<!-- ==========================
-QUICK ACTIONS
-========================== -->
-
-<section class="card">
-
-<h3>⚡ Quick Actions</h3>
-
-<div class="action-grid">
-
-<button id="machinesBtn" class="action-card">
-
-<i class="fas fa-microchip"></i>
-
-<span>Purchased Machines</span>
-
-</button>
-
-<button id="depositPageBtn" class="action-card">
-
-<i class="fas fa-wallet"></i>
-
-<span>Deposit</span>
-
-</button>
-
-<button id="withdrawPageBtn" class="action-card">
-
-<i class="fas fa-money-bill-wave"></i>
-
-<span>Withdraw</span>
-
-</button>
-
-<button id="historyBtn" class="action-card">
-
-<i class="fas fa-clock-rotate-left"></i>
-
-<span>History</span>
-
-</button>
-
-<button id="notificationsBtn" class="action-card">
-
-<i class="fas fa-bell"></i>
-
-<span>Notifications</span>
-
-<span id="notificationCount"
-class="notify-badge">
-
-0
-
-</span>
-
-</button>
-
-<button id="supportBtn" class="action-card">
-
-<i class="fas fa-headset"></i>
-
-<span>Support</span>
-
-</button>
 
 </div>
 
@@ -419,15 +404,19 @@ ACCOUNT INFORMATION
 
 <section class="card">
 
-<h3>📋 Account Information</h3>
+<h3>
+
+Account Information
+
+</h3>
 
 <div class="info-list">
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Email</span>
 
-<strong id="profileEmail">
+<strong id="email">
 
 Loading...
 
@@ -435,11 +424,11 @@ Loading...
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Phone</span>
 
-<strong id="profilePhone">
+<strong id="phone">
 
 Loading...
 
@@ -447,11 +436,11 @@ Loading...
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Country</span>
 
-<strong id="profileCountry">
+<strong id="country">
 
 Loading...
 
@@ -459,11 +448,11 @@ Loading...
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Member Since</span>
 
-<strong id="createdDate">
+<strong id="memberSince">
 
 Loading...
 
@@ -471,7 +460,7 @@ Loading...
 
 </div>
 
-<div class="info-row">
+<div class="info-item">
 
 <span>Last Login</span>
 
@@ -488,19 +477,72 @@ Loading...
 </section>
 
 <!-- ==========================
-SETTINGS BUTTON
+MENU
 ========================== -->
 
 <section class="card">
 
-<button id="openSettings"
-class="settings-btn">
+<h3>
+
+More
+
+</h3>
+
+<div class="menu-list">
+
+<button id="settingsBtn"
+
+class="menu-item">
 
 <i class="fas fa-gear"></i>
 
-Open Settings
+<span>Settings</span>
+
+<i class="fas fa-chevron-right"></i>
 
 </button>
+
+<button id="notificationsBtn"
+
+class="menu-item">
+
+<i class="fas fa-bell"></i>
+
+<span>Notifications</span>
+
+<span id="notificationBadge">
+
+0
+
+</span>
+
+</button>
+
+<button id="supportBtn"
+
+class="menu-item">
+
+<i class="fas fa-headset"></i>
+
+<span>Support</span>
+
+<i class="fas fa-chevron-right"></i>
+
+</button>
+
+<button id="logoutBtn"
+
+class="menu-item logout">
+
+<i class="fas fa-right-from-bracket"></i>
+
+<span>Logout</span>
+
+<i class="fas fa-chevron-right"></i>
+
+</button>
+
+</div>
 
  </section>
 
@@ -520,7 +562,7 @@ SETTINGS POPUP
 
 </div>
 
-<div class="settings-list">
+<div class="settings-menu">
 
 <button id="editProfileBtn">
 
@@ -530,7 +572,7 @@ SETTINGS POPUP
 
 </button>
 
-<button id="changePictureBtn">
+<button id="changePhotoBtn">
 
 <i class="fas fa-camera"></i>
 
@@ -554,19 +596,11 @@ SETTINGS POPUP
 
 </button>
 
-<button id="notificationsSettingsBtn">
+<button id="notificationSettingsBtn">
 
 <i class="fas fa-bell"></i>
 
 <span>Notification Settings</span>
-
-</button>
-
-<button id="logoutBtn">
-
-<i class="fas fa-right-from-bracket"></i>
-
-<span>Logout</span>
 
 </button>
 
@@ -577,7 +611,7 @@ SETTINGS POPUP
 </div>
 
 <!-- ==========================
-EDIT PROFILE
+EDIT PROFILE POPUP
 ========================== -->
 
 <div id="editProfileModal" class="modal">
@@ -590,11 +624,11 @@ EDIT PROFILE
 
 <input id="editPhone" placeholder="Phone Number">
 
-<input id="editCountryInput" placeholder="Country">
+<input id="editCountry" placeholder="Country">
 
-<input id="editDobInput" type="date">
+<input type="date" id="editDob">
 
-<select id="editGenderInput">
+<select id="editGender">
 
 <option value="">Gender</option>
 
@@ -626,11 +660,23 @@ CHANGE PASSWORD
 
 <h2>Change Password</h2>
 
-<input type="password" id="oldPassword" placeholder="Current Password">
+<input type="password"
 
-<input type="password" id="newPassword" placeholder="New Password">
+id="currentPassword"
 
-<input type="password" id="confirmPassword" placeholder="Confirm Password">
+placeholder="Current Password">
+
+<input type="password"
+
+id="newPassword"
+
+placeholder="New Password">
+
+<input type="password"
+
+id="confirmPassword"
+
+placeholder="Confirm Password">
 
 <button id="updatePasswordBtn">
 
@@ -652,11 +698,29 @@ CHANGE PIN
 
 <h2>Transaction PIN</h2>
 
-<input type="password" maxlength="6" id="oldPin">
+<input type="password"
 
-<input type="password" maxlength="6" id="newPin">
+maxlength="6"
 
-<input type="password" maxlength="6" id="confirmPin">
+id="currentPin"
+
+placeholder="Current PIN">
+
+<input type="password"
+
+maxlength="6"
+
+id="newPin"
+
+placeholder="New PIN">
+
+<input type="password"
+
+maxlength="6"
+
+id="confirmPin"
+
+placeholder="Confirm PIN">
 
 <button id="updatePinBtn">
 
@@ -702,11 +766,16 @@ SUPPORT
 
 <h2>Support</h2>
 
-<input id="supportSubject" placeholder="Subject">
+<input id="supportSubject"
+
+placeholder="Subject">
 
 <textarea
+
 id="supportMessage"
+
 rows="6"
+
 placeholder="Describe your issue"></textarea>
 
 <button id="sendSupportBtn">
@@ -735,7 +804,7 @@ Are you sure you want to logout?
 
 </p>
 
-<div class="logout-buttons">
+<div class="logout-actions">
 
 <button id="cancelLogout">
 
@@ -765,7 +834,11 @@ BOTTOM NAVIGATION
 
 <a href="dashboard.html">
 
-<i class="fas fa-house"></i>
+<div class="nav-icon">
+
+🏠
+
+</div>
 
 <span>Home</span>
 
@@ -773,7 +846,11 @@ BOTTOM NAVIGATION
 
 <a href="machines.html">
 
-<i class="fas fa-microchip"></i>
+<div class="nav-icon">
+
+⚙️
+
+</div>
 
 <span>Machines</span>
 
@@ -781,7 +858,11 @@ BOTTOM NAVIGATION
 
 <a href="deposit.html">
 
-<i class="fas fa-wallet"></i>
+<div class="nav-icon">
+
+💳
+
+</div>
 
 <span>Deposit</span>
 
@@ -789,15 +870,25 @@ BOTTOM NAVIGATION
 
 <a href="income.html">
 
-<i class="fas fa-chart-line"></i>
+<div class="nav-icon">
+
+📈
+
+</div>
 
 <span>Income</span>
 
 </a>
 
-<a href="profile.html" class="active">
+<a href="profile.html"
 
-<i class="fas fa-user"></i>
+class="active">
+
+<div class="nav-icon">
+
+👤
+
+</div>
 
 <span>Profile</span>
 
