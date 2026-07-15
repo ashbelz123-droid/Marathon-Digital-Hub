@@ -330,3 +330,188 @@ await loadNotifications();
 }
 
 loadDashboard();
+
+// =====================================
+// profile.js - Part 3
+// =====================================
+
+// ---------- POPUPS ----------
+
+const overlay = document.getElementById("overlay");
+
+const aboutPopup = document.getElementById("aboutPopup");
+const settingsPopup = document.getElementById("settingsPopup");
+
+const openAbout = document.getElementById("openAbout");
+const closeAbout = document.getElementById("closeAbout");
+
+const openSettings = document.getElementById("openSettings");
+const closeSettings = document.getElementById("closeSettings");
+
+function showPopup(popup){
+
+overlay.classList.add("active");
+popup.classList.add("active");
+
+}
+
+function hidePopup(popup){
+
+overlay.classList.remove("active");
+popup.classList.remove("active");
+
+}
+
+openAbout?.addEventListener("click",()=>{
+
+showPopup(aboutPopup);
+
+});
+
+closeAbout?.addEventListener("click",()=>{
+
+hidePopup(aboutPopup);
+
+});
+
+openSettings?.addEventListener("click",()=>{
+
+showPopup(settingsPopup);
+
+});
+
+closeSettings?.addEventListener("click",()=>{
+
+hidePopup(settingsPopup);
+
+});
+
+overlay?.addEventListener("click",()=>{
+
+overlay.classList.remove("active");
+
+aboutPopup?.classList.remove("active");
+
+settingsPopup?.classList.remove("active");
+
+});
+
+// ---------- COPY REFERRAL ----------
+
+document.getElementById("copyReferralBtn")?.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(
+
+document.getElementById("referralCode").value
+
+);
+
+alert("Referral code copied.");
+
+});
+
+document.getElementById("copyLinkBtn")?.addEventListener("click",()=>{
+
+navigator.clipboard.writeText(
+
+document.getElementById("referralLink").value
+
+);
+
+alert("Referral link copied.");
+
+});
+
+// ---------- CHANGE PROFILE PHOTO ----------
+
+const photoInput =
+document.getElementById("photoInput");
+
+document.getElementById("changePhoto")?.addEventListener("click",()=>{
+
+photoInput.click();
+
+});
+
+photoInput?.addEventListener("change",async(e)=>{
+
+const file=e.target.files[0];
+
+if(!file) return;
+
+// Image preview
+
+profilePhoto.src=URL.createObjectURL(file);
+
+// NOTE:
+// Upload to your Supabase Storage bucket
+// and save the returned URL into
+// profiles.avatar_url
+
+});
+
+// ---------- CHANGE PASSWORD ----------
+
+document.getElementById("changePasswordBtn")?.addEventListener("click",async()=>{
+
+const password=
+
+prompt("Enter new password");
+
+if(!password) return;
+
+const { error }=
+
+await supabase.auth.updateUser({
+
+password
+
+});
+
+if(error){
+
+alert(error.message);
+
+}else{
+
+alert("Password updated successfully.");
+
+}
+
+});
+
+// ---------- LOGOUT ----------
+
+document.getElementById("logoutBtn")?.addEventListener("click",async()=>{
+
+const ok=
+
+confirm("Logout from your account?");
+
+if(!ok) return;
+
+await supabase.auth.signOut();
+
+window.location.href="login.html";
+
+});
+
+// ---------- ABOUT CONTENT ----------
+
+const aboutContent=
+
+document.getElementById("aboutContent");
+
+if(aboutContent){
+
+aboutContent.innerHTML=`
+
+<b>Marathon Digital Hub</b><br><br>
+
+Marathon Digital Hub is a secure digital mining platform that allows members to purchase mining machines, earn daily income, build referral teams, manage investments, and track profits through one professional dashboard.
+
+`;
+
+}
+
+console.log("Profile loaded successfully.");
