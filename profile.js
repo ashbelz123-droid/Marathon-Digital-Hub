@@ -1,611 +1,418 @@
-//======================================
-// PROFILE.JS PART 1
-// Marathon Digital Hub
-//======================================
+/*=========================================
+SUPABASE
+=========================================*/
 
-//---------- SUPABASE ----------//
-
-const client = window.supabaseClient;
-
-//---------- ELEMENTS ----------//
-
-const profilePhoto = document.getElementById("profilePhoto");
-const userName = document.getElementById("userName");
-const userEmail = document.getElementById("userEmail");
-
-const walletBalance = document.getElementById("walletBalance");
-
-const memberType = document.getElementById("memberType");
-const verifyBadge = document.getElementById("verifyBadge");
-const accountStatus = document.getElementById("accountStatus");
+const db = window.supabaseClient;
 
 let currentUser = null;
 let profile = null;
 
-//======================================
-// CHECK LOGIN
-//======================================
+/*=========================================
+START PROFILE
+=========================================*/
 
-async function checkLogin(){
+document.addEventListener("DOMContentLoaded", async () => {
 
-const { data, error } =
-await client.auth.getUser();
+    try{
 
-if(error || !data.user){
+        const { data:{ user } } = await db.auth.getUser();
 
-window.location.href="login.html";
+        if(!user){
 
-return;
+            window.location.href="login.html";
+            return;
+
+        }
+
+        currentUser = user;
+
+        await initializeProfile();
+
+    }catch(error){
+
+        console.log(error);
+
+    }
+
+});
+
+/*=========================================
+INITIALIZE PROFILE
+=========================================*/
+
+async function initializeProfile(){
+
+    await Promise.all([
+
+        loadProfile(),
+
+        loadStatistics(),
+
+        loadNotifications()
+
+    ]);
 
 }
 
-currentUser = data.user;
-
-loadProfile();
-
-}
-
-//======================================
-// LOAD PROFILE
-//======================================
+/*=========================================
+LOAD PROFILE
+=========================================*/
 
 async function loadProfile(){
 
-const { data, error } =
-await client
+    const { data, error } = await db
 
-.from("profiles")
+    .from("profiles")
 
-.select("*")
+    .select("*")
 
-.eq("id",currentUser.id)
+    .eq("id", currentUser.id)
 
-.single();
+    .single();
 
-if(error){
+    if(error){
 
-console.error(error);
+        console.log(error);
+        return;
 
-return;
+    }
+
+    profile = data;
+
+    document.getElementById("userName").textContent =
+    "Welcome, " + (profile.fullname || "User");
+
+    document.getElementById("fullName").textContent =
+    profile.fullname || "User";
+
+    document.getElementById("email").textContent =
+    profile.email || "No Email";
+
+    document.getElementById("walletBalance").textContent =
+    "UGX " + Number(profile.wallet_balance || 0).toLocaleString();
+
+    document.getElementById("membership").textContent =
+    profile.membership || "Standard";
+
+    document.getElementById("kycStatus").textContent =
+    profile.kyc_status || "Not Verified";
+
+    document.getElementById("accountStatus").textContent =
+    profile.account_status || "Active";
+
+    if(profile.avatar_url){
+
+        document.getElementById("avatar").src =
+        profile.avatar_url;
+
+    }
+
+    if(profile.account_status === "suspended" || profile.is_frozen){
+
+        document.getElementById("suspensionCard").style.display =
+        "block";
+
+    }
+
+      }
+
+/*=========================================
+LOAD STATISTICS
+=========================================*/
+
+async function loadStatistics(){
+
+    /* Active Machines */
+
+    const { data: machines } = await db
+    .from("user_machines")
+    .select("id")
+    .eq("user_id", currentUser.id)
+    .eq("status","active");
+
+    document.getElementById("activeMachines").textContent =
+    machines ? machines.length : 0;
+
+
+    /* Team Members */
+
+    const { data: team } = await db
+    .from("referrals")
+    .select("id")
+    .eq("referrer_id", currentUser.id);
+
+    document.getElementById("teamMembers").textContent =
+    team ? team.length : 0;
+
+
+    /* Referral Bonus */
+
+    document.getElementById("referralBonus").textContent =
+    "UGX " +
+    Number(profile.total_referral_bonus || 0).toLocaleString();
+
+
+    /* Referral Code */
+
+    document.getElementById("referralCode").value =
+    profile.referral_code || "";
+
+
+    /* Referral Link */
+
+    document.getElementById("referralLink").value =
+    window.location.origin +
+    "/register.html?ref=" +
+    (profile.referral_code || "");
 
 }
 
-profile=data;
+/*=========================================
+LOAD NOTIFICATIONS
+=========================================*/
 
-// Profile Photo
+async function loadNotifications(){
 
-if(profile.avatar_url){
+    const { data } = await db
 
-profilePhoto.src=
-profile.avatar_url;
+    .from("user_notifications")
 
-}
+    .select("id")
 
-// Name
+    .eq("user_id", currentUser.id)
 
-userName.textContent=
-profile.fullname;
+    .eq("is_read", false);
 
-// Email
+    const total = data ? data.length : 0;
 
-userEmail.textContent=
-profile.email;
+    document.getElementById("notifyCount").textContent = total;
 
-// Wallet
-
-walletBalance.textContent=
-
-"UGX "+
-
-Number(
-
-profile.wallet_balance || 0
-
-).toLocaleString();
-
-// Membership
-
-memberType.textContent=
-profile.membership;
-
-// KYC
-
-verifyBadge.textContent=
-profile.kyc_status;
-
-// Account Status
-
-accountStatus.textContent=
-profile.account_status;
-
-// Suspended Account
-
-if(
-
-profile.account_status==="suspended" ||
-
-profile.is_frozen===true
-
-){
-
-accountStatus.style.background="#7A1F1F";
-
-accountStatus.style.color="#FFB3B3";
+    document.getElementById("notificationCount").textContent = total;
 
 }
 
-}
+/*=========================================
+AUTO REFRESH
+=========================================*/
 
-//======================================
-// START
-//======================================
+setInterval(async()=>{
 
-checkLogin();
+    if(!currentUser) return;
 
-//======================================
-// PROFILE.JS PART 2
-// Statistics & Referral
-//======================================
+    await loadProfile();
 
-//---------- ELEMENTS ----------//
+    await loadStatistics();
 
-const machineCount =
-document.getElementById("machineCount");
+    await loadNotifications();
 
-const teamCount =
-document.getElementById("teamCount");
+},30000);
 
-const bonusBalance =
-document.getElementById("bonusBalance");
+/*=========================================
+COPY REFERRAL CODE
+=========================================*/
 
-const todayIncome =
-document.getElementById("todayIncome");
+document.getElementById("copyReferral").onclick = async () => {
 
-const completionPercent =
-document.getElementById("completionPercent");
+    const input = document.getElementById("referralCode");
 
-const progressBar =
-document.getElementById("progressBar");
+    await navigator.clipboard.writeText(input.value);
 
-const referralCode =
-document.getElementById("referralCode");
-
-const referralLink =
-document.getElementById("referralLink");
-
-const notificationCount =
-document.getElementById("notificationCount");
-
-//======================================
-// LOAD DASHBOARD DATA
-//======================================
-
-async function loadDashboardData(){
-
-//------------------------------
-// Active Machines
-//------------------------------
-
-const {
-
-count:machines
-
-}=await client
-
-.from("user_machines")
-
-.select("*",{count:"exact",head:true})
-
-.eq("user_id",currentUser.id)
-
-.eq("status","active");
-
-machineCount.textContent=
-machines || 0;
-
-
-//------------------------------
-// Team Members
-//------------------------------
-
-const {
-
-count:team
-
-}=await client
-
-.from("referrals")
-
-.select("*",{count:"exact",head:true})
-
-.eq("referrer_id",currentUser.id);
-
-teamCount.textContent=
-team || 0;
-
-
-//------------------------------
-// Referral Bonus
-//------------------------------
-
-bonusBalance.textContent=
-
-"UGX "+
-
-Number(
-
-profile.total_referral_bonus || 0
-
-).toLocaleString();
-
-
-//------------------------------
-// Today's Income
-//------------------------------
-
-const {
-
-data:todayMachines
-
-}=await client
-
-.from("user_machines")
-
-.select("earned_amount")
-
-.eq("user_id",currentUser.id)
-
-.eq("status","active");
-
-let totalToday=0;
-
-if(todayMachines){
-
-todayMachines.forEach(item=>{
-
-totalToday+=Number(
-
-item.earned_amount || 0
-
-);
-
-});
-
-}
-
-todayIncome.textContent=
-
-"UGX "+
-
-totalToday.toLocaleString();
-
-
-//------------------------------
-// Referral
-//------------------------------
-
-referralCode.value=
-
-profile.referral_code || "";
-
-referralLink.value=
-
-window.location.origin+
-
-"/register.html?ref="+
-
-(profile.referral_code || "");
-
-
-//------------------------------
-// Notifications
-//------------------------------
-
-const {
-
-count:notices
-
-}=await client
-
-.from("user_notifications")
-
-.select("*",{count:"exact",head:true})
-
-.eq("user_id",currentUser.id)
-
-.eq("is_read",false);
-
-notificationCount.textContent=
-
-notices || 0;
-
-
-//------------------------------
-// Profile Completion
-//------------------------------
-
-let completed=0;
-
-const totalFields=8;
-
-if(profile.fullname) completed++;
-
-if(profile.email) completed++;
-
-if(profile.phone) completed++;
-
-if(profile.avatar_url) completed++;
-
-if(profile.country) completed++;
-
-if(profile.gender) completed++;
-
-if(profile.date_of_birth) completed++;
-
-if(profile.profile_completed) completed++;
-
-const percent=
-
-Math.round(
-
-(completed/totalFields)*100
-
-);
-
-completionPercent.textContent=
-
-percent+"%";
-
-progressBar.style.width=
-
-percent+"%";
-
-}
-
-//======================================
-// LOAD AFTER PROFILE
-//======================================
-
-loadDashboardData();
-
-//======================================
-// PROFILE.JS PART 3
-// Buttons, Popups & Settings
-//======================================
-
-//---------- ELEMENTS ----------//
-
-const overlay=document.getElementById("overlay");
-const popup=document.getElementById("popup");
-const popupTitle=document.getElementById("popupTitle");
-const popupContent=document.getElementById("popupContent");
-const closePopup=document.getElementById("closePopup");
-
-//======================================
-// POPUP
-//======================================
-
-function openPopup(title,content){
-
-popupTitle.textContent=title;
-
-popupContent.innerHTML=content;
-
-overlay.classList.add("active");
-popup.classList.add("active");
-
-}
-
-function hidePopup(){
-
-overlay.classList.remove("active");
-popup.classList.remove("active");
-
-}
-
-closePopup.onclick=hidePopup;
-overlay.onclick=hidePopup;
-
-//======================================
-// ABOUT
-//======================================
-
-document.getElementById("openAbout").onclick=()=>{
-
-openPopup("About Marathon Digital Hub",`
-
-<p>Marathon Digital Hub is a secure digital mining platform designed to provide transparent mining services, investment opportunities, referral rewards, and professional account management.</p>
-
-<p>Our mission is to provide a reliable, secure and user-friendly digital mining experience while maintaining transparency and long-term growth.</p>
-
-`);
+    alert("Referral code copied.");
 
 };
 
-//======================================
-// FAQ
-//======================================
+/*=========================================
+SHARE REFERRAL LINK
+=========================================*/
 
-document.getElementById("openFaq").onclick=()=>{
+document.getElementById("shareReferral").onclick = async () => {
 
-openPopup("Frequently Asked Questions",`
+    const link = document.getElementById("referralLink").value;
 
-<h3>How do I buy a machine?</h3>
+    if (navigator.share) {
 
-<p>Open the Machines page and purchase an available machine.</p>
+        navigator.share({
 
-<h3>When do I receive earnings?</h3>
+            title: "Marathon Digital Hub",
 
-<p>Earnings are credited according to your active machine schedule.</p>
+            text: "Join my Marathon Digital Hub team.",
 
-<h3>How do referrals work?</h3>
+            url: link
 
-<p>Invite friends using your referral link to earn referral bonuses.</p>
+        });
 
-`);
+    } else {
 
-};
+        await navigator.clipboard.writeText(link);
 
-//======================================
-// TERMS
-//======================================
+        alert("Referral link copied.");
 
-document.getElementById("openTerms").onclick=()=>{
-
-openPopup("Terms & Conditions",`
-
-<p>All members must follow Marathon Digital Hub rules.</p>
-
-<p>Fraudulent activities, fake payment proofs, abuse of referrals or attempts to compromise platform security may result in account suspension.</p>
-
-`);
+    }
 
 };
 
-//======================================
-// PRIVACY
-//======================================
+/*=========================================
+PROFILE PHOTO UPLOAD
+=========================================*/
 
-document.getElementById("openPrivacy").onclick=()=>{
+document.getElementById("changePhoto").onclick = () => {
 
-openPopup("Privacy Policy",`
-
-<p>Your personal information is protected and only used to provide Marathon Digital Hub services.</p>
-
-<p>We never intentionally expose your private information without legal requirements.</p>
-
-`);
+    document.getElementById("photoInput").click();
 
 };
 
-//======================================
-// COPY REFERRAL
-//======================================
+document.getElementById("photoInput").addEventListener("change", uploadPhoto);
 
-document.getElementById("copyReferralBtn").onclick=()=>{
+async function uploadPhoto(e){
 
-navigator.clipboard.writeText(referralCode.value);
+    const file = e.target.files[0];
 
-alert("Referral code copied.");
+    if(!file) return;
 
-};
+    const fileName = currentUser.id + "-" + Date.now();
 
-document.getElementById("copyLinkBtn").onclick=()=>{
+    const { error: uploadError } = await db.storage
 
-navigator.clipboard.writeText(referralLink.value);
+        .from("machine-images")
 
-alert("Referral link copied.");
+        .upload(fileName, file, {
 
-};
+            upsert:true
 
-//======================================
-// SHARE REFERRAL
-//======================================
+        });
 
-document.getElementById("shareReferralBtn").onclick=()=>{
+    if(uploadError){
 
-if(navigator.share){
+        alert(uploadError.message);
 
-navigator.share({
+        return;
 
-title:"Marathon Digital Hub",
+    }
 
-text:"Join my team.",
+    const {
 
-url:referralLink.value
+        data
 
-});
+    } = db.storage
 
-}else{
+    .from("machine-images")
 
-navigator.clipboard.writeText(referralLink.value);
+    .getPublicUrl(fileName);
 
-alert("Referral link copied.");
+    const imageUrl = data.publicUrl;
+
+    await db
+
+    .from("profiles")
+
+    .update({
+
+        avatar_url:imageUrl
+
+    })
+
+    .eq("id", currentUser.id);
+
+    document.getElementById("avatar").src = imageUrl;
+
+}
+
+/*=========================================
+POPUP CONTENT
+=========================================*/
+
+const pages = {
+
+about:{
+
+title:"About Marathon Digital Hub",
+
+content:`
+
+<p>Marathon Digital Hub is a digital mining platform that allows members to purchase mining machines, earn daily mining rewards, grow teams through referrals and manage investments securely.</p>
+
+`
+
+},
+
+faq:{
+
+title:"Frequently Asked Questions",
+
+content:`
+
+<p><b>How do I start?</b><br>Deposit funds then purchase a mining machine.</p>
+
+<br>
+
+<p><b>How do I withdraw?</b><br>Submit a withdrawal request. The admin reviews and processes it manually.</p>
+
+`
+
+},
+
+terms:{
+
+title:"Terms & Conditions",
+
+content:`
+
+<p>Users must follow platform rules. Fraud, abuse or multiple fake accounts may result in account suspension.</p>
+
+`
+
+},
+
+privacy:{
+
+title:"Privacy Policy",
+
+content:`
+
+<p>Your information is stored securely and is only used to operate your Marathon Digital Hub account.</p>
+
+`
 
 }
 
 };
 
-//======================================
-// CHANGE PHOTO
-//======================================
+/*=========================================
+POPUP
+=========================================*/
 
-document.getElementById("changePhoto").onclick=()=>{
+function openPopup(page){
 
-photoInput.click();
+    document.getElementById("popupTitle").innerHTML = pages[page].title;
 
-};
+    document.getElementById("popupContent").innerHTML = pages[page].content;
 
-photoInput.onchange=()=>{
-
-alert("Profile photo upload will be connected to Supabase Storage.");
-
-};
-
-//======================================
-// OPEN PAGES
-//======================================
-
-document.getElementById("openMachines").onclick=()=>{
-
-location.href="machines.html";
-
-};
-
-document.getElementById("openKyc").onclick=()=>{
-
-location.href="kyc.html";
-
-};
-
-document.getElementById("editProfile").onclick=()=>{
-
-location.href="edit-profile.html";
-
-};
-
-//======================================
-// CHANGE PASSWORD
-//======================================
-
-document.getElementById("changePassword").onclick=async()=>{
-
-const password=prompt("Enter new password");
-
-if(!password) return;
-
-const {error}=await client.auth.updateUser({
-
-password:password
-
-});
-
-if(error){
-
-alert(error.message);
-
-}else{
-
-alert("Password updated successfully.");
+    document.getElementById("popupOverlay").style.display = "flex";
 
 }
 
-};
+document.getElementById("aboutBtn").onclick = ()=>openPopup("about");
 
-//======================================
-// LOGOUT
-//======================================
+document.getElementById("faqBtn").onclick = ()=>openPopup("faq");
 
-document.getElementById("logoutBtn").onclick=async()=>{
+document.getElementById("termsBtn").onclick = ()=>openPopup("terms");
 
-const ok=confirm("Logout?");
+document.getElementById("privacyBtn").onclick = ()=>openPopup("privacy");
 
-if(!ok) return;
+document.getElementById("closePopup").onclick = ()=>{
 
-await client.auth.signOut();
-
-location.href="login.html";
+    document.getElementById("popupOverlay").style.display="none";
 
 };
 
-console.log("Profile page loaded successfully.");
+/*=========================================
+LOGOUT
+=========================================*/
+
+document.getElementById("logoutBtn").onclick = async ()=>{
+
+    await db.auth.signOut();
+
+    window.location.href="login.html";
+
+};
