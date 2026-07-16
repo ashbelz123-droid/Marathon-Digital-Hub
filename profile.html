@@ -7,12 +7,12 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Profile | Marathon Digital Hub</title>
+<title>My Profile | Marathon Digital Hub</title>
 
 <link rel="stylesheet" href="profile.css">
 
 <link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
@@ -22,23 +22,23 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
 
 <!-- HEADER -->
 
-<header class="header">
+<header class="top-header">
 
 <a href="dashboard.html" class="back-btn">
 
-<i class="fas fa-arrow-left"></i>
+<i class="fa-solid fa-arrow-left"></i>
 
 </a>
 
-<h2>Profile</h2>
+<h2>My Profile</h2>
 
-<div class="notification">
+<a href="notifications.html" class="notification-btn">
 
-<i class="fas fa-bell"></i>
+<i class="fa-regular fa-bell"></i>
 
 <span id="notificationCount">0</span>
 
-</div>
+</a>
 
 </header>
 
@@ -46,20 +46,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
 
 <section class="profile-card">
 
-<div class="cover"></div>
+<div class="cover-image"></div>
 
-<div class="profile-image">
+<div class="profile-content">
+
+<div class="profile-photo-box">
 
 <img
 id="profilePhoto"
-src="default-avatar.png"
+src="https://placehold.co/150x150"
 alt="Profile">
-
-<button id="changePhoto">
-
-<i class="fas fa-camera"></i>
-
-</button>
 
 <input
 type="file"
@@ -67,37 +63,41 @@ id="photoInput"
 accept="image/*"
 hidden>
 
+<button
+id="changePhoto"
+class="camera-btn">
+
+<i class="fa-solid fa-camera"></i>
+
+</button>
+
 </div>
 
-<div class="profile-details">
+<h2 id="userName">Loading...</h2>
 
-<h2 id="userName">
-
-Loading...
-
-</h2>
-
-<p id="userEmail">
-
-loading@email.com
-
-</p>
+<p id="userEmail">Loading...</p>
 
 <div class="badges">
 
-<span id="memberType">
+<span
+id="memberType"
+class="badge membership">
 
 Standard
 
 </span>
 
-<span id="verifyBadge">
+<span
+id="verifyBadge"
+class="badge verified">
 
 Not Verified
 
 </span>
 
-<span id="accountStatus">
+<span
+id="accountStatus"
+class="badge active">
 
 Active
 
@@ -125,19 +125,27 @@ UGX 0
 
 </div>
 
-<i class="fas fa-wallet wallet-icon"></i>
+<div class="wallet-icon">
+
+<i class="fa-solid fa-wallet"></i>
+
+</div>
 
 </section>
 
-<!-- STATISTICS -->
+  <!-- STATISTICS -->
 
-<section class="stats-grid">
+<section class="stats-section">
+
+<h3 class="section-title">Statistics</h3>
+
+<div class="stats-grid">
 
 <div class="stat-card">
 
-<i class="fas fa-microchip"></i>
+<i class="fa-solid fa-microchip"></i>
 
-<h3 id="machineCount">0</h3>
+<h2 id="machineCount">0</h2>
 
 <p>Active Machines</p>
 
@@ -145,9 +153,9 @@ UGX 0
 
 <div class="stat-card">
 
-<i class="fas fa-users"></i>
+<i class="fa-solid fa-users"></i>
 
-<h3 id="teamCount">0</h3>
+<h2 id="teamCount">0</h2>
 
 <p>Team Members</p>
 
@@ -155,9 +163,9 @@ UGX 0
 
 <div class="stat-card">
 
-<i class="fas fa-coins"></i>
+<i class="fa-solid fa-gift"></i>
 
-<h3 id="bonusBalance">UGX 0</h3>
+<h2 id="bonusBalance">UGX 0</h2>
 
 <p>Referral Bonus</p>
 
@@ -165,21 +173,23 @@ UGX 0
 
 <div class="stat-card">
 
-<i class="fas fa-chart-line"></i>
+<i class="fa-solid fa-coins"></i>
 
-<h3 id="todayIncome">UGX 0</h3>
+<h2 id="todayIncome">UGX 0</h2>
 
 <p>Today's Income</p>
 
 </div>
 
+</div>
+
 </section>
 
-   <!-- PROFILE COMPLETION -->
+<!-- PROFILE COMPLETION -->
 
 <section class="profile-completion">
 
-<div class="section-title">
+<div class="section-head">
 
 <h3>Profile Completion</h3>
 
@@ -187,15 +197,15 @@ UGX 0
 
 </div>
 
-<div class="progress">
+<div class="progress-bar">
 
 <div id="progressBar"></div>
 
 </div>
 
-<p class="section-text">
+<p>
 
-Complete your profile to unlock all Marathon Digital Hub features.
+Complete your profile to enjoy all Marathon Digital Hub services.
 
 </p>
 
@@ -205,17 +215,79 @@ Complete your profile to unlock all Marathon Digital Hub features.
 
 <section class="menu-card">
 
-<div class="menu-item" id="openReferral">
+<h3 class="section-title">Referral Centre</h3>
 
-<div>
+<div class="referral-box">
 
-<i class="fas fa-user-plus"></i>
+<label>Referral Code</label>
 
-<span>Referral Centre</span>
+<div class="copy-box">
+
+<input
+type="text"
+id="referralCode"
+readonly>
+
+<button
+id="copyReferralBtn">
+
+Copy
+
+</button>
 
 </div>
 
-<i class="fas fa-chevron-right"></i>
+</div>
+
+<div class="referral-box">
+
+<label>Referral Link</label>
+
+<div class="copy-box">
+
+<input
+type="text"
+id="referralLink"
+readonly>
+
+<button
+id="copyLinkBtn">
+
+Copy
+
+</button>
+
+</div>
+
+</div>
+
+<button
+id="shareReferralBtn"
+class="primary-btn">
+
+<i class="fa-solid fa-share-nodes"></i>
+
+Share Referral Link
+
+</button>
+
+</section>
+
+<!-- PURCHASED MACHINES -->
+
+<section class="menu-card">
+
+<div class="menu-item" id="openMachines">
+
+<div>
+
+<i class="fa-solid fa-microchip"></i>
+
+<span>Purchased Machines</span>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
 
 </div>
 
@@ -229,53 +301,77 @@ Complete your profile to unlock all Marathon Digital Hub features.
 
 <div>
 
-<i class="fas fa-id-card"></i>
+<i class="fa-solid fa-id-card"></i>
 
 <span>Automatic KYC</span>
 
 </div>
 
-<i class="fas fa-chevron-right"></i>
+<i class="fa-solid fa-chevron-right"></i>
 
 </div>
 
-</section>
+   </section>
 
-<!-- PURCHASED MACHINES -->
+  <!-- ABOUT -->
 
 <section class="menu-card">
 
-<div class="menu-item" id="openMachines">
-
-<div>
-
-<i class="fas fa-microchip"></i>
-
-<span>Purchased Machines</span>
-
-</div>
-
-<i class="fas fa-chevron-right"></i>
-
-</div>
-
-</section>
-
-<!-- ABOUT -->
-
-<section class="menu-card">
+<h3 class="section-title">Information</h3>
 
 <div class="menu-item" id="openAbout">
 
 <div>
 
-<i class="fas fa-circle-info"></i>
+<i class="fa-solid fa-circle-info"></i>
 
 <span>About Marathon Digital Hub</span>
 
 </div>
 
-<i class="fas fa-chevron-right"></i>
+<i class="fa-solid fa-chevron-right"></i>
+
+</div>
+
+<div class="menu-item" id="openFaq">
+
+<div>
+
+<i class="fa-solid fa-circle-question"></i>
+
+<span>FAQ</span>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</div>
+
+<div class="menu-item" id="openTerms">
+
+<div>
+
+<i class="fa-solid fa-file-contract"></i>
+
+<span>Terms & Conditions</span>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</div>
+
+<div class="menu-item" id="openPrivacy">
+
+<div>
+
+<i class="fa-solid fa-user-shield"></i>
+
+<span>Privacy Policy</span>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
 
 </div>
 
@@ -285,94 +381,85 @@ Complete your profile to unlock all Marathon Digital Hub features.
 
 <section class="menu-card">
 
-<div class="menu-item" id="openSettings">
+<h3 class="section-title">Settings</h3>
+
+<div class="menu-item" id="editProfile">
 
 <div>
 
-<i class="fas fa-gear"></i>
+<i class="fa-solid fa-user-pen"></i>
 
-<span>Settings</span>
-
-</div>
-
-<i class="fas fa-chevron-right"></i>
+<span>Edit Profile</span>
 
 </div>
 
-    </section>
+<i class="fa-solid fa-chevron-right"></i>
 
-    <!-- ==========================
-POPUP OVERLAY
-========================== -->
+</div>
+
+<div class="menu-item" id="changePassword">
+
+<div>
+
+<i class="fa-solid fa-lock"></i>
+
+<span>Change Password</span>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</div>
+
+<div class="menu-item logout" id="logoutBtn">
+
+<div>
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>Logout</span>
+
+</div>
+
+<i class="fa-solid fa-chevron-right"></i>
+
+</div>
+
+</section>
+
+<!-- POPUPS -->
 
 <div id="overlay" class="overlay"></div>
 
-<!-- ==========================
-ABOUT POPUP
-========================== -->
+<div id="popup" class="popup">
 
-<div id="aboutPopup" class="popup">
+<div class="popup-header">
 
-<div class="popup-content">
+<h2 id="popupTitle"></h2>
 
-<h2>About Marathon Digital Hub</h2>
+<button id="closePopup">
 
-<p id="aboutContent"></p>
+<i class="fa-solid fa-xmark"></i>
 
-<button id="closeAbout">Close</button>
+</button>
+
+</div>
+
+<div id="popupContent" class="popup-content">
 
 </div>
 
 </div>
 
-<!-- ==========================
-SETTINGS POPUP
-========================== -->
-
-<div id="settingsPopup" class="popup">
-
-<div class="popup-content">
-
-<h2>Settings</h2>
-
-<button id="editProfileBtn">
-<i class="fas fa-user-edit"></i>
-Edit Profile
-</button>
-
-<button id="changePhotoBtn">
-<i class="fas fa-camera"></i>
-Change Profile Picture
-</button>
-
-<button id="changePasswordBtn">
-<i class="fas fa-lock"></i>
-Change Password
-</button>
-
-<button id="logoutBtn">
-<i class="fas fa-right-from-bracket"></i>
-Logout
-</button>
-
-<button id="closeSettings">
-Close
-</button>
-
 </div>
 
-</div>
-
-<!-- ==========================
-BOTTOM NAVIGATION
-(SAME AS DASHBOARD)
-========================== -->
+<!-- BOTTOM NAVIGATION -->
 
 <nav class="bottom-nav">
 
 <a href="dashboard.html" class="nav-item">
 
-<i class="fas fa-home"></i>
+<i class="fa-solid fa-house"></i>
 
 <span>Home</span>
 
@@ -380,7 +467,7 @@ BOTTOM NAVIGATION
 
 <a href="machines.html" class="nav-item">
 
-<i class="fas fa-cog"></i>
+<i class="fa-solid fa-microchip"></i>
 
 <span>Machines</span>
 
@@ -388,7 +475,7 @@ BOTTOM NAVIGATION
 
 <a href="deposit.html" class="nav-item">
 
-<i class="fas fa-credit-card"></i>
+<i class="fa-solid fa-money-bill-wave"></i>
 
 <span>Deposit</span>
 
@@ -396,7 +483,7 @@ BOTTOM NAVIGATION
 
 <a href="income.html" class="nav-item">
 
-<i class="fas fa-chart-line"></i>
+<i class="fa-solid fa-chart-line"></i>
 
 <span>Income</span>
 
@@ -404,7 +491,7 @@ BOTTOM NAVIGATION
 
 <a href="profile.html" class="nav-item active">
 
-<i class="fas fa-user"></i>
+<i class="fa-solid fa-user"></i>
 
 <span>Profile</span>
 
@@ -412,11 +499,7 @@ BOTTOM NAVIGATION
 
 </nav>
 
-<!-- ==========================
-JAVASCRIPT
-========================== -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script src="supabase-config.js"></script>
 
@@ -424,4 +507,4 @@ JAVASCRIPT
 
 </body>
 
-    </html>
+   </html> 
