@@ -5,99 +5,135 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<title>My Profile | Marathon Digital Hub</title>
+<title>Profile | Marathon Digital Hub</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
 
 <link rel="stylesheet" href="profile.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 </head>
 
 <body>
 
-<div class="container">
+<!--==============================
+HEADER
+===============================-->
 
-<!-- HEADER -->
+<div class="header">
 
-<header class="top-header">
+<div class="header-left">
 
-<a href="dashboard.html" class="back-btn">
+<h2 id="userName">
 
-<i class="fa-solid fa-arrow-left"></i>
+Loading...
 
-</a>
+</h2>
 
-<h2>My Profile</h2>
+<p>
 
-<a href="notifications.html" class="notification-btn">
+Manage your Marathon Digital Hub account
 
-<i class="fa-regular fa-bell"></i>
-
-<span id="notificationCount">0</span>
-
-</a>
-
-</header>
-
-<!-- PROFILE CARD -->
-
-<section class="profile-card">
-
-<div class="cover-image"></div>
-
-<div class="profile-content">
-
-<div class="profile-photo-box">
-
-<img
-id="profilePhoto"
-src="https://placehold.co/150x150"
-alt="Profile">
-
-<input
-type="file"
-id="photoInput"
-accept="image/*"
-hidden>
-
-<button
-id="changePhoto"
-class="camera-btn">
-
-<i class="fa-solid fa-camera"></i>
-
-</button>
+</p>
 
 </div>
 
-<h2 id="userName">Loading...</h2>
+<div class="notification"
 
-<p id="userEmail">Loading...</p>
+onclick="location.href='notifications.html'">
+
+🔔
+
+<span id="notifyCount">
+
+0
+
+</span>
+
+</div>
+
+</div>
+
+<!--==============================
+PROFILE CARD
+===============================-->
+
+<div class="profile-card">
+
+<div class="profile-photo">
+
+<img
+
+id="avatar"
+
+src="https://placehold.co/200x200"
+
+alt="Profile">
+
+<button
+
+id="changePhoto">
+
+📷
+
+</button>
+
+<input
+
+type="file"
+
+id="photoInput"
+
+accept="image/*"
+
+hidden>
+
+</div>
+
+<div class="profile-info">
+
+<h2 id="fullName">
+
+Loading...
+
+</h2>
+
+<p id="email">
+
+Loading...
+
+</p>
 
 <div class="badges">
 
 <span
-id="memberType"
-class="badge membership">
+
+class="badge membership"
+
+id="membership">
 
 Standard
 
 </span>
 
 <span
-id="verifyBadge"
-class="badge verified">
+
+class="badge kyc"
+
+id="kycStatus">
 
 Not Verified
 
 </span>
 
 <span
-id="accountStatus"
-class="badge active">
+
+class="badge status"
+
+id="accountStatus">
 
 Active
 
@@ -107,339 +143,278 @@ Active
 
 </div>
 
-</section>
+</div>
 
-<!-- WALLET -->
+<!--==============================
+WALLET CARD
+===============================-->
 
-<section class="wallet-card">
+<div class="wallet-card">
 
 <div>
 
-<p>Wallet Balance</p>
+<p>
 
-<h1 id="walletBalance">
+Wallet Balance
+
+</p>
+
+<h2 id="walletBalance">
 
 UGX 0
 
-</h1>
+</h2>
 
 </div>
 
-<div class="wallet-icon">
-
-<i class="fa-solid fa-wallet"></i>
-
 </div>
 
-</section>
-
-  <!-- STATISTICS -->
-
-<section class="stats-section">
-
-<h3 class="section-title">Statistics</h3>
+  <!--==============================
+STATISTICS
+===============================-->
 
 <div class="stats-grid">
 
 <div class="stat-card">
 
-<i class="fa-solid fa-microchip"></i>
-
-<h2 id="machineCount">0</h2>
+<div class="stat-icon">⚙️</div>
 
 <p>Active Machines</p>
 
+<h2 id="activeMachines">0</h2>
+
 </div>
 
 <div class="stat-card">
 
-<i class="fa-solid fa-users"></i>
-
-<h2 id="teamCount">0</h2>
+<div class="stat-icon">👥</div>
 
 <p>Team Members</p>
 
+<h2 id="teamMembers">0</h2>
+
 </div>
 
 <div class="stat-card">
 
-<i class="fa-solid fa-gift"></i>
-
-<h2 id="bonusBalance">UGX 0</h2>
+<div class="stat-icon">🎁</div>
 
 <p>Referral Bonus</p>
 
+<h2 id="referralBonus">
+
+UGX 0
+
+</h2>
+
 </div>
 
 <div class="stat-card">
 
-<i class="fa-solid fa-coins"></i>
+<div class="stat-icon">🔔</div>
 
-<h2 id="todayIncome">UGX 0</h2>
+<p>Notifications</p>
 
-<p>Today's Income</p>
+<h2 id="notificationCount">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+<!--==============================
+REFERRAL CENTER
+===============================-->
+
+<div class="section-card">
+
+<h3>
+
+Referral Centre
+
+</h3>
+
+<label>
+
+Referral Code
+
+</label>
+
+<div class="input-group">
+
+<input
+
+type="text"
+
+id="referralCode"
+
+readonly>
+
+<button id="copyReferral">
+
+Copy
+
+</button>
+
+</div>
+
+<label>
+
+Referral Link
+
+</label>
+
+<div class="input-group">
+
+<input
+
+type="text"
+
+id="referralLink"
+
+readonly>
+
+<button id="shareReferral">
+
+Share
+
+</button>
 
 </div>
 
 </div>
 
-</section>
+<!--==============================
+SUSPENDED ACCOUNT
+Hidden unless account is suspended
+===============================-->
 
-<!-- PROFILE COMPLETION -->
+<div
 
-<section class="profile-completion">
+id="suspensionCard"
 
-<div class="section-head">
+class="section-card"
 
-<h3>Profile Completion</h3>
+style="display:none;">
 
-<span id="completionPercent">0%</span>
+<h3>
 
-</div>
+🚫 Account Suspended
 
-<div class="progress-bar">
-
-<div id="progressBar"></div>
-
-</div>
+</h3>
 
 <p>
 
-Complete your profile to enjoy all Marathon Digital Hub services.
+Your account has been temporarily suspended.
+
+Some features have been disabled.
+
+Please contact support if you believe this is an error.
 
 </p>
 
-</section>
+  </div>
 
-<!-- REFERRAL CENTRE -->
+  <!--==============================
+MENU
+===============================-->
 
-<section class="menu-card">
+<div class="menu-list">
 
-<h3 class="section-title">Referral Centre</h3>
+<div class="menu-item" id="aboutBtn">
 
-<div class="referral-box">
+<div class="menu-left">
 
-<label>Referral Code</label>
-
-<div class="copy-box">
-
-<input
-type="text"
-id="referralCode"
-readonly>
-
-<button
-id="copyReferralBtn">
-
-Copy
-
-</button>
-
-</div>
-
-</div>
-
-<div class="referral-box">
-
-<label>Referral Link</label>
-
-<div class="copy-box">
-
-<input
-type="text"
-id="referralLink"
-readonly>
-
-<button
-id="copyLinkBtn">
-
-Copy
-
-</button>
-
-</div>
-
-</div>
-
-<button
-id="shareReferralBtn"
-class="primary-btn">
-
-<i class="fa-solid fa-share-nodes"></i>
-
-Share Referral Link
-
-</button>
-
-</section>
-
-<!-- PURCHASED MACHINES -->
-
-<section class="menu-card">
-
-<div class="menu-item" id="openMachines">
-
-<div>
-
-<i class="fa-solid fa-microchip"></i>
-
-<span>Purchased Machines</span>
-
-</div>
-
-<i class="fa-solid fa-chevron-right"></i>
-
-</div>
-
-</section>
-
-<!-- AUTOMATIC KYC -->
-
-<section class="menu-card">
-
-<div class="menu-item" id="openKyc">
-
-<div>
-
-<i class="fa-solid fa-id-card"></i>
-
-<span>Automatic KYC</span>
-
-</div>
-
-<i class="fa-solid fa-chevron-right"></i>
-
-</div>
-
-   </section>
-
-  <!-- ABOUT -->
-
-<section class="menu-card">
-
-<h3 class="section-title">Information</h3>
-
-<div class="menu-item" id="openAbout">
-
-<div>
-
-<i class="fa-solid fa-circle-info"></i>
+<span>ℹ️</span>
 
 <span>About Marathon Digital Hub</span>
 
 </div>
 
-<i class="fa-solid fa-chevron-right"></i>
+<span>›</span>
 
 </div>
 
-<div class="menu-item" id="openFaq">
+<div class="menu-item" id="faqBtn">
 
-<div>
+<div class="menu-left">
 
-<i class="fa-solid fa-circle-question"></i>
+<span>❓</span>
 
 <span>FAQ</span>
 
 </div>
 
-<i class="fa-solid fa-chevron-right"></i>
+<span>›</span>
 
 </div>
 
-<div class="menu-item" id="openTerms">
+<div class="menu-item" id="termsBtn">
 
-<div>
+<div class="menu-left">
 
-<i class="fa-solid fa-file-contract"></i>
+<span>📄</span>
 
 <span>Terms & Conditions</span>
 
 </div>
 
-<i class="fa-solid fa-chevron-right"></i>
+<span>›</span>
 
 </div>
 
-<div class="menu-item" id="openPrivacy">
+<div class="menu-item" id="privacyBtn">
 
-<div>
+<div class="menu-left">
 
-<i class="fa-solid fa-user-shield"></i>
+<span>🔒</span>
 
 <span>Privacy Policy</span>
 
 </div>
 
-<i class="fa-solid fa-chevron-right"></i>
-
-</div>
-
-</section>
-
-<!-- SETTINGS -->
-
-<section class="menu-card">
-
-<h3 class="section-title">Settings</h3>
-
-<div class="menu-item" id="editProfile">
-
-<div>
-
-<i class="fa-solid fa-user-pen"></i>
-
-<span>Edit Profile</span>
-
-</div>
-
-<i class="fa-solid fa-chevron-right"></i>
-
-</div>
-
-<div class="menu-item" id="changePassword">
-
-<div>
-
-<i class="fa-solid fa-lock"></i>
-
-<span>Change Password</span>
-
-</div>
-
-<i class="fa-solid fa-chevron-right"></i>
+<span>›</span>
 
 </div>
 
 <div class="menu-item logout" id="logoutBtn">
 
-<div>
+<div class="menu-left">
 
-<i class="fa-solid fa-right-from-bracket"></i>
+<span>🚪</span>
 
 <span>Logout</span>
 
 </div>
 
-<i class="fa-solid fa-chevron-right"></i>
+<span>›</span>
 
 </div>
 
-</section>
+</div>
 
-<!-- POPUPS -->
+<!--==============================
+POPUP
+===============================-->
 
-<div id="overlay" class="overlay"></div>
+<div id="popupOverlay" class="popup-overlay">
 
-<div id="popup" class="popup">
+<div class="popup-box">
 
 <div class="popup-header">
 
-<h2 id="popupTitle"></h2>
+<h3 id="popupTitle">
+
+Title
+
+</h3>
 
 <button id="closePopup">
 
-<i class="fa-solid fa-xmark"></i>
+✕
 
 </button>
 
@@ -453,58 +428,56 @@ Share Referral Link
 
 </div>
 
-<!-- BOTTOM NAVIGATION -->
+<!--==============================
+BOTTOM NAVIGATION
+===============================-->
 
-<nav class="bottom-nav">
+<div class="bottom-nav">
 
-<a href="dashboard.html" class="nav-item">
+<a href="dashboard.html">
 
-<i class="fa-solid fa-house"></i>
+<i>🏠</i>
 
 <span>Home</span>
 
 </a>
 
-<a href="machines.html" class="nav-item">
+<a href="machines.html">
 
-<i class="fa-solid fa-microchip"></i>
+<i>⚙️</i>
 
 <span>Machines</span>
 
 </a>
 
-<a href="deposit.html" class="nav-item">
+<a href="deposit.html">
 
-<i class="fa-solid fa-money-bill-wave"></i>
+<i>💳</i>
 
 <span>Deposit</span>
 
 </a>
 
-<a href="income.html" class="nav-item">
+<a href="income.html">
 
-<i class="fa-solid fa-chart-line"></i>
+<i>📈</i>
 
 <span>Income</span>
 
 </a>
 
-<a href="profile.html" class="nav-item active">
+<a href="profile.html" class="active">
 
-<i class="fa-solid fa-user"></i>
+<i>👤</i>
 
 <span>Profile</span>
 
 </a>
 
-</nav>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="supabase-config.js"></script>
+</div>
 
 <script src="profile.js"></script>
 
 </body>
 
-   </html> 
+  </html>
