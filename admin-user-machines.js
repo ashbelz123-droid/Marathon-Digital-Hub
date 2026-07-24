@@ -1,407 +1,312 @@
-/* ==========================================
-SUPABASE
-========================================== */
+/* =====================================================
+   USER MACHINES ADMIN
+   Marathon Digital Hub
+===================================================== */
 
 const db = window.supabaseClient;
 
+/* ===========================
+PAGE SECURITY
+=========================== */
+
+if (localStorage.getItem("admin_logged_in") !== "true") {
+    window.location.href = "admin-login.html";
+}
+
+/* ===========================
+GLOBAL DATA
+=========================== */
+
+let allProfiles = [];
 let allMachines = [];
+let allUserMachines = [];
+
+let filteredMachines = [];
+
+let currentFilter = "all";
 let selectedMachine = null;
 
-/* ==========================================
+/* ===========================
 START PAGE
-========================================== */
+=========================== */
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-    document.getElementById("loadingScreen").style.display = "flex";
+    await loadEverything();
 
-    try{
-
-        await loadUserMachines();
-
-        registerEvents();
-
-    }catch(error){
-
-        console.error(error);
-
-        alert("Failed to load user machines.");
-
-    }
-
-    document.getElementById("loadingScreen").style.display = "none";
+    registerEvents();
 
 });
 
-/* ==========================================
-LOAD USER MACHINES
-========================================== */
+/* ===========================
+LOAD EVERYTHING
+=========================== */
 
-async function loadUserMachines(){
+async function loadEverything() {
+
+    try {
+
+        showLoading();
+
+        await Promise.all([
+
+            loadProfiles(),
+            loadMachines(),
+            loadUserMachines()
+
+        ]);
+
+        calculateStatistics();
+
+        renderMachineTable();
+
+        hideLoading();
+
+    } catch (err) {
+
+        console.error(err);
+
+        hideLoading();
+
+        alert("Failed to load dashboard.");
+
+    }
+
+}
+
+/* ===========================
+LOAD PROFILES
+=========================== */
+
+async function loadProfiles() {
 
     const { data, error } = await db
 
-    .from("user_machines")
+        .from("profiles")
 
-    .select(`
-        *,
-        profiles(
-            fullname,
-            email,
-            phone,
-            wallet_balance,
-            membership,
-            account_status,
-            total_invested,
-            total_profit
-        ),
-        machines(
-            name,
-            series,
-            price,
-            daily_income,
-            total_return,
-            duration_days
-        )
-    `)
+        .select("*")
 
-    .order("purchase_date",{ascending:false});
+        .order("created_at", { ascending: false });
 
-    if(error){
+    if (error) throw error;
 
-        console.error(error);
+    allProfiles = data || [];
 
-        return;
+}
 
-    }
+/* ===========================
+LOAD MACHINES
+=========================== */
+
+async function loadMachines() {
+
+    const { data, error } = await db
+
+        .from("machines")
+
+        .select("*")
+
+        .order("created_at", { ascending: false });
+
+    if (error) throw error;
 
     allMachines = data || [];
 
-    updateStatistics();
+}
 
-    renderMachines(allMachines);
+/* ===========================
+LOAD USER MACHINES
+=========================== */
+
+async function loadUserMachines() {
+
+    const { data, error } = await db
+
+        .from("user_machines")
+
+        .select("*")
+
+        .order("purchase_date", { ascending: false });
+
+    if (error) throw error;
+
+    allUserMachines = data || [];
+
+    filteredMachines = [...allUserMachines];
+
+                }
+
+/* ==========================================
+CALCULATE DASHBOARD STATISTICS
+========================================== */
+
+function calculateStatistics(){
+
+document.getElementById("totalMachines").textContent =
+allUserMachines.length;
+
+document.getElementById("activeMachines").textContent =
+allUserMachines.filter(x=>x.status==="active").length;
+
+document.getElementById("vipMachines").textContent =
+allUserMachines.filter(x=>x.is_vip===true).length;
+
+document.getElementById("expiredMachines").textContent =
+allUserMachines.filter(x=>x.status==="expired").length;
+
+document.getElementById("completedMachines").textContent =
+allUserMachines.filter(x=>x.completed===true).length;
+
+let invested=0;
+let earned=0;
+let todayProfit=0;
+
+allUserMachines.forEach(machine=>{
+
+invested+=Number(machine.amount_paid||0);
+
+earned+=Number(machine.earned_amount||0);
+
+todayProfit+=Number(machine.today_profit||0);
+
+});
+
+document.getElementById("totalInvestment").textContent=
+"UGX "+invested.toLocaleString();
+
+document.getElementById("totalEarned").textContent=
+"UGX "+earned.toLocaleString();
+
+document.getElementById("todayProfit").textContent=
+"UGX "+todayProfit.toLocaleString();
 
 }
 
 /* ==========================================
-STATISTICS
+RENDER TABLE
 ========================================== */
 
-function updateStatistics(){
+function renderMachineTable(){
 
-    document.getElementById("totalMachines").textContent =
-    allMachines.length;
+const tbody=document.getElementById("machinesBody");
 
-    document.getElementById("activeMachines").textContent =
-    allMachines.filter(m=>m.status==="active").length;
+tbody.innerHTML="";
 
-    document.getElementById("vipMachines").textContent =
-    allMachines.filter(m=>m.is_vip).length;
+if(filteredMachines.length===0){
 
-    const today = new Date();
+tbody.innerHTML=`
+<tr>
+<td colspan="12" class="loading">
+No user machines found.
+</td>
+</tr>
+`;
 
-    document.getElementById("expiredMachines").textContent =
-    allMachines.filter(m=>{
-
-        if(!m.expiry_date) return false;
-
-        return new Date(m.expiry_date) < today;
-
-    }).length;
+return;
 
 }
 
-/* ==========================================
-RENDER MACHINE CARDS
-========================================== */
+filteredMachines.forEach(userMachine=>{
 
-function renderMachines(list){
+const user=allProfiles.find(
+x=>x.id===userMachine.user_id
+);
 
-    const container =
-    document.getElementById("machineList");
+const machine=allMachines.find(
+x=>x.id===userMachine.machine_id
+);
 
-    container.innerHTML="";
+tbody.innerHTML+=`
 
-    if(list.length===0){
+<tr>
 
-        document.getElementById("emptyState").style.display="block";
+<td>
 
-        return;
+<b>${user?.fullname||"Unknown User"}</b><br>
 
-    }
+<small>${user?.phone||""}</small>
 
-    document.getElementById("emptyState").style.display="none";
+</td>
 
-    list.forEach(machine=>{
+<td>
 
-        container.innerHTML += createMachineCard(machine);
+${machine?.name||"-"}
 
-    });
+</td>
 
-}
+<td>
 
-/* ==========================================
-CREATE MACHINE CARD
-========================================== */
+${machine?.series||"-"}
 
-function createMachineCard(machine){
+</td>
 
-const profile = machine.profiles || {};
-const info = machine.machines || {};
+<td>
 
-const wallet =
-Number(profile.wallet_balance || 0).toLocaleString();
+UGX ${(userMachine.amount_paid||0).toLocaleString()}
 
-const earned =
-Number(machine.earned_amount || 0).toLocaleString();
+</td>
 
-const vipBadge =
-machine.is_vip
-? `<span class="badge vip">VIP</span>`
-: "";
+<td>
 
-let statusBadge="";
+UGX ${(machine?.daily_income||0).toLocaleString()}
 
-if(machine.status==="active"){
+</td>
 
-statusBadge =
-`<span class="badge active">ACTIVE</span>`;
+<td>
 
-}else{
+UGX ${(userMachine.earned_amount||0).toLocaleString()}
 
-statusBadge =
-`<span class="badge disabled">DISABLED</span>`;
+</td>
 
-}
+<td>
 
-return `
+${machine?.duration_days||0} Days
 
-<div class="machine-card">
+</td>
 
-<div class="machine-top">
+<td>
 
-<div>
+${formatDate(userMachine.purchase_date)}
 
-<div class="user-name">
+</td>
 
-${profile.fullname || "Unknown User"}
+<td>
 
-</div>
+${formatDate(userMachine.expiry_date)}
 
-<div class="user-email">
+</td>
 
-${profile.email || ""}
+<td>
 
-</div>
+${statusBadge(userMachine.status)}
 
-</div>
+</td>
 
-<div class="wallet-balance">
+<td>
 
-UGX ${wallet}
+${userMachine.is_vip
+?'<span class="badge badge-vip">VIP</span>'
+:'-'}
 
-</div>
+</td>
 
-</div>
+<td>
 
-<div class="machine-grid">
+<button onclick="viewMachine('${userMachine.id}')">
 
-<div class="machine-item">
-
-<span>Machine</span>
-
-<strong>
-
-${info.name || machine.machine_name || "-"}
-
-</strong>
-
-</div>
-
-<div class="machine-item">
-
-<span>Series</span>
-
-<strong>
-
-${info.series || "-"}
-
-</strong>
-
-</div>
-
-<div class="machine-item">
-
-<span>Daily Income</span>
-
-<strong>
-
-UGX ${Number(info.daily_income||0).toLocaleString()}
-
-</strong>
-
-</div>
-
-<div class="machine-item">
-
-<span>Earned</span>
-
-<strong>
-
-UGX ${earned}
-
-</strong>
-
-</div>
-
-<div class="machine-item">
-
-<span>Purchase Date</span>
-
-<strong>
-
-${formatDate(machine.purchase_date)}
-
-</strong>
-
-</div>
-
-<div class="machine-item">
-
-<span>Expiry Date</span>
-
-<strong>
-
-${formatDate(machine.expiry_date)}
-
-</strong>
-
-</div>
-
-</div>
-
-<div class="badges">
-
-${statusBadge}
-
-${vipBadge}
-
-</div>
-
-<button
-
-class="view-btn"
-
-onclick="openMachine('${machine.id}')">
-
-View Details
+View
 
 </button>
 
-</div>
+</td>
+
+</tr>
 
 `;
 
-}
-
-/* ==========================================
-OPEN MACHINE
-========================================== */
-
-function openMachine(id){
-
-selectedMachine =
-allMachines.find(item=>item.id===id);
-
-if(!selectedMachine) return;
-
-const profile =
-selectedMachine.profiles || {};
-
-const info =
-selectedMachine.machines || {};
-
-/* USER */
-
-document.getElementById("detailName").textContent =
-profile.fullname || "-";
-
-document.getElementById("detailEmail").textContent =
-profile.email || "-";
-
-document.getElementById("detailPhone").textContent =
-profile.phone || "-";
-
-document.getElementById("detailMembership").textContent =
-profile.membership || "-";
-
-document.getElementById("detailStatus").textContent =
-profile.account_status || "-";
-
-document.getElementById("detailWallet").textContent =
-"UGX " +
-Number(profile.wallet_balance||0).toLocaleString();
-
-document.getElementById("detailInvested").textContent =
-"UGX " +
-Number(profile.total_invested||0).toLocaleString();
-
-document.getElementById("detailProfit").textContent =
-"UGX " +
-Number(profile.total_profit||0).toLocaleString();
-
-/* MACHINE */
-
-document.getElementById("detailMachine").textContent =
-info.name || selectedMachine.machine_name;
-
-document.getElementById("detailSeries").textContent =
-info.series || "-";
-
-document.getElementById("detailPrice").textContent =
-"UGX " +
-Number(info.price||0).toLocaleString();
-
-document.getElementById("detailDailyIncome").textContent =
-"UGX " +
-Number(info.daily_income||0).toLocaleString();
-
-document.getElementById("detailReturn").textContent =
-"UGX " +
-Number(info.total_return||0).toLocaleString();
-
-document.getElementById("detailEarned").textContent =
-"UGX " +
-Number(selectedMachine.earned_amount||0).toLocaleString();
-
-document.getElementById("detailPurchaseDate").textContent =
-formatDate(selectedMachine.purchase_date);
-
-document.getElementById("detailExpiryDate").textContent =
-formatDate(selectedMachine.expiry_date);
-
-document.getElementById("detailVip").textContent =
-selectedMachine.is_vip ? "VIP" : "No";
-
-document.getElementById("detailMachineStatus").textContent =
-selectedMachine.status;
-
-document.getElementById("machineModal").style.display =
-"flex";
-
-loadFinanceHistory();
+});
 
 }
-
-/* ==========================================
-CLOSE MODAL
-========================================== */
-
-document.getElementById("closeModal").onclick=()=>{
-
-document.getElementById("machineModal").style.display="none";
-
-};
 
 /* ==========================================
 DATE FORMAT
@@ -416,235 +321,174 @@ return new Date(date).toLocaleDateString();
 }
 
 /* ==========================================
-LOAD FINANCIAL RECORD
+STATUS BADGE
 ========================================== */
 
-async function loadFinanceHistory(){
+function statusBadge(status){
 
-if(!selectedMachine) return;
+if(status==="active"){
 
-const container =
-document.getElementById("financeHistory");
+return `<span class="badge badge-active">
+ACTIVE
+</span>`;
 
-container.innerHTML =
-"<div class='finance-row'><span colspan='4'>Loading...</span></div>";
+}
 
-let html = "";
+if(status==="expired"){
 
-/* Deposit Record */
+return `<span class="badge badge-expired">
+EXPIRED
+</span>`;
 
-const {data:deposits} = await db
-.from("deposits")
-.select("*")
-.eq("user_id",selectedMachine.user_id)
-.order("created_at",{ascending:false});
+}
 
-if(deposits){
+return `<span class="badge">
+${status||"-"}
+</span>`;
 
-deposits.forEach(item=>{
+                        }
 
-html += `
-<div class="finance-row">
+/* ==========================================
+REGISTER EVENTS
+========================================== */
 
-<span>${formatDate(item.created_at)}</span>
+function registerEvents(){
 
-<span>Deposit</span>
+document.getElementById("searchInput")
+.addEventListener("input",searchMachines);
 
-<span>
-UGX ${Number(item.amount).toLocaleString()}
-</span>
+document.getElementById("refreshBtn")
+.addEventListener("click",loadEverything);
 
-<span>${item.status}</span>
+document.querySelectorAll(".filter").forEach(btn=>{
 
-</div>
-`;
+btn.addEventListener("click",()=>{
+
+document.querySelectorAll(".filter")
+.forEach(x=>x.classList.remove("active"));
+
+btn.classList.add("active");
+
+currentFilter=btn.dataset.filter;
+
+searchMachines();
 
 });
 
-}
-
-/* Wallet Transactions */
-
-const {data:wallet} = await db
-.from("wallet_transactions")
-.select("*")
-.eq("user_id",selectedMachine.user_id)
-.order("created_at",{ascending:false});
-
-if(wallet){
-
-wallet.forEach(item=>{
-
-html += `
-<div class="finance-row">
-
-<span>${formatDate(item.created_at)}</span>
-
-<span>${item.type}</span>
-
-<span>
-UGX ${Number(item.amount).toLocaleString()}
-</span>
-
-<span>${item.status}</span>
-
-</div>
-`;
-
 });
 
-}
+document.getElementById("closeModal").onclick=()=>{
 
-if(html===""){
+document.getElementById("machineModal").style.display="none";
 
-html=`
-<div class="finance-row">
-
-<span>No Records</span>
-
-<span>-</span>
-
-<span>-</span>
-
-<span>-</span>
-
-</div>
-`;
-
-}
-
-container.innerHTML = html;
+};
 
 }
 
 /* ==========================================
-SEARCH
+SEARCH + FILTER
 ========================================== */
 
-document
-.getElementById("searchInput")
-.addEventListener("input",filterMachines);
+function searchMachines(){
 
-document
-.getElementById("statusFilter")
-.addEventListener("change",filterMachines);
-
-function filterMachines(){
-
-const search =
-document
+const keyword=document
 .getElementById("searchInput")
 .value
 .toLowerCase();
 
-const filter =
-document
-.getElementById("statusFilter")
-.value;
+filteredMachines=allUserMachines.filter(machine=>{
 
-const results =
-allMachines.filter(machine=>{
+const profile=allProfiles.find(
+x=>x.id===machine.user_id
+);
 
-const profile =
-machine.profiles || {};
+const plan=allMachines.find(
+x=>x.id===machine.machine_id
+);
 
-const info =
-machine.machines || {};
+const text=`
 
-const matchSearch =
+${profile?.fullname||""}
+${profile?.phone||""}
+${profile?.email||""}
+${plan?.name||""}
+${plan?.series||""}
 
-(profile.fullname || "")
-.toLowerCase()
-.includes(search)
+`.toLowerCase();
 
-||
+let filterOk=true;
 
-(profile.email || "")
-.toLowerCase()
-.includes(search)
+if(currentFilter==="active")
+filterOk=machine.status==="active";
 
-||
+if(currentFilter==="expired")
+filterOk=machine.status==="expired";
 
-(info.name || "")
-.toLowerCase()
-.includes(search);
+if(currentFilter==="vip")
+filterOk=machine.is_vip===true;
 
-let matchFilter = true;
+if(currentFilter==="completed")
+filterOk=machine.completed===true;
 
-if(filter==="active"){
-
-matchFilter =
-machine.status==="active";
-
-}
-
-if(filter==="disabled"){
-
-matchFilter =
-machine.status!=="active";
-
-}
-
-if(filter==="vip"){
-
-matchFilter =
-machine.is_vip;
-
-}
-
-if(filter==="expired"){
-
-matchFilter =
-new Date(machine.expiry_date)
-<
-new Date();
-
-}
-
-return matchSearch && matchFilter;
+return text.includes(keyword) && filterOk;
 
 });
 
-renderMachines(results);
+renderMachineTable();
 
 }
 
 /* ==========================================
-REFRESH
+VIEW MACHINE
 ========================================== */
 
-document
-.getElementById("refreshBtn")
-.onclick = async ()=>{
+function viewMachine(id){
 
-document
-.getElementById("loadingScreen")
-.style.display="flex";
+selectedMachine=allUserMachines.find(
+x=>x.id===id
+);
 
-await loadUserMachines();
+if(!selectedMachine)return;
 
-document
-.getElementById("loadingScreen")
-.style.display="none";
+const user=allProfiles.find(
+x=>x.id===selectedMachine.user_id
+);
 
-};
+const machine=allMachines.find(
+x=>x.id===selectedMachine.machine_id
+);
+
+document.getElementById("viewFullname").textContent=user?.fullname||"-";
+document.getElementById("viewPhone").textContent=user?.phone||"-";
+document.getElementById("viewEmail").textContent=user?.email||"-";
+document.getElementById("viewWallet").textContent="UGX "+Number(user?.wallet_balance||0).toLocaleString();
+
+document.getElementById("viewMachineName").textContent=machine?.name||"-";
+document.getElementById("viewSeries").textContent=machine?.series||"-";
+document.getElementById("viewPrice").textContent="UGX "+Number(selectedMachine.amount_paid||0).toLocaleString();
+document.getElementById("viewDailyIncome").textContent="UGX "+Number(machine?.daily_income||0).toLocaleString();
+document.getElementById("viewEarned").textContent="UGX "+Number(selectedMachine.earned_amount||0).toLocaleString();
+
+document.getElementById("machineModal").style.display="flex";
+
+}
 
 /* ==========================================
 DELETE MACHINE
 ========================================== */
 
-document
-.getElementById("deleteBtn")
-.onclick = async ()=>{
+async function deleteMachine(){
 
-if(!selectedMachine) return;
+if(!selectedMachine)return;
 
-if(!confirm("Delete this machine?"))
-return;
+if(!confirm("Delete this machine?")) return;
 
-const {error} = await db
+const {error}=await db
+
 .from("user_machines")
+
 .delete()
+
 .eq("id",selectedMachine.id);
 
 if(error){
@@ -655,116 +499,106 @@ return;
 
 }
 
-document
-.getElementById("machineModal")
-.style.display="none";
+document.getElementById("machineModal").style.display="none";
 
-await loadUserMachines();
+await loadEverything();
 
-};
+}
 
 /* ==========================================
-ENABLE / DISABLE
+ACTIVATE
 ========================================== */
 
-document
-.getElementById("toggleBtn")
-.onclick = async ()=>{
+async function activateMachine(){
 
-if(!selectedMachine) return;
+await db
 
-const newStatus =
-selectedMachine.status==="active"
-?
-"disabled"
-:
-"active";
-
-const {error} = await db
 .from("user_machines")
-.update({
-status:newStatus
-})
+
+.update({status:"active"})
+
 .eq("id",selectedMachine.id);
 
-if(error){
-
-alert(error.message);
-
-return;
+await loadEverything();
 
 }
 
-selectedMachine.status =
-newStatus;
-
-openMachine(selectedMachine.id);
-
-await loadUserMachines();
-
-};
-
 /* ==========================================
-PLACEHOLDER BUTTONS
+SUSPEND
 ========================================== */
 
-document
-.getElementById("editWalletBtn")
-.onclick = ()=>{
+async function suspendMachine(){
 
-alert("Wallet editor will be added.");
+await db
 
-};
+.from("user_machines")
 
-document
-.getElementById("editMachineBtn")
-.onclick = ()=>{
+.update({status:"suspended"})
 
-alert("Machine editor will be added.");
+.eq("id",selectedMachine.id);
 
-};
-
-document
-.getElementById("extendBtn")
-.onclick = ()=>{
-
-alert("Duration editor will be added.");
-
-};
-
-document
-.getElementById("incomeBtn")
-.onclick = ()=>{
-
-alert("Daily income editor will be added.");
-
-};
-
-document
-.getElementById("earnedBtn")
-.onclick = ()=>{
-
-alert("Earned amount editor will be added.");
-
-};
-
-/* ==========================================
-CLICK OUTSIDE MODAL
-========================================== */
-
-window.onclick = (event)=>{
-
-const modal =
-document.getElementById("machineModal");
-
-if(event.target===modal){
-
-modal.style.display="none";
+await loadEverything();
 
 }
 
-};
+/* ==========================================
+VIP
+========================================== */
+
+async function vipMachine(){
+
+await db
+
+.from("user_machines")
+
+.update({
+
+is_vip:!selectedMachine.is_vip
+
+})
+
+.eq("id",selectedMachine.id);
+
+await loadEverything();
+
+}
 
 /* ==========================================
-END
+BUTTONS
 ========================================== */
+
+document.getElementById("activateMachineBtn")
+.onclick=activateMachine;
+
+document.getElementById("suspendMachineBtn")
+.onclick=suspendMachine;
+
+document.getElementById("vipMachineBtn")
+.onclick=vipMachine;
+
+document.getElementById("deleteMachineBtn")
+.onclick=deleteMachine;
+
+/* ==========================================
+AUTO REFRESH
+========================================== */
+
+setInterval(loadEverything,30000);
+
+/* ==========================================
+LOADING
+========================================== */
+
+function showLoading(){
+
+document.getElementById("machinesBody").innerHTML=
+
+`<tr>
+<td colspan="12" class="loading">
+Loading...
+</td>
+</tr>`;
+
+}
+
+function hideLoading(){}
