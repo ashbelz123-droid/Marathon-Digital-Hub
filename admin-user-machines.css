@@ -1,0 +1,652 @@
+/* ==========================================
+ROOT
+========================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+:root{
+
+--bg:#07162B;
+--card:#0D1F3A;
+--primary:#00C853;
+--secondary:#00B0FF;
+--text:#ffffff;
+--muted:#9fb5d1;
+--danger:#ff4d4f;
+--border:rgba(255,255,255,.08);
+
+}
+
+body{
+
+background:var(--bg);
+color:var(--text);
+padding:18px;
+padding-bottom:100px;
+
+}
+
+/* ==========================================
+HEADER
+========================================== */
+
+.header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+
+}
+
+.header-left h2{
+
+font-size:28px;
+font-weight:bold;
+color:#fff;
+
+}
+
+.header-left p{
+
+margin-top:6px;
+font-size:14px;
+color:var(--muted);
+
+}
+
+.refresh-btn{
+
+border:none;
+outline:none;
+background:linear-gradient(135deg,var(--secondary),var(--primary));
+color:#fff;
+padding:12px 18px;
+border-radius:12px;
+font-size:14px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+
+}
+
+.refresh-btn:hover{
+
+transform:scale(1.05);
+
+}
+
+/* ==========================================
+STATISTICS
+========================================== */
+
+.stats-grid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-bottom:20px;
+
+}
+
+.stat-card{
+
+background:var(--card);
+border-radius:18px;
+padding:18px;
+border:1px solid var(--border);
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+}
+
+.stat-title{
+
+display:block;
+font-size:13px;
+color:var(--muted);
+margin-bottom:10px;
+
+}
+
+.stat-card h2{
+
+font-size:26px;
+color:var(--primary);
+
+}
+
+/* ==========================================
+SEARCH
+========================================== */
+
+.search-box{
+
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-bottom:20px;
+
+}
+
+.search-box input,
+.search-box select{
+
+width:100%;
+padding:14px;
+border:none;
+outline:none;
+border-radius:14px;
+background:var(--card);
+color:#fff;
+font-size:15px;
+border:1px solid var(--border);
+
+}
+
+.search-box input::placeholder{
+
+color:var(--muted);
+
+}
+
+/* ==========================================
+USER MACHINE LIST
+========================================== */
+
+.machine-list{
+
+display:flex;
+flex-direction:column;
+gap:18px;
+
+}
+
+.machine-card{
+
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+padding:18px;
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+transition:.3s;
+
+}
+
+.machine-card:hover{
+
+transform:translateY(-4px);
+
+}
+
+.machine-top{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+
+}
+
+.user-name{
+
+font-size:18px;
+font-weight:bold;
+color:#fff;
+
+}
+
+.user-email{
+
+font-size:13px;
+color:var(--muted);
+margin-top:4px;
+
+}
+
+.wallet-balance{
+
+font-size:18px;
+font-weight:bold;
+color:var(--primary);
+
+}
+
+/* ==========================================
+MACHINE DETAILS GRID
+========================================== */
+
+.machine-grid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:15px;
+
+}
+
+.machine-item{
+
+background:#11284d;
+border-radius:12px;
+padding:12px;
+
+}
+
+.machine-item span{
+
+display:block;
+font-size:12px;
+color:var(--muted);
+margin-bottom:6px;
+
+}
+
+.machine-item strong{
+
+font-size:15px;
+color:#fff;
+
+}
+
+/* ==========================================
+BADGES
+========================================== */
+
+.badges{
+
+display:flex;
+gap:10px;
+margin-top:15px;
+flex-wrap:wrap;
+
+}
+
+.badge{
+
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+
+}
+
+.badge.active{
+
+background:rgba(0,200,83,.15);
+color:#00C853;
+
+}
+
+.badge.disabled{
+
+background:rgba(255,77,79,.15);
+color:#ff4d4f;
+
+}
+
+.badge.vip{
+
+background:rgba(0,176,255,.15);
+color:#00B0FF;
+
+}
+
+.badge.expired{
+
+background:rgba(255,170,0,.15);
+color:#ffaa00;
+
+}
+
+/* ==========================================
+VIEW BUTTON
+========================================== */
+
+.view-btn{
+
+width:100%;
+margin-top:18px;
+padding:14px;
+border:none;
+border-radius:14px;
+background:linear-gradient(135deg,var(--secondary),var(--primary));
+color:#fff;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+
+}
+
+.view-btn:hover{
+
+transform:scale(1.02);
+
+}
+
+/* ==========================================
+MODAL
+========================================== */
+
+.modal{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.75);
+display:none;
+justify-content:center;
+align-items:center;
+padding:15px;
+z-index:9999;
+
+}
+
+.modal-content{
+
+width:100%;
+max-width:700px;
+max-height:92vh;
+overflow-y:auto;
+background:var(--card);
+border-radius:20px;
+padding:20px;
+border:1px solid var(--border);
+
+}
+
+.modal-header{
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+
+}
+
+.modal-header h2{
+
+font-size:22px;
+color:#fff;
+
+}
+
+.close-btn{
+
+width:42px;
+height:42px;
+border:none;
+border-radius:50%;
+background:var(--danger);
+color:#fff;
+font-size:18px;
+cursor:pointer;
+
+}
+
+/* ==========================================
+SECTIONS
+========================================== */
+
+.modal-section{
+
+margin-top:20px;
+
+}
+
+.modal-section h3{
+
+margin-bottom:15px;
+color:var(--primary);
+
+}
+
+.info-grid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+
+}
+
+.info-grid div{
+
+background:#11284d;
+padding:12px;
+border-radius:12px;
+
+}
+
+.info-grid label{
+
+display:block;
+font-size:12px;
+color:var(--muted);
+margin-bottom:6px;
+
+}
+
+.info-grid p{
+
+font-size:15px;
+font-weight:bold;
+color:#fff;
+
+}
+
+/* ==========================================
+FINANCIAL RECORD
+========================================== */
+
+.finance-table{
+
+background:#11284d;
+border-radius:15px;
+overflow:hidden;
+
+}
+
+.finance-row{
+
+display:grid;
+grid-template-columns:1.3fr 1fr 1fr 1fr;
+padding:12px;
+border-bottom:1px solid var(--border);
+font-size:13px;
+
+}
+
+.finance-head{
+
+background:#0b1b36;
+font-weight:bold;
+color:var(--primary);
+
+}
+
+/* ==========================================
+ADMIN BUTTONS
+========================================== */
+
+.action-grid{
+
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+
+}
+
+.action-grid button{
+
+padding:14px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:14px;
+font-weight:bold;
+background:linear-gradient(135deg,var(--secondary),var(--primary));
+color:#fff;
+transition:.3s;
+
+}
+
+.action-grid button:hover{
+
+transform:translateY(-2px);
+
+}
+
+.action-grid .danger{
+
+background:var(--danger);
+
+}
+
+/* ==========================================
+LOADING
+========================================== */
+
+.loading-screen{
+
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:var(--bg);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:20px;
+z-index:10000;
+
+}
+
+.loader{
+
+width:55px;
+height:55px;
+border:5px solid rgba(255,255,255,.15);
+border-top:5px solid var(--primary);
+border-radius:50%;
+animation:spin 1s linear infinite;
+
+}
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+/* ==========================================
+EMPTY STATE
+========================================== */
+
+.empty-state{
+
+text-align:center;
+padding:60px 20px;
+
+}
+
+.empty-icon{
+
+font-size:60px;
+margin-bottom:15px;
+
+}
+
+.empty-state h3{
+
+margin-bottom:10px;
+
+}
+
+.empty-state p{
+
+color:var(--muted);
+
+}
+
+/* ==========================================
+SCROLLBAR
+========================================== */
+
+::-webkit-scrollbar{
+
+width:6px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:var(--secondary);
+border-radius:20px;
+
+}
+
+/* ==========================================
+MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+.header{
+
+flex-direction:column;
+align-items:flex-start;
+gap:15px;
+
+}
+
+.stats-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.machine-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.info-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.action-grid{
+
+grid-template-columns:1fr;
+
+}
+
+.finance-row{
+
+grid-template-columns:1fr;
+gap:6px;
+
+}
+
+.modal-content{
+
+padding:15px;
+
+}
+
+}
