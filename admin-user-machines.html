@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Admin | User Machines
+</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+
+<link
+rel="stylesheet"
+href="admin-user-machines.css">
+
+</head>
+
+<body>
+
+<!-- =========================
+ADMIN HEADER
+========================= -->
+
+<header class="header">
+
+<div class="header-left">
+
+<h2>
+User Machines
+</h2>
+
+<p>
+Manage all purchased user machines
+</p>
+
+</div>
+
+<div class="header-right">
+
+<button
+class="refresh-btn"
+id="refreshBtn">
+
+⟳ Refresh
+
+</button>
+
+</div>
+
+</header>
+
+<!-- =========================
+STATISTICS
+========================= -->
+
+<section class="stats-grid">
+
+<div class="stat-card">
+
+<span class="stat-title">
+
+Total Machines
+
+</span>
+
+<h2 id="totalMachines">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-card">
+
+<span class="stat-title">
+
+Active
+
+</span>
+
+<h2 id="activeMachines">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-card">
+
+<span class="stat-title">
+
+VIP
+
+</span>
+
+<h2 id="vipMachines">
+
+0
+
+</h2>
+
+</div>
+
+<div class="stat-card">
+
+<span class="stat-title">
+
+Expired
+
+</span>
+
+<h2 id="expiredMachines">
+
+0
+
+</h2>
+
+</div>
+
+</section>
+
+<!-- =========================
+SEARCH & FILTER
+========================= -->
+
+<section class="search-box">
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search user, email or machine">
+
+<select id="statusFilter">
+
+<option value="all">
+
+All Machines
+
+</option>
+
+<option value="active">
+
+Active
+
+</option>
+
+<option value="disabled">
+
+Disabled
+
+</option>
+
+<option value="vip">
+
+VIP
+
+</option>
+
+<option value="expired">
+
+Expired
+
+</option>
+
+</select>
+
+</section>
+
+<!-- =========================
+USER MACHINE LIST
+========================= -->
+
+<section
+class="machine-list"
+id="machineList">
+
+<!-- Loaded from JS -->
+
+</section>
+
+  <!-- =========================
+MACHINE DETAILS MODAL
+========================= -->
+
+<div
+id="machineModal"
+class="modal">
+
+<div class="modal-content">
+
+<div class="modal-header">
+
+<h2>
+
+User Machine Details
+
+</h2>
+
+<button
+id="closeModal"
+class="close-btn">
+
+✕
+
+</button>
+
+</div>
+
+<!-- =========================
+USER INFORMATION
+========================= -->
+
+<div class="modal-section">
+
+<h3>
+
+👤 User Information
+
+</h3>
+
+<div class="info-grid">
+
+<div>
+
+<label>Full Name</label>
+
+<p id="detailName">-</p>
+
+</div>
+
+<div>
+
+<label>Email</label>
+
+<p id="detailEmail">-</p>
+
+</div>
+
+<div>
+
+<label>Phone</label>
+
+<p id="detailPhone">-</p>
+
+</div>
+
+<div>
+
+<label>Membership</label>
+
+<p id="detailMembership">-</p>
+
+</div>
+
+<div>
+
+<label>Account Status</label>
+
+<p id="detailStatus">-</p>
+
+</div>
+
+<div>
+
+<label>KYC Status</label>
+
+<p id="detailKyc">-</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+WALLET INFORMATION
+========================= -->
+
+<div class="modal-section">
+
+<h3>
+
+💰 Wallet Information
+
+</h3>
+
+<div class="info-grid">
+
+<div>
+
+<label>Wallet Balance</label>
+
+<p id="detailWallet">UGX 0</p>
+
+</div>
+
+<div>
+
+<label>Total Invested</label>
+
+<p id="detailInvested">UGX 0</p>
+
+</div>
+
+<div>
+
+<label>Total Profit</label>
+
+<p id="detailProfit">UGX 0</p>
+
+</div>
+
+<div>
+
+<label>Referral Bonus</label>
+
+<p id="detailReferralBonus">UGX 0</p>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+MACHINE INFORMATION
+========================= -->
+
+<div class="modal-section">
+
+<h3>
+
+⚙️ Machine Information
+
+</h3>
+
+<div class="info-grid">
+
+<div>
+
+<label>Machine Name</label>
+
+<p id="detailMachine">-</p>
+
+</div>
+
+<div>
+
+<label>Series</label>
+
+<p id="detailSeries">-</p>
+
+</div>
+
+<div>
+
+<label>Purchase Price</label>
+
+<p id="detailPrice">UGX 0</p>
+
+</div>
+
+<div>
+
+<label>Daily Income</label>
+
+<p id="detailDailyIncome">UGX 0</p>
+
+</div>
+
+<div>
+
+<label>Total Return</label>
+
+<p id="detailReturn">UGX 0</p>
+
+</div>
+
+<div>
+
+<label>Earned Amount</label>
+
+<p id="detailEarned">UGX 0</p>
+
+</div>
+
+<div>
+
+<label>Purchase Date</label>
+
+<p id="detailPurchaseDate">-</p>
+
+</div>
+
+<div>
+
+<label>Expiry Date</label>
+
+<p id="detailExpiryDate">-</p>
+
+</div>
+
+<div>
+
+<label>VIP Status</label>
+
+<p id="detailVip">No</p>
+
+</div>
+
+<div>
+
+<label>Machine Status</label>
+
+<p id="detailMachineStatus">-</p>
+
+</div>
+
+</div>
+
+  </div>
+
+  <!-- =========================
+FINANCIAL RECORD
+========================= -->
+
+<div class="modal-section">
+
+<h3>
+
+💳 Financial Record
+
+</h3>
+
+<div class="finance-table">
+
+<div class="finance-row finance-head">
+
+<span>Date</span>
+
+<span>Type</span>
+
+<span>Amount</span>
+
+<span>Status</span>
+
+</div>
+
+<div id="financeHistory">
+
+<!-- Loaded from JavaScript -->
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+ADMIN ACTIONS
+========================= -->
+
+<div class="modal-section">
+
+<h3>
+
+🛠 Admin Controls
+
+</h3>
+
+<div class="action-grid">
+
+<button id="editWalletBtn">
+
+💰 Edit Wallet
+
+</button>
+
+<button id="editMachineBtn">
+
+✏ Edit Machine
+
+</button>
+
+<button id="extendBtn">
+
+📅 Extend Duration
+
+</button>
+
+<button id="incomeBtn">
+
+📈 Edit Income
+
+</button>
+
+<button id="earnedBtn">
+
+💵 Edit Earnings
+
+</button>
+
+<button id="toggleBtn">
+
+⏯ Enable / Disable
+
+</button>
+
+<button id="deleteBtn" class="danger">
+
+🗑 Delete Machine
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+LOADING
+========================= -->
+
+<div
+id="loadingScreen"
+class="loading-screen">
+
+<div class="loader"></div>
+
+<p>
+
+Loading User Machines...
+
+</p>
+
+</div>
+
+<!-- =========================
+EMPTY STATE
+========================= -->
+
+<div
+id="emptyState"
+class="empty-state"
+style="display:none;">
+
+<div class="empty-icon">
+
+📦
+
+</div>
+
+<h3>
+
+No User Machines Found
+
+</h3>
+
+<p>
+
+There are currently no purchased machines.
+
+</p>
+
+</div>
+
+<!-- =========================
+JAVASCRIPT
+========================= -->
+
+<script src="admin-user-machines.js"></script>
+
+</body>
+
+  </html>
