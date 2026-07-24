@@ -5,772 +5,635 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width,initial-scale=1.0">
 
-<title>Admin Dashboard | Marathon Digital Hub</title>
+<title>
+Admin Dashboard | Marathon Digital Hub
+</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
 
-body{
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
 
-display:flex;
-
-background:#050B18;
-
-color:#fff;
-
-}
-
-/* Sidebar */
-
-.sidebar{
-
-width:260px;
-
-height:100vh;
-
-background:#08142d;
-
-position:fixed;
-
-left:0;
-
-top:0;
-
-padding:20px;
-
-overflow-y:auto;
-
-}
-
-.logo{
-
-text-align:center;
-
-font-size:24px;
-
-font-weight:bold;
-
-margin-bottom:30px;
-
-color:#00ff88;
-
-}
-
-.menu{
-
-display:flex;
-
-flex-direction:column;
-
-gap:10px;
-
-}
-
-.menu a{
-
-text-decoration:none;
-
-color:#fff;
-
-padding:14px;
-
-border-radius:12px;
-
-transition:.3s;
-
-display:block;
-
-}
-
-.menu a:hover{
-
-background:#111f3d;
-
-}
-
-.menu a.active{
-
-background:#00ff88;
-
-color:#001018;
-
-font-weight:bold;
-
-}
-
-/* Main */
-
-.main{
-
-margin-left:260px;
-
-width:calc(100% - 260px);
-
-padding:25px;
-
-}
-
-.topbar{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:25px;
-
-}
-
-.topbar h2{
-
-font-size:28px;
-
-}
-
-.adminInfo{
-
-text-align:right;
-
-}
-
-.adminInfo h3{
-
-font-size:18px;
-
-}
-
-.adminInfo p{
-
-color:#9fb5d1;
-
-font-size:13px;
-
-}
-
-/* Cards */
-
-.cards{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:20px;
-
-}
-
-.card{
-
-background:#08142d;
-
-padding:20px;
-
-border-radius:18px;
-
-border:1px solid rgba(0,255,255,.15);
-
-}
-
-.card h4{
-
-color:#9fb5d1;
-
-margin-bottom:12px;
-
-}
-
-.card h1{
-
-font-size:32px;
-
-color:#00ff88;
-
-}
-
-</style>
+<link rel="stylesheet"
+href="admin-dashboard.css">
 
 </head>
 
 <body>
 
-<div class="sidebar">
+<!-- Loading Screen -->
+
+<div id="loader">
+
+<div class="loader-box">
+
+<div class="loader-ring"></div>
+
+<h2>MARATHON</h2>
+
+<p>Loading Admin Dashboard...</p>
+
+</div>
+
+</div>
+
+<!-- Sidebar -->
+
+<aside class="sidebar">
 
 <div class="logo">
 
-MARATHON
-
+<div class="logo-icon">
+⚡
 </div>
-
-<div class="menu">
-
-<a href="#" class="active">📊 Dashboard</a>
-
-<a href="admin-deposits.html">💳 Deposits</a>
-
-<a href="admin-withdrawals.html">💸 Withdrawals</a>
-
-<a href="admin-users.html">👥 Users</a>
-
-<a href="admin-machines.html">⚙️ Machines</a>
-
-<a href="admin-support.html">💬 Support</a>
-
-<a href="admin-notifications.html">🔔 Notifications</a>
-
-<a href="admin-payment-settings.html">📱 Payment Settings</a>
-
-<a href="admin-reports.html">📈 Reports</a>
-
-<a href="#" onclick="adminLogout()">🚪 Logout</a>
-
-</div>
-
-</div>
-
-<div class="main">
-
-<div class="topbar">
 
 <div>
 
-<h2>Dashboard</h2>
+<h2>MARATHON</h2>
+
+<p>Digital Hub</p>
 
 </div>
 
-<div class="adminInfo">
+</div>
 
-<h3 id="adminName">
+<nav class="menu">
+
+<a href="admin-dashboard.html"
+class="active">
+
+<span>📊</span>
+
+Dashboard
+
+</a>
+
+<a href="admin-users.html">
+
+<span>👥</span>
+
+Users
+
+</a>
+
+<a href="admin-user-machines.html">
+
+<span>⚙️</span>
+
+User Machines
+
+</a>
+
+<a href="admin-referrals.html">
+
+<span>🤝</span>
+
+Referrals
+
+</a>
+
+<a href="admin-machines.html">
+
+<span>🖥️</span>
+
+Machines
+
+</a>
+
+<a href="admin-deposits.html">
+
+<span>💳</span>
+
+Deposits
+
+</a>
+
+<a href="admin-withdrawals.html">
+
+<span>💸</span>
+
+Withdrawals
+
+</a>
+
+<a href="admin-support.html">
+
+<span>💬</span>
+
+Support
+
+</a>
+
+<a href="admin-notifications.html">
+
+<span>🔔</span>
+
+Notifications
+
+</a>
+
+<a href="admin-payment-settings.html">
+
+<span>📱</span>
+
+Payments
+
+</a>
+
+<a href="admin-settings.html">
+
+<span>⚙️</span>
+
+Settings
+
+</a>
+
+<a href="#"
+id="logoutBtn">
+
+<span>🚪</span>
+
+Logout
+
+</a>
+
+</nav>
+
+</aside>
+
+<!-- Main -->
+
+<main class="main-content">
+
+<!-- Top Header -->
+
+<header class="topbar">
+
+<div>
+
+<h1>
+
+Admin Dashboard
+
+</h1>
+
+<p>
+
+Welcome back,
+<span id="adminName">
 
 Administrator
 
-</h3>
-
-<p id="adminRole">
-
-Admin
+</span>
 
 </p>
 
 </div>
 
-</div>
+<div class="top-actions">
 
-<div class="cards">
+<button id="refreshBtn">
 
-<div class="card">
+🔄 Refresh
 
-<h4>Total Users</h4>
+</button>
 
-<h1 id="totalUsers">0</h1>
+<button id="notificationBtn">
 
-</div>
+🔔
 
-<div class="card">
+<span id="notificationCount">
 
-<h4>Pending Deposits</h4>
+0
 
-<h1 id="pendingDeposits">0</h1>
+</span>
 
-</div>
+</button>
 
-<div class="card">
+<div class="admin-avatar">
 
-<h4>Pending Withdrawals</h4>
-
-<h1 id="pendingWithdrawals">0</h1>
-
-</div>
-
-<div class="card">
-
-<h4>Support Messages</h4>
-
-<h1 id="supportCount">0</h1>
-
-</div>
-
-  </div><script>
-
-const db = window.supabaseClient;
-
-/* ==========================
-PROTECT ADMIN PAGE
-========================== */
-
-if(localStorage.getItem("admin_logged_in")!="true"){
-
-window.location.href="admin-login.html";
-
-}
-
-document.getElementById("adminName").innerHTML=
-
-localStorage.getItem("admin_name") || "Administrator";
-
-document.getElementById("adminRole").innerHTML=
-
-localStorage.getItem("admin_role") || "Admin";
-
-/* ==========================
-LOAD DASHBOARD
-========================== */
-
-document.addEventListener("DOMContentLoaded",async()=>{
-
-await loadDashboard();
-
-});
-
-/* ==========================
-LOAD COUNTS
-========================== */
-
-async function loadDashboard(){
-
-/* USERS */
-
-const {count:userCount}=await db
-
-.from("profiles")
-
-.select("*",{count:"exact",head:true});
-
-document.getElementById("totalUsers").innerHTML=userCount||0;
-
-/* PENDING DEPOSITS */
-
-const {count:depositCount}=await db
-
-.from("deposits")
-
-.select("*",{count:"exact",head:true})
-
-.eq("status","pending");
-
-document.getElementById("pendingDeposits").innerHTML=depositCount||0;
-
-/* PENDING WITHDRAWALS */
-
-const {count:withdrawCount}=await db
-
-.from("withdrawals")
-
-.select("*",{count:"exact",head:true})
-
-.eq("status","pending");
-
-document.getElementById("pendingWithdrawals").innerHTML=withdrawCount||0;
-
-/* OPEN SUPPORT */
-
-const {count:supportCount}=await db
-
-.from("support_messages")
-
-.select("*",{count:"exact",head:true})
-
-.eq("status","open");
-
-document.getElementById("supportCount").innerHTML=supportCount||0;
-
-}
-
-/* ==========================
-AUTO REFRESH
-========================== */
-
-setInterval(loadDashboard,5000);
-
-/* ==========================
-LOGOUT
-========================== */
-
-function adminLogout(){
-
-localStorage.removeItem("admin_logged_in");
-
-localStorage.removeItem("admin_id");
-
-localStorage.removeItem("admin_name");
-
-localStorage.removeItem("admin_role");
-
-window.location.href="admin-login.html";
-
-}
-
-  </script>
-
-  <!-- ==========================
-SECOND ROW OF DASHBOARD CARDS
-========================== -->
-
-<div class="cards" style="margin-top:20px;">
-
-<div class="card">
-
-<h4>Total Deposits</h4>
-
-<h1 id="totalDeposits">0</h1>
-
-</div>
-
-<div class="card">
-
-<h4>Total Withdrawals</h4>
-
-<h1 id="totalWithdrawals">0</h1>
-
-</div>
-
-<div class="card">
-
-<h4>Total Machines</h4>
-
-<h1 id="totalMachines">0</h1>
-
-</div>
-
-<div class="card">
-
-<h4>Admin Notifications</h4>
-
-<h1 id="adminNotifications">0</h1>
+A
 
 </div>
 
 </div>
 
-<script>
+</header>
 
-/* ==========================
-MORE DASHBOARD DATA
-========================== */
+  <!-- ==========================================
+LIVE STATISTICS
+========================================== -->
 
-async function loadExtraDashboard(){
+<section class="stats-grid">
 
-/* TOTAL DEPOSITS */
+<div class="stat-card">
 
-const {count:deposits}=await db
+<div class="stat-icon">👥</div>
 
-.from("deposits")
+<div class="stat-info">
 
-.select("*",{count:"exact",head:true});
+<h3 id="totalUsers">0</h3>
 
-document.getElementById("totalDeposits").innerHTML=deposits||0;
+<p>Total Users</p>
 
-/* TOTAL WITHDRAWALS */
+</div>
 
-const {count:withdrawals}=await db
+</div>
 
-.from("withdrawals")
+<div class="stat-card">
 
-.select("*",{count:"exact",head:true});
+<div class="stat-icon">🟢</div>
 
-document.getElementById("totalWithdrawals").innerHTML=withdrawals||0;
+<div class="stat-info">
 
-/* TOTAL MACHINES */
+<h3 id="activeUsers">0</h3>
 
-const {count:machines}=await db
+<p>Active Users</p>
 
-.from("machines")
+</div>
 
-.select("*",{count:"exact",head:true});
+</div>
 
-document.getElementById("totalMachines").innerHTML=machines||0;
+<div class="stat-card">
 
-/* ADMIN NOTIFICATIONS */
+<div class="stat-icon">❄️</div>
 
-const {count:adminNoti}=await db
+<div class="stat-info">
 
-.from("admin_notifications")
+<h3 id="frozenUsers">0</h3>
 
-.select("*",{count:"exact",head:true})
+<p>Frozen Users</p>
 
-.eq("is_read",false);
+</div>
 
-document.getElementById("adminNotifications").innerHTML=adminNoti||0;
+</div>
 
-}
+<div class="stat-card">
 
-/* Load together */
+<div class="stat-icon">⛔</div>
 
-const oldLoadDashboard = loadDashboard;
+<div class="stat-info">
 
-loadDashboard = async function(){
+<h3 id="suspendedUsers">0</h3>
 
-await oldLoadDashboard();
+<p>Suspended Users</p>
 
-await loadExtraDashboard();
+</div>
 
-};
+</div>
 
-</script>
+<div class="stat-card">
 
-  <!-- ==========================
+<div class="stat-icon">⚙️</div>
+
+<div class="stat-info">
+
+<h3 id="totalMachines">0</h3>
+
+<p>Total Machines</p>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">💳</div>
+
+<div class="stat-info">
+
+<h3 id="activeMachineCount">0</h3>
+
+<p>Active Machines</p>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">💰</div>
+
+<div class="stat-info">
+
+<h3 id="totalWallet">UGX 0</h3>
+
+<p>Total Wallet Balance</p>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">📈</div>
+
+<div class="stat-info">
+
+<h3 id="totalInvestment">UGX 0</h3>
+
+<p>Total Investment</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+QUICK ACTIONS
+========================================== -->
+
+<section class="quick-actions">
+
+<button onclick="location.href='admin-users.html'">
+
+👥
+
+<span>Users</span>
+
+</button>
+
+<button onclick="location.href='admin-user-machines.html'">
+
+⚙️
+
+<span>User Machines</span>
+
+</button>
+
+<button onclick="location.href='admin-referrals.html'">
+
+🤝
+
+<span>Referrals</span>
+
+</button>
+
+<button onclick="location.href='admin-machines.html'">
+
+🖥️
+
+<span>Machines</span>
+
+</button>
+
+<button onclick="location.href='admin-deposits.html'">
+
+💳
+
+<span>Deposits</span>
+
+</button>
+
+<button onclick="location.href='admin-withdrawals.html'">
+
+💸
+
+<span>Withdrawals</span>
+
+</button>
+
+<button onclick="location.href='admin-support.html'">
+
+💬
+
+<span>Support</span>
+
+</button>
+
+<button onclick="location.href='admin-notifications.html'">
+
+🔔
+
+<span>Notifications</span>
+
+</button>
+
+</section>
+
+<!-- ==========================================
+SYSTEM STATUS
+========================================== -->
+
+<section class="status-grid">
+
+<div class="status-card">
+
+<h3>Pending Deposits</h3>
+
+<h2 id="pendingDeposits">0</h2>
+
+</div>
+
+<div class="status-card">
+
+<h3>Pending Withdrawals</h3>
+
+<h2 id="pendingWithdrawals">0</h2>
+
+</div>
+
+<div class="status-card">
+
+<h3>Open Support</h3>
+
+<h2 id="openSupport">0</h2>
+
+</div>
+
+<div class="status-card">
+
+<h3>Unread Notifications</h3>
+
+<h2 id="adminNotifications">0</h2>
+
+</div>
+
+  </section>
+
+  <!-- ==========================================
 RECENT ACTIVITY
-========================== -->
+========================================== -->
 
-<style>
+<section class="dashboard-grid">
 
-.sectionTitle{
+<!-- Recent Users -->
 
-margin-top:30px;
+<div class="dashboard-card">
 
-margin-bottom:15px;
+<div class="card-header">
 
-font-size:22px;
+<h2>👥 Latest Users</h2>
 
-font-weight:bold;
+<button onclick="location.href='admin-users.html'">
 
-}
+View All
 
-.activityBox{
-
-background:#08142d;
-
-border-radius:18px;
-
-padding:20px;
-
-border:1px solid rgba(0,255,255,.15);
-
-margin-bottom:20px;
-
-}
-
-.activityItem{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:12px 0;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-}
-
-.activityItem:last-child{
-
-border-bottom:none;
-
-}
-
-.activityName{
-
-font-weight:bold;
-
-}
-
-.activityTime{
-
-font-size:12px;
-
-color:#9fb5d1;
-
-}
-
-</style>
-
-<h2 class="sectionTitle">Recent Deposit Requests</h2>
-
-<div class="activityBox" id="recentDeposits">
-
-Loading...
+</button>
 
 </div>
 
-<h2 class="sectionTitle">Recent Withdrawal Requests</h2>
+<div id="recentUsers" class="list-container">
 
-<div class="activityBox" id="recentWithdrawals">
+<div class="loading-row">
 
-Loading...
-
-</div>
-
-<h2 class="sectionTitle">Latest Support Messages</h2>
-
-<div class="activityBox" id="recentSupport">
-
-Loading...
+Loading users...
 
 </div>
 
-<script>
+</div>
 
-async function loadRecentActivity(){
+</div>
 
-/* Deposits */
+<!-- Recent Machines -->
 
-const {data:deposits}=await db
+<div class="dashboard-card">
 
-.from("deposits")
+<div class="card-header">
 
-.select("*")
+<h2>⚙️ Latest Machine Purchases</h2>
 
-.order("created_at",{ascending:false})
+<button onclick="location.href='admin-user-machines.html'">
 
-.limit(5);
+View All
 
-let depHTML="";
+</button>
 
-if(deposits && deposits.length){
+</div>
 
-deposits.forEach(item=>{
+<div id="recentMachines" class="list-container">
 
-depHTML+=`
+<div class="loading-row">
 
-<div class="activityItem">
+Loading machines...
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Recent Deposits -->
+
+<div class="dashboard-card">
+
+<div class="card-header">
+
+<h2>💳 Recent Deposits</h2>
+
+<button onclick="location.href='admin-deposits.html'">
+
+View All
+
+</button>
+
+</div>
+
+<div id="recentDeposits" class="list-container">
+
+<div class="loading-row">
+
+Loading deposits...
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Recent Withdrawals -->
+
+<div class="dashboard-card">
+
+<div class="card-header">
+
+<h2>💸 Recent Withdrawals</h2>
+
+<button onclick="location.href='admin-withdrawals.html'">
+
+View All
+
+</button>
+
+</div>
+
+<div id="recentWithdrawals" class="list-container">
+
+<div class="loading-row">
+
+Loading withdrawals...
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Recent Support -->
+
+<div class="dashboard-card full-width">
+
+<div class="card-header">
+
+<h2>💬 Latest Support Messages</h2>
+
+<button onclick="location.href='admin-support.html'">
+
+Open Support
+
+</button>
+
+</div>
+
+<div id="recentSupport" class="list-container">
+
+<div class="loading-row">
+
+Loading support messages...
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ==========================================
+FOOTER
+========================================== -->
+
+<footer class="admin-footer">
 
 <div>
 
-<div class="activityName">${item.full_name || "User"}</div>
-
-<div>UGX ${item.amount}</div>
+© 2026 Marathon Digital Hub Admin Panel
 
 </div>
-
-<div class="activityTime">
-
-${item.status}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}else{
-
-depHTML="No deposit requests.";
-
-}
-
-document.getElementById("recentDeposits").innerHTML=depHTML;
-
-/* Withdrawals */
-
-const {data:withdrawals}=await db
-
-.from("withdrawals")
-
-.select("*")
-
-.order("created_at",{ascending:false})
-
-.limit(5);
-
-let wdHTML="";
-
-if(withdrawals && withdrawals.length){
-
-withdrawals.forEach(item=>{
-
-wdHTML+=`
-
-<div class="activityItem">
 
 <div>
 
-<div class="activityName">${item.full_name || "User"}</div>
-
-<div>UGX ${item.amount}</div>
+Version 3.0 • Connected to Supabase
 
 </div>
 
-<div class="activityTime">
+</footer>
 
-${item.status}
+</main>
 
-</div>
+<script src="admin-dashboard.js"></script>
 
-</div>
-
-`;
-
-});
-
-}else{
-
-wdHTML="No withdrawal requests.";
-
-}
-
-document.getElementById("recentWithdrawals").innerHTML=wdHTML;
-
-/* Support */
-
-const {data:support}=await db
-
-.from("support_messages")
-
-.select("*")
-
-.order("created_at",{ascending:false})
-
-.limit(5);
-
-let spHTML="";
-
-if(support && support.length){
-
-support.forEach(item=>{
-
-spHTML+=`
-
-<div class="activityItem">
-
-<div>
-
-<div class="activityName">Support Message</div>
-
-<div>${item.message.substring(0,40)}...</div>
-
-</div>
-
-<div class="activityTime">
-
-${new Date(item.created_at).toLocaleDateString()}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}else{
-
-spHTML="No support messages.";
-
-}
-
-document.getElementById("recentSupport").innerHTML=spHTML;
-
-}
-
-loadRecentActivity();
-
-setInterval(loadRecentActivity,5000);
-
-</script>
 </body>
+
 </html>
