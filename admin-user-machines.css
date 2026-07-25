@@ -927,3 +927,296 @@ color:var(--muted);
 color:#fff;
 margin-bottom:10px;
   }
+
+/*==================================
+FLOATING ACTION BUTTON
+===================================*/
+
+.fab{
+position:fixed;
+right:20px;
+bottom:25px;
+width:62px;
+height:62px;
+border:none;
+border-radius:50%;
+background:var(--primary);
+color:#071421;
+font-size:30px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 15px 35px rgba(0,210,106,.35);
+z-index:1000;
+transition:.3s;
+}
+
+.fab:hover{
+transform:scale(1.08);
+}
+
+/*==================================
+BOTTOM SHEETS
+===================================*/
+
+.bottomSheet{
+position:fixed;
+left:0;
+right:0;
+bottom:-100%;
+background:#0d1b2a;
+border-radius:25px 25px 0 0;
+padding:20px;
+z-index:1100;
+transition:.35s ease;
+box-shadow:0 -15px 35px rgba(0,0,0,.45);
+max-height:85vh;
+overflow-y:auto;
+}
+
+.bottomSheet.show{
+bottom:0;
+}
+
+.sheetHandle{
+width:55px;
+height:5px;
+background:#41566f;
+border-radius:20px;
+margin:0 auto 18px;
+}
+
+.bottomSheet h3{
+margin-bottom:20px;
+text-align:center;
+}
+
+.bottomSheet button{
+width:100%;
+height:52px;
+margin-bottom:12px;
+border:none;
+border-radius:14px;
+background:var(--card2);
+color:#fff;
+font-size:15px;
+cursor:pointer;
+transition:.25s;
+}
+
+.bottomSheet button:hover{
+background:var(--primary);
+color:#071421;
+}
+
+.bottomSheet .danger{
+background:#4a1f1f;
+color:#ff8b8b;
+}
+
+.bottomSheet .danger:hover{
+background:var(--danger);
+color:#fff;
+}
+
+/*==================================
+LOADING SCREEN
+===================================*/
+
+.loadingScreen{
+position:fixed;
+inset:0;
+background:#071421;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:2000;
+}
+
+.loader{
+width:55px;
+height:55px;
+border:5px solid rgba(255,255,255,.15);
+border-top:5px solid var(--primary);
+border-radius:50%;
+animation:spin .9s linear infinite;
+margin-bottom:18px;
+}
+
+.loadingScreen p{
+color:var(--muted);
+}
+
+/*==================================
+CUSTOM SCROLLBAR
+===================================*/
+
+::-webkit-scrollbar{
+width:8px;
+height:8px;
+}
+
+::-webkit-scrollbar-track{
+background:#091827;
+}
+
+::-webkit-scrollbar-thumb{
+background:var(--primary);
+border-radius:20px;
+}
+
+/*==================================
+ANIMATIONS
+===================================*/
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+@keyframes slideUp{
+from{
+transform:translateY(50px);
+opacity:0;
+}
+to{
+transform:translateY(0);
+opacity:1;
+}
+}
+
+.machineCard,
+.walletCard,
+.infoCard,
+.timelineItem{
+animation:slideUp .35s ease;
+}
+
+/*==================================
+MOBILE RESPONSIVE
+===================================*/
+
+@media(max-width:900px){
+
+.sidebar{
+left:-280px;
+transition:.35s;
+}
+
+.sidebar.show{
+left:0;
+}
+
+.main{
+margin-left:0;
+padding:15px;
+}
+
+.menuBtn{
+display:block;
+}
+
+.header{
+gap:12px;
+}
+
+.header h1{
+font-size:22px;
+}
+
+.profileCard{
+flex-direction:column;
+align-items:flex-start;
+gap:18px;
+}
+
+.profileLeft{
+width:100%;
+}
+
+.overviewGrid,
+.walletCards,
+.profileGrid{
+grid-template-columns:1fr;
+}
+
+.machineStats{
+grid-template-columns:1fr;
+}
+
+.machineCard{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.machineImage{
+width:100%;
+height:180px;
+}
+
+.machineMenu{
+top:12px;
+right:12px;
+}
+
+.tabs{
+padding-bottom:8px;
+}
+
+.fab{
+right:15px;
+bottom:18px;
+}
+
+}
+
+/*==================================
+SMALL PHONES
+===================================*/
+
+@media(max-width:480px){
+
+.searchBox{
+flex-direction:column;
+}
+
+.searchBox button{
+width:100%;
+height:50px;
+}
+
+.userAvatar{
+width:70px;
+height:70px;
+}
+
+.profileInfo h2{
+font-size:19px;
+}
+
+.overviewCard h2,
+.walletCard h2{
+font-size:20px;
+}
+
+.bottomSheet{
+padding:18px;
+}
+
+}
+
+/*==================================
+GLASS EFFECT
+===================================*/
+
+.profileCard,
+.overviewCard,
+.machineCard,
+.walletCard,
+.infoCard,
+.timelineItem,
+.welcomeState{
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+  }
