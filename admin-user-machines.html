@@ -5,13 +5,11 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Admin • User Machines</title>
+<title>Marathon Digital Hub | Admin User Machines</title>
 
-<link rel="stylesheet"
-href="admin-user-machines.css">
+<link rel="stylesheet" href="admin-user-machines.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -21,13 +19,11 @@ href="admin-user-machines.css">
 
 <body>
 
-<!-- ======================
-APP LAYOUT
-====================== -->
-
 <div class="app">
 
-<!-- Sidebar -->
+<!-- ======================
+SIDEBAR
+====================== -->
 
 <aside class="sidebar" id="sidebar">
 
@@ -42,52 +38,76 @@ APP LAYOUT
 <nav>
 
 <a href="admin-dashboard.html">
-🏠 Dashboard
+
+🏠
+
+<span>Dashboard</span>
+
 </a>
 
 <a href="admin-users.html">
-👥 Users
+
+👥
+
+<span>Users</span>
+
 </a>
 
-<a
-href="admin-user-machines.html"
-class="active">
+<a href="admin-user-machines.html" class="active">
 
-🖥 User Machines
+🖥
+
+<span>User Machines</span>
 
 </a>
 
 <a href="admin-deposits.html">
-💳 Deposits
+
+💳
+
+<span>Deposits</span>
+
 </a>
 
 <a href="admin-withdrawals.html">
-💸 Withdrawals
+
+💸
+
+<span>Withdrawals</span>
+
 </a>
 
-<a href="admin-reports.html">
-📊 Reports
+<a href="admin-support.html">
+
+💬
+
+<span>Support</span>
+
 </a>
 
 <a href="#" id="logoutBtn">
-🚪 Logout
+
+🚪
+
+<span>Logout</span>
+
 </a>
 
 </nav>
 
 </aside>
 
-<!-- Main -->
+<!-- ======================
+MAIN CONTENT
+====================== -->
 
 <main class="main">
 
-<!-- Header -->
+<header class="topBar">
 
-<header class="header">
+<div class="topLeft">
 
-<button
-id="menuBtn"
-class="menuBtn">
+<button id="menuBtn" class="menuBtn">
 
 ☰
 
@@ -103,25 +123,23 @@ User Machines
 
 <p>
 
-Manage every user's investment portfolio
+Manage users, wallets and investments
 
 </p>
 
 </div>
 
-<div class="headerActions">
+</div>
 
-<button
-id="refreshUsersBtn"
-class="iconBtn">
+<div class="topRight">
+
+<button id="refreshBtn" class="circleBtn">
 
 🔄
 
 </button>
 
-<button
-id="notificationBtn"
-class="iconBtn">
+<button id="notificationBtn" class="circleBtn">
 
 🔔
 
@@ -141,7 +159,7 @@ alt="Admin">
 
 </header>
 
-<!-- Search -->
+<!-- SEARCH -->
 
 <section class="searchSection">
 
@@ -165,9 +183,11 @@ placeholder="Search by name, phone or email...">
 
 </section>
 
-<!-- User Count -->
+<!-- USERS -->
 
-<div class="sectionTitle">
+<section class="usersSection">
+
+<div class="sectionHeader">
 
 <h2>
 
@@ -183,27 +203,27 @@ Users
 
 </div>
 
-<!-- Users -->
-
 <div
 
 id="usersContainer"
 
 class="usersContainer">
 
-<!-- Loaded by JS -->
+<!-- JavaScript loads users here -->
 
 </div>
 
-<!-- Empty State -->
+</section>
+
+<!-- EMPTY STATE -->
 
 <section
 
-id="welcomeState"
+id="emptyState"
 
-class="welcomeState">
+class="emptyState">
 
-<div class="welcomeIcon">
+<div class="emptyIcon">
 
 👥
 
@@ -217,19 +237,20 @@ Select a User
 
 <p>
 
-Choose a user above to manage machines, wallet, earnings and activity.
+Select a user above to view their machines, wallet, activity and profile.
 
 </p>
 
-</section>
+ </section>
 
  <!--==================================
 USER DASHBOARD
+Hidden until a user is selected
 ===================================-->
 
 <section id="userDashboard" class="userDashboard hidden">
 
-<!-- User Profile -->
+<!-- USER PROFILE -->
 
 <div class="profileCard">
 
@@ -241,21 +262,21 @@ class="userAvatar"
 src="images/default-avatar.png"
 alt="User">
 
-<div class="profileDetails">
+<div class="profileInfo">
 
 <h2 id="userName">
 
-Select User
+User Name
 
 </h2>
 
 <p id="userPhone">
 
-No phone number
+Phone Number
 
 </p>
 
-<div class="badgeRow">
+<div class="badgeGroup">
 
 <span
 id="membershipBadge"
@@ -289,7 +310,7 @@ Not Verified
 
 <button
 id="userMenuBtn"
-class="iconBtn">
+class="circleBtn">
 
 ⋮
 
@@ -297,13 +318,13 @@ class="iconBtn">
 
 </div>
 
-<!-- Overview -->
+<!-- OVERVIEW -->
 
 <div class="overviewGrid">
 
 <div class="overviewCard">
 
-<span>Wallet</span>
+<p>Wallet Balance</p>
 
 <h2 id="walletBalance">
 
@@ -315,7 +336,7 @@ UGX 0
 
 <div class="overviewCard">
 
-<span>Machines</span>
+<p>Total Machines</p>
 
 <h2 id="machineCount">
 
@@ -327,7 +348,7 @@ UGX 0
 
 <div class="overviewCard">
 
-<span>Invested</span>
+<p>Total Invested</p>
 
 <h2 id="investedAmount">
 
@@ -339,7 +360,7 @@ UGX 0
 
 <div class="overviewCard">
 
-<span>Profit</span>
+<p>Total Profit</p>
 
 <h2 id="profitAmount">
 
@@ -351,13 +372,13 @@ UGX 0
 
 </div>
 
-<!-- Tabs -->
+<!-- TABS -->
 
 <div class="tabs">
 
 <button
 class="tabButton active"
-data-tab="machines">
+data-tab="machinesTab">
 
 🖥 Machines
 
@@ -365,7 +386,7 @@ data-tab="machines">
 
 <button
 class="tabButton"
-data-tab="wallet">
+data-tab="walletTab">
 
 💰 Wallet
 
@@ -373,7 +394,7 @@ data-tab="wallet">
 
 <button
 class="tabButton"
-data-tab="activity">
+data-tab="activityTab">
 
 📈 Activity
 
@@ -381,7 +402,7 @@ data-tab="activity">
 
 <button
 class="tabButton"
-data-tab="profile">
+data-tab="profileTab">
 
 👤 Profile
 
@@ -389,7 +410,9 @@ data-tab="profile">
 
 </div>
 
-<!-- Machines -->
+<!--==============================
+MACHINES TAB
+===============================-->
 
 <div
 id="machinesTab"
@@ -403,7 +426,7 @@ Owned Machines
 
 </h2>
 
-<div class="machineFilters">
+<div class="filterRow">
 
 <button
 class="filterChip active"
@@ -457,33 +480,33 @@ class="machinesGrid">
 
 </div>
 
- </div>
+</div>
 
- <!--==================================
+ <!-- ======================
 WALLET TAB
-===================================-->
+====================== -->
 
 <div id="walletTab" class="tabContent">
 
-<div class="walletCards">
+<div class="walletSummary">
 
 <div class="walletCard">
-<span>Wallet Balance</span>
+<p>Wallet Balance</p>
 <h2 id="walletAmount">UGX 0</h2>
 </div>
 
 <div class="walletCard">
-<span>Total Invested</span>
+<p>Total Invested</p>
 <h2 id="walletInvested">UGX 0</h2>
 </div>
 
 <div class="walletCard">
-<span>Total Profit</span>
+<p>Total Profit</p>
 <h2 id="walletProfit">UGX 0</h2>
 </div>
 
 <div class="walletCard">
-<span>Referral Bonus</span>
+<p>Referral Bonus</p>
 <h2 id="walletReferralBonus">UGX 0</h2>
 </div>
 
@@ -499,31 +522,31 @@ class="walletTransactions">
 
 </div>
 
-<!--==================================
+<!-- ======================
 ACTIVITY TAB
-===================================-->
+====================== -->
 
 <div id="activityTab" class="tabContent">
 
-<div class="sectionTitle">
+<div class="sectionHeader">
 
-<h2>Activity Timeline</h2>
+<h2>Recent Activity</h2>
 
 </div>
 
 <div
 id="activityTimeline"
-class="timeline">
+class="activityTimeline">
 
-<!-- Loaded by JavaScript -->
-
-</div>
+<!-- Loaded by JS -->
 
 </div>
 
-<!--==================================
+</div>
+
+<!-- ======================
 PROFILE TAB
-===================================-->
+====================== -->
 
 <div id="profileTab" class="tabContent">
 
@@ -532,6 +555,11 @@ PROFILE TAB
 <div class="infoCard">
 <label>Email</label>
 <p id="profileEmail">-</p>
+</div>
+
+<div class="infoCard">
+<label>Phone</label>
+<p id="profilePhone">-</p>
 </div>
 
 <div class="infoCard">
@@ -545,12 +573,7 @@ PROFILE TAB
 </div>
 
 <div class="infoCard">
-<label>Level</label>
-<p id="profileLevel">1</p>
-</div>
-
-<div class="infoCard">
-<label>KYC Status</label>
+<label>KYC</label>
 <p id="profileKyc">Not Verified</p>
 </div>
 
@@ -565,141 +588,21 @@ PROFILE TAB
 
 </section>
 
-<!--==================================
-MACHINE DETAILS SHEET
-===================================-->
-
-<div
-id="machineDetailsSheet"
-class="bottomSheet">
-
-<div class="sheetHandle"></div>
-
-<img
-id="machineImage"
-class="machineLargeImage"
-src="images/default-machine.png"
-alt="Machine">
-
-<h2 id="machineName">Machine</h2>
-
-<p id="machineSeries">Series</p>
-
-<div class="machineInfoGrid">
-
-<div>
-<label>Daily Income</label>
-<h3 id="dailyIncome">UGX 0</h3>
-</div>
-
-<div>
-<label>Earned</label>
-<h3 id="earnedAmount">UGX 0</h3>
-</div>
-
-<div>
-<label>Status</label>
-<h3 id="machineStatus">Active</h3>
-</div>
-
-<div>
-<label>Purchase Date</label>
-<p id="purchaseDate">-</p>
-</div>
-
-<div>
-<label>Expiry Date</label>
-<p id="expiryDate">-</p>
-</div>
-
-<div>
-<label>VIP</label>
-<p id="vipStatus">No</p>
-</div>
-
-</div>
-
-<button
-id="manageMachineBtn"
-class="primaryButton">
-
-Manage Machine
-
-</button>
-
-</div>
-
-<!--==================================
-MANAGE MACHINE SHEET
-===================================-->
-
-<div
-id="machineMenuSheet"
-class="bottomSheet">
-
-<div class="sheetHandle"></div>
-
-<h2>Manage Machine</h2>
-
-<button id="viewMachine">
-👁 View Details
-</button>
-
-<button id="editMachine">
-✏ Edit Machine
-</button>
-
-<button id="extendMachine">
-📅 Extend Duration
-</button>
-
-<button id="updateEarnings">
-💰 Update Earnings
-</button>
-
-<button id="vipMachine">
-⭐ VIP Settings
-</button>
-
-<button id="changeStatus">
-🔄 Change Status
-</button>
-
-<button
-id="deleteMachine"
-class="danger">
-
-🗑 Delete Machine
-
-</button>
-
-<button class="closeSheet">
-
-Cancel
-
-</button>
-
-</div>
-
-<!--==================================
+<!-- ======================
 FLOATING ACTION BUTTON
-===================================-->
+====================== -->
 
-<button
-id="fab"
-class="fab">
+<button id="fab" class="fab">
 
 +
 
 </button>
 
-<!--==================================
-QUICK ACTIONS
-===================================-->
+<!-- ======================
+QUICK ACTION SHEET
+====================== -->
 
-<div
-id="actionSheet"
-class="bottomSheet">
+<div id="actionSheet" class="bottomSheet">
 
 <div class="sheetHandle"></div>
 
@@ -727,25 +630,125 @@ Cancel
 
 </div>
 
-<!--==================================
-LOADING
-===================================-->
+<!-- ======================
+MACHINE DETAILS
+====================== -->
 
-<div
-id="loadingScreen"
-class="loadingScreen">
+<div id="machineDetailsSheet" class="bottomSheet">
+
+<div class="sheetHandle"></div>
+
+<img
+id="machineImage"
+class="machineImageLarge"
+src="images/default-machine.png"
+alt="Machine">
+
+<h2 id="machineName">Machine Name</h2>
+
+<p id="machineSeries">Series</p>
+
+<div class="detailsGrid">
+
+<div>
+<label>Daily Income</label>
+<p id="dailyIncome">UGX 0</p>
+</div>
+
+<div>
+<label>Earned</label>
+<p id="earnedAmount">UGX 0</p>
+</div>
+
+<div>
+<label>Status</label>
+<p id="machineStatus">Active</p>
+</div>
+
+<div>
+<label>Purchase Date</label>
+<p id="purchaseDate">-</p>
+</div>
+
+<div>
+<label>Expiry Date</label>
+<p id="expiryDate">-</p>
+</div>
+
+<div>
+<label>VIP</label>
+<p id="vipStatus">No</p>
+</div>
+
+</div>
+
+<button id="manageMachineBtn" class="primaryBtn">
+
+Manage Machine
+
+</button>
+
+</div>
+
+<!-- ======================
+MANAGE MACHINE
+====================== -->
+
+<div id="machineMenuSheet" class="bottomSheet">
+
+<div class="sheetHandle"></div>
+
+<h2>Machine Actions</h2>
+
+<button id="viewMachine">
+👁 View Details
+</button>
+
+<button id="editMachine">
+✏ Edit Machine
+</button>
+
+<button id="extendMachine">
+📅 Extend Duration
+</button>
+
+<button id="updateEarnings">
+💰 Update Earnings
+</button>
+
+<button id="vipMachine">
+⭐ Toggle VIP
+</button>
+
+<button id="changeStatus">
+🔄 Change Status
+</button>
+
+<button id="deleteMachine" class="danger">
+🗑 Delete Machine
+</button>
+
+<button class="closeSheet">
+Cancel
+</button>
+
+</div>
+
+<!-- ======================
+LOADING
+====================== -->
+
+<div id="loadingScreen" class="loadingScreen">
 
 <div class="loader"></div>
 
-<p>
-
-Loading...
-
-</p>
+<p>Loading...</p>
 
 </div>
 
 </main>
+
+</div>
 
 <script src="admin-user-machines.js"></script>
 
