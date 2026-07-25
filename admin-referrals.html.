@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Admin Referrals | Marathon Digital Hub</title>
+
+<link rel="stylesheet"
+href="admin-referrals.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="supabase-config.js"></script>
+
+</head>
+
+<body>
+
+<!--==========================
+SIDEBAR
+===========================-->
+
+<aside class="sidebar" id="sidebar">
+
+<div class="logo">
+
+<h2>MARATHON</h2>
+
+<span>Digital Hub</span>
+
+</div>
+
+<nav class="sidebarMenu">
+
+<a href="admin-dashboard.html">
+
+🏠
+<span>Dashboard</span>
+
+</a>
+
+<a href="admin-users.html">
+
+👥
+<span>Users</span>
+
+</a>
+
+<a href="admin-user-machines.html">
+
+⚙️
+<span>User Machines</span>
+
+</a>
+
+<a href="admin-referrals.html"
+class="active">
+
+🤝
+<span>Referrals</span>
+
+</a>
+
+<a href="admin-deposits.html">
+
+💳
+<span>Deposits</span>
+
+</a>
+
+<a href="admin-withdrawals.html">
+
+💸
+<span>Withdrawals</span>
+
+</a>
+
+<a href="admin-support.html">
+
+💬
+<span>Support</span>
+
+</a>
+
+<a href="admin-notifications.html">
+
+🔔
+<span>Notifications</span>
+
+</a>
+
+<a href="admin-reports.html">
+
+📊
+<span>Reports</span>
+
+</a>
+
+<a href="#"
+id="logoutBtn">
+
+🚪
+<span>Logout</span>
+
+</a>
+
+</nav>
+
+</aside>
+
+<!--==========================
+MAIN CONTENT
+===========================-->
+
+<div class="mainContent">
+
+<header class="topBar">
+
+<div class="topLeft">
+
+<button id="menuToggle">
+
+☰
+
+</button>
+
+<div>
+
+<h1>
+
+Referral Command Center
+
+</h1>
+
+<p>
+
+Manage every referral in Marathon Digital Hub.
+
+</p>
+
+</div>
+
+</div>
+
+<div class="topRight">
+
+<div class="adminProfile">
+
+<img
+
+src="images/admin.png"
+
+id="adminAvatar"
+
+alt="Admin">
+
+<div>
+
+<h3 id="adminName">
+
+Administrator
+
+</h3>
+
+<span id="adminRole">
+
+Super Admin
+
+</span>
+
+</div>
+
+</div>
+
+</div>
+
+</header>
+
+<!--==========================
+SEARCH
+===========================-->
+
+<section class="searchSection">
+
+<div class="searchBox">
+
+<input
+
+type="text"
+
+id="searchInput"
+
+placeholder="Search name, phone, email or referral code...">
+
+<button id="searchBtn">
+
+🔍
+
+</button>
+
+</div>
+
+<div class="filterContainer">
+
+<button
+class="filterBtn active"
+data-filter="all">
+
+All
+
+</button>
+
+<button
+class="filterBtn"
+data-filter="new">
+
+New
+
+</button>
+
+<button
+class="filterBtn"
+data-filter="deposit">
+
+Deposited
+
+</button>
+
+<button
+class="filterBtn"
+data-filter="machine">
+
+Machine Purchased
+
+</button>
+
+<button
+class="filterBtn"
+data-filter="reward">
+
+Reward Paid
+
+</button>
+
+</div>
+
+</section>
+
+<!--==========================
+LIVE STATISTICS
+===========================-->
+
+<section class="statsGrid">
+
+<div class="statCard">
+
+<h2 id="totalReferrals">
+
+0
+
+</h2>
+
+<p>Total Referrals</p>
+
+</div>
+
+<div class="statCard">
+
+<h2 id="totalDeposited">
+
+0
+
+</h2>
+
+<p>Deposited</p>
+
+</div>
+
+<div class="statCard">
+
+<h2 id="machinePurchased">
+
+0
+
+</h2>
+
+<p>Machine Purchased</p>
+
+</div>
+
+<div class="statCard">
+
+<h2 id="rewardPaid">
+
+0
+
+</h2>
+
+<p>Rewards Paid</p>
+
+</div>
+
+<div class="statCard">
+
+<h2 id="pendingRewards">
+
+0
+
+</h2>
+
+<p>Pending Rewards</p>
+
+</div>
+
+<div class="statCard">
+
+<h2 id="referralBonus">
+
+UGX 0
+
+</h2>
+
+<p>Total Referral Bonus</p>
+
+</div>
+
+</section>
+
+<!--==========================
+COMMAND CENTER
+===========================-->
+
+<section class="commandCenter">
+
+<!--==========================
+LEFT REFERRALS PANEL
+===========================-->
+
+<aside class="referralsPanel">
+
+    <div class="panelHeader">
+
+        <h2>All Referred Users</h2>
+
+        <span id="loadedReferrals">
+            0 Referrals
+        </span>
+
+    </div>
+
+    <div class="panelInfo">
+
+        Every referred user will appear here,
+        whether they have deposited, purchased
+        a machine or not.
+
+    </div>
+
+    <div id="referralsContainer" class="referralsContainer">
+
+        <!-- Referral cards loaded by JavaScript -->
+
+    </div>
+
+    <button id="loadMoreReferralsBtn" class="loadMoreBtn">
+
+        Load More
+
+    </button>
+
+</aside>
+
+<!--==========================
+RIGHT WORKSPACE
+===========================-->
+
+<section class="workspace">
+
+    <!--==========================
+    REFERRAL PROFILE
+    ===========================-->
+
+    <div class="workspaceCard">
+
+        <div class="cardHeader">
+
+            <h2>Referral Profile</h2>
+
+        </div>
+
+        <div class="profileSection">
+
+            <img
+
+            id="referralAvatar"
+
+            class="userAvatar"
+
+            src="images/default-avatar.png"
+
+            alt="Referral">
+
+            <div class="profileInfo">
+
+                <h2 id="referralName">
+
+                    Select Referral
+
+                </h2>
+
+                <p id="referralPhone">
+
+                    Phone Number
+
+                </p>
+
+                <p id="referralEmail">
+
+                    Email Address
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="badgeContainer">
+
+            <span id="membershipBadge">
+
+                Standard
+
+            </span>
+
+            <span id="kycBadge">
+
+                Not Verified
+
+            </span>
+
+            <span id="accountBadge">
+
+                Active
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <!--==========================
+    REFERRAL SUMMARY
+    ===========================-->
+
+    <div class="workspaceCard">
+
+        <div class="cardHeader">
+
+            <h2>Referral Summary</h2>
+
+        </div>
+
+        <div class="summaryGrid">
+
+            <div class="summaryCard">
+
+                <span>Wallet</span>
+
+                <h3 id="walletBalance">
+
+                    UGX 0
+
+                </h3>
+
+            </div>
+
+            <div class="summaryCard">
+
+                <span>Invested</span>
+
+                <h3 id="totalInvested">
+
+                    UGX 0
+
+                </h3>
+
+            </div>
+
+            <div class="summaryCard">
+
+                <span>Total Profit</span>
+
+                <h3 id="totalProfit">
+
+                    UGX 0
+
+                </h3>
+
+            </div>
+
+            <div class="summaryCard">
+
+                <span>Referral Bonus</span>
+
+                <h3 id="referralBonusAmount">
+
+                    UGX 0
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--==========================
+    ACCOUNT DETAILS
+    ===========================-->
+
+    <div class="workspaceCard">
+
+        <div class="cardHeader">
+
+            <h2>Account Details</h2>
+
+        </div>
+
+        <div class="detailsGrid">
+
+            <div>
+
+                <label>Country</label>
+
+                <p id="country">-</p>
+
+            </div>
+
+            <div>
+
+                <label>Membership</label>
+
+                <p id="membership">-</p>
+
+            </div>
+
+            <div>
+
+                <label>Referral Code</label>
+
+                <p id="referralCode">-</p>
+
+            </div>
+
+            <div>
+
+                <label>Referred By</label>
+
+                <p id="referredBy">-</p>
+
+            </div>
+
+            <div>
+
+                <label>Joined</label>
+
+                <p id="joinedDate">-</p>
+
+            </div>
+
+            <div>
+
+                <label>Last Login</label>
+
+                <p id="lastLogin">Never</p>
+
+            </div>
+
+            <div>
+
+                <label>Level</label>
+
+                <p id="userLevel">1</p>
+
+            </div>
+
+            <div>
+
+                <label>Status</label>
+
+                <p id="accountStatus">Active</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--==========================
+    REFERRAL PROGRESS
+    ==========================-->
+
+    <div class="workspaceCard">
+
+        <div class="cardHeader">
+
+            <h2>Referral Progress</h2>
+
+        </div>
+
+        <div class="progressGrid">
+
+            <div class="progressCard">
+
+                <h3>First Deposit</h3>
+
+                <div id="depositStatus" class="statusBadge">
+
+                    Pending
+
+                </div>
+
+            </div>
+
+            <div class="progressCard">
+
+                <h3>Machine Purchased</h3>
+
+                <div id="machineStatus" class="statusBadge">
+
+                    No
+
+                </div>
+
+            </div>
+
+            <div class="progressCard">
+
+                <h3>Reward Paid</h3>
+
+                <div id="rewardStatus" class="statusBadge">
+
+                    No
+
+                </div>
+
+            </div>
+
+            <div class="progressCard">
+
+                <h3>Total Machines</h3>
+
+                <h2 id="machineCount">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--==========================
+    USER MACHINES
+    ==========================-->
+
+    <div class="workspaceCard">
+
+        <div class="cardHeader">
+
+            <h2>Machines Owned</h2>
+
+            <span id="machineCounter">
+
+                0 Machines
+
+            </span>
+
+        </div>
+
+        <div id="userMachinesGrid" class="userMachinesGrid">
+
+            <!-- Loaded from user_machines -->
+
+        </div>
+
+    </div>
+
+    <!--==========================
+    REFERRAL REWARD
+    ==========================-->
+
+    <div class="workspaceCard">
+
+        <div class="cardHeader">
+
+            <h2>Referral Reward</h2>
+
+        </div>
+
+        <div class="rewardGrid">
+
+            <div>
+
+                <label>Reward Amount</label>
+
+                <h3 id="rewardAmount">
+
+                    UGX 0
+
+                </h3>
+
+            </div>
+
+            <div>
+
+                <label>Reward Date</label>
+
+                <h3 id="rewardDate">
+
+                    -
+
+                </h3>
+
+            </div>
+
+            <div>
+
+                <label>Referral Bonus</label>
+
+                <h3 id="bonusEarned">
+
+                    UGX 0
+
+                </h3>
+
+            </div>
+
+            <div>
+
+                <label>Current Stage</label>
+
+                <h3 id="rewardStage">
+
+                    Waiting
+
+                </h3>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--==========================
+    ADMIN ACTIONS
+    ==========================-->
+
+    <div class="workspaceCard">
+
+        <div class="cardHeader">
+
+            <h2>Admin Actions</h2>
+
+        </div>
+
+        <div class="actionGrid">
+
+            <button id="viewProfileBtn">
+
+                👤 View Profile
+
+            </button>
+
+            <button id="viewMachinesBtn">
+
+                🖥 View Machines
+
+            </button>
+
+            <button id="refreshReferralBtn">
+
+                🔄 Refresh
+
+            </button>
+
+            <button id="payRewardBtn">
+
+                💰 Pay Reward
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</section>
+
+</div>
+
+<script src="admin-referrals.js"></script>
+
+</body>
+
+</html>
