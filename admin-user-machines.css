@@ -1,6 +1,6 @@
-/*==========================
+/*=========================================
 RESET
-==========================*/
+=========================================*/
 
 *{
 margin:0;
@@ -19,113 +19,123 @@ color:#fff;
 overflow-x:hidden;
 }
 
-/*==========================
+/*=========================================
 ROOT
-==========================*/
+=========================================*/
 
 :root{
 
 --primary:#00D26A;
---primaryDark:#00B85E;
+--primary-dark:#00B45C;
 
---bg:#071421;
+--background:#071421;
+
 --card:#0E2238;
---card2:#15304C;
+--card2:#14314D;
 
---text:#ffffff;
---text2:#9FB3C8;
+--text:#FFFFFF;
+--muted:#9CB0C5;
 
---danger:#FF5252;
+--danger:#FF4D4F;
 
---radius:18px;
+--radius:20px;
 
---shadow:0 10px 30px rgba(0,0,0,.25);
+--shadow:0 12px 35px rgba(0,0,0,.28);
 
 }
 
-/*==========================
+/*=========================================
 APP
-==========================*/
+=========================================*/
 
 .app{
 
 width:100%;
 min-height:100vh;
+
 padding:18px;
 
 }
 
-/*==========================
+/*=========================================
 HEADER
-==========================*/
+=========================================*/
 
-.topHeader{
+.header{
 
 display:flex;
+
 align-items:center;
+
 justify-content:space-between;
 
 margin-bottom:20px;
 
 }
 
-.headerTitle{
+.headerText{
 
 flex:1;
+
 margin:0 15px;
 
 }
 
-.headerTitle h2{
+.headerText h1{
 
 font-size:24px;
+
 font-weight:700;
 
 }
 
-.headerTitle p{
+.headerText p{
 
 font-size:13px;
-color:var(--text2);
-margin-top:3px;
+
+margin-top:4px;
+
+color:var(--muted);
 
 }
 
-.headerActions{
+.headerRight{
 
 display:flex;
+
 align-items:center;
+
 gap:10px;
 
 }
 
-/*==========================
-BUTTONS
-==========================*/
+/*=========================================
+HEADER BUTTONS
+=========================================*/
 
-.iconButton{
+.headerBtn{
 
-width:46px;
-height:46px;
+width:48px;
+
+height:48px;
 
 border:none;
-outline:none;
 
-border-radius:14px;
+border-radius:15px;
 
 background:var(--card);
 
 color:#fff;
 
-cursor:pointer;
-
 font-size:18px;
+
+cursor:pointer;
 
 transition:.25s;
 
 }
 
-.iconButton:hover{
+.headerBtn:hover{
 
 background:var(--primary);
 
@@ -133,19 +143,20 @@ color:#071421;
 
 }
 
-/*==========================
+/*=========================================
 SEARCH
-==========================*/
+=========================================*/
 
 .searchSection{
 
-margin-bottom:22px;
+margin-bottom:20px;
 
 }
 
 .searchBox{
 
 display:flex;
+
 gap:10px;
 
 }
@@ -154,14 +165,15 @@ gap:10px;
 
 flex:1;
 
-height:54px;
+height:55px;
 
 border:none;
+
 outline:none;
 
-background:var(--card);
+border-radius:18px;
 
-border-radius:16px;
+background:var(--card);
 
 padding:0 18px;
 
@@ -173,17 +185,17 @@ font-size:15px;
 
 .searchBox input::placeholder{
 
-color:var(--text2);
+color:var(--muted);
 
 }
 
 .searchBox button{
 
-width:60px;
+width:58px;
 
 border:none;
 
-border-radius:16px;
+border-radius:18px;
 
 background:var(--primary);
 
@@ -201,13 +213,13 @@ transition:.25s;
 
 .searchBox button:hover{
 
-background:var(--primaryDark);
+background:var(--primary-dark);
 
 }
 
-/*==========================
-STAT GRID
-==========================*/
+/*=========================================
+STATISTICS
+=========================================*/
 
 .statsGrid{
 
@@ -217,7 +229,7 @@ grid-template-columns:repeat(2,1fr);
 
 gap:14px;
 
-margin-bottom:24px;
+margin-bottom:25px;
 
 }
 
@@ -245,7 +257,7 @@ transform:translateY(-3px);
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
 margin-bottom:8px;
 
@@ -253,17 +265,19 @@ margin-bottom:8px;
 
 .statCard h2{
 
-font-size:26px;
+font-size:25px;
+
+font-weight:700;
 
 color:var(--primary);
 
 }
 
-/*==========================
+/*=========================================
 SECTION TITLE
-==========================*/
+=========================================*/
 
-.sectionTitle{
+.sectionTop{
 
 display:flex;
 
@@ -275,23 +289,23 @@ margin-bottom:15px;
 
 }
 
-.sectionTitle h3{
+.sectionTop h2{
 
 font-size:20px;
 
 }
 
-.sectionTitle span{
+.sectionTop span{
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
 }
 
-/*==========================
+/*=========================================
 USER LIST
-==========================*/
+=========================================*/
 
 .usersContainer{
 
@@ -299,7 +313,7 @@ display:flex;
 
 flex-direction:column;
 
-gap:14px;
+gap:15px;
 
 }
 
@@ -307,15 +321,15 @@ gap:14px;
 
 background:var(--card);
 
-border-radius:18px;
-
 padding:16px;
+
+border-radius:20px;
 
 display:flex;
 
 align-items:center;
 
-gap:14px;
+gap:15px;
 
 cursor:pointer;
 
@@ -331,7 +345,7 @@ background:var(--card2);
 
 }
 
-.userAvatarSmall{
+.userCard img{
 
 width:58px;
 
@@ -355,7 +369,7 @@ flex:1;
 
 font-size:17px;
 
-margin-bottom:4px;
+margin-bottom:5px;
 
 }
 
@@ -363,13 +377,13 @@ margin-bottom:4px;
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
-margin-bottom:4px;
+margin-bottom:6px;
 
 }
 
-.userMeta{
+.userTags{
 
 display:flex;
 
@@ -379,17 +393,17 @@ flex-wrap:wrap;
 
 }
 
-.userBadge{
+.userTag{
 
 padding:5px 10px;
-
-background:#183654;
 
 border-radius:20px;
 
 font-size:11px;
 
-font-weight:600;
+font-weight:700;
+
+background:var(--card2);
 
 }
 
@@ -401,19 +415,19 @@ color:var(--primary);
 
 }
 
-/*==========================
+/*=========================================
 EMPTY STATE
-==========================*/
+=========================================*/
 
 .emptyState{
 
 margin-top:30px;
 
+padding:55px 20px;
+
 background:var(--card);
 
-border-radius:20px;
-
-padding:50px 20px;
+border-radius:22px;
 
 text-align:center;
 
@@ -421,9 +435,9 @@ box-shadow:var(--shadow);
 
 }
 
-.emptyIcon{
+.emptyEmoji{
 
-font-size:60px;
+font-size:65px;
 
 margin-bottom:15px;
 
@@ -437,28 +451,37 @@ margin-bottom:10px;
 
 .emptyState p{
 
-color:var(--text2);
+color:var(--muted);
 
 line-height:1.6;
 
 }
 
-/*==========================
-USER DASHBOARD
-==========================*/
+/*=========================================
+HIDDEN
+=========================================*/
 
 .hidden{
+
 display:none!important;
+
 }
+
+/*=========================================
+USER DASHBOARD
+=========================================*/
 
 .userDashboard{
+
 margin-top:25px;
+
 animation:fadeIn .35s ease;
+
 }
 
-/*==========================
+/*=========================================
 PROFILE CARD
-==========================*/
+=========================================*/
 
 .profileCard{
 
@@ -468,19 +491,19 @@ border-radius:22px;
 
 padding:20px;
 
-box-shadow:var(--shadow);
-
 margin-bottom:22px;
+
+box-shadow:var(--shadow);
 
 }
 
-.profileTop{
+.profileHeader{
 
 display:flex;
 
 align-items:center;
 
-gap:15px;
+gap:16px;
 
 }
 
@@ -496,39 +519,75 @@ object-fit:cover;
 
 border:3px solid var(--primary);
 
+background:#18324E;
+
 }
 
-.profileInfo{
+.profileDetails{
 
 flex:1;
 
 }
 
-.profileInfo h2{
+.profileDetails h2{
 
 font-size:22px;
 
-margin-bottom:6px;
+margin-bottom:5px;
 
 }
 
-.profileInfo p{
+.profileDetails p{
 
 font-size:14px;
 
-color:var(--text2);
+color:var(--muted);
 
 margin-bottom:12px;
 
 }
 
+.iconBtn{
+
+width:45px;
+
+height:45px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--card2);
+
+color:#fff;
+
+font-size:18px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.iconBtn:hover{
+
+background:var(--primary);
+
+color:#071421;
+
+}
+
+/*=========================================
+BADGES
+=========================================*/
+
 .badgeRow{
 
 display:flex;
 
-flex-wrap:wrap;
-
 gap:8px;
+
+flex-wrap:wrap;
 
 }
 
@@ -536,7 +595,7 @@ gap:8px;
 
 padding:6px 12px;
 
-border-radius:30px;
+border-radius:20px;
 
 font-size:11px;
 
@@ -556,29 +615,21 @@ color:var(--primary);
 
 background:#17492D;
 
-color:#7BFFC1;
-
-}
-
-.inactive{
-
-background:#442020;
-
-color:#FF8D8D;
+color:#7DFFC5;
 
 }
 
 .verified{
 
-background:#14395C;
+background:#173E63;
 
-color:#72C3FF;
+color:#73C7FF;
 
 }
 
-/*==========================
-OVERVIEW
-==========================*/
+/*=========================================
+OVERVIEW GRID
+=========================================*/
 
 .overviewGrid{
 
@@ -586,9 +637,9 @@ display:grid;
 
 grid-template-columns:repeat(2,1fr);
 
-gap:15px;
+gap:14px;
 
-margin-bottom:24px;
+margin-bottom:22px;
 
 }
 
@@ -602,31 +653,39 @@ border-radius:18px;
 
 box-shadow:var(--shadow);
 
+transition:.25s;
+
+}
+
+.overviewCard:hover{
+
+transform:translateY(-3px);
+
 }
 
 .overviewCard p{
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
 margin-bottom:8px;
 
 }
 
-.overviewCard h2{
+.overviewCard h3{
 
-font-size:21px;
+font-size:22px;
 
 color:var(--primary);
 
 }
 
-/*==========================
-TABS
-==========================*/
+/*=========================================
+TAB BAR
+=========================================*/
 
-.tabs{
+.tabBar{
 
 display:flex;
 
@@ -636,19 +695,19 @@ overflow-x:auto;
 
 padding-bottom:8px;
 
-margin-bottom:22px;
+margin-bottom:20px;
 
 scrollbar-width:none;
 
 }
 
-.tabs::-webkit-scrollbar{
+.tabBar::-webkit-scrollbar{
 
 display:none;
 
 }
 
-.tabBtn{
+.tabButton{
 
 min-width:95px;
 
@@ -656,13 +715,11 @@ border:none;
 
 background:var(--card);
 
-color:var(--text2);
+color:var(--muted);
 
-padding:12px 14px;
+padding:12px;
 
 border-radius:16px;
-
-cursor:pointer;
 
 display:flex;
 
@@ -676,17 +733,13 @@ gap:6px;
 
 font-size:13px;
 
+cursor:pointer;
+
 transition:.25s;
 
 }
 
-.tabBtn:hover{
-
-background:var(--card2);
-
-}
-
-.tabBtn.active{
+.tabButton.active{
 
 background:var(--primary);
 
@@ -695,6 +748,16 @@ color:#071421;
 font-weight:700;
 
 }
+
+.tabButton:hover{
+
+background:var(--card2);
+
+}
+
+/*=========================================
+TAB CONTENT
+=========================================*/
 
 .tabContent{
 
@@ -710,9 +773,9 @@ display:block;
 
 }
 
-/*==========================
+/*=========================================
 TAB HEADER
-==========================*/
+=========================================*/
 
 .tabHeader{
 
@@ -722,9 +785,7 @@ justify-content:space-between;
 
 align-items:center;
 
-margin-bottom:16px;
-
-gap:10px;
+margin-bottom:18px;
 
 }
 
@@ -734,17 +795,17 @@ font-size:20px;
 
 }
 
-/*==========================
+/*=========================================
 PRIMARY BUTTON
-==========================*/
+=========================================*/
 
-.primaryBtn{
+.primaryButton{
+
+border:none;
 
 background:var(--primary);
 
 color:#071421;
-
-border:none;
 
 padding:12px 18px;
 
@@ -758,15 +819,15 @@ transition:.25s;
 
 }
 
-.primaryBtn:hover{
+.primaryButton:hover{
 
-background:var(--primaryDark);
+background:var(--primary-dark);
 
 }
 
-/*==========================
-FILTERS
-==========================*/
+/*=========================================
+FILTER BUTTONS
+=========================================*/
 
 .filterRow{
 
@@ -790,35 +851,29 @@ display:none;
 
 }
 
-.filterChip{
+.filterButton{
 
 border:none;
 
 background:var(--card);
 
-color:var(--text2);
+color:var(--muted);
 
 padding:10px 16px;
 
-border-radius:30px;
-
-cursor:pointer;
-
-white-space:nowrap;
-
-transition:.25s;
+border-radius:22px;
 
 font-size:13px;
 
+white-space:nowrap;
+
+cursor:pointer;
+
+transition:.25s;
+
 }
 
-.filterChip:hover{
-
-background:var(--card2);
-
-}
-
-.filterChip.active{
+.filterButton.active{
 
 background:var(--primary);
 
@@ -828,23 +883,29 @@ font-weight:700;
 
 }
 
-/*==========================
-MACHINE GRID
-==========================*/
+.filterButton:hover{
 
-.machinesGrid{
+background:var(--card2);
 
-display:grid;
+}
 
-grid-template-columns:1fr;
+/*=========================================
+MACHINE LIST
+=========================================*/
+
+.machineList{
+
+display:flex;
+
+flex-direction:column;
 
 gap:16px;
 
 }
 
-/*==========================
+/*=========================================
 ANIMATION
-==========================*/
+=========================================*/
 
 @keyframes fadeIn{
 
@@ -852,7 +913,7 @@ from{
 
 opacity:0;
 
-transform:translateY(12px);
+transform:translateY(15px);
 
 }
 
@@ -866,9 +927,9 @@ transform:translateY(0);
 
 }
 
-/*==========================
+/*=========================================
 MACHINE CARD
-==========================*/
+=========================================*/
 
 .machineCard{
 
@@ -878,13 +939,13 @@ border-radius:20px;
 
 padding:16px;
 
-box-shadow:var(--shadow);
-
 display:flex;
 
 gap:15px;
 
 position:relative;
+
+box-shadow:var(--shadow);
 
 transition:.25s;
 
@@ -892,7 +953,7 @@ transition:.25s;
 
 .machineCard:hover{
 
-transform:translateY(-3px);
+transform:translateY(-4px);
 
 }
 
@@ -906,7 +967,7 @@ border-radius:16px;
 
 object-fit:cover;
 
-background:#1B3653;
+background:var(--card2);
 
 }
 
@@ -920,7 +981,7 @@ flex:1;
 
 font-size:18px;
 
-margin-bottom:5px;
+margin-bottom:6px;
 
 }
 
@@ -928,9 +989,9 @@ margin-bottom:5px;
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
-margin-bottom:4px;
+margin-bottom:5px;
 
 }
 
@@ -940,9 +1001,9 @@ display:flex;
 
 gap:8px;
 
-margin-top:8px;
-
 flex-wrap:wrap;
+
+margin-top:8px;
 
 }
 
@@ -958,25 +1019,45 @@ font-weight:700;
 
 }
 
-.vipBadge{
+.machineBadge.vip{
 
 background:#5C4708;
 
-color:#FFD95A;
+color:#FFD965;
 
 }
 
-.activeBadge{
+.machineBadge.active{
 
-background:#14442A;
+background:#17492D;
 
-color:#8BFFBE;
+color:#7DFFC5;
+
+}
+
+.machineBadge.expired{
+
+background:#542222;
+
+color:#FFB0B0;
 
 }
 
 .machineProgress{
 
 margin-top:12px;
+
+}
+
+.machineProgress span{
+
+display:block;
+
+font-size:12px;
+
+margin-bottom:6px;
+
+color:var(--muted);
 
 }
 
@@ -996,23 +1077,27 @@ overflow:hidden;
 
 height:100%;
 
-background:linear-gradient(90deg,#00D26A,#4CFFA4);
+width:0;
+
+background:linear-gradient(90deg,#00D26A,#4CFF9D);
 
 border-radius:20px;
 
+transition:.4s;
+
 }
 
-.machineMenu{
+.machineAction{
 
 position:absolute;
 
-top:15px;
+top:14px;
 
-right:15px;
+right:14px;
 
-width:40px;
+width:42px;
 
-height:40px;
+height:42px;
 
 border:none;
 
@@ -1024,13 +1109,15 @@ color:#fff;
 
 cursor:pointer;
 
+font-size:18px;
+
 }
 
-/*==========================
-WALLET
-==========================*/
+/*=========================================
+WALLET TAB
+=========================================*/
 
-.walletCards{
+.walletGrid{
 
 display:grid;
 
@@ -1058,7 +1145,7 @@ box-shadow:var(--shadow);
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
 margin-bottom:8px;
 
@@ -1082,23 +1169,73 @@ gap:12px;
 
 }
 
-/*==========================
+.transactionCard{
+
+background:var(--card);
+
+padding:15px;
+
+border-radius:18px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+box-shadow:var(--shadow);
+
+}
+
+.transactionInfo h4{
+
+margin-bottom:4px;
+
+}
+
+.transactionInfo p{
+
+font-size:12px;
+
+color:var(--muted);
+
+}
+
+.transactionAmount{
+
+font-weight:700;
+
+color:var(--primary);
+
+}
+
+/*=========================================
 REFERRALS
-==========================*/
+=========================================*/
+
+#referralsList{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
 
 .referralCard{
 
 background:var(--card);
 
-border-radius:18px;
-
 padding:15px;
+
+border-radius:18px;
 
 display:flex;
 
 align-items:center;
 
-gap:12px;
+gap:14px;
 
 box-shadow:var(--shadow);
 
@@ -1124,7 +1261,7 @@ flex:1;
 
 .referralInfo h4{
 
-margin-bottom:4px;
+margin-bottom:5px;
 
 }
 
@@ -1132,15 +1269,31 @@ margin-bottom:4px;
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
 }
 
-/*==========================
-ACTIVITY
-==========================*/
+.referralStatus{
 
-.activityTimeline{
+padding:6px 12px;
+
+border-radius:20px;
+
+font-size:11px;
+
+font-weight:700;
+
+background:#173E63;
+
+color:#73C7FF;
+
+}
+
+/*=========================================
+ACTIVITY
+=========================================*/
+
+#activityList{
 
 display:flex;
 
@@ -1168,13 +1321,13 @@ box-shadow:var(--shadow);
 
 .activityIcon{
 
-width:46px;
+width:48px;
 
-height:46px;
+height:48px;
 
 border-radius:50%;
 
-background:#143450;
+background:#163551;
 
 display:flex;
 
@@ -1188,29 +1341,39 @@ color:var(--primary);
 
 }
 
-.activityInfo{
+.activityBody{
 
 flex:1;
 
 }
 
-.activityInfo h4{
+.activityBody h4{
 
 margin-bottom:5px;
 
 }
 
-.activityInfo p{
+.activityBody p{
 
 font-size:13px;
 
-color:var(--text2);
+color:var(--muted);
 
 }
 
-/*==========================
-PROFILE
-==========================*/
+.activityTime{
+
+font-size:12px;
+
+color:var(--muted);
+
+margin-top:6px;
+
+}
+
+/*=========================================
+PROFILE TAB
+=========================================*/
 
 .profileGrid{
 
@@ -1222,7 +1385,7 @@ gap:14px;
 
 }
 
-.infoCard{
+.profileItem{
 
 background:var(--card);
 
@@ -1234,47 +1397,51 @@ box-shadow:var(--shadow);
 
 }
 
-.infoCard label{
+.profileItem label{
 
 display:block;
 
 font-size:12px;
 
-color:var(--text2);
+color:var(--muted);
 
 margin-bottom:8px;
 
 }
 
-.infoCard p{
+.profileItem p{
 
 font-size:15px;
 
 font-weight:600;
 
+word-break:break-word;
+
 }
 
-/*==========================
-EMPTY LIST
-==========================*/
+/*=========================================
+EMPTY MESSAGE
+=========================================*/
 
-.emptyList{
+.emptyMessage{
 
 background:var(--card);
 
-padding:35px 20px;
+padding:40px 20px;
 
 border-radius:20px;
 
 text-align:center;
 
-color:var(--text2);
+color:var(--muted);
+
+box-shadow:var(--shadow);
 
   }
 
-/*==========================
+/*=========================================
 FLOATING ACTION BUTTON
-==========================*/
+=========================================*/
 
 .fab{
 
@@ -1282,11 +1449,11 @@ position:fixed;
 
 right:18px;
 
-bottom:22px;
+bottom:20px;
 
-width:60px;
+width:62px;
 
-height:60px;
+height:62px;
 
 border:none;
 
@@ -1302,9 +1469,9 @@ font-weight:700;
 
 cursor:pointer;
 
-box-shadow:0 12px 30px rgba(0,210,106,.35);
+box-shadow:0 15px 35px rgba(0,210,106,.35);
 
-z-index:100;
+z-index:900;
 
 transition:.3s;
 
@@ -1316,9 +1483,9 @@ transform:scale(1.08);
 
 }
 
-/*==========================
+/*=========================================
 BOTTOM SHEETS
-==========================*/
+=========================================*/
 
 .bottomSheet{
 
@@ -1330,21 +1497,21 @@ right:0;
 
 bottom:-100%;
 
-background:#0E2238;
+background:var(--card);
 
 border-radius:28px 28px 0 0;
 
 padding:22px;
 
-transition:.35s ease;
-
-z-index:999;
-
 max-height:85vh;
 
 overflow-y:auto;
 
-box-shadow:0 -15px 35px rgba(0,0,0,.45);
+transition:.35s ease;
+
+z-index:1001;
+
+box-shadow:0 -18px 40px rgba(0,0,0,.45);
 
 }
 
@@ -1356,13 +1523,13 @@ bottom:0;
 
 .sheetHandle{
 
-width:65px;
+width:70px;
 
 height:6px;
 
-background:#36506D;
+border-radius:30px;
 
-border-radius:20px;
+background:#34506C;
 
 margin:0 auto 18px;
 
@@ -1372,7 +1539,7 @@ margin:0 auto 18px;
 
 text-align:center;
 
-margin-bottom:18px;
+margin-bottom:20px;
 
 font-size:22px;
 
@@ -1384,13 +1551,13 @@ width:100%;
 
 height:54px;
 
-margin-bottom:12px;
-
 border:none;
 
 border-radius:16px;
 
-background:#16304C;
+margin-bottom:12px;
+
+background:var(--card2);
 
 color:#fff;
 
@@ -1406,37 +1573,43 @@ transition:.25s;
 
 .bottomSheet button:hover{
 
-background:#00D26A;
+background:var(--primary);
 
 color:#071421;
 
 }
 
-.dangerBtn{
+.dangerButton{
 
-background:#542222!important;
+background:#5A2323 !important;
 
-color:#FFB3B3!important;
-
-}
-
-.dangerBtn:hover{
-
-background:#FF5252!important;
-
-color:#fff!important;
+color:#FFD2D2 !important;
 
 }
 
-/*==========================
+.dangerButton:hover{
+
+background:#FF4D4F !important;
+
+color:#fff !important;
+
+}
+
+/*=========================================
 OVERLAY
-==========================*/
+=========================================*/
 
 .sheetOverlay{
 
 position:fixed;
 
-inset:0;
+left:0;
+
+top:0;
+
+right:0;
+
+bottom:0;
 
 background:rgba(0,0,0,.55);
 
@@ -1446,7 +1619,7 @@ visibility:hidden;
 
 transition:.3s;
 
-z-index:998;
+z-index:1000;
 
 }
 
@@ -1458,9 +1631,9 @@ visibility:visible;
 
 }
 
-/*==========================
+/*=========================================
 TOAST
-==========================*/
+=========================================*/
 
 .toast{
 
@@ -1472,11 +1645,11 @@ bottom:95px;
 
 transform:translateX(-50%);
 
-background:#16304C;
+background:var(--card2);
 
 color:#fff;
 
-padding:14px 18px;
+padding:14px 20px;
 
 border-radius:14px;
 
@@ -1484,7 +1657,7 @@ font-size:14px;
 
 font-weight:600;
 
-box-shadow:0 10px 25px rgba(0,0,0,.3);
+box-shadow:var(--shadow);
 
 opacity:0;
 
@@ -1506,23 +1679,25 @@ bottom:110px;
 
 .toast.success{
 
-border-left:5px solid #00D26A;
+border-left:5px solid var(--primary);
 
 }
 
 .toast.error{
 
-border-left:5px solid #FF5252;
+border-left:5px solid var(--danger);
 
 }
 
-/*==========================
+/*=========================================
 CUSTOM SCROLLBAR
-==========================*/
+=========================================*/
 
 ::-webkit-scrollbar{
 
 width:6px;
+
+height:6px;
 
 }
 
@@ -1534,23 +1709,23 @@ background:#071421;
 
 ::-webkit-scrollbar-thumb{
 
-background:#00D26A;
+background:var(--primary);
 
-border-radius:20px;
+border-radius:30px;
 
 }
 
-/*==========================
+/*=========================================
 GENERAL ANIMATION
-==========================*/
+=========================================*/
 
-@keyframes fadeUp{
+@keyframes slideUp{
 
 from{
 
 opacity:0;
 
-transform:translateY(18px);
+transform:translateY(20px);
 
 }
 
@@ -1564,37 +1739,31 @@ transform:translateY(0);
 
 }
 
-.userCard,
 .profileCard,
 .overviewCard,
 .machineCard,
 .walletCard,
 .referralCard,
 .activityCard,
-.infoCard{
+.profileItem,
+.userCard{
 
-animation:fadeUp .35s ease;
+animation:slideUp .35s ease;
 
 }
 
-/*==========================
-MOBILE RESPONSIVE
-==========================*/
+/*=========================================
+MOBILE
+=========================================*/
 
 @media (max-width:768px){
 
-.app{
-
-padding:15px;
-
-}
-
 .statsGrid,
 .overviewGrid,
-.walletCards,
+.walletGrid,
 .profileGrid{
 
-grid-template-columns:1fr 1fr;
+grid-template-columns:repeat(2,1fr);
 
 }
 
@@ -1616,9 +1785,15 @@ height:180px;
 
 @media (max-width:480px){
 
-.headerTitle h2{
+.app{
 
-font-size:21px;
+padding:15px;
+
+}
+
+.headerText h1{
+
+font-size:22px;
 
 }
 
@@ -1632,20 +1807,20 @@ flex-direction:column;
 
 width:100%;
 
-height:52px;
+height:54px;
 
 }
 
 .statsGrid,
 .overviewGrid,
-.walletCards,
+.walletGrid,
 .profileGrid{
 
 grid-template-columns:1fr;
 
 }
 
-.profileTop{
+.profileHeader{
 
 flex-direction:column;
 
@@ -1655,13 +1830,13 @@ align-items:flex-start;
 
 .userAvatar{
 
-width:75px;
+width:78px;
 
-height:75px;
+height:78px;
 
 }
 
-.tabBtn{
+.tabButton{
 
 min-width:90px;
 
@@ -1681,9 +1856,9 @@ width:58px;
 
 height:58px;
 
-right:15px;
+right:16px;
 
-bottom:18px;
+bottom:16px;
 
 }
 
