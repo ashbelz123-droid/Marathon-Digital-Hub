@@ -23,27 +23,27 @@ href="admin-user-machines.css">
 
 <div class="app">
 
-<!--==========================
-TOP HEADER
-===========================-->
+<!-- ==========================
+HEADER
+========================== -->
 
-<header class="topHeader">
+<header class="header">
 
 <button
 id="menuBtn"
-class="iconButton">
+class="headerBtn">
 
 ☰
 
 </button>
 
-<div class="headerTitle">
+<div class="headerText">
 
-<h2>
+<h1>
 
 User Machines
 
-</h2>
+</h1>
 
 <p>
 
@@ -53,11 +53,11 @@ Manage users & investments
 
 </div>
 
-<div class="headerActions">
+<div class="headerRight">
 
 <button
 id="refreshBtn"
-class="iconButton">
+class="headerBtn">
 
 🔄
 
@@ -65,7 +65,7 @@ class="iconButton">
 
 <button
 id="notificationBtn"
-class="iconButton">
+class="headerBtn">
 
 🔔
 
@@ -75,24 +75,20 @@ class="iconButton">
 
 </header>
 
-<!--==========================
+<!-- ==========================
 SEARCH
-===========================-->
+========================== -->
 
 <section class="searchSection">
 
 <div class="searchBox">
 
 <input
-
 id="searchInput"
-
 type="text"
+placeholder="Search by name, phone or email...">
 
-placeholder="Search user by name, phone or email...">
-
-<button
-id="searchBtn">
+<button id="searchBtn">
 
 🔍
 
@@ -102,9 +98,9 @@ id="searchBtn">
 
 </section>
 
-<!--==========================
-STATS
-===========================-->
+<!-- ==========================
+STATISTICS
+========================== -->
 
 <section class="statsGrid">
 
@@ -122,9 +118,9 @@ STATS
 
 <div class="statCard">
 
-<p>Online</p>
+<p>Active Users</p>
 
-<h2 id="onlineUsers">
+<h2 id="activeUsers">
 
 0
 
@@ -134,7 +130,7 @@ STATS
 
 <div class="statCard">
 
-<p>Machines</p>
+<p>Total Machines</p>
 
 <h2 id="totalMachines">
 
@@ -158,23 +154,23 @@ STATS
 
 </section>
 
-<!--==========================
+<!-- ==========================
 USER LIST
-===========================-->
+========================== -->
 
-<section class="usersSection">
+<section class="userSection">
 
-<div class="sectionTitle">
+<div class="sectionTop">
 
-<h3>
+<h2>
 
 Users
 
-</h3>
+</h2>
 
 <span id="userCount">
 
-0 Users
+0 Members
 
 </span>
 
@@ -184,21 +180,21 @@ Users
 id="usersContainer"
 class="usersContainer">
 
-<!-- JavaScript Loads Users -->
+<!-- Loaded from Supabase -->
 
 </div>
 
 </section>
 
-<!--==========================
+<!-- ==========================
 EMPTY STATE
-===========================-->
+========================== -->
 
 <section
 id="emptyState"
 class="emptyState">
 
-<div class="emptyIcon">
+<div class="emptyEmoji">
 
 👤
 
@@ -206,31 +202,34 @@ class="emptyState">
 
 <h2>
 
-Select a User
+Choose a User
 
 </h2>
 
 <p>
 
-Tap a user above to manage their machines, wallet, referrals and profile.
+Tap any user above to manage machines, wallet, referrals and profile.
 
 </p>
 
 </section>
 
- <!--==========================
-SELECTED USER DASHBOARD
-===========================-->
+<!-- ==========================
+USER DASHBOARD
+Hidden until user selected
+========================== -->
 
 <section
 id="userDashboard"
 class="userDashboard hidden">
 
-<!-- USER PROFILE -->
+ <!--====================================
+SELECTED USER PROFILE
+=====================================-->
 
 <div class="profileCard">
 
-<div class="profileTop">
+<div class="profileHeader">
 
 <img
 id="userAvatar"
@@ -238,11 +237,11 @@ class="userAvatar"
 src="images/default-avatar.png"
 alt="User">
 
-<div class="profileInfo">
+<div class="profileDetails">
 
 <h2 id="userName">
 
-User Name
+Full Name
 
 </h2>
 
@@ -272,9 +271,9 @@ Active
 
 <span
 id="kycBadge"
-class="badge">
+class="badge verified">
 
-Verified
+Not Verified
 
 </span>
 
@@ -283,8 +282,8 @@ Verified
 </div>
 
 <button
-id="userOptionsBtn"
-class="iconButton">
+id="userMenuBtn"
+class="iconBtn">
 
 ⋮
 
@@ -294,67 +293,71 @@ class="iconButton">
 
 </div>
 
-<!-- OVERVIEW -->
+<!--====================================
+USER OVERVIEW
+=====================================-->
 
 <div class="overviewGrid">
 
 <div class="overviewCard">
 
-<p>Wallet</p>
+<p>Wallet Balance</p>
 
-<h2 id="walletBalance">
+<h3 id="walletBalance">
 
 UGX 0
 
-</h2>
+</h3>
 
 </div>
 
 <div class="overviewCard">
 
-<p>Machines</p>
+<p>Total Invested</p>
 
-<h2 id="machineCount">
+<h3 id="totalInvested">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="overviewCard">
+
+<p>Total Profit</p>
+
+<h3 id="totalProfit">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="overviewCard">
+
+<p>Owned Machines</p>
+
+<h3 id="ownedMachines">
 
 0
 
-</h2>
-
-</div>
-
-<div class="overviewCard">
-
-<p>Invested</p>
-
-<h2 id="investedAmount">
-
-UGX 0
-
-</h2>
-
-</div>
-
-<div class="overviewCard">
-
-<p>Profit</p>
-
-<h2 id="profitAmount">
-
-UGX 0
-
-</h2>
+</h3>
 
 </div>
 
 </div>
 
-<!-- TABS -->
+<!--====================================
+TABS
+=====================================-->
 
-<div class="tabs">
+<div class="tabBar">
 
 <button
-class="tabBtn active"
-data-tab="machines">
+class="tabButton active"
+data-tab="machinesTab">
 
 🖥
 
@@ -363,8 +366,8 @@ data-tab="machines">
 </button>
 
 <button
-class="tabBtn"
-data-tab="wallet">
+class="tabButton"
+data-tab="walletTab">
 
 💰
 
@@ -373,8 +376,8 @@ data-tab="wallet">
 </button>
 
 <button
-class="tabBtn"
-data-tab="referrals">
+class="tabButton"
+data-tab="referralsTab">
 
 👥
 
@@ -383,8 +386,8 @@ data-tab="referrals">
 </button>
 
 <button
-class="tabBtn"
-data-tab="activity">
+class="tabButton"
+data-tab="activityTab">
 
 📈
 
@@ -393,8 +396,8 @@ data-tab="activity">
 </button>
 
 <button
-class="tabBtn"
-data-tab="profile">
+class="tabButton"
+data-tab="profileTab">
 
 👤
 
@@ -404,9 +407,9 @@ data-tab="profile">
 
 </div>
 
-<!--==========================
+<!--====================================
 MACHINES TAB
-===========================-->
+=====================================-->
 
 <div
 id="machinesTab"
@@ -422,9 +425,9 @@ Owned Machines
 
 <button
 id="addMachineBtn"
-class="primaryBtn">
+class="primaryButton">
 
-＋ Add
+＋ Add Machine
 
 </button>
 
@@ -433,7 +436,7 @@ class="primaryBtn">
 <div class="filterRow">
 
 <button
-class="filterChip active"
+class="filterButton active"
 data-filter="all">
 
 All
@@ -441,7 +444,7 @@ All
 </button>
 
 <button
-class="filterChip"
+class="filterButton"
 data-filter="active">
 
 Active
@@ -449,7 +452,7 @@ Active
 </button>
 
 <button
-class="filterChip"
+class="filterButton"
 data-filter="vip">
 
 VIP
@@ -457,7 +460,7 @@ VIP
 </button>
 
 <button
-class="filterChip"
+class="filterButton"
 data-filter="completed">
 
 Completed
@@ -465,7 +468,7 @@ Completed
 </button>
 
 <button
-class="filterChip"
+class="filterButton"
 data-filter="expired">
 
 Expired
@@ -475,123 +478,123 @@ Expired
 </div>
 
 <div
-id="machinesGrid"
-class="machinesGrid">
+id="machineList"
+class="machineList">
 
-<!-- Machine Cards -->
+<!-- User machines loaded here -->
 
 </div>
 
  </div>
 
- <!--==========================
+ <!--====================================
 WALLET TAB
-===========================-->
+=====================================-->
 
 <div id="walletTab" class="tabContent">
 
-<div class="walletCards">
+<div class="walletGrid">
 
 <div class="walletCard">
 <p>Wallet Balance</p>
-<h2 id="walletAmount">UGX 0</h2>
+<h2 id="walletTabBalance">UGX 0</h2>
 </div>
 
 <div class="walletCard">
 <p>Total Invested</p>
-<h2 id="walletInvested">UGX 0</h2>
+<h2 id="walletTabInvested">UGX 0</h2>
 </div>
 
 <div class="walletCard">
 <p>Total Profit</p>
-<h2 id="walletProfit">UGX 0</h2>
+<h2 id="walletTabProfit">UGX 0</h2>
 </div>
 
 <div class="walletCard">
 <p>Referral Bonus</p>
-<h2 id="walletReferralBonus">UGX 0</h2>
+<h2 id="walletTabReferral">UGX 0</h2>
 </div>
 
 </div>
 
 <div id="walletTransactions" class="walletTransactions">
 
-<!-- Transactions loaded here -->
+<!-- Wallet transactions -->
 
 </div>
 
 </div>
 
-<!--==========================
+<!--====================================
 REFERRALS TAB
-===========================-->
+=====================================-->
 
 <div id="referralsTab" class="tabContent">
 
 <div class="tabHeader">
 
-<h3>Referred Users</h3>
+<h3>Referrals</h3>
 
-<span id="referralCount">0 Members</span>
+<span id="referralCount">0 Users</span>
 
 </div>
 
 <div id="referralsList">
 
-<!-- Loaded by JavaScript -->
+<!-- Referral cards -->
 
 </div>
 
 </div>
 
-<!--==========================
+<!--====================================
 ACTIVITY TAB
-===========================-->
+=====================================-->
 
 <div id="activityTab" class="tabContent">
 
-<div id="activityTimeline">
+<div id="activityList">
 
-<!-- Timeline -->
-
-</div>
+<!-- Activity timeline -->
 
 </div>
 
-<!--==========================
+</div>
+
+<!--====================================
 PROFILE TAB
-===========================-->
+=====================================-->
 
 <div id="profileTab" class="tabContent">
 
 <div class="profileGrid">
 
-<div class="infoCard">
+<div class="profileItem">
 <label>Email</label>
 <p id="profileEmail">-</p>
 </div>
 
-<div class="infoCard">
+<div class="profileItem">
 <label>Country</label>
 <p id="profileCountry">-</p>
 </div>
 
-<div class="infoCard">
+<div class="profileItem">
 <label>Membership</label>
 <p id="profileMembership">Standard</p>
 </div>
 
-<div class="infoCard">
+<div class="profileItem">
 <label>KYC</label>
 <p id="profileKyc">Not Verified</p>
 </div>
 
-<div class="infoCard">
+<div class="profileItem">
 <label>Level</label>
 <p id="profileLevel">1</p>
 </div>
 
-<div class="infoCard">
+<div class="profileItem">
 <label>Last Login</label>
 <p id="profileLastLogin">-</p>
 </div>
@@ -602,9 +605,9 @@ PROFILE TAB
 
 </section>
 
-<!--==========================
-FLOATING BUTTON
-===========================-->
+<!--====================================
+FLOATING ACTION BUTTON
+=====================================-->
 
 <button id="fab" class="fab">
 
@@ -612,9 +615,9 @@ FLOATING BUTTON
 
 </button>
 
-<!--==========================
-ADMIN MENU POPUP
-===========================-->
+<!--====================================
+ADMIN MENU
+=====================================-->
 
 <div id="menuSheet" class="bottomSheet">
 
@@ -622,117 +625,92 @@ ADMIN MENU POPUP
 
 <h2>Admin Menu</h2>
 
-<button onclick="location.href='admin-dashboard.html'">
-🏠 Dashboard
-</button>
+<button data-page="admin-dashboard.html">🏠 Dashboard</button>
 
-<button onclick="location.href='admin-users.html'">
-👥 Users
-</button>
+<button data-page="admin-users.html">👥 Users</button>
 
-<button onclick="location.href='admin-deposits.html'">
-💳 Deposits
-</button>
+<button data-page="admin-deposits.html">💳 Deposits</button>
 
-<button onclick="location.href='admin-withdrawals.html'">
-💸 Withdrawals
-</button>
+<button data-page="admin-withdrawals.html">💸 Withdrawals</button>
 
-<button onclick="location.href='admin-reports.html'">
-📊 Reports
-</button>
+<button data-page="admin-reports.html">📊 Reports</button>
 
-<button onclick="location.href='admin-support.html'">
-💬 Support
-</button>
+<button data-page="admin-support.html">💬 Support</button>
 
-<button id="logoutBtn">
-🚪 Logout
-</button>
+<button id="logoutBtn">🚪 Logout</button>
 
-<button class="closeSheet">
-Close
-</button>
+<button class="closeSheet">Close</button>
 
 </div>
 
-<!--==========================
-MACHINE ACTIONS
-===========================-->
-
-<div id="machineSheet" class="bottomSheet">
-
-<div class="sheetHandle"></div>
-
-<h2>Machine Actions</h2>
-
-<button id="viewMachineBtn">
-👁 View Details
-</button>
-
-<button id="editMachineBtn">
-✏ Edit Machine
-</button>
-
-<button id="extendMachineBtn">
-📅 Extend Duration
-</button>
-
-<button id="vipMachineBtn">
-⭐ Toggle VIP
-</button>
-
-<button id="statusMachineBtn">
-🔄 Change Status
-</button>
-
-<button id="earnMachineBtn">
-💰 Update Earnings
-</button>
-
-<button id="deleteMachineBtn" class="dangerBtn">
-🗑 Delete Machine
-</button>
-
-<button class="closeSheet">
-Cancel
-</button>
-
-</div>
-
-<!--==========================
+<!--====================================
 QUICK ACTIONS
-===========================-->
+=====================================-->
 
-<div id="actionSheet" class="bottomSheet">
+<div id="quickActionSheet" class="bottomSheet">
 
 <div class="sheetHandle"></div>
 
 <h2>Quick Actions</h2>
 
-<button id="creditWalletBtn">
-💰 Credit Wallet
-</button>
+<button id="creditWalletBtn">💰 Credit Wallet</button>
 
-<button id="debitWalletBtn">
-💸 Debit Wallet
-</button>
+<button id="debitWalletBtn">💸 Debit Wallet</button>
 
-<button id="notifyUserBtn">
-📢 Send Notification
-</button>
+<button id="sendNotificationBtn">📢 Send Notification</button>
 
-<button id="refreshUserBtn">
-🔄 Refresh User
-</button>
+<button id="refreshUserBtn">🔄 Refresh User</button>
 
-<button class="closeSheet">
-Close
-</button>
+<button class="closeSheet">Close</button>
+
+</div>
+
+<!--====================================
+MACHINE ACTIONS
+=====================================-->
+
+<div id="machineActionSheet" class="bottomSheet">
+
+<div class="sheetHandle"></div>
+
+<h2>Machine Actions</h2>
+
+<button id="viewMachineBtn">👁 View Details</button>
+
+<button id="editMachineBtn">✏ Edit Machine</button>
+
+<button id="extendMachineBtn">📅 Extend Machine</button>
+
+<button id="toggleVipBtn">⭐ Toggle VIP</button>
+
+<button id="toggleStatusBtn">🔄 Change Status</button>
+
+<button id="deleteMachineBtn" class="dangerButton">🗑 Delete Machine</button>
+
+<button class="closeSheet">Cancel</button>
+
+</div>
+
+<!--====================================
+TOAST
+=====================================-->
+
+<div id="toast" class="toast">
+
+<span id="toastMessage">
+
+Done
+
+</span>
+
+</div>
+
+<div id="sheetOverlay" class="sheetOverlay"></div>
 
 </div>
 
 <script src="admin-user-machines.js"></script>
 
 </body>
- </html>
+
+</html>
