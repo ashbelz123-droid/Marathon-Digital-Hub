@@ -3,7 +3,11 @@ ADMIN USER MACHINES
 PART 1
 ==================================================*/
 
-const db = window.supabase;
+/*==================================================
+SUPABASE
+==================================================*/
+
+const db = window.supabaseClient;
 
 /*==================================================
 GLOBAL VARIABLES
@@ -15,24 +19,37 @@ let selectedUser = null;
 let userMachines = [];
 let userReferrals = [];
 let userActivities = [];
+
 let selectedMachine = null;
 
 /*==================================================
 ELEMENTS
 ==================================================*/
 
-const usersContainer = document.getElementById("usersContainer");
+/* Search */
+
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
+
+/* User List */
+
+const usersContainer = document.getElementById("usersContainer");
+
+/* Empty State */
+
+const emptyState = document.getElementById("emptyState");
+
+/* Dashboard */
+
+const userDashboard = document.getElementById("userDashboard");
+
+/* Statistics */
 
 const totalUsers = document.getElementById("totalUsers");
 const activeUsers = document.getElementById("activeUsers");
 const totalMachines = document.getElementById("totalMachines");
 const vipUsers = document.getElementById("vipUsers");
 const userCount = document.getElementById("userCount");
-
-const emptyState = document.getElementById("emptyState");
-const userDashboard = document.getElementById("userDashboard");
 
 /* Profile */
 
@@ -63,7 +80,7 @@ START
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    initializePage();
+    initialize();
 
 });
 
@@ -71,11 +88,21 @@ document.addEventListener("DOMContentLoaded", () => {
 INITIALIZE
 ==================================================*/
 
-async function initializePage() {
+async function initialize() {
 
-    await loadUsers();
+    try {
 
-    registerEvents();
+        await loadUsers();
+
+        setupEvents();
+
+    } catch (err) {
+
+        console.error(err);
+
+        showToast(err.message, "error");
+
+    }
 
 }
 
@@ -85,28 +112,25 @@ LOAD USERS
 
 async function loadUsers() {
 
-    try {
+    const { data, error } = await db
 
-        const { data, error } = await db
-            .from("profiles")
-            .select("*")
-            .order("created_at", { ascending: false });
+        .from("profiles")
 
-        if (error) throw error;
+        .select("*")
 
-        users = data || [];
+        .order("created_at", {
 
-        updateStatistics();
+            ascending: false
 
-        renderUsers(users);
+        });
 
-    } catch (err) {
+    if (error) throw error;
 
-        console.error(err);
+    users = data || [];
 
-        showToast("Failed to load users", "error");
+    updateStatistics();
 
-    }
+    renderUsers(users);
 
 }
 
@@ -118,25 +142,54 @@ function updateStatistics() {
 
     totalUsers.textContent = users.length;
 
-    activeUsers.textContent =
-        users.filter(u => u.account_status === "active").length;
+    activeUsers.textContent = users.filter(user =>
+        user.account_status === "active"
+    ).length;
 
-    vipUsers.textContent =
-        users.filter(u => u.membership === "VIP").length;
+    vipUsers.textContent = users.filter(user =>
+        user.membership === "VIP"
+    ).length;
 
-    userCount.textContent =
-        `${users.length} Members`;
+    userCount.textContent = `${users.length} Members`;
 
 }
 
 /*==================================================
-PART 2
-
-- Render users
-- Search users
-- Select user
-- Fill profile automatically
+EVENTS
 ==================================================*/
+
+function setupEvents() {
+
+    searchBtn.onclick = searchUsers;
+
+    searchInput.addEventListener("keyup", e => {
+
+        if (e.key === "Enter") {
+
+            searchUsers();
+
+        }
+
+    });
+
+}
+
+/*==================================================
+PLACEHOLDERS
+(PART 2)
+==================================================*/
+
+function renderUsers() {}
+
+function searchUsers() {}
+
+function selectUser() {}
+
+function showToast(message, type = "success") {
+
+    console.log(type.toUpperCase(), message);
+
+}
 
 /*==================================================
 RENDER USERS
@@ -146,7 +199,7 @@ function renderUsers(list) {
 
     usersContainer.innerHTML = "";
 
-    if (list.length === 0) {
+    if (!list.length) {
 
         usersContainer.innerHTML = `
             <div class="emptyMessage">
@@ -170,7 +223,7 @@ function renderUsers(list) {
         card.innerHTML = `
 
             <img
-                src="${user.avatar_url || 'images/default-avatar.png'}"
+                src="${user.avatar_url || "images/default-avatar.png"}"
                 alt="Avatar">
 
             <div class="userInfo">
@@ -193,7 +246,9 @@ function renderUsers(list) {
 
             </div>
 
-            <div class="userArrow">›</div>
+            <div class="userArrow">
+                ›
+            </div>
 
         `;
 
@@ -209,25 +264,11 @@ function renderUsers(list) {
 SEARCH USERS
 ==================================================*/
 
-function registerEvents() {
-
-    searchBtn.onclick = searchUsers;
-
-    searchInput.addEventListener("keyup", e => {
-
-        if (e.key === "Enter") {
-
-            searchUsers();
-
-        }
-
-    });
-
-}
-
 function searchUsers() {
 
-    const keyword = searchInput.value.trim().toLowerCase();
+    const keyword = searchInput.value
+        .trim()
+        .toLowerCase();
 
     if (!keyword) {
 
@@ -239,11 +280,21 @@ function searchUsers() {
 
     const filtered = users.filter(user =>
 
-        (user.fullname || "").toLowerCase().includes(keyword) ||
+        (user.fullname || "")
+            .toLowerCase()
+            .includes(keyword)
 
-        (user.phone || "").toLowerCase().includes(keyword) ||
+        ||
 
-        (user.email || "").toLowerCase().includes(keyword)
+        (user.phone || "")
+            .toLowerCase()
+            .includes(keyword)
+
+        ||
+
+        (user.email || "")
+            .toLowerCase()
+            .includes(keyword)
 
     );
 
@@ -267,16 +318,24 @@ async function selectUser(user) {
 
     fillUserProfile();
 
-    await loadUserMachines();
+    try {
 
-    await loadUserReferrals();
+        await loadUserMachines();
 
-    await loadUserActivity();
+        await loadUserReferrals();
+
+        await loadUserActivity();
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
 
 }
 
 /*==================================================
-FILL PROFILE
+FILL USER PROFILE
 ==================================================*/
 
 function fillUserProfile() {
@@ -320,9 +379,6 @@ function fillUserProfile() {
     document.getElementById("profileEmail").textContent =
         selectedUser.email || "-";
 
-    document.getElementById("profilePhone").textContent =
-        selectedUser.phone || "-";
-
     document.getElementById("profileCountry").textContent =
         selectedUser.country || "-";
 
@@ -333,27 +389,16 @@ function fillUserProfile() {
         selectedUser.kyc_status || "Not Verified";
 
     document.getElementById("profileLevel").textContent =
-        selectedUser.level || 1;
-
-    document.getElementById("profileStatus").textContent =
-        selectedUser.account_status || "Active";
+        selectedUser.level || "1";
 
     document.getElementById("profileLastLogin").textContent =
         selectedUser.last_login || "-";
 
-}
+                                  }
 
 /*==================================================
 PART 3
-
-- Load user machines
-- Render machine cards
-- Machine filters
-- Machine action menu
-==================================================*/
-
-/*==================================================
-LOAD USER MACHINES
+LOAD & RENDER USER MACHINES
 ==================================================*/
 
 async function loadUserMachines() {
@@ -363,13 +408,19 @@ async function loadUserMachines() {
     try {
 
         const { data, error } = await db
+
             .from("user_machines")
+
             .select(`
                 *,
                 machines(*)
             `)
+
             .eq("user_id", selectedUser.id)
-            .order("purchase_date", { ascending: false });
+
+            .order("purchase_date", {
+                ascending: false
+            });
 
         if (error) throw error;
 
@@ -385,7 +436,7 @@ async function loadUserMachines() {
 
         console.error(err);
 
-        showToast("Failed to load machines", "error");
+        showToast("Failed to load user machines", "error");
 
     }
 
@@ -415,7 +466,7 @@ function renderMachines(list) {
 
         const info = machine.machines || {};
 
-        const progress = calculateProgress(
+        const progress = getProgress(
             machine.purchase_date,
             machine.expiry_date
         );
@@ -428,43 +479,62 @@ function renderMachines(list) {
 
             <img
                 class="machineImage"
-                src="${machine.machine_image || info.image_url || 'images/default-machine.png'}">
+                src="${machine.machine_image || info.image_url || "images/default-machine.png"}">
 
             <div class="machineInfo">
 
-                <h3>${machine.machine_name || info.name || "Machine"}</h3>
+                <h3>
+                    ${machine.machine_name || info.name || "Machine"}
+                </h3>
 
-                <p>${info.series || "-"}</p>
+                <p>
+                    ${info.series || "Series"}
+                </p>
 
                 <div class="machineBadges">
 
                     <span class="machineBadge active">
-                        ${machine.status || "Active"}
+
+                        ${machine.status || "active"}
+
                     </span>
 
                     ${machine.is_vip ? `
                     <span class="machineBadge vip">
+
                         VIP
-                    </span>` : ""}
+
+                    </span>
+                    ` : ""}
 
                 </div>
 
                 <p>
-                    Daily Income:
+
+                    Daily Income
+
                     <strong>
+
                         UGX ${Number(info.daily_income || 0).toLocaleString()}
+
                     </strong>
+
                 </p>
 
                 <div class="machineProgress">
 
-                    <span>${progress.remainingDays} Days Remaining</span>
+                    <span>
+
+                        ${progress.remainingDays} Days Remaining
+
+                    </span>
 
                     <div class="progressBar">
 
                         <div
                             class="progressFill"
                             style="width:${progress.percent}%">
+
                         </div>
 
                     </div>
@@ -482,22 +552,21 @@ function renderMachines(list) {
 
         `;
 
-        card.querySelector(".machineAction")
-            .onclick = (e) => {
-
-                e.stopPropagation();
-
-                selectedMachine = machine;
-
-                openMachineMenu();
-
-            };
-
         card.onclick = () => {
 
             selectedMachine = machine;
 
             viewMachine();
+
+        };
+
+        card.querySelector(".machineAction").onclick = (e) => {
+
+            e.stopPropagation();
+
+            selectedMachine = machine;
+
+            openMachineMenu();
 
         };
 
@@ -508,38 +577,54 @@ function renderMachines(list) {
 }
 
 /*==================================================
-FILTER MACHINES
+FILTER BUTTONS
 ==================================================*/
 
-document.querySelectorAll(".filterButton").forEach(button => {
+document.querySelectorAll(".filterButton").forEach(btn => {
 
-    button.onclick = () => {
+    btn.onclick = () => {
 
         document.querySelectorAll(".filterButton")
-            .forEach(btn => btn.classList.remove("active"));
+            .forEach(button => button.classList.remove("active"));
 
-        button.classList.add("active");
+        btn.classList.add("active");
 
-        const filter = button.dataset.filter;
+        const filter = btn.dataset.filter;
 
         let filtered = [...userMachines];
 
         switch (filter) {
 
             case "active":
-                filtered = filtered.filter(m => m.status === "active");
+
+                filtered = filtered.filter(m =>
+                    m.status === "active"
+                );
+
                 break;
 
             case "vip":
-                filtered = filtered.filter(m => m.is_vip === true);
+
+                filtered = filtered.filter(m =>
+                    m.is_vip === true
+                );
+
                 break;
 
             case "completed":
-                filtered = filtered.filter(m => m.completed === true);
+
+                filtered = filtered.filter(m =>
+                    m.completed === true
+                );
+
                 break;
 
             case "expired":
-                filtered = filtered.filter(m => m.status === "expired");
+
+                filtered = filtered.filter(m =>
+                    m.status === "expired"
+                );
+
                 break;
 
         }
@@ -554,22 +639,28 @@ document.querySelectorAll(".filterButton").forEach(button => {
 PROGRESS
 ==================================================*/
 
-function calculateProgress(start, end) {
+function getProgress(start, end) {
 
     if (!start || !end) {
 
         return {
+
             percent: 0,
+
             remainingDays: 0
+
         };
 
     }
 
     const startDate = new Date(start);
+
     const endDate = new Date(end);
+
     const today = new Date();
 
     const total = endDate - startDate;
+
     const passed = today - startDate;
 
     let percent = (passed / total) * 100;
@@ -594,17 +685,28 @@ function calculateProgress(start, end) {
 /*==================================================
 PART 4
 
-- Machine menu
-- Delete machine
-- Toggle VIP
-- Change status
-- View machine
-- Bottom sheets
-- Toast notifications
+Machine Menu
+
+Delete Machine
+
+VIP Toggle
+
+Status Toggle
+
+View Machine
+
+Bottom Sheets
+
+Toast
 ==================================================*/
 
 /*==================================================
+PART 4
 MACHINE ACTIONS
+==================================================*/
+
+/*==================================================
+OPEN MACHINE MENU
 ==================================================*/
 
 function openMachineMenu() {
@@ -629,21 +731,35 @@ function viewMachine() {
 
     if (!selectedMachine) return;
 
+    const machine = selectedMachine;
+    const info = machine.machines || {};
+
     alert(
-`Machine: ${selectedMachine.machine_name || selectedMachine.machines?.name}
 
-Status: ${selectedMachine.status}
+`Machine:
+${machine.machine_name || info.name}
 
-VIP: ${selectedMachine.is_vip ? "Yes" : "No"}
+Series:
+${info.series || "-"}
+
+Status:
+${machine.status}
+
+VIP:
+${machine.is_vip ? "Yes" : "No"}
+
+Daily Income:
+UGX ${Number(info.daily_income || 0).toLocaleString()}
 
 Earned:
-UGX ${Number(selectedMachine.earned_amount || 0).toLocaleString()}
+UGX ${Number(machine.earned_amount || 0).toLocaleString()}
 
 Purchase:
-${selectedMachine.purchase_date}
+${machine.purchase_date || "-"}
 
 Expiry:
-${selectedMachine.expiry_date}`
+${machine.expiry_date || "-"}`
+
     );
 
 }
@@ -656,11 +772,7 @@ async function deleteMachine() {
 
     if (!selectedMachine) return;
 
-    const confirmDelete = confirm(
-        "Delete this machine permanently?"
-    );
-
-    if (!confirmDelete) return;
+    if (!confirm("Delete this machine?")) return;
 
     try {
 
@@ -676,21 +788,17 @@ async function deleteMachine() {
 
         closeSheets();
 
-        showToast(
-            "Machine deleted",
-            "success"
-        );
+        showToast("Machine deleted");
 
-        loadUserMachines();
+        await loadUserMachines();
 
-    } catch (err) {
+    }
+
+    catch (err) {
 
         console.error(err);
 
-        showToast(
-            err.message,
-            "error"
-        );
+        showToast(err.message, "error");
 
     }
 
@@ -722,19 +830,15 @@ async function toggleVIP() {
 
         closeSheets();
 
-        showToast(
-            "VIP updated",
-            "success"
-        );
+        showToast("VIP updated");
 
-        loadUserMachines();
+        await loadUserMachines();
 
-    } catch (err) {
+    }
 
-        showToast(
-            err.message,
-            "error"
-        );
+    catch (err) {
+
+        showToast(err.message, "error");
 
     }
 
@@ -748,7 +852,7 @@ async function toggleStatus() {
 
     if (!selectedMachine) return;
 
-    const newStatus =
+    const status =
 
         selectedMachine.status === "active"
 
@@ -764,7 +868,7 @@ async function toggleStatus() {
 
             .update({
 
-                status: newStatus
+                status: status
 
             })
 
@@ -774,26 +878,42 @@ async function toggleStatus() {
 
         closeSheets();
 
-        showToast(
-            "Status updated",
-            "success"
-        );
+        showToast("Status updated");
 
-        loadUserMachines();
+        await loadUserMachines();
 
-    } catch (err) {
+    }
 
-        showToast(
-            err.message,
-            "error"
-        );
+    catch (err) {
+
+        showToast(err.message, "error");
 
     }
 
 }
 
 /*==================================================
-BOTTOM SHEETS
+EDIT MACHINE
+==================================================*/
+
+function editMachine() {
+
+    showToast("Edit Machine screen coming next.");
+
+}
+
+/*==================================================
+EXTEND MACHINE
+==================================================*/
+
+function extendMachine() {
+
+    showToast("Extend Machine screen coming next.");
+
+}
+
+/*==================================================
+CLOSE SHEETS
 ==================================================*/
 
 function closeSheets() {
@@ -817,30 +937,12 @@ function closeSheets() {
 }
 
 /*==================================================
-TOAST
-==================================================*/
-
-function showToast(message, type = "success") {
-
-    const toast =
-        document.getElementById("toast");
-
-    toast.textContent = message;
-
-    toast.className =
-        `toast show ${type}`;
-
-    setTimeout(() => {
-
-        toast.className = "toast";
-
-    }, 3000);
-
-}
-
-/*==================================================
 BUTTON EVENTS
 ==================================================*/
+
+document
+.getElementById("viewMachineBtn")
+.onclick = viewMachine;
 
 document
 .getElementById("deleteMachineBtn")
@@ -855,6 +957,14 @@ document
 .onclick = toggleStatus;
 
 document
+.getElementById("editMachineBtn")
+.onclick = editMachine;
+
+document
+.getElementById("extendMachineBtn")
+.onclick = extendMachine;
+
+document
 .querySelectorAll(".closeSheet")
 .forEach(btn => {
 
@@ -866,9 +976,390 @@ document
 .getElementById("sheetOverlay")
 .onclick = closeSheets;
 
-document
-.getElementById("fab")
-.onclick = () => {
+/*==================================================
+PART 5
+REFERRALS
+==================================================*/
+
+async function loadUserReferrals() {
+
+    if (!selectedUser) return;
+
+    try {
+
+        const { data, error } = await db
+
+            .from("profiles")
+
+            .select("*")
+
+            .eq("referred_by", selectedUser.referral_code)
+
+            .order("created_at", {
+                ascending: false
+            });
+
+        if (error) throw error;
+
+        userReferrals = data || [];
+
+        document.getElementById("referralCount").textContent =
+            `${userReferrals.length} Users`;
+
+        renderReferrals(userReferrals);
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        showToast(err.message, "error");
+
+    }
+
+}
+
+/*==================================================
+RENDER REFERRALS
+==================================================*/
+
+function renderReferrals(list) {
+
+    referralsList.innerHTML = "";
+
+    if (!list.length) {
+
+        referralsList.innerHTML = `
+
+        <div class="emptyMessage">
+
+            No referrals yet.
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    list.forEach(ref => {
+
+        const card = document.createElement("div");
+
+        card.className = "referralCard";
+
+        card.innerHTML = `
+
+            <img
+                class="referralAvatar"
+                src="${ref.avatar_url || "images/default-avatar.png"}">
+
+            <div class="referralInfo">
+
+                <h4>
+
+                    ${ref.fullname || "Unknown User"}
+
+                </h4>
+
+                <p>
+
+                    ${ref.phone || ref.email || "-"}
+
+                </p>
+
+                <p>
+
+                    Referral Bonus
+
+                    <strong>
+
+                        UGX ${Number(ref.referral_bonus || 0).toLocaleString()}
+
+                    </strong>
+
+                </p>
+
+            </div>
+
+            <div>
+
+                <span class="referralStatus">
+
+                    ${ref.kyc_status || "Not Verified"}
+
+                </span>
+
+                <br><br>
+
+                <button
+                    class="primaryButton editReferralBonus"
+                    data-id="${ref.id}">
+
+                    Edit Bonus
+
+                </button>
+
+            </div>
+
+        `;
+
+        referralsList.appendChild(card);
+
+    });
+
+    document
+
+        .querySelectorAll(".editReferralBonus")
+
+        .forEach(btn => {
+
+            btn.onclick = () => {
+
+                editReferralBonus(btn.dataset.id);
+
+            };
+
+        });
+
+}
+
+/*==================================================
+EDIT REFERRAL BONUS
+==================================================*/
+
+async function editReferralBonus(userId) {
+
+    const user = userReferrals.find(u => u.id === userId);
+
+    if (!user) return;
+
+    const amount = prompt(
+
+        "Enter new referral bonus",
+
+        user.referral_bonus || 0
+
+    );
+
+    if (amount === null) return;
+
+    if (isNaN(amount)) {
+
+        showToast("Invalid amount", "error");
+
+        return;
+
+    }
+
+    try {
+
+        const { error } = await db
+
+            .from("profiles")
+
+            .update({
+
+                referral_bonus: Number(amount)
+
+            })
+
+            .eq("id", userId);
+
+        if (error) throw error;
+
+        showToast("Referral bonus updated");
+
+        await loadUserReferrals();
+
+    }
+
+    catch (err) {
+
+        console.error(err);
+
+        showToast(err.message, "error");
+
+    }
+
+}
+
+/*==================================================
+PART 6
+ACTIVITY + UI
+==================================================*/
+
+/*==================================================
+LOAD USER ACTIVITY
+==================================================*/
+
+async function loadUserActivity() {
+
+    if (!selectedUser) return;
+
+    try {
+
+        const { data, error } = await db
+
+            .from("activity_logs")
+
+            .select("*")
+
+            .eq("user_id", selectedUser.id)
+
+            .order("created_at", {
+
+                ascending: false
+
+            })
+
+            .limit(50);
+
+        if (error) throw error;
+
+        userActivities = data || [];
+
+        renderActivity(userActivities);
+
+    }
+
+    catch {
+
+        activityList.innerHTML = `
+        <div class="emptyMessage">
+            No activity found.
+        </div>
+        `;
+    }
+
+}
+
+/*==================================================
+RENDER ACTIVITY
+==================================================*/
+
+function renderActivity(list) {
+
+    activityList.innerHTML = "";
+
+    if (!list.length) {
+
+        activityList.innerHTML = `
+        <div class="emptyMessage">
+            No activity available.
+        </div>
+        `;
+
+        return;
+
+    }
+
+    list.forEach(item => {
+
+        activityList.innerHTML += `
+
+        <div class="activityCard">
+
+            <div class="activityIcon">
+                📌
+            </div>
+
+            <div class="activityBody">
+
+                <h4>${item.title || "Activity"}</h4>
+
+                <p>${item.description || ""}</p>
+
+                <div class="activityTime">
+
+                    ${new Date(item.created_at)
+                        .toLocaleString()}
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+/*==================================================
+TABS
+==================================================*/
+
+document.querySelectorAll(".tabButton").forEach(btn => {
+
+    btn.onclick = () => {
+
+        document.querySelectorAll(".tabButton")
+            .forEach(b => b.classList.remove("active"));
+
+        btn.classList.add("active");
+
+        document.querySelectorAll(".tabContent")
+            .forEach(tab => tab.classList.remove("active"));
+
+        document
+            .getElementById(btn.dataset.tab)
+            .classList.add("active");
+
+    };
+
+});
+
+/*==================================================
+TOAST
+==================================================*/
+
+function showToast(message, type = "success") {
+
+    const toast = document.getElementById("toast");
+
+    toast.className = "toast";
+
+    toast.classList.add(type);
+
+    toast.classList.add("show");
+
+    document.getElementById("toastMessage").textContent = message;
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    }, 3000);
+
+}
+
+/*==================================================
+REFRESH
+==================================================*/
+
+document.getElementById("refreshBtn").onclick = async () => {
+
+    await loadUsers();
+
+    if (selectedUser) {
+
+        await selectUser(selectedUser);
+
+    }
+
+    showToast("Refreshed");
+
+};
+
+/*==================================================
+FAB
+==================================================*/
+
+document.getElementById("fab").onclick = () => {
 
     document
         .getElementById("quickActionSheet")
@@ -880,9 +1371,11 @@ document
 
 };
 
-document
-.getElementById("menuBtn")
-.onclick = () => {
+/*==================================================
+MENU
+==================================================*/
+
+document.getElementById("menuBtn").onclick = () => {
 
     document
         .getElementById("menuSheet")
@@ -895,6 +1388,67 @@ document
 };
 
 /*==================================================
-END OF ADMIN USER MACHINES
-VERSION 1
+MENU LINKS
+==================================================*/
+
+document.querySelectorAll("[data-page]").forEach(btn => {
+
+    btn.onclick = () => {
+
+        location.href = btn.dataset.page;
+
+    };
+
+});
+
+/*==================================================
+LOGOUT
+==================================================*/
+
+document.getElementById("logoutBtn").onclick = async () => {
+
+    const ok = confirm("Logout?");
+
+    if (!ok) return;
+
+    await db.auth.signOut();
+
+    location.href = "login.html";
+
+};
+
+/*==================================================
+QUICK ACTIONS
+==================================================*/
+
+document.getElementById("creditWalletBtn").onclick = () => {
+
+    showToast("Wallet management removed.");
+
+};
+
+document.getElementById("debitWalletBtn").onclick = () => {
+
+    showToast("Wallet management removed.");
+
+};
+
+document.getElementById("sendNotificationBtn").onclick = () => {
+
+    showToast("Notification feature coming soon.");
+
+};
+
+document.getElementById("refreshUserBtn").onclick = async () => {
+
+    if (!selectedUser) return;
+
+    await selectUser(selectedUser);
+
+    showToast("User refreshed");
+
+};
+
+/*==================================================
+FINISHED
 ==================================================*/
