@@ -4,17 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Admin • User Machines</title>
 
-<link rel="stylesheet"
-href="admin-user-machines.css">
+<link rel="stylesheet" href="admin-user-machines.css">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <script src="supabase-config.js"></script>
 
 </head>
@@ -23,61 +19,45 @@ href="admin-user-machines.css">
 
 <div class="app">
 
-<!-- ==========================
+<!-- =========================================
 HEADER
-========================== -->
+========================================= -->
 
 <header class="header">
 
-<button
-id="menuBtn"
-class="headerBtn">
+<div class="headerLeft">
 
+<button id="menuBtn" class="iconButton">
 ☰
-
 </button>
 
-<div class="headerText">
+<div class="headerTitle">
 
-<h1>
+<h1>User Machines</h1>
 
-User Machines
+<p>Manage users, machines & referrals</p>
 
-</h1>
-
-<p>
-
-Manage users & investments
-
-</p>
+</div>
 
 </div>
 
 <div class="headerRight">
 
-<button
-id="refreshBtn"
-class="headerBtn">
-
+<button id="refreshBtn" class="iconButton">
 🔄
-
 </button>
 
-<button
-id="notificationBtn"
-class="headerBtn">
-
+<button id="notificationBtn" class="iconButton">
 🔔
-
 </button>
 
 </div>
 
 </header>
 
-<!-- ==========================
+<!-- =========================================
 SEARCH
-========================== -->
+========================================= -->
 
 <section class="searchSection">
 
@@ -86,21 +66,19 @@ SEARCH
 <input
 id="searchInput"
 type="text"
-placeholder="Search by name, phone or email...">
+placeholder="Search user by name, phone or email">
 
 <button id="searchBtn">
-
 🔍
-
 </button>
 
 </div>
 
 </section>
 
-<!-- ==========================
-STATISTICS
-========================== -->
+<!-- =========================================
+ADMIN STATISTICS
+========================================= -->
 
 <section class="statsGrid">
 
@@ -108,11 +86,7 @@ STATISTICS
 
 <p>Total Users</p>
 
-<h2 id="totalUsers">
-
-0
-
-</h2>
+<h2 id="totalUsers">0</h2>
 
 </div>
 
@@ -120,11 +94,7 @@ STATISTICS
 
 <p>Active Users</p>
 
-<h2 id="activeUsers">
-
-0
-
-</h2>
+<h2 id="activeUsers">0</h2>
 
 </div>
 
@@ -132,11 +102,7 @@ STATISTICS
 
 <p>Total Machines</p>
 
-<h2 id="totalMachines">
-
-0
-
-</h2>
+<h2 id="totalMachines">0</h2>
 
 </div>
 
@@ -144,34 +110,24 @@ STATISTICS
 
 <p>VIP Users</p>
 
-<h2 id="vipUsers">
-
-0
-
-</h2>
+<h2 id="vipUsers">0</h2>
 
 </div>
 
 </section>
 
-<!-- ==========================
+<!-- =========================================
 USER LIST
-========================== -->
+========================================= -->
 
 <section class="userSection">
 
-<div class="sectionTop">
+<div class="sectionHeader">
 
-<h2>
-
-Users
-
-</h2>
+<h2>Users</h2>
 
 <span id="userCount">
-
 0 Members
-
 </span>
 
 </div>
@@ -180,434 +136,456 @@ Users
 id="usersContainer"
 class="usersContainer">
 
-<!-- Loaded from Supabase -->
+<!-- Users loaded from Supabase -->
 
 </div>
 
 </section>
 
-<!-- ==========================
+ <!-- =========================================
 EMPTY STATE
-========================== -->
+========================================= -->
 
-<section
-id="emptyState"
-class="emptyState">
+<section id="emptyState" class="emptyState">
 
-<div class="emptyEmoji">
+    <div class="emptyIcon">
 
-👤
+        👤
 
-</div>
+    </div>
 
-<h2>
+    <h2>Select a User</h2>
 
-Choose a User
+    <p>
 
-</h2>
+        Tap any user from the list above to automatically load their
+        profile, machines, referrals, activity and account details.
 
-<p>
-
-Tap any user above to manage machines, wallet, referrals and profile.
-
-</p>
+    </p>
 
 </section>
 
-<!-- ==========================
-USER DASHBOARD
-Hidden until user selected
-========================== -->
+<!-- =========================================
+SELECTED USER DASHBOARD
+========================================= -->
 
-<section
-id="userDashboard"
-class="userDashboard hidden">
+<section id="userDashboard" class="userDashboard hidden">
 
- <!--====================================
-SELECTED USER PROFILE
-=====================================-->
+    <!-- =====================================
+    USER PROFILE
+    ===================================== -->
 
-<div class="profileCard">
+    <div class="profileCard">
 
-<div class="profileHeader">
+        <div class="profileHeader">
 
-<img
-id="userAvatar"
-class="userAvatar"
-src="images/default-avatar.png"
-alt="User">
+            <img
+                id="userAvatar"
+                class="userAvatar"
+                src="images/default-avatar.png"
+                alt="User">
 
-<div class="profileDetails">
+            <div class="profileInfo">
 
-<h2 id="userName">
+                <h2 id="userName">
 
-Full Name
+                    Full Name
 
-</h2>
+                </h2>
 
-<p id="userPhone">
+                <p id="userPhone">
 
-+256 XXX XXX XXX
+                    +256 XXX XXX XXX
 
-</p>
+                </p>
 
-<div class="badgeRow">
+                <div class="badgeRow">
 
-<span
-id="membershipBadge"
-class="badge membership">
+                    <span
+                        id="membershipBadge"
+                        class="badge membership">
 
-Standard
+                        Standard
 
-</span>
+                    </span>
 
-<span
-id="statusBadge"
-class="badge active">
+                    <span
+                        id="statusBadge"
+                        class="badge active">
 
-Active
+                        Active
 
-</span>
+                    </span>
 
-<span
-id="kycBadge"
-class="badge verified">
+                    <span
+                        id="kycBadge"
+                        class="badge verified">
 
-Not Verified
+                        Not Verified
 
-</span>
+                    </span>
 
-</div>
+                </div>
 
-</div>
+            </div>
 
-<button
-id="userMenuBtn"
-class="iconBtn">
+            <button
+                id="userMenuBtn"
+                class="iconButton">
 
-⋮
+                ⋮
 
-</button>
+            </button>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<!--====================================
-USER OVERVIEW
-=====================================-->
+    <!-- =====================================
+    OVERVIEW CARDS
+    ===================================== -->
 
-<div class="overviewGrid">
+    <div class="overviewGrid">
 
-<div class="overviewCard">
+        <div class="overviewCard">
 
-<p>Wallet Balance</p>
+            <p>Wallet Balance</p>
 
-<h3 id="walletBalance">
+            <h3 id="walletBalance">
 
-UGX 0
+                UGX 0
 
-</h3>
+            </h3>
 
-</div>
+        </div>
 
-<div class="overviewCard">
+        <div class="overviewCard">
 
-<p>Total Invested</p>
+            <p>Total Invested</p>
 
-<h3 id="totalInvested">
+            <h3 id="totalInvested">
 
-UGX 0
+                UGX 0
 
-</h3>
+            </h3>
 
-</div>
+        </div>
 
-<div class="overviewCard">
+        <div class="overviewCard">
 
-<p>Total Profit</p>
+            <p>Total Profit</p>
 
-<h3 id="totalProfit">
+            <h3 id="totalProfit">
 
-UGX 0
+                UGX 0
 
-</h3>
+            </h3>
 
-</div>
+        </div>
 
-<div class="overviewCard">
+        <div class="overviewCard">
 
-<p>Owned Machines</p>
+            <p>Owned Machines</p>
 
-<h3 id="ownedMachines">
+            <h3 id="ownedMachines">
 
-0
+                0
 
-</h3>
+            </h3>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
-<!--====================================
-TABS
-=====================================-->
+    <!-- =====================================
+    TABS
+    ===================================== -->
 
-<div class="tabBar">
+    <div class="tabBar">
 
-<button
-class="tabButton active"
-data-tab="machinesTab">
+        <button
+            class="tabButton active"
+            data-tab="machinesTab">
 
-🖥
+            🖥
 
-<span>Machines</span>
+            <span>Machines</span>
 
-</button>
+        </button>
 
-<button
-class="tabButton"
-data-tab="walletTab">
+        <button
+            class="tabButton"
+            data-tab="referralsTab">
 
-💰
+            👥
 
-<span>Wallet</span>
+            <span>Referrals</span>
 
-</button>
+        </button>
 
-<button
-class="tabButton"
-data-tab="referralsTab">
+        <button
+            class="tabButton"
+            data-tab="activityTab">
 
-👥
+            📈
 
-<span>Referrals</span>
+            <span>Activity</span>
 
-</button>
+        </button>
 
-<button
-class="tabButton"
-data-tab="activityTab">
+        <button
+            class="tabButton"
+            data-tab="profileTab">
 
-📈
+            👤
 
-<span>Activity</span>
+            <span>Profile</span>
 
-</button>
+        </button>
 
-<button
-class="tabButton"
-data-tab="profileTab">
+    </div>
 
-👤
+    <!-- =====================================
+    MACHINES TAB
+    ===================================== -->
 
-<span>Profile</span>
+    <div
+        id="machinesTab"
+        class="tabContent active">
 
-</button>
+        <div class="tabHeader">
 
-</div>
+            <h3>
 
-<!--====================================
-MACHINES TAB
-=====================================-->
+                User Machines
 
-<div
-id="machinesTab"
-class="tabContent active">
+            </h3>
 
-<div class="tabHeader">
+            <button
+                id="addMachineBtn"
+                class="primaryButton">
 
-<h3>
+                ＋ Add Machine
 
-Owned Machines
+            </button>
 
-</h3>
+        </div>
 
-<button
-id="addMachineBtn"
-class="primaryButton">
+        <div class="filterRow">
 
-＋ Add Machine
+            <button
+                class="filterButton active"
+                data-filter="all">
 
-</button>
+                All
 
-</div>
+            </button>
 
-<div class="filterRow">
+            <button
+                class="filterButton"
+                data-filter="active">
 
-<button
-class="filterButton active"
-data-filter="all">
+                Active
 
-All
+            </button>
 
-</button>
+            <button
+                class="filterButton"
+                data-filter="vip">
 
-<button
-class="filterButton"
-data-filter="active">
+                VIP
 
-Active
+            </button>
 
-</button>
+            <button
+                class="filterButton"
+                data-filter="completed">
 
-<button
-class="filterButton"
-data-filter="vip">
+                Completed
 
-VIP
+            </button>
 
-</button>
+            <button
+                class="filterButton"
+                data-filter="expired">
 
-<button
-class="filterButton"
-data-filter="completed">
+                Expired
 
-Completed
+            </button>
 
-</button>
+        </div>
 
-<button
-class="filterButton"
-data-filter="expired">
+        <div
+            id="machineList"
+            class="machineList">
 
-Expired
+            <!-- Machine cards loaded here -->
 
-</button>
-
-</div>
-
-<div
-id="machineList"
-class="machineList">
-
-<!-- User machines loaded here -->
-
-</div>
+        </div>
 
  </div>
 
- <!--====================================
-WALLET TAB
-=====================================-->
+     <!-- =====================================
+    REFERRALS TAB
+    ====================================== -->
 
-<div id="walletTab" class="tabContent">
+    <div id="referralsTab" class="tabContent">
 
-<div class="walletGrid">
+        <div class="tabHeader">
 
-<div class="walletCard">
-<p>Wallet Balance</p>
-<h2 id="walletTabBalance">UGX 0</h2>
-</div>
+            <h3>Referral Network</h3>
 
-<div class="walletCard">
-<p>Total Invested</p>
-<h2 id="walletTabInvested">UGX 0</h2>
-</div>
+            <span id="referralCount">0 Referrals</span>
 
-<div class="walletCard">
-<p>Total Profit</p>
-<h2 id="walletTabProfit">UGX 0</h2>
-</div>
+        </div>
 
-<div class="walletCard">
-<p>Referral Bonus</p>
-<h2 id="walletTabReferral">UGX 0</h2>
-</div>
+        <!-- Referral Summary -->
 
-</div>
+        <div class="overviewGrid">
 
-<div id="walletTransactions" class="walletTransactions">
+            <div class="overviewCard">
 
-<!-- Wallet transactions -->
+                <p>Total Referrals</p>
 
-</div>
+                <h3 id="totalReferrals">0</h3>
 
-</div>
+            </div>
 
-<!--====================================
-REFERRALS TAB
-=====================================-->
+            <div class="overviewCard">
 
-<div id="referralsTab" class="tabContent">
+                <p>Verified</p>
 
-<div class="tabHeader">
+                <h3 id="verifiedReferrals">0</h3>
 
-<h3>Referrals</h3>
+            </div>
 
-<span id="referralCount">0 Users</span>
+            <div class="overviewCard">
 
-</div>
+                <p>Pending</p>
 
-<div id="referralsList">
+                <h3 id="pendingReferrals">0</h3>
 
-<!-- Referral cards -->
+            </div>
 
-</div>
+            <div class="overviewCard">
 
-</div>
+                <p>Referral Bonus</p>
 
-<!--====================================
-ACTIVITY TAB
-=====================================-->
+                <h3 id="referralBonusTotal">UGX 0</h3>
 
-<div id="activityTab" class="tabContent">
+            </div>
 
-<div id="activityList">
+        </div>
 
-<!-- Activity timeline -->
+        <div id="referralsList">
 
-</div>
+            <!-- Referral cards -->
 
-</div>
+        </div>
 
-<!--====================================
-PROFILE TAB
-=====================================-->
+    </div>
 
-<div id="profileTab" class="tabContent">
+    <!-- =====================================
+    ACTIVITY TAB
+    ====================================== -->
 
-<div class="profileGrid">
+    <div id="activityTab" class="tabContent">
 
-<div class="profileItem">
-<label>Email</label>
-<p id="profileEmail">-</p>
-</div>
+        <div class="tabHeader">
 
-<div class="profileItem">
-<label>Country</label>
-<p id="profileCountry">-</p>
-</div>
+            <h3>Recent Activity</h3>
 
-<div class="profileItem">
-<label>Membership</label>
-<p id="profileMembership">Standard</p>
-</div>
+        </div>
 
-<div class="profileItem">
-<label>KYC</label>
-<p id="profileKyc">Not Verified</p>
-</div>
+        <div id="activityList">
 
-<div class="profileItem">
-<label>Level</label>
-<p id="profileLevel">1</p>
-</div>
+            <!-- Activity timeline -->
 
-<div class="profileItem">
-<label>Last Login</label>
-<p id="profileLastLogin">-</p>
-</div>
+        </div>
 
-</div>
+    </div>
 
-</div>
+    <!-- =====================================
+    PROFILE TAB
+    ====================================== -->
+
+    <div id="profileTab" class="tabContent">
+
+        <div class="profileGrid">
+
+            <div class="profileItem">
+
+                <label>Email</label>
+
+                <p id="profileEmail">-</p>
+
+            </div>
+
+            <div class="profileItem">
+
+                <label>Phone</label>
+
+                <p id="profilePhone">-</p>
+
+            </div>
+
+            <div class="profileItem">
+
+                <label>Country</label>
+
+                <p id="profileCountry">-</p>
+
+            </div>
+
+            <div class="profileItem">
+
+                <label>Membership</label>
+
+                <p id="profileMembership">Standard</p>
+
+            </div>
+
+            <div class="profileItem">
+
+                <label>KYC Status</label>
+
+                <p id="profileKyc">Not Verified</p>
+
+            </div>
+
+            <div class="profileItem">
+
+                <label>Level</label>
+
+                <p id="profileLevel">1</p>
+
+            </div>
+
+            <div class="profileItem">
+
+                <label>Account Status</label>
+
+                <p id="profileStatus">Active</p>
+
+            </div>
+
+            <div class="profileItem">
+
+                <label>Last Login</label>
+
+                <p id="profileLastLogin">-</p>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
-<!--====================================
+<!-- =========================================
 FLOATING ACTION BUTTON
-=====================================-->
+========================================= -->
 
 <button id="fab" class="fab">
 
@@ -615,93 +593,97 @@ FLOATING ACTION BUTTON
 
 </button>
 
-<!--====================================
-ADMIN MENU
-=====================================-->
+<!-- =========================================
+USER MENU
+========================================= -->
 
-<div id="menuSheet" class="bottomSheet">
+<div id="userMenuSheet" class="bottomSheet">
 
-<div class="sheetHandle"></div>
+    <div class="sheetHandle"></div>
 
-<h2>Admin Menu</h2>
+    <h2>User Actions</h2>
 
-<button data-page="admin-dashboard.html">🏠 Dashboard</button>
+    <button id="editUserBtn">✏ Edit User</button>
 
-<button data-page="admin-users.html">👥 Users</button>
+    <button id="freezeUserBtn">🔒 Freeze / Unfreeze</button>
 
-<button data-page="admin-deposits.html">💳 Deposits</button>
+    <button id="notifyUserBtn">📢 Send Notification</button>
 
-<button data-page="admin-withdrawals.html">💸 Withdrawals</button>
+    <button id="refreshUserBtn">🔄 Refresh User</button>
 
-<button data-page="admin-reports.html">📊 Reports</button>
-
-<button data-page="admin-support.html">💬 Support</button>
-
-<button id="logoutBtn">🚪 Logout</button>
-
-<button class="closeSheet">Close</button>
+    <button class="closeSheet">Close</button>
 
 </div>
 
-<!--====================================
-QUICK ACTIONS
-=====================================-->
-
-<div id="quickActionSheet" class="bottomSheet">
-
-<div class="sheetHandle"></div>
-
-<h2>Quick Actions</h2>
-
-<button id="creditWalletBtn">💰 Credit Wallet</button>
-
-<button id="debitWalletBtn">💸 Debit Wallet</button>
-
-<button id="sendNotificationBtn">📢 Send Notification</button>
-
-<button id="refreshUserBtn">🔄 Refresh User</button>
-
-<button class="closeSheet">Close</button>
-
-</div>
-
-<!--====================================
-MACHINE ACTIONS
-=====================================-->
+<!-- =========================================
+MACHINE MENU
+========================================= -->
 
 <div id="machineActionSheet" class="bottomSheet">
 
-<div class="sheetHandle"></div>
+    <div class="sheetHandle"></div>
 
-<h2>Machine Actions</h2>
+    <h2>Machine Actions</h2>
 
-<button id="viewMachineBtn">👁 View Details</button>
+    <button id="viewMachineBtn">👁 View Details</button>
 
-<button id="editMachineBtn">✏ Edit Machine</button>
+    <button id="editMachineBtn">✏ Edit Machine</button>
 
-<button id="extendMachineBtn">📅 Extend Machine</button>
+    <button id="extendMachineBtn">📅 Extend Machine</button>
 
-<button id="toggleVipBtn">⭐ Toggle VIP</button>
+    <button id="toggleVipBtn">⭐ Toggle VIP</button>
 
-<button id="toggleStatusBtn">🔄 Change Status</button>
+    <button id="toggleStatusBtn">🔄 Change Status</button>
 
-<button id="deleteMachineBtn" class="dangerButton">🗑 Delete Machine</button>
+    <button id="editBonusBtn">🎁 Edit Referral Bonus</button>
 
-<button class="closeSheet">Cancel</button>
+    <button id="deleteMachineBtn" class="dangerButton">
+
+        🗑 Delete Machine
+
+    </button>
+
+    <button class="closeSheet">Cancel</button>
 
 </div>
 
-<!--====================================
+<!-- =========================================
+ADMIN MENU
+========================================= -->
+
+<div id="menuSheet" class="bottomSheet">
+
+    <div class="sheetHandle"></div>
+
+    <h2>Admin Menu</h2>
+
+    <button data-page="admin-dashboard.html">🏠 Dashboard</button>
+
+    <button data-page="admin-users.html">👥 Users</button>
+
+    <button data-page="admin-deposits.html">💳 Deposits</button>
+
+    <button data-page="admin-withdrawals.html">💸 Withdrawals</button>
+
+    <button data-page="admin-support.html">💬 Support</button>
+
+    <button id="logoutBtn">🚪 Logout</button>
+
+    <button class="closeSheet">Close</button>
+
+</div>
+
+<!-- =========================================
 TOAST
-=====================================-->
+========================================= -->
 
 <div id="toast" class="toast">
 
-<span id="toastMessage">
+    <span id="toastMessage">
 
-Done
+        Success
 
-</span>
+    </span>
 
 </div>
 
@@ -713,4 +695,4 @@ Done
 
 </body>
 
-</html>
+ </html>
