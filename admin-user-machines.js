@@ -1,6 +1,6 @@
 /*==================================================
-ADMIN USER MACHINES V5
-Part 1 - Setup & Initialisation
+ADMIN USER MACHINES V6
+PART 1 - FOUNDATION
 ==================================================*/
 
 const db = window.supabaseClient;
@@ -25,10 +25,10 @@ DOM ELEMENTS
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 
-// User List
-const usersContainer = document.getElementById("usersContainer");
-const emptyState = document.getElementById("emptyState");
-const userDashboard = document.getElementById("userDashboard");
+// Header
+const refreshBtn = document.getElementById("refreshBtn");
+const notificationBtn = document.getElementById("notificationBtn");
+const menuBtn = document.getElementById("menuBtn");
 
 // Statistics
 const totalUsers = document.getElementById("totalUsers");
@@ -36,6 +36,13 @@ const activeUsers = document.getElementById("activeUsers");
 const totalMachines = document.getElementById("totalMachines");
 const vipUsers = document.getElementById("vipUsers");
 const userCount = document.getElementById("userCount");
+
+// User List
+const usersContainer = document.getElementById("usersContainer");
+
+// Dashboard
+const emptyState = document.getElementById("emptyState");
+const userDashboard = document.getElementById("userDashboard");
 
 // Profile
 const userAvatar = document.getElementById("userAvatar");
@@ -52,7 +59,13 @@ const totalInvested = document.getElementById("totalInvested");
 const totalProfit = document.getElementById("totalProfit");
 const ownedMachines = document.getElementById("ownedMachines");
 
-// Containers
+// Wallet Tab
+const walletTabBalance = document.getElementById("walletTabBalance");
+const walletTabInvested = document.getElementById("walletTabInvested");
+const walletTabProfit = document.getElementById("walletTabProfit");
+const walletTabReferral = document.getElementById("walletTabReferral");
+
+// Lists
 const machineList = document.getElementById("machineList");
 const walletTransactionsBox = document.getElementById("walletTransactions");
 const referralsList = document.getElementById("referralsList");
@@ -66,25 +79,28 @@ const profileKyc = document.getElementById("profileKyc");
 const profileLevel = document.getElementById("profileLevel");
 const profileLastLogin = document.getElementById("profileLastLogin");
 
+// Bottom Sheets
+const menuSheet = document.getElementById("menuSheet");
+const quickActionSheet = document.getElementById("quickActionSheet");
+const machineActionSheet = document.getElementById("machineActionSheet");
+const sheetOverlay = document.getElementById("sheetOverlay");
+
+// FAB
+const fab = document.getElementById("fab");
+
 // Toast
 const toast = document.getElementById("toast");
 const toastMessage = document.getElementById("toastMessage");
 
-// Sheets
-const sheetOverlay = document.getElementById("sheetOverlay");
-const machineActionSheet = document.getElementById("machineActionSheet");
-const quickActionSheet = document.getElementById("quickActionSheet");
-const menuSheet = document.getElementById("menuSheet");
-
 /*==================================================
-APP START
+START APPLICATION
 ==================================================*/
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
 
     initialiseEvents();
 
-    await loadUsers();
+    loadUsers();
 
 });
 
@@ -94,25 +110,25 @@ INITIALISE EVENTS
 
 function initialiseEvents() {
 
-    if (searchBtn) {
+    searchBtn.addEventListener("click", searchUsers);
 
-        searchBtn.addEventListener("click", searchUsers);
+    searchInput.addEventListener("keyup", e => {
 
-    }
+        if (e.key === "Enter") {
 
-    if (searchInput) {
+            searchUsers();
 
-        searchInput.addEventListener("keyup", e => {
+        }
 
-            if (e.key === "Enter") {
+    });
 
-                searchUsers();
+    refreshBtn.addEventListener("click", () => {
 
-            }
+        loadUsers();
 
-        });
+        showToast("Refreshing users...");
 
-    }
+    });
 
 }
 
@@ -120,9 +136,9 @@ function initialiseEvents() {
 HELPERS
 ==================================================*/
 
-function formatMoney(value) {
+function formatMoney(amount) {
 
-    return `UGX ${Number(value || 0).toLocaleString()}`;
+    return `UGX ${Number(amount || 0).toLocaleString()}`;
 
 }
 
@@ -157,12 +173,12 @@ function showToast(message, type = "success") {
 }
 
 /*==================================================
-PLACEHOLDER
-Part 2
+PART 2 STARTS BELOW
 ==================================================*/
 
 /*==================================================
-PART 2 - LOAD USERS & USER LIST
+PART 2
+LOAD USERS • SEARCH • STATISTICS
 ==================================================*/
 
 /*==================================================
@@ -197,7 +213,7 @@ async function loadUsers() {
 }
 
 /*==================================================
-UPDATE STATISTICS
+UPDATE DASHBOARD STATISTICS
 ==================================================*/
 
 async function updateStatistics() {
@@ -205,24 +221,32 @@ async function updateStatistics() {
     totalUsers.textContent = users.length;
 
     activeUsers.textContent =
-        users.filter(user => user.account_status === "active").length;
+        users.filter(user =>
+            (user.account_status || "").toLowerCase() === "active"
+        ).length;
 
     vipUsers.textContent =
-        users.filter(user => user.membership === "VIP").length;
+        users.filter(user =>
+            (user.membership || "").toLowerCase() === "vip"
+        ).length;
 
     userCount.textContent =
         `${users.length} Members`;
 
     try {
 
-        const { count } = await db
+        const { count, error } = await db
             .from("user_machines")
             .select("*", {
-                count: "exact",
-                head: true
+                head: true,
+                count: "exact"
             });
 
-        totalMachines.textContent = count || 0;
+        if (!error) {
+
+            totalMachines.textContent = count || 0;
+
+        }
 
     } catch {
 
@@ -233,7 +257,7 @@ async function updateStatistics() {
 }
 
 /*==================================================
-RENDER USERS
+RENDER USER LIST
 ==================================================*/
 
 function renderUsers(list) {
@@ -243,13 +267,15 @@ function renderUsers(list) {
     if (!list.length) {
 
         usersContainer.innerHTML = `
+
             <div class="emptyMessage">
 
-                <h3>No users found</h3>
+                <h3>No Users Found</h3>
 
-                <p>No member matches your search.</p>
+                <p>Try another search.</p>
 
             </div>
+
         `;
 
         return;
@@ -336,26 +362,26 @@ function searchUsers() {
         return (
 
             (user.fullname || "")
-            .toLowerCase()
-            .includes(keyword)
+                .toLowerCase()
+                .includes(keyword)
 
             ||
 
             (user.phone || "")
-            .toLowerCase()
-            .includes(keyword)
+                .toLowerCase()
+                .includes(keyword)
 
             ||
 
             (user.email || "")
-            .toLowerCase()
-            .includes(keyword)
+                .toLowerCase()
+                .includes(keyword)
 
             ||
 
             (user.referral_code || "")
-            .toLowerCase()
-            .includes(keyword)
+                .toLowerCase()
+                .includes(keyword)
 
         );
 
@@ -379,5 +405,480 @@ function openUser(user) {
 
     loadUserProfile();
 
-              }
+            }
 
+/*==================================================
+PART 3
+LOAD USER PROFILE & OVERVIEW
+==================================================*/
+
+async function loadUserProfile() {
+
+    if (!selectedUser) return;
+
+    try {
+
+        /*==============================
+        PROFILE CARD
+        ==============================*/
+
+        userAvatar.src =
+            selectedUser.avatar_url ||
+            "images/default-avatar.png";
+
+        userName.textContent =
+            selectedUser.fullname || "-";
+
+        userPhone.textContent =
+            selectedUser.phone ||
+            selectedUser.email ||
+            "-";
+
+        membershipBadge.textContent =
+            selectedUser.membership || "Standard";
+
+        statusBadge.textContent =
+            selectedUser.account_status || "Active";
+
+        kycBadge.textContent =
+            selectedUser.kyc_status || "Not Verified";
+
+        /*==============================
+        OVERVIEW CARDS
+        ==============================*/
+
+        walletBalance.textContent =
+            formatMoney(selectedUser.wallet_balance);
+
+        totalInvested.textContent =
+            formatMoney(selectedUser.total_invested);
+
+        totalProfit.textContent =
+            formatMoney(selectedUser.total_profit);
+
+        /*==============================
+        WALLET TAB
+        ==============================*/
+
+        walletTabBalance.textContent =
+            formatMoney(selectedUser.wallet_balance);
+
+        walletTabInvested.textContent =
+            formatMoney(selectedUser.total_invested);
+
+        walletTabProfit.textContent =
+            formatMoney(selectedUser.total_profit);
+
+        walletTabReferral.textContent =
+            formatMoney(selectedUser.total_referral_bonus);
+
+        /*==============================
+        PROFILE TAB
+        ==============================*/
+
+        profileEmail.textContent =
+            selectedUser.email || "-";
+
+        profileCountry.textContent =
+            selectedUser.country || "-";
+
+        profileMembership.textContent =
+            selectedUser.membership || "Standard";
+
+        profileKyc.textContent =
+            selectedUser.kyc_status || "Not Verified";
+
+        profileLevel.textContent =
+            selectedUser.level || 1;
+
+        profileLastLogin.textContent =
+            formatDate(selectedUser.last_login);
+
+        /*==============================
+        LOAD USER DATA
+        ==============================*/
+
+        await loadUserMachines();
+
+        await loadWalletTransactions();
+
+        await loadReferrals();
+
+        await loadActivity();
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        showToast("Failed to load profile", "error");
+
+    }
+
+}
+
+/*==================================================
+LOAD USER MACHINES
+==================================================*/
+
+async function loadUserMachines() {
+
+    const { data, error } = await db
+
+        .from("user_machines")
+
+        .select(`
+            *,
+            machines(*)
+        `)
+
+        .eq("user_id", selectedUser.id)
+
+        .order("purchase_date", {
+            ascending: false
+        });
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+    userMachines = data || [];
+
+    ownedMachines.textContent =
+        userMachines.length;
+
+    renderMachineList(userMachines);
+
+}
+
+/*==================================================
+PLACEHOLDER FUNCTIONS
+(Completed in Part 4)
+==================================================*/
+
+async function loadWalletTransactions() {
+
+    walletTransactionsBox.innerHTML = "";
+
+}
+
+async function loadReferrals() {
+
+    referralsList.innerHTML = "";
+
+}
+
+async function loadActivity() {
+
+    activityList.innerHTML = "";
+
+            }
+
+/*==================================================
+PART 4
+RENDER MACHINES + FILTERS + TABS
+==================================================*/
+
+/*==================================================
+RENDER MACHINE LIST
+==================================================*/
+
+function renderMachineList(list) {
+
+    machineList.innerHTML = "";
+
+    if (!list.length) {
+
+        machineList.innerHTML = `
+
+            <div class="emptyMessage">
+
+                <h3>No Machines</h3>
+
+                <p>This user has not purchased any machine.</p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    list.forEach(machine => {
+
+        const info = machine.machines || {};
+
+        const progress = getProgress(
+            machine.purchase_date,
+            machine.expiry_date
+        );
+
+        const card = document.createElement("div");
+
+        card.className = "machineCard";
+
+        card.innerHTML = `
+
+            <img
+                class="machineImage"
+                src="${machine.machine_image || info.image_url || "images/default-machine.png"}"
+            >
+
+            <div class="machineInfo">
+
+                <h3>
+
+                    ${machine.machine_name || info.name || "Machine"}
+
+                </h3>
+
+                <p>
+
+                    ${info.series || "-"}
+
+                </p>
+
+                <div class="machineBadges">
+
+                    <span class="machineBadge active">
+
+                        ${machine.status}
+
+                    </span>
+
+                    ${machine.is_vip ?
+
+                        `<span class="machineBadge vip">
+
+                            VIP
+
+                        </span>`
+
+                    : ""}
+
+                </div>
+
+                <p>
+
+                    Daily Income:
+                    <b>${formatMoney(info.daily_income)}</b>
+
+                </p>
+
+                <p>
+
+                    Earned:
+                    <b>${formatMoney(machine.earned_amount)}</b>
+
+                </p>
+
+                <div class="machineProgress">
+
+                    <span>
+
+                        ${progress.remainingDays}
+                        Days Remaining
+
+                    </span>
+
+                    <div class="progressBar">
+
+                        <div
+                            class="progressFill"
+                            style="width:${progress.percent}%">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button
+                class="machineAction">
+
+                ⋮
+
+            </button>
+
+        `;
+
+        card.querySelector(".machineAction")
+            .addEventListener("click", e => {
+
+                e.stopPropagation();
+
+                currentMachine = machine;
+
+                openSheet(machineActionSheet);
+
+            });
+
+        machineList.appendChild(card);
+
+    });
+
+}
+
+/*==================================================
+PROGRESS
+==================================================*/
+
+function getProgress(start, end) {
+
+    if (!start || !end) {
+
+        return {
+
+            percent: 0,
+
+            remainingDays: 0
+
+        };
+
+    }
+
+    const startDate = new Date(start);
+
+    const endDate = new Date(end);
+
+    const today = new Date();
+
+    const total = endDate - startDate;
+
+    const passed = today - startDate;
+
+    let percent = (passed / total) * 100;
+
+    percent = Math.max(
+        0,
+        Math.min(100, percent)
+    );
+
+    const remainingDays = Math.max(
+        0,
+        Math.ceil(
+            (endDate - today) / 86400000
+        )
+    );
+
+    return {
+
+        percent,
+
+        remainingDays
+
+    };
+
+}
+
+/*==================================================
+FILTER BUTTONS
+==================================================*/
+
+document
+.querySelectorAll(".filterButton")
+.forEach(button => {
+
+    button.onclick = () => {
+
+        document
+        .querySelectorAll(".filterButton")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+        const filter = button.dataset.filter;
+
+        let list = userMachines;
+
+        if (filter === "active") {
+
+            list = userMachines.filter(
+                m => m.status === "active"
+            );
+
+        }
+
+        if (filter === "vip") {
+
+            list = userMachines.filter(
+                m => m.is_vip
+            );
+
+        }
+
+        if (filter === "completed") {
+
+            list = userMachines.filter(
+                m => m.completed
+            );
+
+        }
+
+        if (filter === "expired") {
+
+            list = userMachines.filter(m => {
+
+                return new Date(m.expiry_date)
+                    < new Date();
+
+            });
+
+        }
+
+        renderMachineList(list);
+
+    };
+
+});
+
+/*==================================================
+TAB SWITCHING
+==================================================*/
+
+document
+.querySelectorAll(".tabButton")
+.forEach(button => {
+
+    button.onclick = () => {
+
+        document
+        .querySelectorAll(".tabButton")
+        .forEach(btn => {
+
+            btn.classList.remove("active");
+
+        });
+
+        document
+        .querySelectorAll(".tabContent")
+        .forEach(tab => {
+
+            tab.classList.remove("active");
+
+        });
+
+        button.classList.add("active");
+
+        document
+        .getElementById(button.dataset.tab)
+        .classList.add("active");
+
+    };
+
+});
+
+/*==================================================
+PART 5 STARTS BELOW
+==================================================*/
