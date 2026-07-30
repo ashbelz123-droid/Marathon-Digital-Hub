@@ -257,11 +257,17 @@ function renderMachines(series) {
 
     const machines = series === "All"
 
-        ? allMachines
+? allMachines
 
-        : allMachines.filter(machine =>
-            (machine.series || "General") === series
-        );
+: allMachines.filter(machine => {
+
+    const group = (machine.series || "General")
+        .replace(/[0-9]/g, "")
+        .trim();
+
+    return group === series;
+
+});
 
     if (machines.length === 0) {
 
