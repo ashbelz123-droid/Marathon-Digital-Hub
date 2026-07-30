@@ -15,22 +15,34 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try{
 
+        /* Check login */
+
         const { data:{ user } } = await db.auth.getUser();
 
         if(!user){
 
-            window.location.href="login.html";
+            window.location.href = "login.html";
             return;
 
         }
 
         currentUser = user;
 
+        /* Run mining engine first */
+
+        if(typeof checkMiningIncome === "function"){
+
+            await checkMiningIncome();
+
+        }
+
+        /* Now load the profile */
+
         await initializeProfile();
 
     }catch(error){
 
-        console.log(error);
+        console.error(error);
 
     }
 
