@@ -231,37 +231,19 @@ function buildSeriesTabs() {
 CREATE SERIES TAB
 =========================================*/
 
-function createSeriesTab(seriesName) {
+const series = [
+    ...new Set(
+        allMachines.map(machine => {
 
-    const button = document.createElement("button");
+            const name = machine.series || "General";
 
-    button.textContent = seriesName;
+            return name.replace(/[0-9]/g, "").trim();
 
-    if (seriesName === currentSeries) {
+        })
+    )
+];
 
-        button.classList.add("active");
-
-    }
-
-    button.onclick = () => {
-
-        currentSeries = seriesName;
-
-        document
-            .querySelectorAll("#seriesTabs button")
-            .forEach(btn => btn.classList.remove("active"));
-
-        button.classList.add("active");
-
-        renderMachines(currentSeries);
-
-    };
-
-    document
-        .getElementById("seriesTabs")
-        .appendChild(button);
-
-}
+series.sort();
 
 /*=========================================
 RENDER MACHINES
