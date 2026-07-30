@@ -1228,7 +1228,15 @@ return;
 
 }
 
-currentUser=user;
+currentUser = user;
+
+/* Run Mining Engine */
+
+if(typeof checkMiningIncome === "function"){
+
+    await checkMiningIncome();
+
+}
 
 /* Load Dashboard */
 
