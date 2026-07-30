@@ -17,7 +17,9 @@
 
 <body>
 
-<!-- Header -->
+<!--==========================
+HEADER
+===========================-->
 
 <header class="header">
 
@@ -31,25 +33,35 @@
 
 </header>
 
-<!-- Page Title -->
+<!--==========================
+PAGE TITLE
+===========================-->
 
 <section class="page-title">
 
     <h2>Machines</h2>
 
+    <p>Purchase a mining machine and start earning automatically.</p>
+
 </section>
 
-<!-- Series Tabs -->
+<!--==========================
+SERIES TABS
+===========================-->
 
 <div id="seriesTabs" class="series-tabs">
 
-    <!-- Loaded by JS -->
+    <!-- Loaded by JavaScript -->
 
 </div>
 
-<!-- Machines List -->
+<!--==========================
+MACHINES CONTAINER
+===========================-->
 
-<section id="machinesContainer" class="machines-container">
+<section
+id="machinesContainer"
+class="machines-container">
 
     <div class="loading">
 
@@ -59,43 +71,80 @@
 
 </section>
 
-  <!--=========================================
-SUCCESS POPUP
-==========================================-->
+    <!--==========================
+PURCHASE SUCCESS POPUP
+===========================-->
 
 <div id="successPopup" class="success-popup">
 
-    <div class="success-box">
+    <div class="success-card">
 
         <div class="success-icon">
+
             ✅
+
         </div>
 
         <h3>Purchase Successful</h3>
 
         <p id="successMessage">
 
-            Machine purchased successfully.
+            Your mining machine has been activated successfully.
 
         </p>
+
+        <button id="closeSuccess">
+
+            Continue
+
+        </button>
 
     </div>
 
 </div>
 
-<!--=========================================
+<!--==========================
 LOADING OVERLAY
-==========================================-->
+===========================-->
 
 <div id="loadingOverlay" class="loading-overlay">
 
     <div class="loader"></div>
 
-    <p>Please wait...</p>
+    <p>
+
+        Processing your purchase...
+
+    </p>
 
 </div>
 
-<!--=========================================
+<!--==========================
+EMPTY MACHINES
+===========================-->
+
+<div id="emptyState" class="empty-state" style="display:none;">
+
+    <img
+        src="images/empty-machines.png"
+        alt="No Machines">
+
+    <h3>
+
+        No Machines Available
+
+    </h3>
+
+    <p>
+
+        There are currently no mining machines available.
+        Please check again later.
+
+    </p>
+
+</div>
+
+   <!--=========================================
 BOTTOM NAVIGATION
 ==========================================-->
 
@@ -143,7 +192,7 @@ BOTTOM NAVIGATION
 
 </nav>
 
-  <!--=========================================
+<!--=========================================
 JAVASCRIPT
 ==========================================-->
 
@@ -151,5 +200,4 @@ JAVASCRIPT
 <script src="machines.js"></script>
 
 </body>
-
-</html>
+</html> 
