@@ -4,11 +4,19 @@ SUPABASE
 
 const db = window.supabaseClient;
 
+/*=========================================
+GLOBAL VARIABLES
+=========================================*/
+
 let currentUser = null;
 let profile = null;
 
-let machines = [];
+let allMachines = [];
+let purchasedMachines = [];
+
 let currentSeries = "ALL";
+
+let buyingMachine = false;
 
 /*=========================================
 START PAGE
@@ -18,11 +26,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     try {
 
-        const { data: { user } } = await db.auth.getUser();
+        const { data: { user }, error } = await db.auth.getUser();
 
-        if (!user) {
+        if (error || !user) {
+
             window.location.href = "login.html";
             return;
+
         }
 
         currentUser = user;
@@ -33,44 +43,52 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         console.error(error);
 
-        document.getElementById("machines").innerHTML = `
-            <div class="empty-state">
-                <h3>Unable to Load</h3>
-                <p>Please refresh the page.</p>
-            </div>
-        `;
+        showError("Unable to start page.");
+
     }
 
 });
 
 /*=========================================
-INITIALIZE
+INITIALIZE PAGE
 =========================================*/
 
 async function initializePage() {
 
-    await Promise.all([
-        loadProfile(),
-        loadMachines()
-    ]);
+    showLoading();
+
+    await loadProfile();
+
+    await loadMachines();
+
+    await loadPurchasedMachines();
+
+    buildSeriesTabs();
+
+    renderMachines();
 
 }
 
 /*=========================================
-LOAD PROFILE
+LOAD USER PROFILE
 =========================================*/
 
 async function loadProfile() {
 
     const { data, error } = await db
+
         .from("profiles")
-        .select("wallet_balance")
+
+        .select("*")
+
         .eq("id", currentUser.id)
+
         .single();
 
     if (error) {
-        console.log(error);
-        return;
+
+        throw error;
+
     }
 
     profile = data;
@@ -84,86 +102,149 @@ SHOW LOADING
 function showLoading() {
 
     document.getElementById("machines").innerHTML = `
+
         <div class="loading">
-            Loading Machines...
+
+            Loading machines...
+
         </div>
+
     `;
 
 }
 
 /*=========================================
-LOAD MACHINES
+SHOW ERROR
 =========================================*/
+
+function showError(message) {
+
+    document.getElementById("machines").innerHTML = `
+
+        <div class="empty-state">
+
+            <h3>Oops!</h3>
+
+            <p>${message}</p>
+
+        </div>
+
+    `;
+
+}
+
+/* ==========================================
+LOAD USER
+========================================== */
+
+async function loadUser() {
+
+    const {
+        data: { user },
+        error
+    } = await db.auth.getUser();
+
+    if (error || !user) {
+        window.location.href = "login.html";
+        return false;
+    }
+
+    currentUser = user;
+    return true;
+}
+
+/* ==========================================
+REMOVE DUPLICATE PURCHASES
+========================================== */
+
+async function removeDuplicatePurchases() {
+
+    const { data, error } = await db
+        .from("user_machines")
+        .select("id,machine_id,purchase_date")
+        .eq("user_id", currentUser.id)
+        .order("purchase_date", { ascending: true });
+
+    if (error || !data) return;
+
+    const seen = {};
+
+    for (const machine of data) {
+
+        if (seen[machine.machine_id]) {
+
+            await db
+                .from("user_machines")
+                .delete()
+                .eq("id", machine.id);
+
+        } else {
+
+            seen[machine.machine_id] = true;
+
+        }
+    }
+}
+
+/* ==========================================
+START PAGE
+========================================== */
+
+document.addEventListener("DOMContentLoaded", async () => {
+
+    const ok = await loadUser();
+
+    if (!ok) return;
+
+    await removeDuplicatePurchases();
+
+    await loadMachines();
+
+});
+
+/* ==========================================
+LOAD MACHINES
+========================================== */
 
 async function loadMachines() {
 
-    showLoading();
+    machineContainer.innerHTML =
+        `<div class="loading">Loading machines...</div>`;
 
     const { data, error } = await db
         .from("machines")
         .select("*")
         .eq("status", true)
-        .order("display_order", { ascending: true })
-        .order("price", { ascending: true });
+        .order("display_order", { ascending: true });
 
     if (error) {
 
-        console.log(error);
+        console.error(error);
 
-        document.getElementById("machines").innerHTML = `
-            <div class="empty-state">
-                <h3>Failed to Load</h3>
-                <p>Unable to fetch machines.</p>
-            </div>
-        `;
+        machineContainer.innerHTML =
+            `<div class="loading">Failed to load machines.</div>`;
 
         return;
-
     }
 
-    machines = data || [];
+    allMachines = data || [];
 
     buildSeriesTabs();
 
-    renderMachines();
-
+    renderMachines("ALL");
 }
 
-/*=========================================
+/* ==========================================
 BUILD SERIES TABS
-=========================================*/
+========================================== */
 
 function buildSeriesTabs() {
 
-    const tabs = document.getElementById("seriesTabs");
+    seriesTabs.innerHTML = "";
 
-    tabs.innerHTML = "";
+    const seriesList = ["ALL"];
 
-    /* ALL */
-
-    const allBtn = document.createElement("button");
-
-    allBtn.className = "tab active";
-
-    allBtn.textContent = "All";
-
-    allBtn.onclick = () => {
-
-        currentSeries = "ALL";
-
-        updateActiveTab(allBtn);
-
-        renderMachines();
-
-    };
-
-    tabs.appendChild(allBtn);
-
-    /* UNIQUE SERIES */
-
-    const seriesList = [];
-
-    machines.forEach(machine => {
+    allMachines.forEach(machine => {
 
         const series = machine.series || "General";
 
@@ -175,80 +256,54 @@ function buildSeriesTabs() {
 
     });
 
-    /* CREATE BUTTONS */
+    seriesList.forEach((series, index) => {
 
-    seriesList.forEach(series => {
+        const button = document.createElement("button");
 
-        const btn = document.createElement("button");
+        button.className = index === 0 ? "tab active" : "tab";
 
-        btn.className = "tab";
+        button.textContent = series;
 
-        btn.textContent = series;
+        button.onclick = () => {
 
-        btn.onclick = () => {
+            document
+                .querySelectorAll(".tab")
+                .forEach(tab => tab.classList.remove("active"));
 
-            currentSeries = series;
+            button.classList.add("active");
 
-            updateActiveTab(btn);
-
-            renderMachines();
+            renderMachines(series);
 
         };
 
-        tabs.appendChild(btn);
+        seriesTabs.appendChild(button);
 
     });
 
 }
 
-/*=========================================
-ACTIVE TAB
-=========================================*/
-
-function updateActiveTab(button) {
-
-    document.querySelectorAll(".tab").forEach(tab => {
-
-        tab.classList.remove("active");
-
-    });
-
-    button.classList.add("active");
-
-                                         }
-
-/*=========================================
+/* ==========================================
 RENDER MACHINES
-=========================================*/
+========================================== */
 
-async function renderMachines() {
+async function renderMachines(series) {
 
-    const container = document.getElementById("machines");
+    machineContainer.innerHTML = "";
 
-    container.innerHTML = "";
+    let list = allMachines;
 
-    let list = [];
+    if (series !== "ALL") {
 
-    if (currentSeries === "ALL") {
-
-        list = machines;
-
-    } else {
-
-        list = machines.filter(machine =>
-            (machine.series || "General") === currentSeries
+        list = allMachines.filter(machine =>
+            (machine.series || "General") === series
         );
 
     }
 
     if (list.length === 0) {
 
-        container.innerHTML = `
-            <div class="empty-state">
-                <h3>No Machines Found</h3>
-                <p>No machines are available in this series.</p>
-            </div>
-        `;
+        machineContainer.innerHTML =
+            `<div class="loading">No machines available.</div>`;
 
         return;
 
@@ -256,175 +311,148 @@ async function renderMachines() {
 
     for (const machine of list) {
 
-        const { data: owned } = await db
-            .from("user_machines")
-            .select("id")
-            .eq("user_id", currentUser.id)
-            .eq("machine_id", machine.id);
-
-        const purchased = owned && owned.length > 0;
-
-        const image = machine.image_url && machine.image_url !== ""
-            ? machine.image_url
-            : "images/default-machine.png";
-
-        container.innerHTML += `
-
-        <div class="machine-card">
-
-            <div class="machine-top">
-
-                <img
-                    class="machine-image"
-                    src="${image}"
-                    onerror="this.src='images/default-machine.png'">
-
-                <div class="machine-info">
-
-                    <div class="machine-name">
-                        ${machine.name}
-                    </div>
-
-                    <div class="machine-series">
-                        ${machine.series || "General"}
-                    </div>
-
-                    <div class="machine-row">
-                        <span>Price</span>
-                        <strong>
-                            UGX ${Number(machine.price).toLocaleString()}
-                        </strong>
-                    </div>
-
-                    <div class="machine-row">
-                        <span>Total Return</span>
-                        <strong>
-                            UGX ${Number(machine.total_return).toLocaleString()}
-                        </strong>
-                    </div>
-
-                    <div class="machine-row">
-                        <span>Duration</span>
-                        <strong>
-                            ${machine.duration_days} Days
-                        </strong>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button
-                class="buy-btn"
-                ${purchased ? "disabled" : ""}
-                onclick="buyMachine('${machine.id}')">
-
-                ${purchased ? "PURCHASED ✓" : "BUY MACHINE"}
-
-            </button>
-
-        </div>
-
-        `;
+        await createMachineCard(machine);
 
     }
 
-          }
+}
 
-/*=========================================
+/* ==========================================
+CREATE MACHINE CARD
+========================================== */
+
+async function createMachineCard(machine) {
+
+    const { data: owned } = await db
+        .from("user_machines")
+        .select("id")
+        .eq("user_id", currentUser.id)
+        .eq("machine_id", machine.id)
+        .limit(1);
+
+    const purchased = owned && owned.length > 0;
+
+    const image = machine.image_url || "images/default-machine.png";
+
+    machineContainer.innerHTML += `
+    <div class="machine-card">
+
+        <img class="machine-image"
+             src="${image}"
+             onerror="this.src='images/default-machine.png'">
+
+        <div class="machine-info">
+
+            <h3>${machine.name}</h3>
+
+            <div class="machine-price">
+                Price
+                <span>UGX ${Number(machine.price).toLocaleString()}</span>
+            </div>
+
+            <div class="machine-price">
+                Total Return
+                <span>UGX ${Number(machine.total_return).toLocaleString()}</span>
+            </div>
+
+            <div class="machine-price">
+                Duration
+                <span>${machine.duration_days} Days</span>
+            </div>
+
+        </div>
+
+        <button
+            class="buy-btn"
+            ${purchased ? "disabled" : ""}
+            onclick="buyMachine('${machine.id}')">
+
+            ${purchased ? "PURCHASED ✓" : "BUY MACHINE"}
+
+        </button>
+
+    </div>`;
+}
+
+/* ==========================================
 BUY MACHINE
-=========================================*/
+========================================== */
 
 async function buyMachine(machineId) {
 
+    const button = event.target;
+
+    button.disabled = true;
+    button.innerText = "Processing...";
+
     try {
 
-        /* Get Machine */
+        /* Machine */
 
-        const { data: machine, error: machineError } = await db
+        const { data: machine } = await db
             .from("machines")
             .select("*")
             .eq("id", machineId)
             .single();
 
-        if (machineError || !machine) {
-
-            alert("Machine not found.");
-            return;
-
-        }
-
-        /* Reload Wallet */
-
-        const { data: walletData, error: walletError } = await db
-            .from("profiles")
-            .select("wallet_balance")
-            .eq("id", currentUser.id)
-            .single();
-
-        if (walletError) {
-
-            alert("Unable to load wallet.");
-            return;
-
-        }
-
-        const wallet = Number(walletData.wallet_balance);
-        const price = Number(machine.price);
-
-        /* Wallet Check */
-
-        if (wallet < price) {
-
-            alert("Insufficient wallet balance.");
-            return;
-
-        }
-
-        /* Already Purchased */
+        /* Already purchased */
 
         const { data: existing } = await db
             .from("user_machines")
             .select("id")
             .eq("user_id", currentUser.id)
-            .eq("machine_id", machine.id);
+            .eq("machine_id", machineId)
+            .limit(1);
 
-        if (existing && existing.length > 0) {
+        if (existing.length > 0) {
 
             alert("You already own this machine.");
-            return;
 
+            await loadMachines();
+
+            return;
         }
 
-        /* Calculate Expiry */
+        /* Wallet */
 
-        const purchaseDate = new Date();
+        const { data: profile } = await db
+            .from("profiles")
+            .select("wallet_balance")
+            .eq("id", currentUser.id)
+            .single();
 
-        const expiryDate = new Date();
+        const balance = Number(profile.wallet_balance);
 
-        expiryDate.setDate(
-            expiryDate.getDate() + Number(machine.duration_days)
-        );
+        if (balance < Number(machine.price)) {
 
-        /* Deduct Wallet */
+            alert("Insufficient wallet balance.");
 
-        const { error: updateError } = await db
+            button.disabled = false;
+            button.innerText = "BUY MACHINE";
+
+            return;
+        }
+
+        /* Update wallet */
+
+        await db
             .from("profiles")
             .update({
-                wallet_balance: wallet - price
+                wallet_balance: balance - Number(machine.price)
             })
             .eq("id", currentUser.id);
 
-        if (updateError) {
+        /* Expiry */
 
-            alert(updateError.message);
-            return;
+        const expiry = new Date();
 
-        }
+        expiry.setDate(
+            expiry.getDate() + Number(machine.duration_days)
+        );
 
-        /* Save Purchased Machine */
+        /* Save purchase */
 
-        const { error: purchaseError } = await db
+        await db
             .from("user_machines")
             .insert({
 
@@ -436,11 +464,11 @@ async function buyMachine(machineId) {
 
                 machine_image: machine.image_url,
 
-                amount_paid: price,
+                amount_paid: machine.price,
 
-                purchase_date: purchaseDate.toISOString(),
+                purchase_date: new Date().toISOString(),
 
-                expiry_date: expiryDate.toISOString(),
+                expiry_date: expiry.toISOString(),
 
                 earned_amount: 0,
 
@@ -448,20 +476,11 @@ async function buyMachine(machineId) {
 
                 status: "active",
 
-                is_vip: machine.is_vip,
-
-                last_profit_date: null
+                is_vip: machine.is_vip
 
             });
 
-        if (purchaseError) {
-
-            alert(purchaseError.message);
-            return;
-
-        }
-
-        /* Wallet Transaction */
+        /* Wallet history */
 
         await db
             .from("wallet_transactions")
@@ -471,45 +490,36 @@ async function buyMachine(machineId) {
 
                 type: "Machine Purchase",
 
-                amount: price,
+                amount: machine.price,
 
-                description: "Purchased " + machine.name,
+                description: machine.name,
 
-                status: "completed",
-
-                created_at: new Date().toISOString(),
-
-                balance_after: wallet - price
+                created_at: new Date().toISOString()
 
             });
 
-        /* Refresh Wallet */
+        showSuccessPopup("Machine Purchased Successfully");
 
-        await loadProfile();
-
-        /* Refresh Machine List */
+        await removeDuplicatePurchases();
 
         await loadMachines();
 
-        /* Success */
+    } catch (err) {
 
-        showSuccessPopup(
-            machine.name + " purchased successfully."
-        );
+        console.error(err);
 
-    } catch (error) {
+        alert("Purchase failed.");
 
-        console.error(error);
-
-        alert("Unexpected error occurred.");
+        button.disabled = false;
+        button.innerText = "BUY MACHINE";
 
     }
 
 }
 
-/*=========================================
+/* ==========================================
 SUCCESS POPUP
-=========================================*/
+========================================== */
 
 function showSuccessPopup(message) {
 
@@ -525,4 +535,4 @@ function showSuccessPopup(message) {
 
     }, 2500);
 
-            }
+                                   }
