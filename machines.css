@@ -1,0 +1,629 @@
+/*=========================================
+RESET
+=========================================*/
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+:root{
+
+    --bg:#050B18;
+    --card:#08142d;
+    --primary:#00C8FF;
+    --success:#00FF88;
+    --text:#ffffff;
+    --muted:#9fb5d1;
+    --border:rgba(0,200,255,.15);
+
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+    padding-bottom:90px;
+
+}
+
+/*=========================================
+ANIMATED BACKGROUND
+=========================================*/
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    left:-40%;
+    top:-40%;
+
+    width:180%;
+    height:180%;
+
+    background:
+
+    radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
+
+    radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
+
+    radial-gradient(circle at 70% 80%,rgba(0,255,120,.15),transparent 40%),
+
+    radial-gradient(circle at 20% 80%,rgba(150,0,255,.15),transparent 35%);
+
+    animation:bgMove 18s linear infinite;
+
+    z-index:-2;
+
+}
+
+@keyframes bgMove{
+
+    0%{transform:translateX(-2%);}
+    50%{transform:translateX(2%);}
+    100%{transform:translateX(-2%);}
+
+}
+
+/*=========================================
+HEADER
+=========================================*/
+
+.header{
+
+    padding:22px 18px 12px;
+
+    text-align:center;
+
+}
+
+.header h1{
+
+    font-size:30px;
+
+    font-weight:bold;
+
+    background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+}
+
+.header p{
+
+    margin-top:6px;
+
+    color:var(--muted);
+
+    font-size:14px;
+
+}
+
+/*=========================================
+PAGE TITLE
+=========================================*/
+
+.page-title{
+
+    padding:10px 18px 20px;
+
+}
+
+.page-title h2{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+}
+
+/*=========================================
+SERIES TABS
+=========================================*/
+
+.series-tabs{
+
+    display:flex;
+
+    gap:10px;
+
+    overflow-x:auto;
+
+    padding:0 15px 18px;
+
+    scrollbar-width:none;
+
+}
+
+.series-tabs::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.series-tabs button{
+
+    border:none;
+
+    padding:11px 20px;
+
+    border-radius:30px;
+
+    background:#102041;
+
+    color:#fff;
+
+    white-space:nowrap;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.series-tabs button.active{
+
+    background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+    color:#001018;
+
+    font-weight:bold;
+
+}
+
+/*=========================================
+MACHINES CONTAINER
+=========================================*/
+
+.machines-container{
+
+    padding:0 15px 20px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+}
+
+.loading{
+
+    text-align:center;
+
+    padding:60px 20px;
+
+    color:var(--primary);
+
+    font-size:17px;
+
+}
+
+/*=========================================
+MACHINE CARD
+=========================================*/
+
+.machine-card{
+
+    background:var(--card);
+
+    border:1px solid var(--border);
+
+    border-radius:18px;
+
+    overflow:hidden;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.25);
+
+    animation:fadeIn .35s ease;
+
+    transition:.3s;
+
+}
+
+.machine-card:active{
+
+    transform:scale(.98);
+
+}
+
+.machine-top{
+
+    display:flex;
+
+    gap:14px;
+
+    padding:14px;
+
+    align-items:center;
+
+}
+
+/*=========================================
+MACHINE IMAGE
+=========================================*/
+
+.machine-image{
+
+    width:95px;
+
+    height:95px;
+
+    border-radius:14px;
+
+    object-fit:cover;
+
+    background:#102041;
+
+    flex-shrink:0;
+
+}
+
+/*=========================================
+MACHINE DETAILS
+=========================================*/
+
+.machine-details{
+
+    flex:1;
+
+}
+
+.machine-name{
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    color:var(--success);
+
+    margin-bottom:10px;
+
+}
+
+.machine-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:8px;
+
+    font-size:14px;
+
+}
+
+.machine-info span{
+
+    color:var(--muted);
+
+}
+
+.machine-info strong{
+
+    color:#fff;
+
+    font-weight:600;
+
+}
+
+/*=========================================
+BUY BUTTON
+=========================================*/
+
+.buy-btn{
+
+    width:100%;
+
+    height:50px;
+
+    border:none;
+
+    background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+    color:#001018;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.buy-btn:active{
+
+    transform:scale(.98);
+
+}
+
+.buy-btn:disabled{
+
+    background:#46556F;
+
+    color:#d6e3ff;
+
+    cursor:not-allowed;
+
+      }
+
+/*=========================================
+SUCCESS POPUP
+=========================================*/
+
+.success-popup{
+
+    position:fixed;
+
+    top:20px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:9999;
+
+    display:none;
+
+}
+
+.success-box{
+
+    min-width:280px;
+
+    background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+    color:#001018;
+
+    border-radius:16px;
+
+    padding:20px;
+
+    text-align:center;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.30);
+
+}
+
+.success-icon{
+
+    font-size:40px;
+
+    margin-bottom:10px;
+
+}
+
+.success-box h3{
+
+    font-size:20px;
+
+    margin-bottom:8px;
+
+}
+
+.success-box p{
+
+    font-size:14px;
+
+    line-height:1.5;
+
+}
+
+/*=========================================
+LOADING OVERLAY
+=========================================*/
+
+.loading-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(5,11,24,.92);
+
+    display:none;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9998;
+
+}
+
+.loader{
+
+    width:55px;
+
+    height:55px;
+
+    border:5px solid rgba(255,255,255,.12);
+
+    border-top:5px solid #00FF88;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+}
+
+.loading-overlay p{
+
+    margin-top:20px;
+
+    color:#fff;
+
+    font-size:15px;
+
+}
+
+@keyframes spin{
+
+    0%{
+
+        transform:rotate(0deg);
+
+    }
+
+    100%{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/*=========================================
+BOTTOM NAVIGATION
+=========================================*/
+
+.bottom-nav{
+
+    position:fixed;
+
+    left:0;
+
+    bottom:0;
+
+    width:100%;
+
+    height:72px;
+
+    background:#08142d;
+
+    border-top:1px solid rgba(0,200,255,.15);
+
+    display:flex;
+
+    justify-content:space-around;
+
+    align-items:center;
+
+    z-index:999;
+
+    backdrop-filter:blur(12px);
+
+}
+
+.bottom-nav a{
+
+    text-decoration:none;
+
+    color:#b8c8e8;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:12px;
+
+    transition:.3s;
+
+}
+
+.bottom-nav a .nav-icon{
+
+    font-size:22px;
+
+    margin-bottom:4px;
+
+}
+
+.bottom-nav a.active{
+
+    color:#00FF88;
+
+    font-weight:bold;
+
+}
+
+.bottom-nav a:active{
+
+    transform:scale(.95);
+
+}
+
+/*=========================================
+CARD ANIMATION
+=========================================*/
+
+@keyframes fadeIn{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(18px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+.machine-card{
+
+    animation:fadeIn .4s ease;
+
+}
+
+/*=========================================
+RESPONSIVE
+=========================================*/
+
+@media(max-width:480px){
+
+    .machine-image{
+
+        width:85px;
+
+        height:85px;
+
+    }
+
+    .machine-name{
+
+        font-size:16px;
+
+    }
+
+    .machine-info{
+
+        font-size:13px;
+
+    }
+
+    .buy-btn{
+
+        height:48px;
+
+        font-size:14px;
+
+    }
+
+}
