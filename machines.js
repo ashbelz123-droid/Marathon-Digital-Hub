@@ -536,3 +536,229 @@ function showSuccessPopup(message) {
     }, 2500);
 
                                    }
+/* ==========================================
+AUTO REFRESH MACHINES
+========================================== */
+
+setInterval(async () => {
+
+    if (!currentUser) return;
+
+    await loadMachines();
+
+}, 30000);
+
+/* ==========================================
+FADE-IN ANIMATION
+========================================== */
+
+function animateCards() {
+
+    const cards = document.querySelectorAll(".machine-card");
+
+    cards.forEach((card, index) => {
+
+        card.style.opacity = "0";
+        card.style.transform = "translateY(20px)";
+
+        setTimeout(() => {
+
+            card.style.transition = "all .4s ease";
+
+            card.style.opacity = "1";
+
+            card.style.transform = "translateY(0)";
+
+        }, index * 80);
+
+    });
+
+}
+
+/* ==========================================
+IMAGE FALLBACK
+========================================== */
+
+document.addEventListener("error", function (e) {
+
+    if (e.target.tagName === "IMG") {
+
+        e.target.src = "images/default-machine.png";
+
+    }
+
+}, true);
+
+/* ==========================================
+PRELOAD MACHINE IMAGES
+========================================== */
+
+function preloadImages() {
+
+    allMachines.forEach(machine => {
+
+        if (machine.image_url) {
+
+            const img = new Image();
+
+            img.src = machine.image_url;
+
+        }
+
+    });
+
+}
+
+/* ==========================================
+DISABLE DOUBLE CLICK
+========================================== */
+
+let buying = false;
+
+document.addEventListener("click", function (e) {
+
+    if (!e.target.classList.contains("buy-btn")) return;
+
+    if (buying) {
+
+        e.preventDefault();
+
+        return;
+
+    }
+
+    buying = true;
+
+    setTimeout(() => {
+
+        buying = false;
+
+    }, 3000);
+
+});
+
+/* ==========================================
+AFTER MACHINE LOAD
+========================================== */
+
+const originalLoadMachines = loadMachines;
+
+loadMachines = async function () {
+
+    await originalLoadMachines();
+
+    preloadImages();
+
+    animateCards();
+
+};
+
+/* ==========================================
+PAGE READY
+========================================== */
+
+window.addEventListener("load", () => {
+
+    console.log("Machines Page Ready");
+
+});
+
+/* ==========================================
+REMOVE EXPIRED MACHINES
+========================================== */
+
+async function checkExpiredMachines() {
+
+    const now = new Date().toISOString();
+
+    const { data, error } = await db
+        .from("user_machines")
+        .select("id, expiry_date, status")
+        .eq("user_id", currentUser.id)
+        .eq("status", "active");
+
+    if (error || !data) return;
+
+    for (const machine of data) {
+
+        if (
+            machine.expiry_date &&
+            new Date(machine.expiry_date) <= new Date(now)
+        ) {
+
+            await db
+                .from("user_machines")
+                .update({
+                    status: "completed",
+                    completed: true,
+                    completed_at: now
+                })
+                .eq("id", machine.id);
+
+        }
+
+    }
+
+}
+
+/* ==========================================
+AUTO CHECK EVERY MINUTE
+========================================== */
+
+setInterval(async () => {
+
+    if (!currentUser) return;
+
+    await checkExpiredMachines();
+
+}, 60000);
+
+/* ==========================================
+REFRESH AFTER PURCHASE
+========================================== */
+
+async function refreshPage() {
+
+    await checkExpiredMachines();
+
+    await removeDuplicatePurchases();
+
+    await loadMachines();
+
+}
+
+/* ==========================================
+NETWORK STATUS
+========================================== */
+
+window.addEventListener("online", () => {
+
+    console.log("Connected");
+
+    refreshPage();
+
+});
+
+window.addEventListener("offline", () => {
+
+    console.log("Offline");
+
+});
+
+/* ==========================================
+FINAL STARTUP
+========================================== */
+
+window.addEventListener("load", async () => {
+
+    if (!currentUser) return;
+
+    await checkExpiredMachines();
+
+    await removeDuplicatePurchases();
+
+    await loadMachines();
+
+    console.log("Machines System V2 Ready");
+
+});
