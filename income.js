@@ -43,7 +43,7 @@ async function init(){
 
         document.getElementById("machineList").innerHTML = `
             <div class="loading">
-                Unable to load page.
+                Unable to load income page.
             </div>
         `;
 
@@ -60,6 +60,8 @@ function startAutoRefresh(){
     setInterval(async()=>{
 
         if(currentUser){
+
+            await loadProfile();
 
             await loadUserMachines();
 
@@ -81,13 +83,14 @@ async function loadProfile(){
 
     .select("*")
 
-    .eq("id",currentUser.id)
+    .eq("id", currentUser.id)
 
     .single();
 
     if(error){
 
         console.error(error);
+
         return;
 
     }
@@ -102,12 +105,12 @@ async function loadProfile(){
 
 function formatMoney(value){
 
-    return "UGX " + Math.floor(Number(value || 0)).toLocaleString();
+    return "UGX " + Number(value || 0).toLocaleString();
 
 }
 
 /* ==========================================
-   CHECK IF TODAY WAS PAID
+   CHECK IF TODAY IS ALREADY PAID
 ========================================== */
 
 function paidToday(lastProfitDate){
@@ -115,6 +118,7 @@ function paidToday(lastProfitDate){
     if(!lastProfitDate) return false;
 
     const last = new Date(lastProfitDate);
+
     const today = new Date();
 
     return (
@@ -130,24 +134,20 @@ function paidToday(lastProfitDate){
 }
 
 /* ==========================================
-   UPDATE USER WALLET
+   CREDIT USER WALLET
 ========================================== */
 
 async function creditWallet(amount){
 
-    if(amount <= 0) return;
+    amount = Number(amount);
 
-    const wallet =
-        Number(profile.wallet_balance || 0);
+    if(amount <= 0) return false;
 
-    const totalProfit =
-        Number(profile.total_profit || 0);
+    const wallet = Number(profile.wallet_balance || 0);
 
-    const { error } = await db
+    const totalProfit = Number(profile.total_profit || 0);
 
-    .from("profiles")
-
-    .update({
+    const updateData = {
 
         wallet_balance: wallet + amount,
 
@@ -155,22 +155,31 @@ async function creditWallet(amount){
 
         last_profit_claim: new Date().toISOString()
 
-    })
+    };
 
-    .eq("id",currentUser.id);
+    const { error } = await db
+
+    .from("profiles")
+
+    .update(updateData)
+
+    .eq("id", currentUser.id);
 
     if(error){
 
         console.error(error);
-        return;
+
+        return false;
 
     }
 
-    profile.wallet_balance =
-    Number(profile.wallet_balance || 0) + Number(amount);
+    profile.wallet_balance = updateData.wallet_balance;
 
-profile.total_profit =
-    Number(profile.total_profit || 0) + Number(amount);
+    profile.total_profit = updateData.total_profit;
+
+    profile.last_profit_claim = updateData.last_profit_claim;
+
+    return true;
 
 }
 
@@ -178,7 +187,7 @@ profile.total_profit =
    SAVE WALLET TRANSACTION
 ========================================== */
 
-async function saveTransaction(amount,machineName){
+async function saveTransaction(amount, machineName){
 
     await db
 
@@ -194,15 +203,15 @@ async function saveTransaction(amount,machineName){
 
         description: `Daily income from ${machineName}`,
 
-        status: "completed",
-
         created_at: new Date().toISOString(),
+
+        status: "completed",
 
         balance_after: profile.wallet_balance
 
     });
 
-}
+       }
 
 /* ==========================================
    LOAD USER MACHINES
@@ -237,13 +246,13 @@ async function loadUserMachines(){
 
     .eq("user_id", currentUser.id)
 
-    .order("purchase_date",{ascending:false});
+    .order("purchase_date", { ascending:false });
 
     if(error){
 
         console.error(error);
 
-        document.getElementById("machineList").innerHTML=`
+        document.getElementById("machineList").innerHTML = `
             <div class="loading">
                 Failed to load your machines.
             </div>
@@ -262,7 +271,7 @@ async function loadUserMachines(){
 }
 
 /* ==========================================
-   PROCESS DAILY MACHINE INCOME
+   PROCESS DAILY INCOME
 ========================================== */
 
 async function processMachineIncome(){
@@ -281,8 +290,7 @@ async function processMachineIncome(){
 
         if(item.completed) continue;
 
-        const isVIP =
-            machine.is_vip === true;
+        const isVIP = machine.is_vip === true;
 
         if(isWeekend && !isVIP){
 
@@ -296,53 +304,8 @@ async function processMachineIncome(){
 
         }
 
-        const purchaseDate =
-            new Date(item.purchase_date);
-
-        const duration =
-            Number(machine.duration_days);
-
-        let earningDays = 0;
-
-        let current =
-            new Date(purchaseDate);
-
-        while(current <= today &&
-              earningDays < duration){
-
-            const day = current.getDay();
-
-            if(isVIP || (day !== 0 && day !== 6)){
-
-                earningDays++;
-
-            }
-
-            current.setDate(
-                current.getDate()+1
-            );
-
-        }
-
-        if(earningDays <= 0){
-
-            continue;
-
-        }
-
-        const earned =
-            Number(item.earned_amount || 0);
-
         const totalReturn =
             Number(machine.total_return);
-
-        if(earned >= totalReturn){
-
-            await completeMachine(item.id);
-
-            continue;
-
-        }
 
         let dailyIncome =
             Number(machine.daily_income);
@@ -351,7 +314,18 @@ async function processMachineIncome(){
 
             dailyIncome =
                 totalReturn /
-                duration;
+                Number(machine.duration_days);
+
+        }
+
+        const earned =
+            Number(item.earned_amount || 0);
+
+        if(earned >= totalReturn){
+
+            await completeMachine(item.id);
+
+            continue;
 
         }
 
@@ -366,49 +340,84 @@ async function processMachineIncome(){
 
         if(credit <= 0){
 
-            await completeMachine(item.id);
+            continue;
+
+        }
+
+        const walletUpdated =
+            await creditWallet(credit);
+
+        if(!walletUpdated){
 
             continue;
 
         }
 
-        await creditWallet(credit);
-
         await saveTransaction(
+
             credit,
+
             machine.name
+
         );
 
         const newEarned =
             earned + credit;
 
-        await db
+        const completedNow =
+            newEarned >= totalReturn;
 
-        .from("user_machines")
+        const updateData = {
 
-        .update({
-
-            earned_amount:newEarned,
+            earned_amount: newEarned,
 
             last_profit_date:
                 new Date().toISOString(),
 
-            completed:
-                newEarned >= totalReturn,
+            completed: completedNow,
 
-            status:
-                newEarned >= totalReturn
+            status: completedNow
                 ? "completed"
                 : "active",
 
-            completed_at:
-                newEarned >= totalReturn
+            completed_at: completedNow
                 ? new Date().toISOString()
                 : null
 
-        })
+        };
 
-        .eq("id",item.id);
+        const { error } = await db
+
+        .from("user_machines")
+
+        .update(updateData)
+
+        .eq("id", item.id);
+
+        if(error){
+
+            console.error(error);
+
+            continue;
+
+        }
+
+        /* Update local data */
+
+        item.earned_amount =
+            updateData.earned_amount;
+
+        item.last_profit_date =
+            updateData.last_profit_date;
+
+        item.completed =
+            updateData.completed;
+
+        item.status =
+            updateData.status;
+
+        item.completed_at =
+            updateData.completed_at;
 
     }
 
@@ -420,63 +429,24 @@ async function processMachineIncome(){
 
 async function completeMachine(machineId){
 
-    const completedNow =
-    newEarned >= totalReturn;
+    await db
 
-const updateData = {
+    .from("user_machines")
 
-    earned_amount: newEarned,
+    .update({
 
-    last_profit_date:
-        new Date().toISOString(),
+        completed: true,
 
-    completed: completedNow,
+        status: "completed",
 
-    status: completedNow
-        ? "completed"
-        : "active",
+        completed_at:
+            new Date().toISOString()
 
-    completed_at: completedNow
-        ? new Date().toISOString()
-        : null
+    })
 
-};
+    .eq("id", machineId);
 
-const { error } = await db
-
-.from("user_machines")
-
-.update(updateData)
-
-.eq("id", item.id);
-
-if(error){
-
-    console.error(error);
-
-    continue;
-
-}
-
-/* ==========================================
-   UPDATE LOCAL DATA
-========================================== */
-
-item.earned_amount = newEarned;
-
-item.last_profit_date =
-    updateData.last_profit_date;
-
-item.completed =
-    completedNow;
-
-item.status =
-    updateData.status;
-
-item.completed_at =
-    updateData.completed_at;
-
-           }
+    }
 
 /* ==========================================
    RENDER MACHINES
@@ -535,7 +505,7 @@ function renderMachines(){
             Number(machine.total_return);
 
         const remaining =
-            Math.max(0,machineReturn-earned);
+            Math.max(0, machineReturn - earned);
 
         let daily =
             Number(machine.daily_income);
@@ -554,13 +524,16 @@ function renderMachines(){
             !completed;
 
         let progress =
-            (earned/machineReturn)*100;
+            (earned / machineReturn) * 100;
 
-        if(progress > 100)
+        if(progress > 100){
+
             progress = 100;
 
+        }
+
         const daysLeft =
-            Math.ceil(remaining/daily);
+            Math.ceil(remaining / daily);
 
         let statusText = "🟢 ACTIVE";
         let statusClass = "active";
@@ -618,9 +591,7 @@ function renderMachines(){
 
                         ${machine.name}
 
-                        ${isVIP
-                            ? '<span class="vipBadge">VIP</span>'
-                            : ''}
+                        ${isVIP ? '<span class="vipBadge">VIP</span>' : ""}
 
                     </div>
 
@@ -703,7 +674,7 @@ function renderMachines(){
             <div class="infoRow">
 
                 <span class="infoTitle">
-                    Days Left
+                    Working Days Left
                 </span>
 
                 <span class="infoValue">
@@ -780,7 +751,7 @@ function renderMachines(){
 
     );
 
-   }
+}
 
 /* ==========================================
    UPDATE SUMMARY
@@ -811,11 +782,9 @@ const refreshBtn =
 
 if(refreshBtn){
 
-    refreshBtn.addEventListener("click",async()=>{
+    refreshBtn.addEventListener("click", async()=>{
 
         refreshBtn.disabled = true;
-
-        refreshBtn.style.transform = "rotate(360deg)";
 
         try{
 
@@ -829,25 +798,19 @@ if(refreshBtn){
 
         }
 
-        setTimeout(()=>{
-
-            refreshBtn.disabled = false;
-
-            refreshBtn.style.transform = "";
-
-        },600);
+        refreshBtn.disabled = false;
 
     });
 
 }
 
 /* ==========================================
-   PAGE VISIBILITY REFRESH
+   REFRESH WHEN PAGE BECOMES ACTIVE
 ========================================== */
 
-document.addEventListener("visibilitychange",async()=>{
+document.addEventListener("visibilitychange", async()=>{
 
-    if(document.visibilityState==="visible"){
+    if(document.visibilityState === "visible"){
 
         await loadProfile();
 
@@ -857,11 +820,7 @@ document.addEventListener("visibilitychange",async()=>{
 
 });
 
-/* ==========================================
-   WINDOW FOCUS REFRESH
-========================================== */
-
-window.addEventListener("focus",async()=>{
+window.addEventListener("focus", async()=>{
 
     await loadProfile();
 
@@ -870,33 +829,33 @@ window.addEventListener("focus",async()=>{
 });
 
 /* ==========================================
-   HANDLE IMAGE ERROR
+   IMAGE FALLBACK
 ========================================== */
 
 document.addEventListener("error",function(e){
 
-    if(e.target.tagName==="IMG"){
+    if(e.target.tagName === "IMG"){
 
-        e.target.src="images/default-machine.png";
+        e.target.src = "images/default-machine.png";
 
     }
 
 },true);
 
 /* ==========================================
-   LOGOUT IF SESSION EXPIRES
+   AUTH LISTENER
 ========================================== */
 
 db.auth.onAuthStateChange((event)=>{
 
-    if(event==="SIGNED_OUT"){
+    if(event === "SIGNED_OUT"){
 
-        window.location.href="login.html";
+        window.location.href = "login.html";
 
     }
 
 });
 
 /* ==========================================
-   END OF FILE
+   END
 ========================================== */
