@@ -12,17 +12,19 @@ RESET
 :root{
 
     --bg:#050B18;
-    --card:#08142d;
+    --card:#08142D;
     --primary:#00C8FF;
     --success:#00FF88;
-    --text:#ffffff;
-    --muted:#9fb5d1;
+    --text:#FFFFFF;
+    --muted:#9FB5D1;
     --border:rgba(0,200,255,.15);
 
 }
 
 html{
+
     scroll-behavior:smooth;
+
 }
 
 body{
@@ -31,7 +33,7 @@ body{
     color:var(--text);
     overflow-x:hidden;
     padding-bottom:90px;
-
+    min-height:100vh;
 }
 
 /*=========================================
@@ -52,13 +54,13 @@ body::before{
 
     background:
 
-    radial-gradient(circle at 20% 20%,rgba(0,255,255,.15),transparent 35%),
+    radial-gradient(circle at 20% 20%,rgba(0,255,255,.16),transparent 35%),
 
     radial-gradient(circle at 80% 20%,rgba(0,120,255,.18),transparent 35%),
 
-    radial-gradient(circle at 70% 80%,rgba(0,255,120,.15),transparent 40%),
+    radial-gradient(circle at 70% 80%,rgba(0,255,120,.14),transparent 40%),
 
-    radial-gradient(circle at 20% 80%,rgba(150,0,255,.15),transparent 35%);
+    radial-gradient(circle at 20% 80%,rgba(170,0,255,.14),transparent 35%);
 
     animation:bgMove 18s linear infinite;
 
@@ -68,9 +70,23 @@ body::before{
 
 @keyframes bgMove{
 
-    0%{transform:translateX(-2%);}
-    50%{transform:translateX(2%);}
-    100%{transform:translateX(-2%);}
+    0%{
+
+        transform:translateX(-2%);
+
+    }
+
+    50%{
+
+        transform:translateX(2%);
+
+    }
+
+    100%{
+
+        transform:translateX(-2%);
+
+    }
 
 }
 
@@ -80,26 +96,29 @@ HEADER
 
 .header{
 
-    padding:22px 18px 12px;
+    padding:22px 18px 15px;
 
     text-align:center;
 
 }
 
-.header h1{
+.header-content h1{
 
     font-size:30px;
 
-    font-weight:bold;
+    font-weight:800;
+
+    letter-spacing:2px;
 
     background:linear-gradient(90deg,#00C8FF,#00FF88);
 
     -webkit-background-clip:text;
+
     -webkit-text-fill-color:transparent;
 
 }
 
-.header p{
+.header-content p{
 
     margin-top:6px;
 
@@ -115,15 +134,25 @@ PAGE TITLE
 
 .page-title{
 
-    padding:10px 18px 20px;
+    padding:0 18px 20px;
 
 }
 
 .page-title h2{
 
-    font-size:24px;
+    font-size:28px;
 
-    font-weight:bold;
+    margin-bottom:6px;
+
+}
+
+.page-title p{
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    line-height:1.6;
 
 }
 
@@ -134,12 +163,10 @@ SERIES TABS
 .series-tabs{
 
     display:flex;
-
-    gap:10px;
-
+    gap:12px;
     overflow-x:auto;
 
-    padding:0 15px 18px;
+    padding:0 15px 20px;
 
     scrollbar-width:none;
 
@@ -153,21 +180,25 @@ SERIES TABS
 
 .series-tabs button{
 
-    border:none;
+    min-width:max-content;
 
-    padding:11px 20px;
+    padding:10px 18px;
+
+    border:none;
 
     border-radius:30px;
 
-    background:#102041;
+    background:#0A1732;
 
     color:#fff;
 
-    white-space:nowrap;
+    font-size:14px;
 
     cursor:pointer;
 
-    transition:.3s;
+    transition:.25s;
+
+    border:1px solid transparent;
 
 }
 
@@ -178,6 +209,12 @@ SERIES TABS
     color:#001018;
 
     font-weight:bold;
+
+}
+
+.series-tabs button:hover{
+
+    border-color:rgba(0,255,255,.35);
 
 }
 
@@ -197,23 +234,11 @@ MACHINES CONTAINER
 
 }
 
-.loading{
-
-    text-align:center;
-
-    padding:60px 20px;
-
-    color:var(--primary);
-
-    font-size:17px;
-
-}
-
 /*=========================================
-MACHINE CARD
+LOADING
 =========================================*/
 
-.machine-card{
+.loading{
 
     background:var(--card);
 
@@ -221,29 +246,141 @@ MACHINE CARD
 
     border-radius:18px;
 
+    padding:45px 20px;
+
+    text-align:center;
+
+    color:var(--primary);
+
+    font-size:16px;
+
+    animation:pulse 1.2s infinite;
+
+}
+
+@keyframes pulse{
+
+    0%{
+
+        opacity:.45;
+
+    }
+
+    50%{
+
+        opacity:1;
+
+    }
+
+    100%{
+
+        opacity:.45;
+
+    }
+
+}
+
+/*=========================================
+EMPTY STATE
+=========================================*/
+
+.empty-state{
+
+    text-align:center;
+
+    padding:40px 20px;
+
+}
+
+.empty-state img{
+
+    width:140px;
+
+    max-width:80%;
+
+    margin-bottom:20px;
+
+}
+
+.empty-state h3{
+
+    font-size:22px;
+
+    margin-bottom:10px;
+
+}
+
+.empty-state p{
+
+    color:var(--muted);
+
+    font-size:14px;
+
+    line-height:1.7;
+
+}
+
+/*=========================================
+PREMIUM MACHINE CARD
+=========================================*/
+
+.machine-card{
+
+    background:#08142D;
+
+    border:1px solid rgba(0,200,255,.15);
+
+    border-radius:18px;
+
     overflow:hidden;
 
-    box-shadow:0 8px 20px rgba(0,0,0,.25);
-
-    animation:fadeIn .35s ease;
+    box-shadow:0 8px 25px rgba(0,0,0,.25);
 
     transition:.3s;
 
-}
-
-.machine-card:active{
-
-    transform:scale(.98);
+    animation:fadeUp .4s ease;
 
 }
+
+.machine-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 0 25px rgba(0,200,255,.18);
+
+}
+
+@keyframes fadeUp{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(15px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+/*=========================================
+CARD TOP
+=========================================*/
 
 .machine-top{
 
     display:flex;
 
-    gap:14px;
+    gap:15px;
 
-    padding:14px;
+    padding:15px;
 
     align-items:center;
 
@@ -263,14 +400,16 @@ MACHINE IMAGE
 
     object-fit:cover;
 
+    flex-shrink:0;
+
     background:#102041;
 
-    flex-shrink:0;
+    border:1px solid rgba(255,255,255,.06);
 
 }
 
 /*=========================================
-MACHINE DETAILS
+DETAILS
 =========================================*/
 
 .machine-details{
@@ -283,15 +422,19 @@ MACHINE DETAILS
 
     font-size:18px;
 
-    font-weight:bold;
+    font-weight:700;
 
-    color:var(--success);
+    color:#00FF88;
 
-    margin-bottom:10px;
+    margin-bottom:8px;
 
 }
 
-.machine-info{
+/*=========================================
+INFO ROWS
+=========================================*/
+
+.machine-row{
 
     display:flex;
 
@@ -305,15 +448,15 @@ MACHINE DETAILS
 
 }
 
-.machine-info span{
+.machine-row span{
 
-    color:var(--muted);
+    color:#9FB5D1;
 
 }
 
-.machine-info strong{
+.machine-row strong{
 
-    color:#fff;
+    color:#FFFFFF;
 
     font-weight:600;
 
@@ -331,17 +474,23 @@ BUY BUTTON
 
     border:none;
 
-    background:linear-gradient(90deg,#00C8FF,#00FF88);
-
-    color:#001018;
+    cursor:pointer;
 
     font-size:15px;
 
     font-weight:bold;
 
-    cursor:pointer;
+    color:#001018;
 
-    transition:.3s;
+    background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+    transition:.25s;
+
+}
+
+.buy-btn:hover{
+
+    filter:brightness(1.05);
 
 }
 
@@ -353,13 +502,13 @@ BUY BUTTON
 
 .buy-btn:disabled{
 
-    background:#46556F;
+    background:#3B4A63;
 
-    color:#d6e3ff;
+    color:#C8D8F7;
 
     cursor:not-allowed;
 
-      }
+                          }
 
 /*=========================================
 SUCCESS POPUP
@@ -369,56 +518,123 @@ SUCCESS POPUP
 
     position:fixed;
 
-    top:20px;
-    left:50%;
+    inset:0;
 
-    transform:translateX(-50%);
+    background:rgba(0,0,0,.55);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
 
     z-index:9999;
 
-    display:none;
+    backdrop-filter:blur(6px);
 
 }
 
 .success-box{
 
-    min-width:280px;
+    width:90%;
 
-    background:linear-gradient(90deg,#00C8FF,#00FF88);
+    max-width:340px;
 
-    color:#001018;
+    background:#08142D;
 
-    border-radius:16px;
+    border:1px solid rgba(0,200,255,.20);
 
-    padding:20px;
+    border-radius:22px;
+
+    padding:28px 20px;
 
     text-align:center;
 
-    box-shadow:0 12px 30px rgba(0,0,0,.30);
+    animation:popup .35s ease;
+
+}
+
+@keyframes popup{
+
+    from{
+
+        opacity:0;
+
+        transform:scale(.85);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:scale(1);
+
+    }
 
 }
 
 .success-icon{
 
-    font-size:40px;
+    width:75px;
 
-    margin-bottom:10px;
+    height:75px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:38px;
+
+    background:rgba(0,255,136,.15);
+
+    margin-bottom:18px;
 
 }
 
 .success-box h3{
 
-    font-size:20px;
+    margin-bottom:10px;
 
-    margin-bottom:8px;
+    color:#00FF88;
 
 }
 
 .success-box p{
 
-    font-size:14px;
+    color:#9FB5D1;
 
-    line-height:1.5;
+    line-height:1.6;
+
+    margin-bottom:20px;
+
+}
+
+.success-box button{
+
+    width:100%;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:linear-gradient(90deg,#00C8FF,#00FF88);
+
+    color:#001018;
+
+    font-size:15px;
+
+    font-weight:bold;
+
+    cursor:pointer;
 
 }
 
@@ -432,7 +648,7 @@ LOADING OVERLAY
 
     inset:0;
 
-    background:rgba(5,11,24,.92);
+    background:rgba(5,11,24,.90);
 
     display:none;
 
@@ -442,7 +658,7 @@ LOADING OVERLAY
 
     align-items:center;
 
-    z-index:9998;
+    z-index:99999;
 
 }
 
@@ -458,33 +674,27 @@ LOADING OVERLAY
 
     border-radius:50%;
 
-    animation:spin 1s linear infinite;
+    animation:spin .8s linear infinite;
 
-}
-
-.loading-overlay p{
-
-    margin-top:20px;
-
-    color:#fff;
-
-    font-size:15px;
+    margin-bottom:18px;
 
 }
 
 @keyframes spin{
 
-    0%{
-
-        transform:rotate(0deg);
-
-    }
-
-    100%{
+    to{
 
         transform:rotate(360deg);
 
     }
+
+}
+
+.loading-overlay p{
+
+    color:#ffffff;
+
+    font-size:15px;
 
 }
 
@@ -504,7 +714,7 @@ BOTTOM NAVIGATION
 
     height:72px;
 
-    background:#08142d;
+    background:#08142D;
 
     border-top:1px solid rgba(0,200,255,.15);
 
@@ -524,7 +734,7 @@ BOTTOM NAVIGATION
 
     text-decoration:none;
 
-    color:#b8c8e8;
+    color:#BFD3F2;
 
     display:flex;
 
@@ -534,17 +744,17 @@ BOTTOM NAVIGATION
 
     justify-content:center;
 
+    gap:4px;
+
     font-size:12px;
 
     transition:.3s;
 
 }
 
-.bottom-nav a .nav-icon{
+.nav-icon{
 
     font-size:22px;
-
-    margin-bottom:4px;
 
 }
 
@@ -556,39 +766,9 @@ BOTTOM NAVIGATION
 
 }
 
-.bottom-nav a:active{
+.bottom-nav a:hover{
 
-    transform:scale(.95);
-
-}
-
-/*=========================================
-CARD ANIMATION
-=========================================*/
-
-@keyframes fadeIn{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(18px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-.machine-card{
-
-    animation:fadeIn .4s ease;
+    color:#00FF88;
 
 }
 
@@ -596,7 +776,7 @@ CARD ANIMATION
 RESPONSIVE
 =========================================*/
 
-@media(max-width:480px){
+@media (max-width:420px){
 
     .machine-image{
 
@@ -612,7 +792,7 @@ RESPONSIVE
 
     }
 
-    .machine-info{
+    .machine-row{
 
         font-size:13px;
 
@@ -620,170 +800,10 @@ RESPONSIVE
 
     .buy-btn{
 
-        height:48px;
+        height:46px;
 
         font-size:14px;
 
     }
 
-}
-
-/*==================================
-BUY BUTTON
-==================================*/
-
-.buy-btn{
-    width:100%;
-    height:52px;
-    border:none;
-    outline:none;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:700;
-    letter-spacing:.5px;
-    color:#03111F;
-    background:linear-gradient(135deg,#00C8FF,#00FF88);
-    transition:.25s;
-}
-
-.buy-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 10px 20px rgba(0,255,136,.25);
-}
-
-.buy-btn:active{
-    transform:scale(.98);
-}
-
-.buy-btn:disabled{
-    background:#334155;
-    color:#bfc7d5;
-    cursor:not-allowed;
-    box-shadow:none;
-}
-
-/*==================================
-SUCCESS POPUP
-==================================*/
-
-.success-popup{
-    position:fixed;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-    background:linear-gradient(135deg,#00C8FF,#00FF88);
-    color:#03111F;
-    padding:15px 25px;
-    border-radius:12px;
-    font-weight:bold;
-    z-index:9999;
-    display:none;
-    box-shadow:0 15px 35px rgba(0,255,136,.35);
-}
-
-/*==================================
-EMPTY STATE
-==================================*/
-
-.empty-state{
-    text-align:center;
-    padding:60px 20px;
-    color:#9FB5D1;
-}
-
-.empty-state h3{
-    color:#ffffff;
-    margin-bottom:10px;
-    font-size:20px;
-}
-
-.empty-state p{
-    font-size:14px;
-    line-height:1.6;
-}
-
-/*==================================
-LOADING
-==================================*/
-
-.loading{
-    text-align:center;
-    padding:60px 20px;
-    color:#00C8FF;
-    font-size:16px;
-    animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-    0%{opacity:.5;}
-    50%{opacity:1;}
-    100%{opacity:.5;}
-}
-
-/*==================================
-BOTTOM NAVIGATION
-==================================*/
-
-.bottom-nav{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    height:72px;
-    background:#08142D;
-    border-top:1px solid rgba(255,255,255,.08);
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    z-index:1000;
-}
-
-.bottom-nav a{
-    color:#9FB5D1;
-    text-decoration:none;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:4px;
-    font-size:12px;
-    transition:.25s;
-}
-
-.bottom-nav a i{
-    font-style:normal;
-    font-size:22px;
-}
-
-.bottom-nav a.active{
-    color:#00FF88;
-}
-
-.bottom-nav a:hover{
-    color:#00FF88;
-}
-
-/*==================================
-RESPONSIVE
-==================================*/
-
-@media(max-width:420px){
-
-.machine-image{
-    width:85px;
-    height:85px;
-}
-
-.machine-name{
-    font-size:16px;
-}
-
-.machine-row{
-    font-size:12px;
-}
-
-.buy-btn{
-    height:48px;
-    font-size:14px;
-}
-
-    }
+                          }
