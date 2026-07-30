@@ -1288,23 +1288,24 @@ REFRESH
 
 async function refreshDashboard(){
 
-if(!currentUser) return;
+    if(!currentUser) return;
 
-await Promise.all([
+    if(typeof checkMiningIncome === "function"){
 
-loadWallet(),
+        await checkMiningIncome();
 
-loadMachines(),
+    }
 
-loadDeposits(),
+    await Promise.all([
 
-loadWithdrawals(),
+        loadWallet(),
+        loadMachines(),
+        loadDeposits(),
+        loadWithdrawals(),
+        loadNotifications(),
+        loadCryptoMarket()
 
-loadNotifications(),
-
-loadCryptoMarket()
-
-]);
+    ]);
 
 }
 
