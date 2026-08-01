@@ -736,7 +736,13 @@ OPEN EDIT MACHINE
 
 function openEditMachine(){
 
-    if(!selectedMachine) return;
+    if(!selectedMachine){
+
+    await assignMachine();
+
+    return;
+
+    }
 
     document
     .getElementById("machineModal")
