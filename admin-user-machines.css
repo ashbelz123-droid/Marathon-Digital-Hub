@@ -1,192 +1,130 @@
 /*==================================================
 ADMIN USER MACHINES
 PART 1
-ROOT + RESET
+INITIALIZATION
 ==================================================*/
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+/*==================================================
+SUPABASE
+==================================================*/
 
-:root{
+const db = window.supabaseClient;
 
---bg:#071321;
---card:#0E1C2F;
---card2:#132743;
---primary:#00D26A;
---primaryDark:#00B85C;
---blue:#2D8CFF;
---red:#FF4D4F;
---orange:#FF9800;
---text:#FFFFFF;
---text2:#B8C7D9;
---border:rgba(255,255,255,.08);
+/*==================================================
+GLOBAL DATA
+==================================================*/
 
---radius:18px;
---radiusSmall:12px;
+let users = [];
+let machines = [];
+let userMachines = [];
+let selectedUser = null;
+let selectedMachine = null;
 
---shadow:
-0 10px 30px rgba(0,0,0,.35);
+/*==================================================
+DOM ELEMENTS
+==================================================*/
 
-}
+/* Search */
 
-html{
+const searchInput = document.getElementById("searchInput");
+const searchBtn = document.getElementById("searchBtn");
 
-scroll-behavior:smooth;
+/* Statistics */
 
-}
+const totalUsers = document.getElementById("totalUsers");
+const activeUsers = document.getElementById("activeUsers");
+const totalMachines = document.getElementById("totalMachines");
+const vipUsers = document.getElementById("vipUsers");
+const userCount = document.getElementById("userCount");
 
-body{
+/* Containers */
 
-background:var(--bg);
+const usersContainer = document.getElementById("usersContainer");
+const emptyState = document.getElementById("emptyState");
+const userDashboard = document.getElementById("userDashboard");
+const machineList = document.getElementById("machineList");
+const activityList = document.getElementById("activityList");
 
-font-family:'Inter',sans-serif;
+/*==================================================
+START APP
+==================================================*/
 
-color:var(--text);
+document.addEventListener("DOMContentLoaded", async () => {
 
-overflow-x:hidden;
+    try{
+
+        showLoading(true);
+
+        await loadDashboard();
+
+        registerEvents();
+
+        showLoading(false);
+
+        toast("Admin panel loaded");
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        showLoading(false);
+
+        toast(error.message,"error");
+
+    }
+
+});
+
+/*==================================================
+LOAD EVERYTHING
+==================================================*/
+
+async function loadDashboard(){
+
+    await loadUsers();
+
+    await loadMachines();
 
 }
 
 /*==================================================
-APP
+LOAD USERS
 ==================================================*/
 
-.app{
+async function loadUsers(){
 
-max-width:650px;
+    const {data,error} = await db
+    .from("profiles")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-margin:auto;
+    if(error) throw error;
 
-min-height:100vh;
+    users = data || [];
 
-padding:18px;
+    renderUsers(users);
 
-padding-bottom:120px;
+    updateStatistics();
 
 }
 
 /*==================================================
-HEADER
+LOAD MACHINES
 ==================================================*/
 
-.topHeader{
+async function loadMachines(){
 
-display:flex;
+    const {data,error} = await db
+    .from("machines")
+    .select("*")
+    .eq("status",true)
+    .order("display_order",{ascending:true});
 
-justify-content:space-between;
+    if(error) throw error;
 
-align-items:center;
-
-margin-bottom:22px;
-
-}
-
-.headerLeft{
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-.headerLeft h1{
-
-font-size:25px;
-
-font-weight:800;
-
-}
-
-.headerLeft p{
-
-margin-top:3px;
-
-font-size:13px;
-
-color:var(--text2);
-
-}
-
-.headerRight{
-
-display:flex;
-
-gap:10px;
-
-}
-
-/*==================================================
-BUTTONS
-==================================================*/
-
-.iconButton{
-
-width:46px;
-
-height:46px;
-
-border:none;
-
-border-radius:14px;
-
-background:var(--card);
-
-color:white;
-
-font-size:20px;
-
-cursor:pointer;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-box-shadow:var(--shadow);
-
-transition:.25s;
-
-position:relative;
-
-}
-
-.iconButton:active{
-
-transform:scale(.95);
-
-}
-
-#notificationCount{
-
-position:absolute;
-
-top:-4px;
-
-right:-4px;
-
-width:20px;
-
-height:20px;
-
-border-radius:50%;
-
-background:var(--red);
-
-font-size:11px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-weight:700;
+    machines = data || [];
 
 }
 
@@ -194,1986 +132,281 @@ font-weight:700;
 STATISTICS
 ==================================================*/
 
-.statsGrid{
+function updateStatistics(){
 
-display:grid;
+    totalUsers.textContent = users.length;
 
-grid-template-columns:repeat(2,1fr);
+    activeUsers.textContent =
+    users.filter(
+        u=>u.account_status==="active"
+    ).length;
 
-gap:14px;
+    vipUsers.textContent =
+    users.filter(
+        u=>u.membership==="VIP"
+    ).length;
 
-margin-bottom:20px;
-
-}
-
-.statCard{
-
-background:linear-gradient(
-135deg,
-var(--card),
-var(--card2)
-);
-
-border:1px solid var(--border);
-
-border-radius:18px;
-
-padding:18px;
-
-box-shadow:var(--shadow);
-
-}
-
-.statCard p{
-
-font-size:13px;
-
-color:var(--text2);
-
-margin-bottom:8px;
-
-}
-
-.statCard h2{
-
-font-size:28px;
-
-font-weight:800;
-
-color:var(--primary);
+    userCount.textContent =
+    `${users.length} Members`;
 
 }
 
 /*==================================================
-SEARCH
+PLACEHOLDERS
+(FILLED IN NEXT PARTS)
 ==================================================*/
 
-.searchSection{
+function registerEvents(){}
 
-margin-bottom:22px;
+function renderUsers(){}
 
-}
+function toast(){}
 
-.searchBox{
+function showLoading(){}
 
-display:flex;
+function selectUser(){}
 
-align-items:center;
+  /*==================================================
+PART 2
+EVENTS + USERS
+==================================================*/
 
-background:var(--card);
+/*==================================================
+REGISTER EVENTS
+==================================================*/
 
-border:1px solid var(--border);
+function registerEvents(){
 
-border-radius:16px;
+    searchBtn.onclick = searchUsers;
 
-padding:8px;
+    searchInput.addEventListener("keyup",(e)=>{
 
-gap:10px;
+        if(e.key==="Enter"){
 
-box-shadow:var(--shadow);
+            searchUsers();
 
-}
+        }
 
-.searchBox input{
-
-flex:1;
-
-background:none;
-
-border:none;
-
-outline:none;
-
-color:var(--text);
-
-font-size:15px;
-
-padding:10px;
-
-font-family:'Inter',sans-serif;
-
-}
-
-.searchBox input::placeholder{
-
-color:var(--text2);
-
-}
-
-.searchBox button{
-
-height:44px;
-
-padding:0 18px;
-
-border:none;
-
-border-radius:12px;
-
-background:var(--primary);
-
-color:#fff;
-
-font-weight:700;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-.searchBox button:hover{
-
-background:var(--primaryDark);
+    });
 
 }
 
 /*==================================================
-USERS SECTION
+SEARCH USERS
 ==================================================*/
 
-.usersSection{
+function searchUsers(){
 
-margin-bottom:24px;
+    const keyword = searchInput.value
+    .trim()
+    .toLowerCase();
 
-}
+    if(!keyword){
 
-.sectionHeader{
+        renderUsers(users);
 
-display:flex;
+        return;
 
-justify-content:space-between;
+    }
 
-align-items:center;
+    const filtered = users.filter(user=>{
 
-margin-bottom:16px;
+        return (
 
-}
+            (user.fullname||"")
+            .toLowerCase()
+            .includes(keyword)
 
-.sectionHeader h2{
+            ||
 
-font-size:22px;
+            (user.phone||"")
+            .toLowerCase()
+            .includes(keyword)
 
-font-weight:700;
+            ||
 
-}
+            (user.email||"")
+            .toLowerCase()
+            .includes(keyword)
 
-.sectionHeader p{
+            ||
 
-font-size:13px;
+            (user.referral_code||"")
+            .toLowerCase()
+            .includes(keyword)
 
-color:var(--text2);
+        );
 
-margin-top:3px;
+    });
 
-}
-
-.usersContainer{
-
-display:flex;
-
-flex-direction:column;
-
-gap:14px;
+    renderUsers(filtered);
 
 }
 
 /*==================================================
-USER CARD
+RENDER USERS
 ==================================================*/
 
-.userCard{
+function renderUsers(list){
 
-display:flex;
+    usersContainer.innerHTML="";
 
-align-items:center;
+    if(list.length===0){
 
-gap:15px;
+        usersContainer.innerHTML=`
 
-padding:16px;
+        <div class="emptyStateSmall">
 
-background:linear-gradient(135deg,var(--card),var(--card2));
+            <div class="emptyIcon">👤</div>
 
-border:1px solid var(--border);
+            <h3>No Users Found</h3>
 
-border-radius:18px;
+            <p>Try another search.</p>
 
-cursor:pointer;
+        </div>
 
-transition:.25s;
+        `;
 
-box-shadow:var(--shadow);
+        return;
 
-}
+    }
 
-.userCard:hover{
+    list.forEach(user=>{
 
-transform:translateY(-2px);
+        const card=document.createElement("div");
 
-border-color:rgba(0,210,106,.45);
+        card.className="userCard";
 
-}
+        if(selectedUser && selectedUser.id===user.id){
 
-.userCard.active{
+            card.classList.add("active");
 
-border:2px solid var(--primary);
+        }
 
-}
+        card.innerHTML=`
 
-.userAvatar{
+        <img
 
-width:65px;
+        class="userAvatar"
 
-height:65px;
+        src="${user.avatar_url || "images/default-avatar.png"}">
 
-border-radius:50%;
+        <div class="userInfo">
 
-object-fit:cover;
+            <h3>${user.fullname || "Unknown User"}</h3>
 
-border:3px solid rgba(255,255,255,.08);
+            <p>${user.phone || user.email || "-"}</p>
 
-background:#09111f;
+            <div class="userTags">
 
-}
+                <span class="userTag">
 
-.userInfo{
+                    ${user.membership || "Standard"}
 
-flex:1;
+                </span>
 
-}
+                <span class="userTag">
 
-.userInfo h3{
+                    ${user.account_status || "active"}
 
-font-size:18px;
+                </span>
 
-font-weight:700;
+            </div>
 
-margin-bottom:5px;
+        </div>
 
-}
+        <div class="userArrow">
 
-.userInfo p{
+            ›
 
-font-size:13px;
+        </div>
 
-color:var(--text2);
+        `;
 
-margin-bottom:8px;
+        card.onclick=()=>{
 
-}
+            selectUser(user);
 
-.userTags{
+        };
 
-display:flex;
+        usersContainer.appendChild(card);
 
-flex-wrap:wrap;
-
-gap:8px;
-
-}
-
-.userTag{
-
-padding:5px 12px;
-
-border-radius:999px;
-
-background:rgba(0,210,106,.12);
-
-color:var(--primary);
-
-font-size:12px;
-
-font-weight:700;
-
-}
-
-.userArrow{
-
-font-size:28px;
-
-font-weight:700;
-
-color:var(--primary);
+    });
 
 }
 
 /*==================================================
-EMPTY STATES
+SELECT USER
 ==================================================*/
 
-.emptyDashboard,
-.emptyState,
-.emptyStateSmall{
+async function selectUser(user){
 
-background:linear-gradient(135deg,var(--card),var(--card2));
+    selectedUser=user;
 
-border:1px solid var(--border);
+    renderUsers(users);
 
-border-radius:20px;
+    emptyState.classList.add("hidden");
 
-padding:45px 20px;
+    userDashboard.classList.remove("hidden");
 
-text-align:center;
+    fillUserProfile();
 
-box-shadow:var(--shadow);
+    await loadUserMachines();
 
-}
-
-.emptyIcon,
-.emptyIllustration{
-
-font-size:70px;
-
-margin-bottom:18px;
-
-}
-
-.emptyDashboard h2,
-.emptyState h3,
-.emptyStateSmall h3{
-
-margin-bottom:10px;
-
-font-size:24px;
-
-}
-
-.emptyDashboard p,
-.emptyState p,
-.emptyStateSmall p{
-
-color:var(--text2);
-
-line-height:1.7;
+    await loadUserActivity();
 
 }
 
 /*==================================================
-PROFILE CARD
+PROFILE
 ==================================================*/
 
-.profileCard{
+function fillUserProfile(){
 
-background:linear-gradient(135deg,#123055,#0E1C2F);
+    document.getElementById("userAvatar").src =
+    selectedUser.avatar_url ||
+    "images/default-avatar.png";
 
-border-radius:22px;
+    document.getElementById("userName").textContent =
+    selectedUser.fullname || "-";
 
-padding:20px;
+    document.getElementById("userPhone").textContent =
+    selectedUser.phone ||
+    selectedUser.email ||
+    "-";
 
-margin-bottom:20px;
+    document.getElementById("membershipBadge").textContent =
+    selectedUser.membership || "Standard";
 
-border:1px solid var(--border);
+    document.getElementById("statusBadge").textContent =
+    selectedUser.account_status || "active";
 
-box-shadow:var(--shadow);
+    document.getElementById("kycBadge").textContent =
+    selectedUser.kyc_status || "Not Verified";
 
-}
+    document.getElementById("walletBalance").textContent =
+    money(selectedUser.wallet_balance);
 
-.profileTop{
+    document.getElementById("totalInvested").textContent =
+    money(selectedUser.total_invested);
 
-display:flex;
+    document.getElementById("totalProfit").textContent =
+    money(selectedUser.total_profit);
 
-align-items:center;
-
-gap:16px;
-
-}
-
-.profileCard .userAvatar{
-
-width:82px;
-
-height:82px;
-
-}
-
-.profileDetails{
-
-flex:1;
-
-}
-
-.profileDetails h2{
-
-font-size:24px;
-
-font-weight:800;
-
-margin-bottom:5px;
-
-}
-
-.profileDetails p{
-
-font-size:14px;
-
-color:var(--text2);
-
-margin-bottom:4px;
-
-}
-
-.badgeRow{
-
-display:flex;
-
-flex-wrap:wrap;
-
-gap:8px;
-
-margin-top:10px;
-
-}
-
-.badge{
-
-padding:6px 14px;
-
-border-radius:999px;
-
-font-size:12px;
-
-font-weight:700;
-
-}
-
-.membership{
-
-background:rgba(45,140,255,.15);
-
-color:var(--blue);
-
-}
-
-.active{
-
-background:rgba(0,210,106,.15);
-
-color:var(--primary);
-
-}
-
-.kyc{
-
-background:rgba(255,152,0,.15);
-
-color:var(--orange);
-
-}
-
-.hidden{
-
-display:none !important;
+    document.getElementById("ownedMachines").textContent="0";
 
 }
 
 /*==================================================
-OVERVIEW GRID
+MONEY
 ==================================================*/
 
-.overviewGrid{
+function money(value){
 
-display:grid;
+    return "UGX " +
 
-grid-template-columns:repeat(2,1fr);
+    Number(value || 0)
 
-gap:14px;
-
-margin-bottom:22px;
-
-}
-
-.overviewCard{
-
-background:linear-gradient(
-135deg,
-var(--card),
-var(--card2)
-);
-
-border:1px solid var(--border);
-
-border-radius:18px;
-
-padding:18px;
-
-box-shadow:var(--shadow);
-
-transition:.25s;
-
-}
-
-.overviewCard:hover{
-
-transform:translateY(-3px);
-
-}
-
-.overviewCard span{
-
-display:block;
-
-font-size:13px;
-
-color:var(--text2);
-
-margin-bottom:10px;
-
-}
-
-.overviewCard h2,
-.overviewCard h3{
-
-font-size:24px;
-
-font-weight:800;
-
-color:var(--primary);
-
-word-break:break-word;
-
-}
-
-/*==================================================
-QUICK ACTIONS
-==================================================*/
-
-.quickActions{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-margin-bottom:24px;
-
-}
-
-.primaryButton,
-.secondaryButton,
-.dangerButton{
-
-height:50px;
-
-border:none;
-
-border-radius:14px;
-
-font-size:15px;
-
-font-weight:700;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-.primaryButton{
-
-background:linear-gradient(
-135deg,
-var(--primary),
-var(--primaryDark)
-);
-
-color:#fff;
-
-}
-
-.primaryButton:hover{
-
-transform:translateY(-2px);
-
-}
-
-.secondaryButton{
-
-background:var(--card);
-
-color:var(--text);
-
-border:1px solid var(--border);
-
-}
-
-.secondaryButton:hover{
-
-background:var(--card2);
-
-}
-
-.dangerButton{
-
-background:var(--red);
-
-color:#fff;
-
-}
-
-.dangerButton:hover{
-
-opacity:.9;
-
-}
-
-/*==================================================
-TAB BAR
-==================================================*/
-
-.tabBar{
-
-display:flex;
-
-gap:10px;
-
-overflow-x:auto;
-
-padding-bottom:6px;
-
-margin-bottom:22px;
-
-scrollbar-width:none;
-
-}
-
-.tabBar::-webkit-scrollbar{
-
-display:none;
-
-}
-
-.tabButton{
-
-min-width:120px;
-
-height:52px;
-
-border:none;
-
-border-radius:16px;
-
-background:var(--card);
-
-color:var(--text2);
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-gap:8px;
-
-font-size:14px;
-
-font-weight:700;
-
-cursor:pointer;
-
-transition:.25s;
-
-border:1px solid var(--border);
-
-flex-shrink:0;
-
-}
-
-.tabButton.active{
-
-background:linear-gradient(
-135deg,
-var(--primary),
-var(--primaryDark)
-);
-
-color:#fff;
-
-border-color:transparent;
-
-box-shadow:0 10px 20px rgba(0,210,106,.25);
-
-}
-
-.tabButton:hover{
-
-transform:translateY(-2px);
-
-}
-
-.tabButton span{
-
-white-space:nowrap;
-
-}
-
-/*==================================================
-TAB CONTENT
-==================================================*/
-
-.tabContent{
-
-display:none;
-
-animation:fadeIn .3s ease;
-
-}
-
-.tabContent.active{
-
-display:block;
-
-}
-
-@keyframes fadeIn{
-
-from{
-
-opacity:0;
-
-transform:translateY(10px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-/*==================================================
-MACHINES TAB
-==================================================*/
-
-.tabHeader{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-gap:15px;
-
-margin-bottom:20px;
-
-flex-wrap:wrap;
-
-}
-
-.tabHeader h2{
-
-font-size:22px;
-
-font-weight:800;
-
-}
-
-.tabHeader p{
-
-font-size:13px;
-
-color:var(--text2);
-
-margin-top:3px;
-
-}
-
-.tabActions{
-
-display:flex;
-
-gap:10px;
-
-flex-wrap:wrap;
-
-}
-
-/*==================================================
-MACHINE SUMMARY
-==================================================*/
-
-.machineSummaryGrid{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:14px;
-
-margin-bottom:22px;
-
-}
-
-.summaryCard{
-
-background:linear-gradient(
-135deg,
-var(--card),
-var(--card2)
-);
-
-border-radius:18px;
-
-padding:16px;
-
-border:1px solid var(--border);
-
-box-shadow:var(--shadow);
-
-}
-
-.summaryCard p{
-
-font-size:13px;
-
-color:var(--text2);
-
-margin-bottom:8px;
-
-}
-
-.summaryCard h3{
-
-font-size:24px;
-
-font-weight:800;
-
-color:var(--primary);
-
-}
-
-/*==================================================
-FILTER BUTTONS
-==================================================*/
-
-.filterRow{
-
-display:flex;
-
-gap:10px;
-
-overflow-x:auto;
-
-padding-bottom:10px;
-
-margin-bottom:20px;
-
-scrollbar-width:none;
-
-}
-
-.filterRow::-webkit-scrollbar{
-
-display:none;
-
-}
-
-.filterButton{
-
-padding:10px 18px;
-
-border:none;
-
-border-radius:30px;
-
-background:var(--card);
-
-border:1px solid var(--border);
-
-color:var(--text2);
-
-font-size:13px;
-
-font-weight:700;
-
-cursor:pointer;
-
-white-space:nowrap;
-
-transition:.25s;
-
-flex-shrink:0;
-
-}
-
-.filterButton.active{
-
-background:var(--primary);
-
-color:#fff;
-
-border-color:var(--primary);
-
-}
-
-.filterButton:hover{
-
-transform:translateY(-2px);
-
-}
-
-/*==================================================
-MACHINE LIST
-==================================================*/
-
-.machineList{
-
-display:flex;
-
-flex-direction:column;
-
-gap:18px;
-
-}
-
-/*==================================================
-MACHINE CARD
-==================================================*/
-
-.machineCard{
-
-background:linear-gradient(
-135deg,
-var(--card),
-var(--card2)
-);
-
-border-radius:20px;
-
-padding:16px;
-
-border:1px solid var(--border);
-
-display:flex;
-
-gap:15px;
-
-align-items:flex-start;
-
-box-shadow:var(--shadow);
-
-transition:.25s;
-
-}
-
-.machineCard:hover{
-
-transform:translateY(-3px);
-
-border-color:rgba(0,210,106,.45);
-
-}
-
-.machineImage{
-
-width:85px;
-
-height:85px;
-
-border-radius:16px;
-
-object-fit:cover;
-
-background:#08111d;
-
-flex-shrink:0;
-
-}
-
-.machineInfo{
-
-flex:1;
-
-}
-
-.machineInfo h3{
-
-font-size:20px;
-
-font-weight:800;
-
-margin-bottom:6px;
-
-}
-
-.machineInfo p{
-
-font-size:13px;
-
-color:var(--text2);
-
-margin-bottom:8px;
-
-}
-
-/*==================================================
-BADGES
-==================================================*/
-
-.machineBadges{
-
-display:flex;
-
-gap:8px;
-
-flex-wrap:wrap;
-
-margin-bottom:12px;
-
-}
-
-.machineBadge{
-
-padding:5px 12px;
-
-border-radius:999px;
-
-font-size:12px;
-
-font-weight:700;
-
-}
-
-.machineBadge.active{
-
-background:rgba(0,210,106,.15);
-
-color:var(--primary);
-
-}
-
-.machineBadge.vip{
-
-background:rgba(255,152,0,.15);
-
-color:var(--orange);
-
-}
-
-.machineBadge.completed{
-
-background:rgba(45,140,255,.15);
-
-color:var(--blue);
-
-}
-
-.machineBadge.expired{
-
-background:rgba(255,77,79,.15);
-
-color:var(--red);
-
-}
-
-/*==================================================
-PROGRESS BAR
-==================================================*/
-
-.machineProgress{
-
-margin-top:14px;
-
-}
-
-.machineProgress span{
-
-display:block;
-
-font-size:12px;
-
-color:var(--text2);
-
-margin-bottom:8px;
-
-}
-
-.progressBar{
-
-width:100%;
-
-height:8px;
-
-background:#08111d;
-
-border-radius:50px;
-
-overflow:hidden;
-
-}
-
-.progressFill{
-
-height:100%;
-
-background:linear-gradient(
-90deg,
-var(--primary),
-#49f39b
-);
-
-border-radius:50px;
-
-width:0%;
-
-transition:width .4s ease;
-
-}
-
-/*==================================================
-MACHINE ACTION BUTTON
-==================================================*/
-
-.machineAction{
-
-width:42px;
-
-height:42px;
-
-border:none;
-
-border-radius:12px;
-
-background:rgba(255,255,255,.06);
-
-color:#fff;
-
-font-size:20px;
-
-cursor:pointer;
-
-transition:.25s;
-
-flex-shrink:0;
-
-}
-
-.machineAction:hover{
-
-background:var(--primary);
+    .toLocaleString();
 
   }
-
-/*==================================================
-ACTIVITY TAB
-==================================================*/
-
-.activityList{
-
-display:flex;
-
-flex-direction:column;
-
-gap:16px;
-
-margin-top:20px;
-
-}
-
-.activityCard{
-
-display:flex;
-
-gap:15px;
-
-align-items:flex-start;
-
-background:linear-gradient(135deg,var(--card),var(--card2));
-
-padding:18px;
-
-border-radius:18px;
-
-border:1px solid var(--border);
-
-box-shadow:var(--shadow);
-
-}
-
-.activityIcon{
-
-width:52px;
-
-height:52px;
-
-border-radius:50%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:22px;
-
-background:rgba(0,210,106,.12);
-
-color:var(--primary);
-
-flex-shrink:0;
-
-}
-
-.activityInfo{
-
-flex:1;
-
-}
-
-.activityInfo h4{
-
-font-size:17px;
-
-font-weight:700;
-
-margin-bottom:6px;
-
-}
-
-.activityInfo p{
-
-font-size:14px;
-
-color:var(--text2);
-
-line-height:1.6;
-
-margin-bottom:8px;
-
-}
-
-.activityTime{
-
-font-size:12px;
-
-color:var(--text2);
-
-}
-
-/*==================================================
-PROFILE TAB
-==================================================*/
-
-.profileGrid{
-
-display:grid;
-
-grid-template-columns:1fr;
-
-gap:18px;
-
-margin-top:20px;
-
-}
-
-.profileItem{
-
-display:flex;
-
-flex-direction:column;
-
-gap:8px;
-
-}
-
-.profileItem label{
-
-font-size:13px;
-
-font-weight:600;
-
-color:var(--text2);
-
-}
-
-.profileItem input,
-
-.profileItem select,
-
-.profileItem textarea{
-
-width:100%;
-
-padding:14px 16px;
-
-border:none;
-
-outline:none;
-
-border-radius:14px;
-
-background:var(--card);
-
-border:1px solid var(--border);
-
-color:var(--text);
-
-font-size:15px;
-
-transition:.25s;
-
-}
-
-.profileItem input:focus,
-
-.profileItem select:focus,
-
-.profileItem textarea:focus{
-
-border-color:var(--primary);
-
-box-shadow:0 0 0 3px rgba(0,210,106,.15);
-
-}
-
-/*==================================================
-FINANCE TAB
-==================================================*/
-
-.financeGrid{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:15px;
-
-margin-top:20px;
-
-margin-bottom:22px;
-
-}
-
-.financeCard{
-
-background:linear-gradient(135deg,var(--card),var(--card2));
-
-border-radius:18px;
-
-padding:18px;
-
-border:1px solid var(--border);
-
-box-shadow:var(--shadow);
-
-}
-
-.financeCard h3{
-
-font-size:13px;
-
-font-weight:600;
-
-color:var(--text2);
-
-margin-bottom:10px;
-
-}
-
-.financeCard h2{
-
-font-size:24px;
-
-font-weight:800;
-
-color:var(--primary);
-
-}
-
-.financeActions{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-margin-top:10px;
-
-}
-
-/*==================================================
-FORM GROUP
-==================================================*/
-
-.formGroup{
-
-display:flex;
-
-flex-direction:column;
-
-gap:8px;
-
-margin-bottom:16px;
-
-}
-
-.formGroup label{
-
-font-size:13px;
-
-font-weight:600;
-
-color:var(--text2);
-
-}
-
-.formGroup input,
-
-.formGroup select,
-
-.formGroup textarea{
-
-width:100%;
-
-padding:14px 16px;
-
-border:none;
-
-outline:none;
-
-background:var(--card);
-
-border:1px solid var(--border);
-
-border-radius:14px;
-
-color:var(--text);
-
-font-size:15px;
-
-transition:.25s;
-
-}
-
-.formGroup input:focus,
-
-.formGroup select:focus,
-
-.formGroup textarea:focus{
-
-border-color:var(--primary);
-
-box-shadow:0 0 0 3px rgba(0,210,106,.15);
-
-}
-
-.formCheck{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-margin:15px 0;
-
-}
-
-.formCheck input{
-
-width:18px;
-
-height:18px;
-
-accent-color:var(--primary);
-
-}
-
-/*==================================================
-MODALS
-==================================================*/
-
-.modal{
-
-position:fixed;
-
-top:0;
-
-left:0;
-
-width:100%;
-
-height:100%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-padding:20px;
-
-background:rgba(0,0,0,.75);
-
-backdrop-filter:blur(8px);
-
-z-index:999;
-
-animation:fadeModal .25s ease;
-
-}
-
-.modal.hidden{
-
-display:none;
-
-}
-
-.modalContent{
-
-width:100%;
-
-max-width:520px;
-
-max-height:92vh;
-
-overflow-y:auto;
-
-background:linear-gradient(
-135deg,
-var(--card),
-var(--card2)
-);
-
-border:1px solid var(--border);
-
-border-radius:24px;
-
-box-shadow:0 25px 70px rgba(0,0,0,.45);
-
-}
-
-.modalContent.large{
-
-max-width:700px;
-
-}
-
-.modalContent.small{
-
-max-width:420px;
-
-}
-
-.modalHeader{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-padding:22px;
-
-border-bottom:1px solid var(--border);
-
-}
-
-.modalHeader h2{
-
-font-size:22px;
-
-font-weight:800;
-
-}
-
-.modalBody{
-
-padding:22px;
-
-}
-
-.modalButtons{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-margin-top:24px;
-
-}
-
-@keyframes fadeModal{
-
-from{
-
-opacity:0;
-
-transform:scale(.95);
-
-}
-
-to{
-
-opacity:1;
-
-transform:scale(1);
-
-}
-
-}
-
-/*==================================================
-MACHINE DETAILS
-==================================================*/
-
-.machinePreview{
-
-display:flex;
-
-gap:18px;
-
-align-items:center;
-
-margin-bottom:25px;
-
-}
-
-.machinePreview img{
-
-width:100px;
-
-height:100px;
-
-border-radius:18px;
-
-object-fit:cover;
-
-background:#08111d;
-
-}
-
-.detailsGrid{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:15px;
-
-margin:20px 0;
-
-}
-
-.detailItem{
-
-background:rgba(255,255,255,.03);
-
-border:1px solid var(--border);
-
-padding:15px;
-
-border-radius:14px;
-
-}
-
-.detailItem label{
-
-display:block;
-
-font-size:12px;
-
-color:var(--text2);
-
-margin-bottom:6px;
-
-}
-
-.detailItem p{
-
-font-size:17px;
-
-font-weight:700;
-
-}
-
-/*==================================================
-BOTTOM SHEET
-==================================================*/
-
-.bottomSheet{
-
-position:fixed;
-
-left:0;
-
-right:0;
-
-bottom:0;
-
-background:linear-gradient(
-180deg,
-var(--card2),
-var(--card)
-);
-
-border-radius:28px 28px 0 0;
-
-padding:22px;
-
-transform:translateY(110%);
-
-transition:.35s;
-
-z-index:998;
-
-box-shadow:0 -10px 40px rgba(0,0,0,.45);
-
-}
-
-.bottomSheet.show{
-
-transform:translateY(0);
-
-}
-
-.sheetHandle{
-
-width:70px;
-
-height:6px;
-
-background:rgba(255,255,255,.18);
-
-border-radius:50px;
-
-margin:0 auto 18px;
-
-}
-
-.bottomSheet button{
-
-width:100%;
-
-height:52px;
-
-margin-bottom:10px;
-
-border:none;
-
-border-radius:14px;
-
-background:transparent;
-
-color:#fff;
-
-font-size:16px;
-
-font-weight:700;
-
-text-align:left;
-
-padding:0 18px;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-.bottomSheet button:hover{
-
-background:rgba(255,255,255,.06);
-
-}
-
-/*==================================================
-OVERLAY
-==================================================*/
-
-.overlay{
-
-position:fixed;
-
-inset:0;
-
-background:rgba(0,0,0,.55);
-
-backdrop-filter:blur(4px);
-
-z-index:997;
-
-}
-
-.overlay.hidden{
-
-display:none;
-
-}
-
-/*==================================================
-TOAST
-==================================================*/
-
-.toast{
-
-position:fixed;
-
-left:50%;
-
-bottom:30px;
-
-transform:translateX(-50%) translateY(150px);
-
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-padding:16px 20px;
-
-background:#121F34;
-
-border:1px solid var(--border);
-
-border-radius:16px;
-
-box-shadow:0 20px 45px rgba(0,0,0,.45);
-
-transition:.35s;
-
-z-index:1001;
-
-min-width:290px;
-
-}
-
-.toast.show{
-
-transform:translateX(-50%) translateY(0);
-
-}
-
-#toastIcon{
-
-font-size:24px;
-
-color:var(--primary);
-
-}
-
-#toastTitle{
-
-font-size:16px;
-
-margin-bottom:3px;
-
-}
-
-#toastMessage{
-
-font-size:13px;
-
-color:var(--text2);
-
-}
-
-/*==================================================
-LOADING
-==================================================*/
-
-.loadingScreen{
-
-position:fixed;
-
-inset:0;
-
-display:flex;
-
-flex-direction:column;
-
-justify-content:center;
-
-align-items:center;
-
-background:var(--bg);
-
-z-index:2000;
-
-}
-
-.loader{
-
-width:58px;
-
-height:58px;
-
-border:5px solid rgba(255,255,255,.12);
-
-border-top:5px solid var(--primary);
-
-border-radius:50%;
-
-animation:spin .8s linear infinite;
-
-margin-bottom:15px;
-
-}
-
-@keyframes spin{
-
-100%{
-
-transform:rotate(360deg);
-
-}
-
-}
-
-/*==================================================
-RESPONSIVE
-==================================================*/
-
-@media(max-width:600px){
-
-.statsGrid,
-
-.overviewGrid,
-
-.machineSummaryGrid,
-
-.financeGrid,
-
-.detailsGrid,
-
-.modalButtons,
-
-.quickActions{
-
-grid-template-columns:1fr;
-
-}
-
-.machineCard{
-
-flex-direction:column;
-
-}
-
-.machineImage{
-
-width:100%;
-
-height:180px;
-
-}
-
-.machinePreview{
-
-flex-direction:column;
-
-text-align:center;
-
-}
-
-}
