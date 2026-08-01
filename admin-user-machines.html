@@ -19,9 +19,9 @@
 
 <div class="app">
 
-<!-- =========================================
+<!--==============================
 HEADER
-========================================= -->
+===============================-->
 
 <header class="header">
 
@@ -31,11 +31,11 @@ HEADER
 ☰
 </button>
 
-<div class="headerTitle">
+<div>
 
 <h1>User Machines</h1>
 
-<p>Manage users, machines & referrals</p>
+<p>Manage every user's purchased machines</p>
 
 </div>
 
@@ -55,9 +55,9 @@ HEADER
 
 </header>
 
-<!-- =========================================
+<!--==============================
 SEARCH
-========================================= -->
+===============================-->
 
 <section class="searchSection">
 
@@ -66,7 +66,7 @@ SEARCH
 <input
 id="searchInput"
 type="text"
-placeholder="Search user by name, phone or email">
+placeholder="Search by name, phone or email">
 
 <button id="searchBtn">
 🔍
@@ -76,9 +76,9 @@ placeholder="Search user by name, phone or email">
 
 </section>
 
-<!-- =========================================
-ADMIN STATISTICS
-========================================= -->
+<!--==============================
+STATISTICS
+===============================-->
 
 <section class="statsGrid">
 
@@ -100,7 +100,7 @@ ADMIN STATISTICS
 
 <div class="statCard">
 
-<p>Total Machines</p>
+<p>Total User Machines</p>
 
 <h2 id="totalMachines">0</h2>
 
@@ -116,9 +116,9 @@ ADMIN STATISTICS
 
 </section>
 
-<!-- =========================================
+<!--==============================
 USER LIST
-========================================= -->
+===============================-->
 
 <section class="userSection">
 
@@ -127,7 +127,9 @@ USER LIST
 <h2>Users</h2>
 
 <span id="userCount">
+
 0 Members
+
 </span>
 
 </div>
@@ -136,558 +138,990 @@ USER LIST
 id="usersContainer"
 class="usersContainer">
 
-<!-- Users loaded from Supabase -->
+<!-- Loaded from Supabase -->
 
 </div>
 
 </section>
 
- <!-- =========================================
+<!--==============================
 EMPTY STATE
-========================================= -->
+===============================-->
 
-<section id="emptyState" class="emptyState">
+<section
+id="emptyState"
+class="emptyState">
 
-    <div class="emptyIcon">
+<div class="emptyIcon">
 
-        👤
-
-    </div>
-
-    <h2>Select a User</h2>
-
-    <p>
-
-        Tap any user from the list above to automatically load their
-        profile, machines, referrals, activity and account details.
-
-    </p>
-
-</section>
-
-<!-- =========================================
-SELECTED USER DASHBOARD
-========================================= -->
-
-<section id="userDashboard" class="userDashboard hidden">
-
-    <!-- =====================================
-    USER PROFILE
-    ===================================== -->
-
-    <div class="profileCard">
-
-        <div class="profileHeader">
-
-            <img
-                id="userAvatar"
-                class="userAvatar"
-                src="images/default-avatar.png"
-                alt="User">
-
-            <div class="profileInfo">
-
-                <h2 id="userName">
-
-                    Full Name
-
-                </h2>
-
-                <p id="userPhone">
-
-                    +256 XXX XXX XXX
-
-                </p>
-
-                <div class="badgeRow">
-
-                    <span
-                        id="membershipBadge"
-                        class="badge membership">
-
-                        Standard
-
-                    </span>
-
-                    <span
-                        id="statusBadge"
-                        class="badge active">
-
-                        Active
-
-                    </span>
-
-                    <span
-                        id="kycBadge"
-                        class="badge verified">
-
-                        Not Verified
-
-                    </span>
-
-                </div>
-
-            </div>
-
-            <button
-                id="userMenuBtn"
-                class="iconButton">
-
-                ⋮
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- =====================================
-    OVERVIEW CARDS
-    ===================================== -->
-
-    <div class="overviewGrid">
-
-        <div class="overviewCard">
-
-            <p>Wallet Balance</p>
-
-            <h3 id="walletBalance">
-
-                UGX 0
-
-            </h3>
-
-        </div>
-
-        <div class="overviewCard">
-
-            <p>Total Invested</p>
-
-            <h3 id="totalInvested">
-
-                UGX 0
-
-            </h3>
-
-        </div>
-
-        <div class="overviewCard">
-
-            <p>Total Profit</p>
-
-            <h3 id="totalProfit">
-
-                UGX 0
-
-            </h3>
-
-        </div>
-
-        <div class="overviewCard">
-
-            <p>Owned Machines</p>
-
-            <h3 id="ownedMachines">
-
-                0
-
-            </h3>
-
-        </div>
-
-    </div>
-
-    <!-- =====================================
-    TABS
-    ===================================== -->
-
-    <div class="tabBar">
-
-        <button
-            class="tabButton active"
-            data-tab="machinesTab">
-
-            🖥
-
-            <span>Machines</span>
-
-        </button>
-
-        <button
-            class="tabButton"
-            data-tab="referralsTab">
-
-            👥
-
-            <span>Referrals</span>
-
-        </button>
-
-        <button
-            class="tabButton"
-            data-tab="activityTab">
-
-            📈
-
-            <span>Activity</span>
-
-        </button>
-
-        <button
-            class="tabButton"
-            data-tab="profileTab">
-
-            👤
-
-            <span>Profile</span>
-
-        </button>
-
-    </div>
-
-    <!-- =====================================
-    MACHINES TAB
-    ===================================== -->
-
-    <div
-        id="machinesTab"
-        class="tabContent active">
-
-        <div class="tabHeader">
-
-            <h3>
-
-                User Machines
-
-            </h3>
-
-            <button
-                id="addMachineBtn"
-                class="primaryButton">
-
-                ＋ Add Machine
-
-            </button>
-
-        </div>
-
-        <div class="filterRow">
-
-            <button
-                class="filterButton active"
-                data-filter="all">
-
-                All
-
-            </button>
-
-            <button
-                class="filterButton"
-                data-filter="active">
-
-                Active
-
-            </button>
-
-            <button
-                class="filterButton"
-                data-filter="vip">
-
-                VIP
-
-            </button>
-
-            <button
-                class="filterButton"
-                data-filter="completed">
-
-                Completed
-
-            </button>
-
-            <button
-                class="filterButton"
-                data-filter="expired">
-
-                Expired
-
-            </button>
-
-        </div>
-
-        <div
-            id="machineList"
-            class="machineList">
-
-            <!-- Machine cards loaded here -->
-
-        </div>
-
- </div>
-
-     <!-- =====================================
-    REFERRALS TAB
-    ====================================== -->
-
-    <div id="referralsTab" class="tabContent">
-
-        <div class="tabHeader">
-
-            <h3>Referral Network</h3>
-
-            <span id="referralCount">0 Referrals</span>
-
-        </div>
-
-        <!-- Referral Summary -->
-
-        <div class="overviewGrid">
-
-            <div class="overviewCard">
-
-                <p>Total Referrals</p>
-
-                <h3 id="totalReferrals">0</h3>
-
-            </div>
-
-            <div class="overviewCard">
-
-                <p>Verified</p>
-
-                <h3 id="verifiedReferrals">0</h3>
-
-            </div>
-
-            <div class="overviewCard">
-
-                <p>Pending</p>
-
-                <h3 id="pendingReferrals">0</h3>
-
-            </div>
-
-            <div class="overviewCard">
-
-                <p>Referral Bonus</p>
-
-                <h3 id="referralBonusTotal">UGX 0</h3>
-
-            </div>
-
-        </div>
-
-        <div id="referralsList">
-
-            <!-- Referral cards -->
-
-        </div>
-
-    </div>
-
-    <!-- =====================================
-    ACTIVITY TAB
-    ====================================== -->
-
-    <div id="activityTab" class="tabContent">
-
-        <div class="tabHeader">
-
-            <h3>Recent Activity</h3>
-
-        </div>
-
-        <div id="activityList">
-
-            <!-- Activity timeline -->
-
-        </div>
-
-    </div>
-
-    <!-- =====================================
-    PROFILE TAB
-    ====================================== -->
-
-    <div id="profileTab" class="tabContent">
-
-        <div class="profileGrid">
-
-            <div class="profileItem">
-
-                <label>Email</label>
-
-                <p id="profileEmail">-</p>
-
-            </div>
-
-            <div class="profileItem">
-
-                <label>Phone</label>
-
-                <p id="profilePhone">-</p>
-
-            </div>
-
-            <div class="profileItem">
-
-                <label>Country</label>
-
-                <p id="profileCountry">-</p>
-
-            </div>
-
-            <div class="profileItem">
-
-                <label>Membership</label>
-
-                <p id="profileMembership">Standard</p>
-
-            </div>
-
-            <div class="profileItem">
-
-                <label>KYC Status</label>
-
-                <p id="profileKyc">Not Verified</p>
-
-            </div>
-
-            <div class="profileItem">
-
-                <label>Level</label>
-
-                <p id="profileLevel">1</p>
-
-            </div>
-
-            <div class="profileItem">
-
-                <label>Account Status</label>
-
-                <p id="profileStatus">Active</p>
-
-            </div>
-
-            <div class="profileItem">
-
-                <label>Last Login</label>
-
-                <p id="profileLastLogin">-</p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-<!-- =========================================
-FLOATING ACTION BUTTON
-========================================= -->
-
-<button id="fab" class="fab">
-
-＋
-
-</button>
-
-<!-- =========================================
-USER MENU
-========================================= -->
-
-<div id="userMenuSheet" class="bottomSheet">
-
-    <div class="sheetHandle"></div>
-
-    <h2>User Actions</h2>
-
-    <button id="editUserBtn">✏ Edit User</button>
-
-    <button id="freezeUserBtn">🔒 Freeze / Unfreeze</button>
-
-    <button id="notifyUserBtn">📢 Send Notification</button>
-
-    <button id="refreshUserBtn">🔄 Refresh User</button>
-
-    <button class="closeSheet">Close</button>
+👤
 
 </div>
 
-<!-- =========================================
-MACHINE MENU
-========================================= -->
+<h2>Select a User</h2>
 
-<div id="machineActionSheet" class="bottomSheet">
+<p>
 
-    <div class="sheetHandle"></div>
+Select any user above to manage their machines, investment, profile and account.
 
-    <h2>Machine Actions</h2>
+</p>
 
-    <button id="viewMachineBtn">👁 View Details</button>
+</section>
 
-    <button id="editMachineBtn">✏ Edit Machine</button>
+<!--==============================
+USER DASHBOARD
+===============================-->
 
-    <button id="extendMachineBtn">📅 Extend Machine</button>
+<section
+id="userDashboard"
+class="userDashboard hidden"><!--==============================
+PROFILE CARD
+===============================-->
 
-    <button id="toggleVipBtn">⭐ Toggle VIP</button>
+<div class="profileCard">
 
-    <button id="toggleStatusBtn">🔄 Change Status</button>
+    <div class="profileTop">
 
-    <button id="editBonusBtn">🎁 Edit Referral Bonus</button>
+        <img
+            id="userAvatar"
+            class="userAvatar"
+            src="images/default-avatar.png"
+            alt="User">
 
-    <button id="deleteMachineBtn" class="dangerButton">
+        <div class="profileInfo">
 
-        🗑 Delete Machine
+            <h2 id="userName">
+
+                Full Name
+
+            </h2>
+
+            <p id="userPhone">
+
+                +256 XXX XXX XXX
+
+            </p>
+
+            <div class="badgeRow">
+
+                <span
+                    id="membershipBadge"
+                    class="badge membership">
+
+                    Standard
+
+                </span>
+
+                <span
+                    id="statusBadge"
+                    class="badge active">
+
+                    Active
+
+                </span>
+
+                <span
+                    id="kycBadge"
+                    class="badge kyc">
+
+                    Not Verified
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <button
+            id="userMenuBtn"
+            class="iconButton">
+
+            ⋮
+
+        </button>
+
+    </div>
+
+</div>
+
+<!--==============================
+OVERVIEW
+===============================-->
+
+<div class="overviewGrid">
+
+    <div class="overviewCard">
+
+        <span>Wallet Balance</span>
+
+        <h3 id="walletBalance">
+
+            UGX 0
+
+        </h3>
+
+    </div>
+
+    <div class="overviewCard">
+
+        <span>Total Invested</span>
+
+        <h3 id="totalInvested">
+
+            UGX 0
+
+        </h3>
+
+    </div>
+
+    <div class="overviewCard">
+
+        <span>Total Profit</span>
+
+        <h3 id="totalProfit">
+
+            UGX 0
+
+        </h3>
+
+    </div>
+
+    <div class="overviewCard">
+
+        <span>Owned Machines</span>
+
+        <h3 id="ownedMachines">
+
+            0
+
+        </h3>
+
+    </div>
+
+</div>
+
+<!--==============================
+QUICK ACTIONS
+===============================-->
+
+<div class="quickActions">
+
+    <button
+        id="addMachineBtn"
+        class="primaryButton">
+
+        ➕ Assign Machine
 
     </button>
 
-    <button class="closeSheet">Cancel</button>
+    <button
+        id="editUserBtn"
+        class="secondaryButton">
+
+        ✏ Edit User
+
+    </button>
+
+    <button
+        id="freezeUserBtn"
+        class="secondaryButton">
+
+        🔒 Freeze Account
+
+    </button>
+
+    <button
+        id="notifyUserBtn"
+        class="secondaryButton">
+
+        🔔 Notify User
+
+    </button>
 
 </div>
 
-<!-- =========================================
-ADMIN MENU
-========================================= -->
+<!--==============================
+TABS
+===============================-->
+
+<div class="tabBar">
+
+    <button
+        class="tabButton active"
+        data-tab="machinesTab">
+
+        🖥
+
+        <span>Machines</span>
+
+    </button>
+
+    <button
+        class="tabButton"
+        data-tab="activityTab">
+
+        📈
+
+        <span>Activity</span>
+
+    </button>
+
+    <button
+        class="tabButton"
+        data-tab="profileTab">
+
+        👤
+
+        <span>Profile</span>
+
+    </button>
+
+         </div><!--=========================================
+MACHINES TAB
+==========================================-->
+
+<div
+id="machinesTab"
+class="tabContent active">
+
+<div class="tabHeader">
+
+<h2>
+
+User Machines
+
+</h2>
+
+<div class="tabActions">
+
+<button
+id="refreshMachinesBtn"
+class="secondaryButton">
+
+🔄 Refresh
+
+</button>
+
+<button
+id="assignMachineBtn"
+class="primaryButton">
+
+＋ Assign Machine
+
+</button>
+
+</div>
+
+</div>
+
+<!--=========================================
+FILTERS
+==========================================-->
+
+<div class="filterRow">
+
+<button
+class="filterButton active"
+data-filter="all">
+
+All
+
+</button>
+
+<button
+class="filterButton"
+data-filter="active">
+
+Active
+
+</button>
+
+<button
+class="filterButton"
+data-filter="vip">
+
+VIP
+
+</button>
+
+<button
+class="filterButton"
+data-filter="completed">
+
+Completed
+
+</button>
+
+<button
+class="filterButton"
+data-filter="expired">
+
+Expired
+
+</button>
+
+<button
+class="filterButton"
+data-filter="suspended">
+
+Suspended
+
+</button>
+
+</div>
+
+<!--=========================================
+SUMMARY
+==========================================-->
+
+<div class="machineSummaryGrid">
+
+<div class="summaryCard">
+
+<p>Total Machines</p>
+
+<h3 id="summaryMachines">
+
+0
+
+</h3>
+
+</div>
+
+<div class="summaryCard">
+
+<p>Running</p>
+
+<h3 id="summaryRunning">
+
+0
+
+</h3>
+
+</div>
+
+<div class="summaryCard">
+
+<p>Completed</p>
+
+<h3 id="summaryCompleted">
+
+0
+
+</h3>
+
+</div>
+
+<div class="summaryCard">
+
+<p>Total Paid</p>
+
+<h3 id="summaryPaid">
+
+UGX 0
+
+</h3>
+
+</div>
+
+</div>
+
+<!--=========================================
+MACHINE LIST
+==========================================-->
+
+<div
+id="machineList"
+class="machineList">
+
+<!-- Loaded from Supabase -->
+
+</div>
+
+<!--=========================================
+EMPTY MACHINES
+==========================================-->
+
+<div
+id="machineEmpty"
+class="emptyStateSmall hidden">
+
+<div class="emptyIcon">
+
+🖥
+
+</div>
+
+<h3>
+
+No Machines
+
+</h3>
+
+<p>
+
+This user has not purchased any machines yet.
+
+</p>
+
+<button
+id="emptyAssignBtn"
+class="primaryButton">
+
+Assign First Machine
+
+</button>
+
+</div>
+
+</div><!--=========================================
+ACTIVITY TAB
+==========================================-->
+
+<div
+id="activityTab"
+class="tabContent">
+
+<div class="tabHeader">
+
+<h2>
+
+User Activity
+
+</h2>
+
+<button
+id="refreshActivityBtn"
+class="secondaryButton">
+
+🔄 Refresh
+
+</button>
+
+</div>
+
+<div
+id="activityList"
+class="activityList">
+
+<!-- Loaded from Supabase -->
+
+</div>
+
+<div
+id="activityEmpty"
+class="emptyStateSmall hidden">
+
+<div class="emptyIcon">
+
+📈
+
+</div>
+
+<h3>
+
+No Activity
+
+</h3>
+
+<p>
+
+This user has no recorded activity.
+
+</p>
+
+</div>
+
+</div>
+
+<!--=========================================
+PROFILE TAB
+==========================================-->
+
+<div
+id="profileTab"
+class="tabContent">
+
+<div class="tabHeader">
+
+<h2>
+
+Profile Information
+
+</h2>
+
+<button
+id="saveProfileBtn"
+class="primaryButton">
+
+💾 Save Changes
+
+</button>
+
+</div>
+
+<div class="profileGrid">
+
+<div class="profileItem">
+
+<label>Full Name</label>
+
+<input
+id="profileFullname"
+type="text">
+
+</div>
+
+<div class="profileItem">
+
+<label>Email</label>
+
+<input
+id="profileEmail"
+type="email">
+
+</div>
+
+<div class="profileItem">
+
+<label>Phone</label>
+
+<input
+id="profilePhone"
+type="text">
+
+</div>
+
+<div class="profileItem">
+
+<label>Country</label>
+
+<input
+id="profileCountry"
+type="text">
+
+</div>
+
+<div class="profileItem">
+
+<label>Membership</label>
+
+<select id="profileMembership">
+
+<option value="Standard">Standard</option>
+
+<option value="VIP">VIP</option>
+
+<option value="Premium">Premium</option>
+
+</select>
+
+</div>
+
+<div class="profileItem">
+
+<label>Account Status</label>
+
+<select id="profileStatus">
+
+<option value="active">Active</option>
+
+<option value="suspended">Suspended</option>
+
+<option value="frozen">Frozen</option>
+
+</select>
+
+</div>
+
+<div class="profileItem">
+
+<label>KYC Status</label>
+
+<select id="profileKyc">
+
+<option value="Not Verified">
+
+Not Verified
+
+</option>
+
+<option value="Pending">
+
+Pending
+
+</option>
+
+<option value="Verified">
+
+Verified
+
+</option>
+
+</select>
+
+</div>
+
+<div class="profileItem">
+
+<label>Level</label>
+
+<input
+id="profileLevel"
+type="number"
+min="1">
+
+</div>
+
+<div class="profileItem">
+
+<label>Wallet Balance</label>
+
+<input
+id="profileWallet"
+type="number">
+
+</div>
+
+<div class="profileItem">
+
+<label>Total Invested</label>
+
+<input
+id="profileInvested"
+type="number">
+
+</div>
+
+<div class="profileItem">
+
+<label>Total Profit</label>
+
+<input
+id="profileProfit"
+type="number">
+
+</div>
+
+<div class="profileItem">
+
+<label>Last Login</label>
+
+<input
+id="profileLastLogin"
+type="text"
+readonly>
+
+</div>
+
+</div>
+
+</div>
+
+ <!--=========================================
+ASSIGN / EDIT MACHINE MODAL
+==========================================-->
+
+<div id="machineModal" class="modal hidden">
+
+<div class="modalContent">
+
+<div class="modalHeader">
+
+<h2 id="machineModalTitle">
+
+Assign Machine
+
+</h2>
+
+<button id="closeMachineModal">
+
+✕
+
+</button>
+
+</div>
+
+<div class="modalBody">
+
+<label>Machine</label>
+
+<select id="machineSelect"></select>
+
+<label>Amount Paid (UGX)</label>
+
+<input
+id="machineAmountPaid"
+type="number"
+placeholder="Enter amount">
+
+<label>Purchase Date</label>
+
+<input
+id="machinePurchaseDate"
+type="date">
+
+<label>Expiry Date</label>
+
+<input
+id="machineExpiryDate"
+type="date">
+
+<label>Status</label>
+
+<select id="machineStatus">
+
+<option value="active">Active</option>
+
+<option value="suspended">Suspended</option>
+
+<option value="expired">Expired</option>
+
+<option value="completed">Completed</option>
+
+</select>
+
+<label>Earned Amount</label>
+
+<input
+id="machineEarned"
+type="number"
+value="0">
+
+<label>
+
+<input
+id="machineVip"
+type="checkbox">
+
+VIP Machine
+
+</label>
+
+<div class="modalButtons">
+
+<button
+id="saveMachineBtn"
+class="primaryButton">
+
+Save Machine
+
+</button>
+
+<button
+id="deleteMachineBtn"
+class="dangerButton">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!--=========================================
+VIEW MACHINE
+==========================================-->
+
+<div id="viewMachineModal" class="modal hidden">
+
+<div class="modalContent large">
+
+<div class="modalHeader">
+
+<h2>
+
+Machine Details
+
+</h2>
+
+<button id="closeViewMachine">
+
+✕
+
+</button>
+
+</div>
+
+<div id="machineDetails">
+
+<!-- Filled by JavaScript -->
+
+</div>
+
+</div>
+
+</div>
+
+<!--=========================================
+FREEZE USER
+==========================================-->
+
+<div id="freezeModal" class="modal hidden">
+
+<div class="modalContent">
+
+<h2>
+
+Freeze Account
+
+</h2>
+
+<p>
+
+This will stop the user from accessing their account.
+
+</p>
+
+<textarea
+id="freezeReason"
+placeholder="Reason"></textarea>
+
+<div class="modalButtons">
+
+<button
+id="confirmFreezeBtn"
+class="dangerButton">
+
+Freeze
+
+</button>
+
+<button
+id="cancelFreezeBtn">
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!--=========================================
+SEND NOTIFICATION
+==========================================-->
+
+<div id="notificationModal" class="modal hidden">
+
+<div class="modalContent">
+
+<h2>
+
+Send Notification
+
+</h2>
+
+<input
+id="notificationTitle"
+type="text"
+placeholder="Title">
+
+<textarea
+id="notificationMessage"
+placeholder="Message"></textarea>
+
+<div class="modalButtons">
+
+<button
+id="sendNotificationBtn"
+class="primaryButton">
+
+Send
+
+</button>
+
+<button
+id="cancelNotificationBtn">
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!--=========================================
+MENU
+==========================================-->
 
 <div id="menuSheet" class="bottomSheet">
 
-    <div class="sheetHandle"></div>
+<button data-page="admin-dashboard.html">
 
-    <h2>Admin Menu</h2>
+Dashboard
 
-    <button data-page="admin-dashboard.html">🏠 Dashboard</button>
+</button>
 
-    <button data-page="admin-users.html">👥 Users</button>
+<button data-page="admin-users.html">
 
-    <button data-page="admin-deposits.html">💳 Deposits</button>
+Users
 
-    <button data-page="admin-withdrawals.html">💸 Withdrawals</button>
+</button>
 
-    <button data-page="admin-support.html">💬 Support</button>
+<button data-page="admin-machines.html">
 
-    <button id="logoutBtn">🚪 Logout</button>
+Machines
 
-    <button class="closeSheet">Close</button>
+</button>
+
+<button data-page="admin-deposits.html">
+
+Deposits
+
+</button>
+
+<button data-page="admin-withdrawals.html">
+
+Withdrawals
+
+</button>
+
+<button data-page="admin-support.html">
+
+Support
+
+</button>
+
+<button id="logoutBtn">
+
+Logout
+
+</button>
 
 </div>
 
-<!-- =========================================
+<!--=========================================
 TOAST
-========================================= -->
+==========================================-->
 
 <div id="toast" class="toast">
 
-    <span id="toastMessage">
+<span id="toastMessage">
 
-        Success
+Success
 
-    </span>
+</span>
 
 </div>
 
-<div id="sheetOverlay" class="sheetOverlay"></div>
+<div
+id="overlay"
+class="overlay hidden">
+
+</div>
+
+</section>
 
 </div>
 
