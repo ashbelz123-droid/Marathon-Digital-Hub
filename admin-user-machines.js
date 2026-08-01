@@ -736,13 +736,7 @@ OPEN EDIT MACHINE
 
 function openEditMachine(){
 
-    if(!selectedMachine){
-
-    await assignMachine();
-
-    return;
-
-    }
+    if(!selectedMachine) return;
 
     document
     .getElementById("machineModal")
@@ -910,7 +904,13 @@ document.getElementById("deleteMachineBtn").onclick=
 
 async()=>{
 
-    if(!selectedMachine) return;
+    if(!selectedMachine){
+
+    await assignMachine();
+
+    return;
+
+    }
 
     if(
 
@@ -966,7 +966,7 @@ function closeMachineModal(){
 
     .classList.add("hidden");
 
-}
+        }
 
 /*==================================================
 PART 5
@@ -1222,4 +1222,4 @@ async function assignMachine(){
 
     }
 
-}
+    }
