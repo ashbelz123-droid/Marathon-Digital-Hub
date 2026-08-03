@@ -7,24 +7,22 @@ ADMIN USER MACHINES
 SUPABASE
 =========================================*/
 
-const supabase = window.supabaseClient;
+const db = window.supabaseClient;
 
 /*=========================================
-GLOBAL VARIABLES
+GLOBAL DATA
 =========================================*/
 
 let users = [];
 let selectedUser = null;
-let userMachines = [];
 let machinePlans = [];
+let userMachines = [];
 
 /*=========================================
 ELEMENTS
 =========================================*/
 
 const usersList = document.getElementById("usersList");
-
-const searchInput = document.getElementById("searchInput");
 
 const totalUsers = document.getElementById("totalUsers");
 const activeUsers = document.getElementById("activeUsers");
@@ -59,32 +57,32 @@ loadingScreen.classList.add("hidden");
 }
 
 /*=========================================
-START PAGE
+INITIALIZE
 =========================================*/
 
-document.addEventListener("DOMContentLoaded", async ()=>{
+document.addEventListener("DOMContentLoaded",initPage);
 
-try{
+async function initPage(){
 
 showLoading();
+
+try{
 
 await loadUsers();
 
 await loadMachinePlans();
 
-hideLoading();
+}catch(err){
 
-}catch(error){
+console.error(err);
 
-hideLoading();
-
-console.error(error);
-
-alert(error.message);
+alert(err.message);
 
 }
 
-});
+hideLoading();
+
+}
 
 /*=========================================
 LOAD USERS
@@ -92,13 +90,11 @@ LOAD USERS
 
 async function loadUsers(){
 
-const { data, error } = await supabase
+const { data, error } = await db
 
 .from("profiles")
 
-.select("*")
-
-.order("created_at",{ascending:false});
+.select("*");
 
 if(error){
 
@@ -118,15 +114,13 @@ LOAD MACHINE PLANS
 
 async function loadMachinePlans(){
 
-const { data, error } = await supabase
+const { data, error } = await db
 
 .from("machines")
 
 .select("*")
 
-.eq("status",true)
-
-.order("display_order");
+.eq("status",true);
 
 if(error){
 
