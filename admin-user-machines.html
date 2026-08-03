@@ -21,25 +21,15 @@ href="admin-user-machines.css">
 
 <body>
 
-<div class="app">
+<div class="container">
 
-<!--=================================
+<!--=========================
 HEADER
-==================================-->
+==========================-->
 
-<header class="header">
+<header class="topBar">
 
-<div class="headerLeft">
-
-<button
-id="menuBtn"
-class="iconButton">
-
-☰
-
-</button>
-
-<div>
+<div class="leftHeader">
 
 <h1>
 
@@ -49,29 +39,27 @@ User Machines
 
 <p>
 
-Manage every user's machines
+Manage every user's purchased machines
 
 </p>
 
 </div>
 
-</div>
-
-<div class="headerRight">
+<div class="rightHeader">
 
 <button
 id="refreshBtn"
-class="iconButton">
+class="iconBtn">
 
 🔄
 
 </button>
 
 <button
-id="notificationBtn"
-class="iconButton">
+id="logoutBtn"
+class="iconBtn">
 
-🔔
+🚪
 
 </button>
 
@@ -79,9 +67,9 @@ class="iconButton">
 
 </header>
 
-<!--=================================
-SEARCH BAR
-==================================-->
+<!--=========================
+SEARCH
+==========================-->
 
 <section class="searchSection">
 
@@ -89,14 +77,13 @@ SEARCH BAR
 
 <input
 
-id="searchInput"
-
 type="text"
+
+id="searchInput"
 
 placeholder="Search by name, phone or email...">
 
-<button
-id="searchBtn">
+<button id="searchBtn">
 
 🔍
 
@@ -106,19 +93,15 @@ id="searchBtn">
 
 </section>
 
-<!--=================================
-STATISTICS
-==================================-->
+<!--=========================
+DASHBOARD STATS
+==========================-->
 
 <section class="statsGrid">
 
 <div class="statCard">
 
-<p>
-
-Total Users
-
-</p>
+<span>Total Users</span>
 
 <h2 id="totalUsers">
 
@@ -130,11 +113,7 @@ Total Users
 
 <div class="statCard">
 
-<p>
-
-Active Users
-
-</p>
+<span>Active Users</span>
 
 <h2 id="activeUsers">
 
@@ -146,11 +125,7 @@ Active Users
 
 <div class="statCard">
 
-<p>
-
-Total Machines
-
-</p>
+<span>Total Machines</span>
 
 <h2 id="totalMachines">
 
@@ -162,13 +137,9 @@ Total Machines
 
 <div class="statCard">
 
-<p>
+<span>VIP Machines</span>
 
-VIP Users
-
-</p>
-
-<h2 id="vipUsers">
+<h2 id="vipMachines">
 
 0
 
@@ -178,13 +149,13 @@ VIP Users
 
 </section>
 
-    <!--=================================
-USERS PANEL
-==================================-->
+<!--=========================
+USERS LIST
+==========================-->
 
 <section class="usersSection">
 
-<div class="sectionHeader">
+<div class="sectionTitle">
 
 <h2>
 
@@ -192,107 +163,59 @@ Users
 
 </h2>
 
-<span id="userCount">
-
-0 Members
-
-</span>
-
 </div>
 
-<div
-id="usersContainer"
-class="usersContainer">
+<div id="usersList">
 
-<!-- Users loaded by JavaScript -->
+<!-- Loaded by JavaScript -->
 
 </div>
 
 </section>
 
-<!--=================================
-EMPTY STATE
-==================================-->
+   <!--=========================
+USER PROFILE
+==========================-->
 
 <section
-id="emptyState"
-class="emptyState">
+id="userProfileSection"
+class="hidden">
 
-<div class="emptyIcon">
+<div class="profileCard">
 
-👤
+<div class="profileHeader">
 
-</div>
+<img
+id="profileAvatar"
+class="profileAvatar"
+src="images/default-avatar.png"
+alt="Avatar">
 
-<h2>
+<div class="profileInfo">
+
+<h2 id="profileName">
 
 Select a User
 
 </h2>
 
-<p>
+<p id="profilePhone">
 
-Select a user from the list above to manage their account and machines.
-
-</p>
-
-</section>
-
-<!--=================================
-USER DASHBOARD
-==================================-->
-
-<section
-id="userDashboard"
-class="userDashboard hidden">
-
-<!--=================================
-PROFILE CARD
-==================================-->
-
-<div class="profileCard">
-
-<div class="profileTop">
-
-<img
-
-id="userAvatar"
-
-class="userAvatar"
-
-src="images/default-avatar.png"
-
-alt="User">
-
-<div class="profileInfo">
-
-<h2 id="userName">
-
-Full Name
-
-</h2>
-
-<p id="userPhone">
-
-+256 XXX XXX XXX
+Phone Number
 
 </p>
 
-<p id="userEmail">
+<p id="profileEmail">
 
-example@email.com
+Email Address
 
 </p>
 
-</div>
-
-</div>
-
-<div class="badgeRow">
+<div class="badgeContainer">
 
 <span
 id="membershipBadge"
-class="badge membership">
+class="badge membershipBadge">
 
 Standard
 
@@ -300,7 +223,7 @@ Standard
 
 <span
 id="statusBadge"
-class="badge active">
+class="badge activeBadge">
 
 Active
 
@@ -308,7 +231,7 @@ Active
 
 <span
 id="kycBadge"
-class="badge kyc">
+class="badge kycBadge">
 
 Not Verified
 
@@ -318,168 +241,202 @@ Not Verified
 
 </div>
 
-<!--=================================
-ADMIN ACTIONS
-==================================-->
+</div>
 
-<div class="actionGrid">
+</div>
+
+<!--=========================
+USER STATISTICS
+==========================-->
+
+<div class="statsGrid">
+
+<div class="statCard">
+
+<span>Total Invested</span>
+
+<h2 id="profileInvested">
+
+UGX 0
+
+</h2>
+
+</div>
+
+<div class="statCard">
+
+<span>Total Profit</span>
+
+<h2 id="profileProfit">
+
+UGX 0
+
+</h2>
+
+</div>
+
+<div class="statCard">
+
+<span>Referral Bonus</span>
+
+<h2 id="profileReferralBonus">
+
+UGX 0
+
+</h2>
+
+</div>
+
+<div class="statCard">
+
+<span>Purchased Machines</span>
+
+<h2 id="profileMachineCount">
+
+0
+
+</h2>
+
+</div>
+
+</div>
+
+<!--=========================
+ADMIN ACTIONS
+==========================-->
+
+<div class="actionButtons">
 
 <button
 id="editUserBtn"
-class="primaryButton">
+class="primaryBtn">
 
 ✏ Edit User
 
 </button>
 
 <button
+id="freezeUserBtn"
+class="warningBtn">
+
+❄ Freeze
+
+</button>
+
+<button
 id="resetPasswordBtn"
-class="primaryButton">
+class="secondaryBtn">
 
 🔑 Reset Password
 
 </button>
 
-<button
-id="freezeUserBtn"
-class="dangerButton">
-
-❄ Freeze Account
-
-</button>
-
-    </div>
-
-    <!--=================================
-MACHINE OVERVIEW
-==================================-->
-
-<div class="machineOverview">
-
-<div class="overviewCard">
-
-<p>
-
-Total Machines
-
-</p>
-
-<h2 id="summaryMachines">
-
-0
-
-</h2>
-
 </div>
 
-<div class="overviewCard">
+    </section>
 
-<p>
+   <!--=========================
+PURCHASED MACHINES
+==========================-->
 
-Active Machines
-
-</p>
-
-<h2 id="summaryRunning">
-
-0
-
-</h2>
-
-</div>
-
-<div class="overviewCard">
-
-<p>
-
-VIP Machines
-
-</p>
-
-<h2 id="summaryVip">
-
-0
-
-</h2>
-
-</div>
-
-<div class="overviewCard">
-
-<p>
-
-Completed
-
-</p>
-
-<h2 id="summaryCompleted">
-
-0
-
-</h2>
-
-</div>
-
-<div class="overviewCard">
-
-<p>
-
-Expired
-
-</p>
-
-<h2 id="summaryExpired">
-
-0
-
-</h2>
-
-</div>
-
-</div>
-
-<!--=================================
-USER MACHINES
-==================================-->
+<section
+id="machinesSection"
+class="hidden">
 
 <div class="sectionHeader">
 
 <h2>
 
-User Machines
+Purchased Machines
 
 </h2>
 
-<div class="headerButtons">
-
-<button
-id="refreshMachinesBtn"
-class="secondaryButton">
-
-🔄 Refresh
-
-</button>
+<div class="headerActions">
 
 <button
 id="assignMachineBtn"
-class="primaryButton">
+class="primaryBtn">
 
 ➕ Assign Machine
 
 </button>
 
+<button
+id="refreshMachinesBtn"
+class="secondaryBtn">
+
+🔄 Refresh
+
+</button>
+
+</div>
+
+</div>
+
+<!--=========================
+MACHINE SUMMARY
+==========================-->
+
+<div class="statsGrid">
+
+<div class="statCard">
+
+<span>Active</span>
+
+<h2 id="activeMachineCount">
+
+0
+
+</h2>
+
+</div>
+
+<div class="statCard">
+
+<span>Completed</span>
+
+<h2 id="completedMachineCount">
+
+0
+
+</h2>
+
+</div>
+
+<div class="statCard">
+
+<span>Expired</span>
+
+<h2 id="expiredMachineCount">
+
+0
+
+</h2>
+
+</div>
+
+<div class="statCard">
+
+<span>Paused</span>
+
+<h2 id="pausedMachineCount">
+
+0
+
+</h2>
+
 </div>
 
 </div>
 
-<!--=================================
-FILTERS
-==================================-->
+<!--=========================
+MACHINE FILTERS
+==========================-->
 
-<div class="filterRow">
+<div class="machineFilters">
 
 <button
-class="filterButton active"
+class="filterBtn active"
 data-filter="all">
 
 All
@@ -487,7 +444,7 @@ All
 </button>
 
 <button
-class="filterButton"
+class="filterBtn"
 data-filter="active">
 
 Active
@@ -495,7 +452,7 @@ Active
 </button>
 
 <button
-class="filterButton"
+class="filterBtn"
 data-filter="vip">
 
 VIP
@@ -503,7 +460,7 @@ VIP
 </button>
 
 <button
-class="filterButton"
+class="filterBtn"
 data-filter="completed">
 
 Completed
@@ -511,275 +468,38 @@ Completed
 </button>
 
 <button
-class="filterButton"
-data-filter="expired">
+class="filterBtn"
+data-filter="paused">
 
-Expired
-
-</button>
-
-<button
-class="filterButton"
-data-filter="suspended">
-
-Suspended
+Paused
 
 </button>
 
 </div>
 
-<!--=================================
+<!--=========================
 MACHINE LIST
-==================================-->
+==========================-->
 
 <div
-id="machineList"
-class="machineList">
+id="machinesList"
+class="machinesList">
 
-<!-- Machine cards loaded by JavaScript -->
-
-</div>
-
-<div
-id="machineEmpty"
-class="emptyStateSmall hidden">
-
-<div class="emptyIcon">
-
-🖥
+<!-- JavaScript loads machine cards here -->
 
 </div>
 
-<h3>
-
-No Machines Found
-
-</h3>
-
-<p>
-
-This user has no assigned machines.
-
-</p>
-
-<button
-id="emptyAssignBtn"
-class="primaryButton">
-
-Assign First Machine
-
-</button>
-
-    </div>
-
-    <!--=================================
-MACHINE HISTORY
-==================================-->
-
-<div class="sectionCard">
-
-<div class="sectionHeader">
-
-<h2>
-
-Machine History
-
-</h2>
-
-<button
-id="refreshHistoryBtn"
-class="secondaryButton">
-
-🔄 Refresh
-
-</button>
-
-</div>
-
-<div
-id="machineHistoryList"
-class="historyList">
-
-<!-- History loaded by JavaScript -->
-
-</div>
-
-<div
-id="historyEmpty"
-class="emptyStateSmall hidden">
-
-<div class="emptyIcon">
-
-📜
-
-</div>
-
-<h3>
-
-No Machine History
-
-</h3>
-
-<p>
-
-This user has no machine history.
-
-</p>
-
-</div>
-
-</div>
-
-<!--=================================
-MACHINE DETAILS
-==================================-->
-
-<div class="sectionCard">
-
-<div class="sectionHeader">
-
-<h2>
-
-Selected Machine
-
-</h2>
-
-</div>
-
-<div
-id="selectedMachineCard"
-class="selectedMachineCard hidden">
-
-<img
-id="selectedMachineImage"
-class="selectedMachineImage"
-src="images/default-machine.png">
-
-<div class="selectedMachineInfo">
-
-<h2 id="selectedMachineName">
-
-Machine Name
-
-</h2>
-
-<p id="selectedMachineSeries">
-
-Series
-
-</p>
-
-<div class="selectedStats">
-
-<div>
-
-<span>Purchase</span>
-
-<h3 id="selectedPurchase">
-
-UGX 0
-
-</h3>
-
-</div>
-
-<div>
-
-<span>Earned</span>
-
-<h3 id="selectedEarned">
-
-UGX 0
-
-</h3>
-
-</div>
-
-<div>
-
-<span>Remaining Days</span>
-
-<h3 id="selectedDays">
-
-0
-
-</h3>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!--=================================
-MACHINE ACTIONS
-==================================-->
-
-<div class="actionGrid">
-
-<button
-id="viewMachineBtn"
-class="secondaryButton">
-
-👁 View
-
-</button>
-
-<button
-id="editMachineBtn"
-class="primaryButton">
-
-✏ Edit
-
-</button>
-
-<button
-id="extendMachineBtn"
-class="primaryButton">
-
-📅 Change Days
-
-</button>
-
-<button
-id="toggleVipBtn"
-class="secondaryButton">
-
-⭐ VIP
-
-</button>
-
-<button
-id="toggleStatusBtn"
-class="secondaryButton">
-
-⏸ Status
-
-</button>
-
-<button
-id="deleteMachineBtn"
-class="dangerButton">
-
-🗑 Delete
-
-</button>
-
-    </div>
-
-    <!--=================================
-EDIT MACHINE MODAL
-==================================-->
+</section>
+
+    <!--=========================
+EDIT / ASSIGN MACHINE MODAL
+==========================-->
 
 <div
 id="machineModal"
 class="modal hidden">
 
-<div class="modalContent large">
+<div class="modalContent">
 
 <div class="modalHeader">
 
@@ -791,7 +511,7 @@ Edit Machine
 
 <button
 id="closeMachineModal"
-class="iconButton">
+class="closeBtn">
 
 ✕
 
@@ -801,23 +521,27 @@ class="iconButton">
 
 <div class="modalBody">
 
-<div class="formGrid">
-
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
-Machine
+Machine Plan
 
 </label>
 
 <select id="machineSelect">
 
+<option value="">
+
+Select Machine
+
+</option>
+
 </select>
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -826,12 +550,14 @@ Purchase Amount (UGX)
 </label>
 
 <input
-id="machineAmountPaid"
-type="number">
+type="number"
+id="machineAmountPaid">
 
 </div>
 
-<div class="inputGroup">
+<div class="formRow">
+
+<div class="formGroup">
 
 <label>
 
@@ -840,27 +566,12 @@ Purchase Date
 </label>
 
 <input
-id="machinePurchaseDate"
-type="date">
+type="date"
+id="machinePurchaseDate">
 
 </div>
 
-<div class="inputGroup">
-
-<label>
-
-Duration (Days)
-
-</label>
-
-<input
-id="machineDuration"
-type="number"
-min="1">
-
-</div>
-
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -869,12 +580,48 @@ Expiry Date
 </label>
 
 <input
-id="machineExpiryDate"
-type="date">
+type="date"
+id="machineExpiryDate">
 
 </div>
 
-<div class="inputGroup">
+</div>
+
+<div class="formRow">
+
+<div class="formGroup">
+
+<label>
+
+Duration (Days)
+
+</label>
+
+<input
+type="number"
+id="machineDurationDays">
+
+</div>
+
+<div class="formGroup">
+
+<label>
+
+Remaining Days
+
+</label>
+
+<input
+type="number"
+id="machineRemainingDays">
+
+</div>
+
+</div>
+
+<div class="formRow">
+
+<div class="formGroup">
 
 <label>
 
@@ -883,12 +630,12 @@ Daily Income
 </label>
 
 <input
-id="machineDailyIncome"
-type="number">
+type="number"
+id="machineDailyIncome">
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -897,12 +644,16 @@ Total Return
 </label>
 
 <input
-id="machineTotalReturn"
-type="number">
+type="number"
+id="machineTotalReturn">
 
 </div>
 
-<div class="inputGroup">
+</div>
+
+<div class="formRow">
+
+<div class="formGroup">
 
 <label>
 
@@ -911,16 +662,34 @@ Earned Amount
 </label>
 
 <input
-id="machineEarnedAmount"
-type="number">
+type="number"
+id="machineEarnedAmount">
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
-Status
+Current Day
+
+</label>
+
+<input
+type="number"
+id="machineCurrentDay">
+
+</div>
+
+</div>
+
+<div class="formRow">
+
+<div class="formGroup">
+
+<label>
+
+Machine Status
 
 </label>
 
@@ -932,9 +701,9 @@ Active
 
 </option>
 
-<option value="suspended">
+<option value="paused">
 
-Suspended
+Paused
 
 </option>
 
@@ -954,7 +723,7 @@ Expired
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -982,21 +751,36 @@ Yes
 
 </div>
 
-<div class="modalButtons">
+<div class="formGroup">
+
+<label>
+
+Admin Notes
+
+</label>
+
+<textarea
+id="machineNotes"
+rows="4"
+placeholder="Write notes about this machine..."></textarea>
+
+</div>
+
+<div class="modalFooter">
 
 <button
 id="saveMachineBtn"
-class="primaryButton">
+class="primaryBtn">
 
-💾 Save Changes
+💾 Save Machine
 
 </button>
 
 <button
-id="cancelMachineBtn"
-class="secondaryButton">
+id="deleteMachineBtn"
+class="dangerBtn">
 
-Cancel
+🗑 Delete
 
 </button>
 
@@ -1006,11 +790,11 @@ Cancel
 
 </div>
 
-    </div>
+</div>
 
-    <!--=================================
+   <!--=========================
 EDIT USER MODAL
-==================================-->
+==========================-->
 
 <div
 id="editUserModal"
@@ -1028,7 +812,7 @@ Edit User
 
 <button
 id="closeEditUserModal"
-class="iconButton">
+class="closeBtn">
 
 ✕
 
@@ -1038,9 +822,7 @@ class="iconButton">
 
 <div class="modalBody">
 
-<div class="formGrid">
-
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -1049,12 +831,12 @@ Full Name
 </label>
 
 <input
-id="editFullname"
-type="text">
+type="text"
+id="editFullname">
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -1063,12 +845,12 @@ Phone Number
 </label>
 
 <input
-id="editPhone"
-type="text">
+type="text"
+id="editPhone">
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -1077,12 +859,14 @@ Email Address
 </label>
 
 <input
-id="editEmail"
-type="email">
+type="email"
+id="editEmail">
 
 </div>
 
-<div class="inputGroup">
+<div class="formRow">
+
+<div class="formGroup">
 
 <label>
 
@@ -1091,12 +875,12 @@ Country
 </label>
 
 <input
-id="editCountry"
-type="text">
+type="text"
+id="editCountry">
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -1118,49 +902,15 @@ VIP
 
 </option>
 
-<option value="Premium">
-
-Premium
-
-</option>
-
 </select>
 
 </div>
 
-<div class="inputGroup">
-
-<label>
-
-Account Status
-
-</label>
-
-<select id="editAccountStatus">
-
-<option value="active">
-
-Active
-
-</option>
-
-<option value="suspended">
-
-Suspended
-
-</option>
-
-<option value="frozen">
-
-Frozen
-
-</option>
-
-</select>
-
 </div>
 
-<div class="inputGroup">
+<div class="formRow">
+
+<div class="formGroup">
 
 <label>
 
@@ -1192,7 +942,37 @@ Verified
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
+
+<label>
+
+Account Status
+
+</label>
+
+<select id="editAccountStatus">
+
+<option value="active">
+
+Active
+
+</option>
+
+<option value="suspended">
+
+Suspended
+
+</option>
+
+</select>
+
+</div>
+
+</div>
+
+<div class="formRow">
+
+<div class="formGroup">
 
 <label>
 
@@ -1201,29 +981,43 @@ Level
 </label>
 
 <input
-id="editLevel"
 type="number"
+id="editLevel"
 min="1">
 
 </div>
 
+<div class="formGroup">
+
+<label>
+
+Referral Code
+
+</label>
+
+<input
+type="text"
+id="editReferralCode">
+
 </div>
 
-<div class="modalButtons">
+</div>
+
+<div class="modalFooter">
 
 <button
 id="saveUserBtn"
-class="primaryButton">
+class="primaryBtn">
 
 💾 Save User
 
 </button>
 
 <button
-id="cancelEditUserBtn"
-class="secondaryButton">
+id="freezeAccountBtn"
+class="warningBtn">
 
-Cancel
+❄ Freeze Account
 
 </button>
 
@@ -1235,9 +1029,9 @@ Cancel
 
 </div>
 
-<!--=================================
+<!--=========================
 RESET PASSWORD MODAL
-==================================-->
+==========================-->
 
 <div
 id="resetPasswordModal"
@@ -1249,13 +1043,13 @@ class="modal hidden">
 
 <h2>
 
-Reset User Password
+Reset Password
 
 </h2>
 
 <button
 id="closeResetPasswordModal"
-class="iconButton">
+class="closeBtn">
 
 ✕
 
@@ -1267,11 +1061,11 @@ class="iconButton">
 
 <p>
 
-Set a new password for this user.
+Create a new password for this user.
 
 </p>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -1280,12 +1074,12 @@ New Password
 </label>
 
 <input
-id="newPassword"
-type="password">
+type="password"
+id="newPassword">
 
 </div>
 
-<div class="inputGroup">
+<div class="formGroup">
 
 <label>
 
@@ -1294,230 +1088,21 @@ Confirm Password
 </label>
 
 <input
-id="confirmPassword"
-type="password">
+type="password"
+id="confirmPassword">
 
 </div>
 
-<div class="modalButtons">
+<div class="modalFooter">
 
 <button
 id="confirmResetPasswordBtn"
-class="primaryButton">
+class="primaryBtn">
 
 🔑 Reset Password
 
 </button>
 
-<button
-id="cancelResetPasswordBtn"
-class="secondaryButton">
-
-Cancel
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-    </div>
-
-    <!--=================================
-VIEW MACHINE MODAL
-==================================-->
-
-<div
-id="viewMachineModal"
-class="modal hidden">
-
-<div class="modalContent large">
-
-<div class="modalHeader">
-
-<h2>
-
-Machine Details
-
-</h2>
-
-<button
-id="closeViewMachineModal"
-class="iconButton">
-
-✕
-
-</button>
-
-</div>
-
-<div class="machineDetails">
-
-<div class="machinePreview">
-
-<img
-id="viewMachineImage"
-src="images/default-machine.png"
-alt="Machine">
-
-<div>
-
-<h2 id="viewMachineName">
-
-Machine Name
-
-</h2>
-
-<p id="viewMachineSeries">
-
-Series
-
-</p>
-
-<span
-id="viewMachineBadge"
-class="badge active">
-
-ACTIVE
-
-</span>
-
-</div>
-
-</div>
-
-<div class="detailsGrid">
-
-<div class="detailItem">
-
-<label>Purchase Amount</label>
-
-<h3 id="viewPurchaseAmount">
-
-UGX 0
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>Purchase Date</label>
-
-<h3 id="viewPurchaseDate">
-
---
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>Expiry Date</label>
-
-<h3 id="viewExpiryDate">
-
---
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>Duration</label>
-
-<h3 id="viewDuration">
-
-0 Days
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>Days Remaining</label>
-
-<h3 id="viewDaysRemaining">
-
-0 Days
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>Daily Income</label>
-
-<h3 id="viewDailyIncome">
-
-UGX 0
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>Total Return</label>
-
-<h3 id="viewTotalReturn">
-
-UGX 0
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>Earned Amount</label>
-
-<h3 id="viewEarnedAmount">
-
-UGX 0
-
-</h3>
-
-</div>
-
-<div class="detailItem">
-
-<label>VIP</label>
-
-<h3 id="viewVipStatus">
-
-No
-
-</h3>
-
-</div>
-
-</div>
-
-<div class="modalButtons">
-
-<button
-id="editMachineFromViewBtn"
-class="primaryButton">
-
-✏ Edit Machine
-
-</button>
-
-<button
-id="closeMachineViewBtn"
-class="secondaryButton">
-
-Close
-
-</button>
-
 </div>
 
 </div>
@@ -1526,75 +1111,9 @@ Close
 
 </div>
 
-<!--=================================
-FREEZE ACCOUNT MODAL
-==================================-->
-
-<div
-id="freezeModal"
-class="modal hidden">
-
-<div class="modalContent">
-
-<div class="modalHeader">
-
-<h2>
-
-Freeze Account
-
-</h2>
-
-<button
-id="closeFreezeModal"
-class="iconButton">
-
-✕
-
-</button>
-
-</div>
-
-<div class="modalBody">
-
-<p>
-
-The user will not be able to access their account until you unfreeze it.
-
-</p>
-
-<textarea
-id="freezeReason"
-placeholder="Enter reason for freezing this account..."></textarea>
-
-<div class="modalButtons">
-
-<button
-id="confirmFreezeBtn"
-class="dangerButton">
-
-❄ Freeze Account
-
-</button>
-
-<button
-id="confirmUnfreezeBtn"
-class="primaryButton">
-
-✅ Unfreeze
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-    </div>
-
-    <!--=================================
+   <!--=========================
 LOADING SCREEN
-==================================-->
+==========================-->
 
 <div
 id="loadingScreen"
@@ -1604,22 +1123,21 @@ class="loadingScreen hidden">
 
 <p>
 
-Loading user information...
+Loading...
 
 </p>
 
 </div>
 
-<!--=================================
+<!--=========================
 TOAST MESSAGE
-==================================-->
+==========================-->
 
 <div
 id="toast"
-class="toast hidden">
+class="toast">
 
-<span
-id="toastMessage">
+<span id="toastText">
 
 Success
 
@@ -1627,9 +1145,9 @@ Success
 
 </div>
 
-<!--=================================
-OVERLAY
-==================================-->
+<!--=========================
+PAGE OVERLAY
+==========================-->
 
 <div
 id="overlay"
@@ -1637,73 +1155,68 @@ class="overlay hidden">
 
 </div>
 
-<!--=================================
-BOTTOM MENU
-==================================-->
+<!--=========================
+BOTTOM ACTION BAR
+==========================-->
 
-<div
-id="menuSheet"
-class="bottomSheet">
+<nav class="bottomBar">
 
 <button
-data-page="admin-dashboard.html">
+id="homeBtn"
+class="bottomBtn">
 
-📊 Dashboard
+🏠
+
+<span>Dashboard</span>
 
 </button>
 
 <button
-data-page="admin-users.html">
+id="usersBtn"
+class="bottomBtn active">
 
-👥 Users
+👥
 
-</button>
-
-<button
-data-page="admin-user-machines.html"
-class="active">
-
-🖥 User Machines
+<span>Users</span>
 
 </button>
 
 <button
-data-page="admin-machines.html">
+id="machinesBtn"
+class="bottomBtn">
 
-⚙ Machine Plans
+🖥️
 
-</button>
-
-<button
-data-page="admin-support.html">
-
-💬 Support
+<span>Machines</span>
 
 </button>
 
 <button
-data-page="admin-settings.html">
+id="supportBtn"
+class="bottomBtn">
 
-⚙ Settings
+💬
+
+<span>Support</span>
 
 </button>
-
-<hr>
 
 <button
-id="logoutBtn"
-class="dangerButton">
+id="settingsBtn"
+class="bottomBtn">
 
-🚪 Logout
+⚙️
+
+<span>Settings</span>
 
 </button>
+
+</nav>
 
 </div>
 
 <script src="admin-user-machines.js"></script>
 
-</div>
-
 </body>
 
-    </html>
+</html> 
