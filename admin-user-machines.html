@@ -176,7 +176,7 @@ VIP Users
 
 </div>
 
-    </section>
+</section>
 
     <!--=================================
 USERS PANEL
@@ -1006,7 +1006,7 @@ Cancel
 
 </div>
 
-</div>
+    </div>
 
     <!--=================================
 EDIT USER MODAL
@@ -1324,3 +1324,386 @@ Cancel
 </div>
 
     </div>
+
+    <!--=================================
+VIEW MACHINE MODAL
+==================================-->
+
+<div
+id="viewMachineModal"
+class="modal hidden">
+
+<div class="modalContent large">
+
+<div class="modalHeader">
+
+<h2>
+
+Machine Details
+
+</h2>
+
+<button
+id="closeViewMachineModal"
+class="iconButton">
+
+✕
+
+</button>
+
+</div>
+
+<div class="machineDetails">
+
+<div class="machinePreview">
+
+<img
+id="viewMachineImage"
+src="images/default-machine.png"
+alt="Machine">
+
+<div>
+
+<h2 id="viewMachineName">
+
+Machine Name
+
+</h2>
+
+<p id="viewMachineSeries">
+
+Series
+
+</p>
+
+<span
+id="viewMachineBadge"
+class="badge active">
+
+ACTIVE
+
+</span>
+
+</div>
+
+</div>
+
+<div class="detailsGrid">
+
+<div class="detailItem">
+
+<label>Purchase Amount</label>
+
+<h3 id="viewPurchaseAmount">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>Purchase Date</label>
+
+<h3 id="viewPurchaseDate">
+
+--
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>Expiry Date</label>
+
+<h3 id="viewExpiryDate">
+
+--
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>Duration</label>
+
+<h3 id="viewDuration">
+
+0 Days
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>Days Remaining</label>
+
+<h3 id="viewDaysRemaining">
+
+0 Days
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>Daily Income</label>
+
+<h3 id="viewDailyIncome">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>Total Return</label>
+
+<h3 id="viewTotalReturn">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>Earned Amount</label>
+
+<h3 id="viewEarnedAmount">
+
+UGX 0
+
+</h3>
+
+</div>
+
+<div class="detailItem">
+
+<label>VIP</label>
+
+<h3 id="viewVipStatus">
+
+No
+
+</h3>
+
+</div>
+
+</div>
+
+<div class="modalButtons">
+
+<button
+id="editMachineFromViewBtn"
+class="primaryButton">
+
+✏ Edit Machine
+
+</button>
+
+<button
+id="closeMachineViewBtn"
+class="secondaryButton">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!--=================================
+FREEZE ACCOUNT MODAL
+==================================-->
+
+<div
+id="freezeModal"
+class="modal hidden">
+
+<div class="modalContent">
+
+<div class="modalHeader">
+
+<h2>
+
+Freeze Account
+
+</h2>
+
+<button
+id="closeFreezeModal"
+class="iconButton">
+
+✕
+
+</button>
+
+</div>
+
+<div class="modalBody">
+
+<p>
+
+The user will not be able to access their account until you unfreeze it.
+
+</p>
+
+<textarea
+id="freezeReason"
+placeholder="Enter reason for freezing this account..."></textarea>
+
+<div class="modalButtons">
+
+<button
+id="confirmFreezeBtn"
+class="dangerButton">
+
+❄ Freeze Account
+
+</button>
+
+<button
+id="confirmUnfreezeBtn"
+class="primaryButton">
+
+✅ Unfreeze
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+    </div>
+
+    <!--=================================
+LOADING SCREEN
+==================================-->
+
+<div
+id="loadingScreen"
+class="loadingScreen hidden">
+
+<div class="loader"></div>
+
+<p>
+
+Loading user information...
+
+</p>
+
+</div>
+
+<!--=================================
+TOAST MESSAGE
+==================================-->
+
+<div
+id="toast"
+class="toast hidden">
+
+<span
+id="toastMessage">
+
+Success
+
+</span>
+
+</div>
+
+<!--=================================
+OVERLAY
+==================================-->
+
+<div
+id="overlay"
+class="overlay hidden">
+
+</div>
+
+<!--=================================
+BOTTOM MENU
+==================================-->
+
+<div
+id="menuSheet"
+class="bottomSheet">
+
+<button
+data-page="admin-dashboard.html">
+
+📊 Dashboard
+
+</button>
+
+<button
+data-page="admin-users.html">
+
+👥 Users
+
+</button>
+
+<button
+data-page="admin-user-machines.html"
+class="active">
+
+🖥 User Machines
+
+</button>
+
+<button
+data-page="admin-machines.html">
+
+⚙ Machine Plans
+
+</button>
+
+<button
+data-page="admin-support.html">
+
+💬 Support
+
+</button>
+
+<button
+data-page="admin-settings.html">
+
+⚙ Settings
+
+</button>
+
+<hr>
+
+<button
+id="logoutBtn"
+class="dangerButton">
+
+🚪 Logout
+
+</button>
+
+</div>
+
+<script src="admin-user-machines.js"></script>
+
+</div>
+
+</body>
+
+    </html>
