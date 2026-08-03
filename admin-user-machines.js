@@ -430,3 +430,721 @@ m => m.status === "paused"
 totalMachines.textContent = userMachines.length;
 
 }
+
+/*=========================================
+RENDER MACHINES
+=========================================*/
+
+function renderMachines(){
+
+const machinesList =
+document.getElementById("machinesList");
+
+machinesList.innerHTML = "";
+
+if(userMachines.length === 0){
+
+machinesList.innerHTML = `
+<div class="emptyCard">
+<h3>No Purchased Machines</h3>
+<p>This user has no machines.</p>
+</div>
+`;
+
+return;
+
+}
+
+userMachines.forEach(machine=>{
+
+const card = document.createElement("div");
+
+card.className = "machineCard";
+
+card.innerHTML = `
+
+<img
+class="machineImage"
+src="${machine.machine_image || 'images/default-machine.png'}">
+
+<div class="machineInfo">
+
+<h3>${machine.machine_name}</h3>
+
+<p>
+
+Amount Paid
+
+<b>
+
+UGX ${Number(machine.amount_paid||0).toLocaleString()}
+
+</b>
+
+</p>
+
+<p>
+
+Earned
+
+<b>
+
+UGX ${Number(machine.earned_amount||0).toLocaleString()}
+
+</b>
+
+</p>
+
+<p>
+
+Purchase
+
+<b>
+
+${formatDate(machine.purchase_date)}
+
+</b>
+
+</p>
+
+<p>
+
+Expiry
+
+<b>
+
+${formatDate(machine.expiry_date)}
+
+</b>
+
+</p>
+
+<div class="machineBadges">
+
+<span class="badge">
+
+${machine.status}
+
+</span>
+
+${machine.is_vip ?
+
+'<span class="badge membershipBadge">VIP</span>'
+
+:
+
+''}
+
+</div>
+
+<div class="machineButtons">
+
+<button
+class="primaryBtn"
+onclick="editMachine('${machine.id}')">
+
+✏ Edit
+
+</button>
+
+<button
+class="secondaryBtn"
+onclick="toggleMachine('${machine.id}')">
+
+${machine.status==="paused"
+
+? "▶ Resume"
+
+: "⏸ Pause"}
+
+</button>
+
+<button
+class="dangerBtn"
+onclick="deleteMachine('${machine.id}')">
+
+🗑 Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+machinesList.appendChild(card);
+
+});
+
+}
+
+/*=========================================
+FORMAT DATE
+=========================================*/
+
+function formatDate(date){
+
+if(!date) return "--";
+
+return new Date(date)
+
+.toLocaleDateString();
+
+}
+
+/*=========================================
+REFRESH MACHINES
+=========================================*/
+
+document
+
+.getElementById("refreshMachinesBtn")
+
+.addEventListener("click",()=>{
+
+loadUserMachines();
+
+});
+
+/*=========================================
+EDIT MACHINE
+=========================================*/
+
+let editingMachine = null;
+
+function editMachine(machineId){
+
+editingMachine = userMachines.find(
+m => m.id === machineId
+);
+
+if(!editingMachine) return;
+
+document.getElementById("machineModal").classList.remove("hidden");
+
+document.getElementById("machineModalTitle").textContent =
+"Edit Machine";
+
+document.getElementById("machineSelect").value =
+editingMachine.machine_id || "";
+
+document.getElementById("machineAmountPaid").value =
+editingMachine.amount_paid || 0;
+
+document.getElementById("machinePurchaseDate").value =
+editingMachine.purchase_date ?
+editingMachine.purchase_date.substring(0,10) : "";
+
+document.getElementById("machineExpiryDate").value =
+editingMachine.expiry_date ?
+editingMachine.expiry_date.substring(0,10) : "";
+
+document.getElementById("machineStatus").value =
+editingMachine.status || "active";
+
+document.getElementById("machineVip").value =
+editingMachine.is_vip ? "true" : "false";
+
+}
+
+/*=========================================
+ASSIGN MACHINE
+=========================================*/
+
+document.getElementById("assignMachineBtn")
+.addEventListener("click",()=>{
+
+editingMachine = null;
+
+document.getElementById("machineModalTitle").textContent =
+"Assign Machine";
+
+document.getElementById("machineModal").classList.remove("hidden");
+
+document.getElementById("machineSelect").value = "";
+document.getElementById("machineAmountPaid").value = "";
+document.getElementById("machinePurchaseDate").value = "";
+document.getElementById("machineExpiryDate").value = "";
+document.getElementById("machineStatus").value = "active";
+document.getElementById("machineVip").value = "false";
+
+});
+
+/*=========================================
+SAVE MACHINE
+=========================================*/
+
+document.getElementById("saveMachineBtn")
+.addEventListener("click",saveMachine);
+
+async function saveMachine(){
+
+const data = {
+
+machine_id:
+document.getElementById("machineSelect").value,
+
+amount_paid:Number(
+document.getElementById("machineAmountPaid").value
+),
+
+purchase_date:
+document.getElementById("machinePurchaseDate").value,
+
+expiry_date:
+document.getElementById("machineExpiryDate").value,
+
+status:
+document.getElementById("machineStatus").value,
+
+is_vip:
+document.getElementById("machineVip").value==="true"
+
+};
+
+let error;
+
+if(editingMachine){
+
+({error} = await db
+
+.from("user_machines")
+
+.update(data)
+
+.eq("id",editingMachine.id));
+
+}else{
+
+data.user_id = selectedUser.id;
+
+const plan = machinePlans.find(
+
+m=>m.id===data.machine_id
+
+);
+
+if(plan){
+
+data.machine_name = plan.name;
+data.machine_image = plan.image_url;
+
+}
+
+({error} = await db
+
+.from("user_machines")
+
+.insert(data));
+
+}
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+document.getElementById("machineModal")
+.classList.add("hidden");
+
+await loadUserMachines();
+
+}
+
+/*=========================================
+DELETE MACHINE
+=========================================*/
+
+async function deleteMachine(machineId){
+
+if(!confirm("Delete this machine?")) return;
+
+const {error} = await db
+
+.from("user_machines")
+
+.delete()
+
+.eq("id",machineId);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+await loadUserMachines();
+
+}
+
+/*=========================================
+PAUSE / RESUME
+=========================================*/
+
+async function toggleMachine(machineId){
+
+const machine = userMachines.find(
+
+m=>m.id===machineId
+
+);
+
+if(!machine) return;
+
+const newStatus =
+
+machine.status==="paused"
+
+? "active"
+
+: "paused";
+
+const {error} = await db
+
+.from("user_machines")
+
+.update({
+
+status:newStatus
+
+})
+
+.eq("id",machineId);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+await loadUserMachines();
+
+  }
+
+/*=========================================
+EDIT USER
+=========================================*/
+
+document.getElementById("editUserBtn")
+.addEventListener("click", openEditUser);
+
+function openEditUser(){
+
+if(!selectedUser) return;
+
+document.getElementById("editUserModal")
+.classList.remove("hidden");
+
+document.getElementById("editFullname").value =
+selectedUser.fullname || "";
+
+document.getElementById("editPhone").value =
+selectedUser.phone || "";
+
+document.getElementById("editEmail").value =
+selectedUser.email || "";
+
+document.getElementById("editCountry").value =
+selectedUser.country || "";
+
+document.getElementById("editMembership").value =
+selectedUser.membership || "Standard";
+
+document.getElementById("editKycStatus").value =
+selectedUser.kyc_status || "Not Verified";
+
+document.getElementById("editAccountStatus").value =
+selectedUser.account_status || "active";
+
+document.getElementById("editLevel").value =
+selectedUser.level || 1;
+
+document.getElementById("editReferralCode").value =
+selectedUser.referral_code || "";
+
+}
+
+/*=========================================
+SAVE USER
+=========================================*/
+
+document.getElementById("saveUserBtn")
+.addEventListener("click", saveUser);
+
+async function saveUser(){
+
+const updates = {
+
+fullname:
+document.getElementById("editFullname").value,
+
+phone:
+document.getElementById("editPhone").value,
+
+email:
+document.getElementById("editEmail").value,
+
+country:
+document.getElementById("editCountry").value,
+
+membership:
+document.getElementById("editMembership").value,
+
+kyc_status:
+document.getElementById("editKycStatus").value,
+
+account_status:
+document.getElementById("editAccountStatus").value,
+
+level:Number(
+document.getElementById("editLevel").value
+),
+
+referral_code:
+document.getElementById("editReferralCode").value
+
+};
+
+const { error } = await db
+
+.from("profiles")
+
+.update(updates)
+
+.eq("id", selectedUser.id);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+document.getElementById("editUserModal")
+.classList.add("hidden");
+
+await loadUsers();
+
+selectedUser = users.find(
+u => u.id === selectedUser.id
+);
+
+loadUserProfile();
+
+}
+
+/*=========================================
+FREEZE / UNFREEZE USER
+=========================================*/
+
+document.getElementById("freezeAccountBtn")
+.addEventListener("click", freezeUser);
+
+async function freezeUser(){
+
+const frozen = !selectedUser.is_frozen;
+
+const { error } = await db
+
+.from("profiles")
+
+.update({
+
+is_frozen: frozen
+
+})
+
+.eq("id", selectedUser.id);
+
+if(error){
+
+alert(error.message);
+
+return;
+
+}
+
+selectedUser.is_frozen = frozen;
+
+await loadUsers();
+
+loadUserProfile();
+
+alert(
+
+frozen
+
+? "Account Frozen"
+
+: "Account Activated"
+
+);
+
+}
+
+/*=========================================
+LOGOUT
+=========================================*/
+
+document.getElementById("logoutBtn")
+.addEventListener("click", async()=>{
+
+if(!confirm("Logout?")) return;
+
+await db.auth.signOut();
+
+window.location.href = "admin-login.html";
+
+});
+
+/*=========================================
+RESET PASSWORD
+=========================================*/
+
+document.getElementById("resetPasswordBtn")
+.addEventListener("click",()=>{
+
+document.getElementById("resetPasswordModal")
+.classList.remove("hidden");
+
+});
+
+document.getElementById("confirmResetPasswordBtn")
+.addEventListener("click",()=>{
+
+const password =
+document.getElementById("newPassword").value.trim();
+
+const confirm =
+document.getElementById("confirmPassword").value.trim();
+
+if(password.length < 6){
+
+alert("Password must be at least 6 characters.");
+
+return;
+
+}
+
+if(password !== confirm){
+
+alert("Passwords do not match.");
+
+return;
+
+}
+
+alert(
+"Supabase Auth passwords cannot be changed from JavaScript.\n\nUse a secure Admin API or Supabase Edge Function."
+);
+
+});
+
+/*=========================================
+CLOSE MODALS
+=========================================*/
+
+document.getElementById("closeMachineModal")
+.onclick=()=>{
+
+document.getElementById("machineModal")
+.classList.add("hidden");
+
+};
+
+document.getElementById("closeEditUserModal")
+.onclick=()=>{
+
+document.getElementById("editUserModal")
+.classList.add("hidden");
+
+};
+
+document.getElementById("closeResetPasswordModal")
+.onclick=()=>{
+
+document.getElementById("resetPasswordModal")
+.classList.add("hidden");
+
+};
+
+/*=========================================
+REFRESH BUTTONS
+=========================================*/
+
+document.getElementById("refreshBtn")
+.addEventListener("click",async()=>{
+
+showLoading();
+
+await loadUsers();
+
+hideLoading();
+
+});
+
+document.getElementById("refreshMachinesBtn")
+.addEventListener("click",async()=>{
+
+if(selectedUser){
+
+showLoading();
+
+await loadUserMachines();
+
+hideLoading();
+
+}
+
+});
+
+/*=========================================
+TOAST
+=========================================*/
+
+function showToast(message){
+
+const toast =
+document.getElementById("toast");
+
+const text =
+document.getElementById("toastText");
+
+text.textContent = message;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},3000);
+
+}
+
+/*=========================================
+WINDOW FUNCTIONS
+=========================================*/
+
+window.editMachine = editMachine;
+window.deleteMachine = deleteMachine;
+window.toggleMachine = toggleMachine;
+
+/*=========================================
+READY
+=========================================*/
+
+console.log("================================");
+console.log("ADMIN USER MACHINES LOADED");
+console.log("Version 1.0");
+console.log("Supabase Connected");
+console.log("================================");
