@@ -1,1454 +1,1407 @@
-/*==================================================
-ADMIN USER MACHINES
-PART 1
-==================================================*/
+/*====================================
+RESET
+====================================*/
 
-/*==================================================
-SUPABASE
-==================================================*/
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-const db = window.supabaseClient;
+html{
 
-/*==================================================
-GLOBAL VARIABLES
-==================================================*/
+scroll-behavior:smooth;
 
-let users = [];
-let selectedUser = null;
+}
 
-let userMachines = [];
-let userReferrals = [];
-let userActivities = [];
+body{
 
-let selectedMachine = null;
+font-family:Arial,Helvetica,sans-serif;
 
-/*==================================================
-ELEMENTS
-==================================================*/
+background:#081321;
 
-/* Search */
+color:#ffffff;
 
-const searchInput = document.getElementById("searchInput");
-const searchBtn = document.getElementById("searchBtn");
+}
 
-/* User List */
+/*====================================
+ROOT
+====================================*/
 
-const usersContainer = document.getElementById("usersContainer");
+:root{
 
-/* Empty State */
+--primary:#00d26a;
 
-const emptyState = document.getElementById("emptyState");
+--primary-dark:#00b95d;
 
-/* Dashboard */
+--danger:#ff4d4f;
 
-const userDashboard = document.getElementById("userDashboard");
+--warning:#ffb300;
 
-/* Statistics */
+--blue:#2d8cff;
 
-const totalUsers = document.getElementById("totalUsers");
-const activeUsers = document.getElementById("activeUsers");
-const totalMachines = document.getElementById("totalMachines");
-const vipUsers = document.getElementById("vipUsers");
-const userCount = document.getElementById("userCount");
+--card:#101d31;
 
-/* Profile */
+--card2:#16263d;
 
-const userAvatar = document.getElementById("userAvatar");
-const userName = document.getElementById("userName");
-const userPhone = document.getElementById("userPhone");
+--border:#223754;
 
-const membershipBadge = document.getElementById("membershipBadge");
-const statusBadge = document.getElementById("statusBadge");
-const kycBadge = document.getElementById("kycBadge");
+--text:#ffffff;
 
-/* Overview */
+--text2:#9fb2c8;
 
-const walletBalance = document.getElementById("walletBalance");
-const totalInvested = document.getElementById("totalInvested");
-const totalProfit = document.getElementById("totalProfit");
-const ownedMachines = document.getElementById("ownedMachines");
+--shadow:0 12px 30px rgba(0,0,0,.35);
 
-/* Containers */
+--radius:18px;
 
-const machineList = document.getElementById("machineList");
-const referralsList = document.getElementById("referralsList");
-const activityList = document.getElementById("activityList");
+}
 
-/*==================================================
-START
-==================================================*/
+/*====================================
+APP
+====================================*/
 
-document.addEventListener("DOMContentLoaded", () => {
+.app{
 
-    initialize();
+max-width:650px;
 
-});
+margin:auto;
 
-/*==================================================
-INITIALIZE
-==================================================*/
+padding:18px;
 
-async function initialize() {
+min-height:100vh;
 
-    try {
+}
 
-        await loadUsers();
+/*====================================
+HEADER
+====================================*/
 
-        setupEvents();
+.header{
 
-    } catch (err) {
+display:flex;
 
-        console.error(err);
+justify-content:space-between;
 
-        showToast(err.message, "error");
+align-items:center;
+
+margin-bottom:20px;
+
+}
+
+.headerLeft{
+
+display:flex;
+
+align-items:center;
+
+gap:15px;
+
+}
+
+.headerLeft h1{
+
+font-size:24px;
+
+font-weight:700;
+
+}
+
+.headerLeft p{
+
+margin-top:4px;
+
+font-size:13px;
+
+color:var(--text2);
+
+}
+
+.headerRight{
+
+display:flex;
+
+gap:10px;
+
+}
+
+/*====================================
+ICON BUTTON
+====================================*/
+
+.iconButton{
+
+width:46px;
+
+height:46px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--card);
+
+color:#fff;
+
+font-size:20px;
+
+cursor:pointer;
+
+transition:.25s;
+
+box-shadow:var(--shadow);
+
+}
+
+.iconButton:hover{
+
+background:var(--primary);
+
+transform:translateY(-2px);
+
+}
+
+/*====================================
+SEARCH
+====================================*/
+
+.searchSection{
+
+margin-bottom:20px;
+
+}
+
+.searchBox{
+
+display:flex;
+
+align-items:center;
+
+background:var(--card);
+
+border:1px solid var(--border);
+
+border-radius:16px;
+
+overflow:hidden;
+
+box-shadow:var(--shadow);
+
+}
+
+.searchBox input{
+
+flex:1;
+
+padding:16px;
+
+background:transparent;
+
+border:none;
+
+outline:none;
+
+color:var(--text);
+
+font-size:15px;
+
+}
+
+.searchBox input::placeholder{
+
+color:var(--text2);
+
+}
+
+.searchBox button{
+
+width:60px;
+
+height:55px;
+
+border:none;
+
+background:var(--primary);
+
+color:#fff;
+
+font-size:20px;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.searchBox button:hover{
+
+background:var(--primary-dark);
+
+}
+
+/*====================================
+STATISTICS
+====================================*/
+
+.statsGrid{
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+margin-bottom:25px;
+
+}
+
+.statCard{
+
+background:linear-gradient(145deg,var(--card),var(--card2));
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:18px;
+
+box-shadow:var(--shadow);
+
+transition:.25s;
+
+}
+
+.statCard:hover{
+
+transform:translateY(-3px);
+
+border-color:var(--primary);
+
+}
+
+.statCard p{
+
+font-size:13px;
+
+color:var(--text2);
+
+margin-bottom:10px;
+
+}
+
+.statCard h2{
+
+font-size:28px;
+
+font-weight:700;
+
+color:var(--primary);
+
+}
+
+/*====================================
+SECTION HEADER
+====================================*/
+
+.sectionHeader{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin:25px 0 15px;
+
+}
+
+.sectionHeader h2{
+
+font-size:20px;
+
+font-weight:700;
+
+color:var(--text);
+
+}
+
+.sectionHeader span{
+
+font-size:13px;
+
+color:var(--text2);
 
     }
 
-}
+/*====================================
+USERS SECTION
+====================================*/
 
-/*==================================================
-LOAD USERS
-==================================================*/
+.usersSection{
 
-async function loadUsers() {
-
-    const { data, error } = await db
-
-        .from("profiles")
-
-        .select("*")
-
-        .order("created_at", {
-
-            ascending: false
-
-        });
-
-    if (error) throw error;
-
-    users = data || [];
-
-    updateStatistics();
-
-    renderUsers(users);
+margin-bottom:25px;
 
 }
 
-/*==================================================
-UPDATE STATISTICS
-==================================================*/
+.usersContainer{
 
-function updateStatistics() {
+display:flex;
 
-    totalUsers.textContent = users.length;
+flex-direction:column;
 
-    activeUsers.textContent = users.filter(user =>
-        user.account_status === "active"
-    ).length;
-
-    vipUsers.textContent = users.filter(user =>
-        user.membership === "VIP"
-    ).length;
-
-    userCount.textContent = `${users.length} Members`;
+gap:15px;
 
 }
 
-/*==================================================
-EVENTS
-==================================================*/
+/*====================================
+USER CARD
+====================================*/
 
-function setupEvents() {
+.userCard{
 
-    searchBtn.onclick = searchUsers;
+display:flex;
 
-    searchInput.addEventListener("keyup", e => {
+align-items:center;
 
-        if (e.key === "Enter") {
+justify-content:space-between;
 
-            searchUsers();
+padding:16px;
 
-        }
+background:linear-gradient(145deg,var(--card),var(--card2));
 
-    });
+border:1px solid var(--border);
 
-}
+border-radius:18px;
 
-/*==================================================
-PLACEHOLDERS
-(PART 2)
-==================================================*/
+cursor:pointer;
 
-function renderUsers() {}
+transition:.25s;
 
-function searchUsers() {}
-
-function selectUser() {}
-
-function showToast(message, type = "success") {
-
-    console.log(type.toUpperCase(), message);
+box-shadow:var(--shadow);
 
 }
 
-/*==================================================
-RENDER USERS
-==================================================*/
+.userCard:hover{
 
-function renderUsers(list) {
+border-color:var(--primary);
 
-    usersContainer.innerHTML = "";
-
-    if (!list.length) {
-
-        usersContainer.innerHTML = `
-            <div class="emptyMessage">
-                No users found.
-            </div>
-        `;
-
-        return;
-    }
-
-    list.forEach(user => {
-
-        const card = document.createElement("div");
-
-        card.className = "userCard";
-
-        if (selectedUser && selectedUser.id === user.id) {
-            card.classList.add("active");
-        }
-
-        card.innerHTML = `
-
-            <img
-                src="${user.avatar_url || "images/default-avatar.png"}"
-                alt="Avatar">
-
-            <div class="userInfo">
-
-                <h3>${user.fullname || "Unknown User"}</h3>
-
-                <p>${user.phone || user.email || "-"}</p>
-
-                <div class="userTags">
-
-                    <span class="userTag">
-                        ${user.membership || "Standard"}
-                    </span>
-
-                    <span class="userTag">
-                        ${user.account_status || "Active"}
-                    </span>
-
-                </div>
-
-            </div>
-
-            <div class="userArrow">
-                ›
-            </div>
-
-        `;
-
-        card.onclick = () => selectUser(user);
-
-        usersContainer.appendChild(card);
-
-    });
+transform:translateY(-2px);
 
 }
 
-/*==================================================
-SEARCH USERS
-==================================================*/
+.userCard.active{
 
-function searchUsers() {
-
-    const keyword = searchInput.value
-        .trim()
-        .toLowerCase();
-
-    if (!keyword) {
-
-        renderUsers(users);
-
-        return;
-
-    }
-
-    const filtered = users.filter(user =>
-
-        (user.fullname || "")
-            .toLowerCase()
-            .includes(keyword)
-
-        ||
-
-        (user.phone || "")
-            .toLowerCase()
-            .includes(keyword)
-
-        ||
-
-        (user.email || "")
-            .toLowerCase()
-            .includes(keyword)
-
-    );
-
-    renderUsers(filtered);
+border:2px solid var(--primary);
 
 }
 
-/*==================================================
-SELECT USER
-==================================================*/
+.userLeft{
 
-async function selectUser(user) {
+display:flex;
 
-    selectedUser = user;
+align-items:center;
 
-    renderUsers(users);
-
-    emptyState.classList.add("hidden");
-
-    userDashboard.classList.remove("hidden");
-
-    fillUserProfile();
-
-    try {
-
-        await loadUserMachines();
-
-        await loadUserReferrals();
-
-        await loadUserActivity();
-
-    } catch (err) {
-
-        console.error(err);
-
-    }
+gap:15px;
 
 }
 
-/*==================================================
-FILL USER PROFILE
-==================================================*/
+.userAvatar{
 
-function fillUserProfile() {
+width:60px;
 
-    if (!selectedUser) return;
+height:60px;
 
-    userAvatar.src =
-        selectedUser.avatar_url ||
-        "images/default-avatar.png";
+border-radius:50%;
 
-    userName.textContent =
-        selectedUser.fullname || "-";
+object-fit:cover;
 
-    userPhone.textContent =
-        selectedUser.phone ||
-        selectedUser.email ||
-        "-";
+border:3px solid var(--primary);
 
-    membershipBadge.textContent =
-        selectedUser.membership || "Standard";
+background:#0b1627;
 
-    statusBadge.textContent =
-        selectedUser.account_status || "Active";
+}
 
-    kycBadge.textContent =
-        selectedUser.kyc_status || "Not Verified";
+.userInfo h3{
 
-    walletBalance.textContent =
-        `UGX ${Number(selectedUser.wallet_balance || 0).toLocaleString()}`;
+font-size:17px;
 
-    totalInvested.textContent =
-        `UGX ${Number(selectedUser.total_invested || 0).toLocaleString()}`;
+margin-bottom:4px;
 
-    totalProfit.textContent =
-        `UGX ${Number(selectedUser.total_profit || 0).toLocaleString()}`;
+}
 
-    ownedMachines.textContent = "0";
+.userInfo p{
 
-    /* Profile Tab */
+font-size:13px;
 
-    document.getElementById("profileEmail").textContent =
-        selectedUser.email || "-";
+color:var(--text2);
 
-    document.getElementById("profileCountry").textContent =
-        selectedUser.country || "-";
+margin-top:2px;
 
-    document.getElementById("profileMembership").textContent =
-        selectedUser.membership || "Standard";
+}
 
-    document.getElementById("profileKyc").textContent =
-        selectedUser.kyc_status || "Not Verified";
+.userRight{
 
-    document.getElementById("profileLevel").textContent =
-        selectedUser.level || "1";
+display:flex;
 
-    document.getElementById("profileLastLogin").textContent =
-        selectedUser.last_login || "-";
+flex-direction:column;
 
-                                  }
+align-items:flex-end;
 
-/*==================================================
-PART 3
-LOAD & RENDER USER MACHINES
-==================================================*/
+gap:8px;
 
-async function loadUserMachines() {
+}
 
-    if (!selectedUser) return;
+/*====================================
+BADGES
+====================================*/
 
-    try {
+.badge{
 
-        const { data, error } = await db
+padding:6px 12px;
 
-            .from("user_machines")
+border-radius:30px;
 
-            .select(`
-                *,
-                machines(*)
-            `)
+font-size:12px;
 
-            .eq("user_id", selectedUser.id)
+font-weight:700;
 
-            .order("purchase_date", {
-                ascending: false
-            });
+text-align:center;
 
-        if (error) throw error;
+}
 
-        userMachines = data || [];
+.membership{
 
-        ownedMachines.textContent = userMachines.length;
+background:rgba(0,210,106,.15);
 
-        totalMachines.textContent = userMachines.length;
+color:var(--primary);
 
-        renderMachines(userMachines);
+}
 
-    } catch (err) {
+.active{
 
-        console.error(err);
+background:rgba(0,210,106,.18);
 
-        showToast("Failed to load user machines", "error");
+color:var(--primary);
+
+}
+
+.kyc{
+
+background:rgba(255,179,0,.15);
+
+color:var(--warning);
+
+}
+
+.frozen{
+
+background:rgba(255,77,79,.18);
+
+color:var(--danger);
+
+}
+
+/*====================================
+PROFILE CARD
+====================================*/
+
+.profileCard{
+
+background:linear-gradient(145deg,var(--card),var(--card2));
+
+border:1px solid var(--border);
+
+border-radius:22px;
+
+padding:22px;
+
+margin:25px 0;
+
+box-shadow:var(--shadow);
+
+}
+
+.profileTop{
+
+display:flex;
+
+align-items:center;
+
+gap:18px;
+
+margin-bottom:20px;
+
+}
+
+.profileInfo h2{
+
+font-size:22px;
+
+margin-bottom:6px;
+
+}
+
+.profileInfo p{
+
+font-size:14px;
+
+color:var(--text2);
+
+margin-top:4px;
+
+}
+
+.badgeRow{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:10px;
+
+margin-top:15px;
 
     }
 
-}
+/*====================================
+MACHINE OVERVIEW
+====================================*/
 
-/*==================================================
-RENDER MACHINES
-==================================================*/
+.machineOverview{
 
-function renderMachines(list) {
+display:grid;
 
-    machineList.innerHTML = "";
+grid-template-columns:repeat(2,1fr);
 
-    if (list.length === 0) {
+gap:15px;
 
-        machineList.innerHTML = `
-            <div class="emptyMessage">
-                This user has not purchased any machine yet.
-            </div>
-        `;
-
-        return;
-
-    }
-
-    list.forEach(machine => {
-
-        const info = machine.machines || {};
-
-        const progress = getProgress(
-            machine.purchase_date,
-            machine.expiry_date
-        );
-
-        const card = document.createElement("div");
-
-        card.className = "machineCard";
-
-        card.innerHTML = `
-
-            <img
-                class="machineImage"
-                src="${machine.machine_image || info.image_url || "images/default-machine.png"}">
-
-            <div class="machineInfo">
-
-                <h3>
-                    ${machine.machine_name || info.name || "Machine"}
-                </h3>
-
-                <p>
-                    ${info.series || "Series"}
-                </p>
-
-                <div class="machineBadges">
-
-                    <span class="machineBadge active">
-
-                        ${machine.status || "active"}
-
-                    </span>
-
-                    ${machine.is_vip ? `
-                    <span class="machineBadge vip">
-
-                        VIP
-
-                    </span>
-                    ` : ""}
-
-                </div>
-
-                <p>
-
-                    Daily Income
-
-                    <strong>
-
-                        UGX ${Number(info.daily_income || 0).toLocaleString()}
-
-                    </strong>
-
-                </p>
-
-                <div class="machineProgress">
-
-                    <span>
-
-                        ${progress.remainingDays} Days Remaining
-
-                    </span>
-
-                    <div class="progressBar">
-
-                        <div
-                            class="progressFill"
-                            style="width:${progress.percent}%">
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button
-                class="machineAction">
-
-                ⋮
-
-            </button>
-
-        `;
-
-        card.onclick = () => {
-
-            selectedMachine = machine;
-
-            viewMachine();
-
-        };
-
-        card.querySelector(".machineAction").onclick = (e) => {
-
-            e.stopPropagation();
-
-            selectedMachine = machine;
-
-            openMachineMenu();
-
-        };
-
-        machineList.appendChild(card);
-
-    });
+margin:25px 0;
 
 }
 
-/*==================================================
+.overviewCard{
+
+background:linear-gradient(145deg,var(--card),var(--card2));
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:18px;
+
+box-shadow:var(--shadow);
+
+transition:.25s;
+
+}
+
+.overviewCard:hover{
+
+transform:translateY(-3px);
+
+border-color:var(--primary);
+
+}
+
+.overviewCard p{
+
+font-size:13px;
+
+color:var(--text2);
+
+margin-bottom:8px;
+
+}
+
+.overviewCard h2{
+
+font-size:26px;
+
+font-weight:700;
+
+color:var(--primary);
+
+}
+
+/*====================================
 FILTER BUTTONS
-==================================================*/
+====================================*/
 
-document.querySelectorAll(".filterButton").forEach(btn => {
+.filterRow{
 
-    btn.onclick = () => {
+display:flex;
 
-        document.querySelectorAll(".filterButton")
-            .forEach(button => button.classList.remove("active"));
+gap:10px;
 
-        btn.classList.add("active");
+overflow-x:auto;
 
-        const filter = btn.dataset.filter;
+padding-bottom:10px;
 
-        let filtered = [...userMachines];
-
-        switch (filter) {
-
-            case "active":
-
-                filtered = filtered.filter(m =>
-                    m.status === "active"
-                );
-
-                break;
-
-            case "vip":
-
-                filtered = filtered.filter(m =>
-                    m.is_vip === true
-                );
-
-                break;
-
-            case "completed":
-
-                filtered = filtered.filter(m =>
-                    m.completed === true
-                );
-
-                break;
-
-            case "expired":
-
-                filtered = filtered.filter(m =>
-                    m.status === "expired"
-                );
-
-                break;
-
-        }
-
-        renderMachines(filtered);
-
-    };
-
-});
-
-/*==================================================
-PROGRESS
-==================================================*/
-
-function getProgress(start, end) {
-
-    if (!start || !end) {
-
-        return {
-
-            percent: 0,
-
-            remainingDays: 0
-
-        };
-
-    }
-
-    const startDate = new Date(start);
-
-    const endDate = new Date(end);
-
-    const today = new Date();
-
-    const total = endDate - startDate;
-
-    const passed = today - startDate;
-
-    let percent = (passed / total) * 100;
-
-    percent = Math.max(0, Math.min(100, percent));
-
-    const remaining = Math.max(
-        0,
-        Math.ceil((endDate - today) / 86400000)
-    );
-
-    return {
-
-        percent,
-
-        remainingDays: remaining
-
-    };
+margin-bottom:20px;
 
 }
 
-/*==================================================
-PART 4
+.filterRow::-webkit-scrollbar{
 
-Machine Menu
-
-Delete Machine
-
-VIP Toggle
-
-Status Toggle
-
-View Machine
-
-Bottom Sheets
-
-Toast
-==================================================*/
-
-/*==================================================
-PART 4
-MACHINE ACTIONS
-==================================================*/
-
-/*==================================================
-OPEN MACHINE MENU
-==================================================*/
-
-function openMachineMenu() {
-
-    if (!selectedMachine) return;
-
-    document
-        .getElementById("machineActionSheet")
-        .classList.add("show");
-
-    document
-        .getElementById("sheetOverlay")
-        .classList.add("show");
+display:none;
 
 }
 
-/*==================================================
-VIEW MACHINE
-==================================================*/
+.filterButton{
 
-function viewMachine() {
+padding:10px 18px;
 
-    if (!selectedMachine) return;
+border:none;
 
-    const machine = selectedMachine;
-    const info = machine.machines || {};
+border-radius:30px;
 
-    alert(
+background:var(--card);
 
-`Machine:
-${machine.machine_name || info.name}
+border:1px solid var(--border);
 
-Series:
-${info.series || "-"}
+color:var(--text);
 
-Status:
-${machine.status}
+cursor:pointer;
 
-VIP:
-${machine.is_vip ? "Yes" : "No"}
+white-space:nowrap;
 
-Daily Income:
-UGX ${Number(info.daily_income || 0).toLocaleString()}
+transition:.25s;
 
-Earned:
-UGX ${Number(machine.earned_amount || 0).toLocaleString()}
-
-Purchase:
-${machine.purchase_date || "-"}
-
-Expiry:
-${machine.expiry_date || "-"}`
-
-    );
+font-weight:600;
 
 }
 
-/*==================================================
-DELETE MACHINE
-==================================================*/
+.filterButton:hover{
 
-async function deleteMachine() {
-
-    if (!selectedMachine) return;
-
-    if (!confirm("Delete this machine?")) return;
-
-    try {
-
-        const { error } = await db
-
-            .from("user_machines")
-
-            .delete()
-
-            .eq("id", selectedMachine.id);
-
-        if (error) throw error;
-
-        closeSheets();
-
-        showToast("Machine deleted");
-
-        await loadUserMachines();
-
-    }
-
-    catch (err) {
-
-        console.error(err);
-
-        showToast(err.message, "error");
-
-    }
+background:var(--primary);
 
 }
 
-/*==================================================
-TOGGLE VIP
-==================================================*/
+.filterButton.active{
 
-async function toggleVIP() {
+background:var(--primary);
 
-    if (!selectedMachine) return;
-
-    try {
-
-        const { error } = await db
-
-            .from("user_machines")
-
-            .update({
-
-                is_vip: !selectedMachine.is_vip
-
-            })
-
-            .eq("id", selectedMachine.id);
-
-        if (error) throw error;
-
-        closeSheets();
-
-        showToast("VIP updated");
-
-        await loadUserMachines();
-
-    }
-
-    catch (err) {
-
-        showToast(err.message, "error");
-
-    }
+color:#fff;
 
 }
 
-/*==================================================
-CHANGE STATUS
-==================================================*/
+/*====================================
+MACHINE LIST
+====================================*/
 
-async function toggleStatus() {
+.machineList{
 
-    if (!selectedMachine) return;
+display:flex;
 
-    const status =
+flex-direction:column;
 
-        selectedMachine.status === "active"
+gap:18px;
 
-        ? "suspended"
-
-        : "active";
-
-    try {
-
-        const { error } = await db
-
-            .from("user_machines")
-
-            .update({
-
-                status: status
-
-            })
-
-            .eq("id", selectedMachine.id);
-
-        if (error) throw error;
-
-        closeSheets();
-
-        showToast("Status updated");
-
-        await loadUserMachines();
-
-    }
-
-    catch (err) {
-
-        showToast(err.message, "error");
-
-    }
+margin-bottom:25px;
 
 }
 
-/*==================================================
-EDIT MACHINE
-==================================================*/
+.machineCard{
 
-function editMachine() {
+display:flex;
 
-    showToast("Edit Machine screen coming next.");
+gap:15px;
 
-}
+background:linear-gradient(145deg,var(--card),var(--card2));
 
-/*==================================================
-EXTEND MACHINE
-==================================================*/
+border:1px solid var(--border);
 
-function extendMachine() {
+border-radius:20px;
 
-    showToast("Extend Machine screen coming next.");
+padding:16px;
 
-}
+box-shadow:var(--shadow);
 
-/*==================================================
-CLOSE SHEETS
-==================================================*/
+transition:.25s;
 
-function closeSheets() {
-
-    document
-
-        .querySelectorAll(".bottomSheet")
-
-        .forEach(sheet => {
-
-            sheet.classList.remove("show");
-
-        });
-
-    document
-
-        .getElementById("sheetOverlay")
-
-        .classList.remove("show");
+cursor:pointer;
 
 }
 
-/*==================================================
-BUTTON EVENTS
-==================================================*/
+.machineCard:hover{
 
-document
-.getElementById("viewMachineBtn")
-.onclick = viewMachine;
+transform:translateY(-3px);
 
-document
-.getElementById("deleteMachineBtn")
-.onclick = deleteMachine;
-
-document
-.getElementById("toggleVipBtn")
-.onclick = toggleVIP;
-
-document
-.getElementById("toggleStatusBtn")
-.onclick = toggleStatus;
-
-document
-.getElementById("editMachineBtn")
-.onclick = editMachine;
-
-document
-.getElementById("extendMachineBtn")
-.onclick = extendMachine;
-
-document
-.querySelectorAll(".closeSheet")
-.forEach(btn => {
-
-    btn.onclick = closeSheets;
-
-});
-
-document
-.getElementById("sheetOverlay")
-.onclick = closeSheets;
-
-/*==================================================
-PART 5
-REFERRALS
-==================================================*/
-
-async function loadUserReferrals() {
-
-    if (!selectedUser) return;
-
-    try {
-
-        const { data, error } = await db
-
-            .from("profiles")
-
-            .select("*")
-
-            .eq("referred_by", selectedUser.referral_code)
-
-            .order("created_at", {
-                ascending: false
-            });
-
-        if (error) throw error;
-
-        userReferrals = data || [];
-
-        document.getElementById("referralCount").textContent =
-            `${userReferrals.length} Users`;
-
-        renderReferrals(userReferrals);
-
-    }
-
-    catch (err) {
-
-        console.error(err);
-
-        showToast(err.message, "error");
-
-    }
+border-color:var(--primary);
 
 }
 
-/*==================================================
-RENDER REFERRALS
-==================================================*/
+.machineImage{
 
-function renderReferrals(list) {
+width:90px;
 
-    referralsList.innerHTML = "";
+height:90px;
 
-    if (!list.length) {
+border-radius:16px;
 
-        referralsList.innerHTML = `
+object-fit:cover;
 
-        <div class="emptyMessage">
-
-            No referrals yet.
-
-        </div>
-
-        `;
-
-        return;
-
-    }
-
-    list.forEach(ref => {
-
-        const card = document.createElement("div");
-
-        card.className = "referralCard";
-
-        card.innerHTML = `
-
-            <img
-                class="referralAvatar"
-                src="${ref.avatar_url || "images/default-avatar.png"}">
-
-            <div class="referralInfo">
-
-                <h4>
-
-                    ${ref.fullname || "Unknown User"}
-
-                </h4>
-
-                <p>
-
-                    ${ref.phone || ref.email || "-"}
-
-                </p>
-
-                <p>
-
-                    Referral Bonus
-
-                    <strong>
-
-                        UGX ${Number(ref.referral_bonus || 0).toLocaleString()}
-
-                    </strong>
-
-                </p>
-
-            </div>
-
-            <div>
-
-                <span class="referralStatus">
-
-                    ${ref.kyc_status || "Not Verified"}
-
-                </span>
-
-                <br><br>
-
-                <button
-                    class="primaryButton editReferralBonus"
-                    data-id="${ref.id}">
-
-                    Edit Bonus
-
-                </button>
-
-            </div>
-
-        `;
-
-        referralsList.appendChild(card);
-
-    });
-
-    document
-
-        .querySelectorAll(".editReferralBonus")
-
-        .forEach(btn => {
-
-            btn.onclick = () => {
-
-                editReferralBonus(btn.dataset.id);
-
-            };
-
-        });
+background:#0c1729;
 
 }
 
-/*==================================================
-EDIT REFERRAL BONUS
-==================================================*/
+.machineContent{
 
-async function editReferralBonus(userId) {
-
-    const user = userReferrals.find(u => u.id === userId);
-
-    if (!user) return;
-
-    const amount = prompt(
-
-        "Enter new referral bonus",
-
-        user.referral_bonus || 0
-
-    );
-
-    if (amount === null) return;
-
-    if (isNaN(amount)) {
-
-        showToast("Invalid amount", "error");
-
-        return;
-
-    }
-
-    try {
-
-        const { error } = await db
-
-            .from("profiles")
-
-            .update({
-
-                referral_bonus: Number(amount)
-
-            })
-
-            .eq("id", userId);
-
-        if (error) throw error;
-
-        showToast("Referral bonus updated");
-
-        await loadUserReferrals();
-
-    }
-
-    catch (err) {
-
-        console.error(err);
-
-        showToast(err.message, "error");
-
-    }
+flex:1;
 
 }
 
-/*==================================================
-PART 6
-ACTIVITY + UI
-==================================================*/
+.machineContent h3{
 
-/*==================================================
-LOAD USER ACTIVITY
-==================================================*/
+font-size:18px;
 
-async function loadUserActivity() {
-
-    if (!selectedUser) return;
-
-    try {
-
-        const { data, error } = await db
-
-            .from("activity_logs")
-
-            .select("*")
-
-            .eq("user_id", selectedUser.id)
-
-            .order("created_at", {
-
-                ascending: false
-
-            })
-
-            .limit(50);
-
-        if (error) throw error;
-
-        userActivities = data || [];
-
-        renderActivity(userActivities);
-
-    }
-
-    catch {
-
-        activityList.innerHTML = `
-        <div class="emptyMessage">
-            No activity found.
-        </div>
-        `;
-    }
+margin-bottom:6px;
 
 }
 
-/*==================================================
-RENDER ACTIVITY
-==================================================*/
+.machineContent p{
 
-function renderActivity(list) {
+font-size:13px;
 
-    activityList.innerHTML = "";
+color:var(--text2);
 
-    if (!list.length) {
-
-        activityList.innerHTML = `
-        <div class="emptyMessage">
-            No activity available.
-        </div>
-        `;
-
-        return;
-
-    }
-
-    list.forEach(item => {
-
-        activityList.innerHTML += `
-
-        <div class="activityCard">
-
-            <div class="activityIcon">
-                📌
-            </div>
-
-            <div class="activityBody">
-
-                <h4>${item.title || "Activity"}</h4>
-
-                <p>${item.description || ""}</p>
-
-                <div class="activityTime">
-
-                    ${new Date(item.created_at)
-                        .toLocaleString()}
-
-                </div>
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
+margin-top:4px;
 
 }
 
-/*==================================================
-TABS
-==================================================*/
+.machineBadges{
 
-document.querySelectorAll(".tabButton").forEach(btn => {
+display:flex;
 
-    btn.onclick = () => {
+gap:8px;
 
-        document.querySelectorAll(".tabButton")
-            .forEach(b => b.classList.remove("active"));
+flex-wrap:wrap;
 
-        btn.classList.add("active");
+margin-top:12px;
 
-        document.querySelectorAll(".tabContent")
-            .forEach(tab => tab.classList.remove("active"));
+}
 
-        document
-            .getElementById(btn.dataset.tab)
-            .classList.add("active");
+/*====================================
+ACTION BUTTONS
+====================================*/
 
-    };
+.actionGrid{
 
-});
+display:grid;
 
-/*==================================================
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+margin-top:20px;
+
+}
+
+.primaryButton,
+.secondaryButton,
+.dangerButton{
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+font-size:15px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.primaryButton{
+
+background:var(--primary);
+
+color:#fff;
+
+}
+
+.primaryButton:hover{
+
+background:var(--primary-dark);
+
+}
+
+.secondaryButton{
+
+background:var(--card);
+
+color:#fff;
+
+border:1px solid var(--border);
+
+}
+
+.secondaryButton:hover{
+
+border-color:var(--primary);
+
+}
+
+.dangerButton{
+
+background:var(--danger);
+
+color:#fff;
+
+}
+
+.dangerButton:hover{
+
+opacity:.9;
+
+    }
+
+/*====================================
+MODALS
+====================================*/
+
+.modal{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.65);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:20px;
+
+z-index:999;
+
+opacity:1;
+
+transition:.3s;
+
+}
+
+.modal.hidden{
+
+display:none;
+
+}
+
+.modalContent{
+
+width:100%;
+
+max-width:600px;
+
+max-height:90vh;
+
+overflow-y:auto;
+
+background:linear-gradient(145deg,var(--card),var(--card2));
+
+border:1px solid var(--border);
+
+border-radius:22px;
+
+box-shadow:var(--shadow);
+
+}
+
+.modalContent.large{
+
+max-width:750px;
+
+}
+
+.modalHeader{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+padding:20px;
+
+border-bottom:1px solid var(--border);
+
+}
+
+.modalHeader h2{
+
+font-size:22px;
+
+font-weight:700;
+
+}
+
+.modalBody{
+
+padding:20px;
+
+}
+
+/*====================================
+FORM
+====================================*/
+
+.formGrid{
+
+display:grid;
+
+grid-template-columns:1fr;
+
+gap:18px;
+
+}
+
+.inputGroup{
+
+display:flex;
+
+flex-direction:column;
+
+gap:8px;
+
+}
+
+.inputGroup label{
+
+font-size:14px;
+
+font-weight:600;
+
+color:var(--text2);
+
+}
+
+.inputGroup input,
+
+.inputGroup select,
+
+.inputGroup textarea{
+
+width:100%;
+
+padding:14px;
+
+background:#0d1a2d;
+
+border:1px solid var(--border);
+
+border-radius:14px;
+
+color:#fff;
+
+font-size:15px;
+
+outline:none;
+
+transition:.25s;
+
+}
+
+.inputGroup textarea{
+
+resize:vertical;
+
+min-height:110px;
+
+}
+
+.inputGroup input:focus,
+
+.inputGroup select:focus,
+
+.inputGroup textarea:focus{
+
+border-color:var(--primary);
+
+box-shadow:0 0 0 3px rgba(0,210,106,.15);
+
+}
+
+.inputGroup input::placeholder,
+
+.inputGroup textarea::placeholder{
+
+color:var(--text2);
+
+}
+
+/*====================================
+MODAL BUTTONS
+====================================*/
+
+.modalButtons{
+
+display:flex;
+
+gap:12px;
+
+flex-wrap:wrap;
+
+margin-top:25px;
+
+}
+
+.modalButtons button{
+
+flex:1;
+
+min-width:150px;
+
+}
+
+/*====================================
+HISTORY
+====================================*/
+
+.historyList{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+margin-top:15px;
+
+}
+
+.historyCard{
+
+background:linear-gradient(145deg,var(--card),var(--card2));
+
+border:1px solid var(--border);
+
+border-radius:18px;
+
+padding:16px;
+
+box-shadow:var(--shadow);
+
+}
+
+.historyCard h3{
+
+font-size:17px;
+
+margin-bottom:8px;
+
+}
+
+.historyCard p{
+
+font-size:13px;
+
+color:var(--text2);
+
+margin-top:4px;
+
+}
+
+/*====================================
+EMPTY STATE
+====================================*/
+
+.emptyState,
+
+.emptyStateSmall{
+
+background:linear-gradient(145deg,var(--card),var(--card2));
+
+border:1px dashed var(--border);
+
+border-radius:20px;
+
+padding:40px 20px;
+
+text-align:center;
+
+margin:20px 0;
+
+}
+
+.emptyIcon{
+
+font-size:50px;
+
+margin-bottom:15px;
+
+}
+
+.emptyState h2,
+
+.emptyStateSmall h3{
+
+margin-bottom:10px;
+
+}
+
+.emptyState p,
+
+.emptyStateSmall p{
+
+color:var(--text2);
+
+}
+
+/*====================================
+LOADING
+====================================*/
+
+.loadingScreen{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(8,19,33,.92);
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:center;
+
+align-items:center;
+
+z-index:9999;
+
+}
+
+.loadingScreen.hidden{
+
+display:none;
+
+}
+
+.loader{
+
+width:60px;
+
+height:60px;
+
+border:6px solid rgba(255,255,255,.15);
+
+border-top:6px solid var(--primary);
+
+border-radius:50%;
+
+animation:spin .8s linear infinite;
+
+margin-bottom:20px;
+
+}
+
+@keyframes spin{
+
+100%{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+/*====================================
 TOAST
-==================================================*/
+====================================*/
 
-function showToast(message, type = "success") {
+.toast{
 
-    const toast = document.getElementById("toast");
+position:fixed;
 
-    toast.className = "toast";
+bottom:30px;
 
-    toast.classList.add(type);
+left:50%;
 
-    toast.classList.add("show");
+transform:translateX(-50%);
 
-    document.getElementById("toastMessage").textContent = message;
+background:var(--primary);
 
-    setTimeout(() => {
+color:#fff;
 
-        toast.classList.remove("show");
+padding:14px 22px;
 
-    }, 3000);
+border-radius:14px;
+
+font-weight:700;
+
+box-shadow:var(--shadow);
+
+z-index:9999;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.3s;
 
 }
 
-/*==================================================
-REFRESH
-==================================================*/
+.toast.show{
 
-document.getElementById("refreshBtn").onclick = async () => {
+opacity:1;
 
-    await loadUsers();
+pointer-events:auto;
 
-    if (selectedUser) {
+}
 
-        await selectUser(selectedUser);
+/*====================================
+OVERLAY
+====================================*/
+
+.overlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.45);
+
+z-index:900;
+
+}
+
+.overlay.hidden{
+
+display:none;
+
+}
+
+/*====================================
+BOTTOM SHEET
+====================================*/
+
+.bottomSheet{
+
+position:fixed;
+
+left:0;
+
+right:0;
+
+bottom:0;
+
+background:var(--card);
+
+border-top:1px solid var(--border);
+
+padding:15px;
+
+display:grid;
+
+grid-template-columns:repeat(2,1fr);
+
+gap:12px;
+
+z-index:950;
+
+}
+
+.bottomSheet button{
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:var(--card2);
+
+color:#fff;
+
+font-size:14px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.bottomSheet button:hover{
+
+background:var(--primary);
+
+}
+
+/*====================================
+RESPONSIVE
+====================================*/
+
+@media (max-width:600px){
+
+.statsGrid,
+
+.machineOverview,
+
+.actionGrid{
+
+grid-template-columns:1fr;
+
+}
+
+.profileTop{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.machineCard{
+
+flex-direction:column;
+
+}
+
+.machineImage{
+
+width:100%;
+
+height:180px;
+
+}
+
+.modalButtons{
+
+flex-direction:column;
+
+}
+
+.bottomSheet{
+
+grid-template-columns:1fr;
+
+}
 
     }
-
-    showToast("Refreshed");
-
-};
-
-/*==================================================
-FAB
-==================================================*/
-
-document.getElementById("fab").onclick = () => {
-
-    document
-        .getElementById("quickActionSheet")
-        .classList.add("show");
-
-    document
-        .getElementById("sheetOverlay")
-        .classList.add("show");
-
-};
-
-/*==================================================
-MENU
-==================================================*/
-
-document.getElementById("menuBtn").onclick = () => {
-
-    document
-        .getElementById("menuSheet")
-        .classList.add("show");
-
-    document
-        .getElementById("sheetOverlay")
-        .classList.add("show");
-
-};
-
-/*==================================================
-MENU LINKS
-==================================================*/
-
-document.querySelectorAll("[data-page]").forEach(btn => {
-
-    btn.onclick = () => {
-
-        location.href = btn.dataset.page;
-
-    };
-
-});
-
-/*==================================================
-LOGOUT
-==================================================*/
-
-document.getElementById("logoutBtn").onclick = async () => {
-
-    const ok = confirm("Logout?");
-
-    if (!ok) return;
-
-    await db.auth.signOut();
-
-    location.href = "login.html";
-
-};
-
-/*==================================================
-QUICK ACTIONS
-==================================================*/
-
-document.getElementById("creditWalletBtn").onclick = () => {
-
-    showToast("Wallet management removed.");
-
-};
-
-document.getElementById("debitWalletBtn").onclick = () => {
-
-    showToast("Wallet management removed.");
-
-};
-
-document.getElementById("sendNotificationBtn").onclick = () => {
-
-    showToast("Notification feature coming soon.");
-
-};
-
-document.getElementById("refreshUserBtn").onclick = async () => {
-
-    if (!selectedUser) return;
-
-    await selectUser(selectedUser);
-
-    showToast("User refreshed");
-
-};
-
-/*==================================================
-FINISHED
-==================================================*/
