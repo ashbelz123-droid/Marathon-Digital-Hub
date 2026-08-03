@@ -15,8 +15,8 @@ GLOBAL VARIABLES
 
 let users = [];
 let selectedUser = null;
-let machinePlans = [];
 let userMachines = [];
+let machinePlans = [];
 
 /*=========================================
 ELEMENTS
@@ -24,87 +24,138 @@ ELEMENTS
 
 const usersList = document.getElementById("usersList");
 
+const searchInput = document.getElementById("searchInput");
+
 const totalUsers = document.getElementById("totalUsers");
 const activeUsers = document.getElementById("activeUsers");
 const totalMachines = document.getElementById("totalMachines");
 const vipMachines = document.getElementById("vipMachines");
 
+const loadingScreen =
+document.getElementById("loadingScreen");
+
 /*=========================================
-START
+LOADING
 =========================================*/
 
-document.addEventListener("DOMContentLoaded", () => {
+function showLoading(){
 
-    initialize();
+if(loadingScreen){
 
-});
-
-async function initialize() {
-
-    try {
-
-        showLoading();
-
-        await loadUsers();
-
-        hideLoading();
-
-    } catch (err) {
-
-        hideLoading();
-
-        console.error(err);
-
-        alert(err.message);
-
-    }
+loadingScreen.classList.remove("hidden");
 
 }
+
+}
+
+function hideLoading(){
+
+if(loadingScreen){
+
+loadingScreen.classList.add("hidden");
+
+}
+
+}
+
+/*=========================================
+START PAGE
+=========================================*/
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+
+try{
+
+showLoading();
+
+await loadUsers();
+
+await loadMachinePlans();
+
+hideLoading();
+
+}catch(error){
+
+hideLoading();
+
+console.error(error);
+
+alert(error.message);
+
+}
+
+});
 
 /*=========================================
 LOAD USERS
 =========================================*/
 
-async function loadUsers() {
+async function loadUsers(){
 
-    const { data, error } = await supabase
+const { data, error } = await supabase
 
-        .from("profiles")
+.from("profiles")
 
-        .select("*")
+.select("*")
 
-        .order("created_at", { ascending: false });
+.order("created_at",{ascending:false});
 
-    if (error) {
+if(error){
 
-        console.error(error);
+throw error;
 
-        alert(error.message);
+}
 
-        return;
+users = data || [];
 
-    }
-
-    users = data || [];
-
-    renderUsers();
-
-    updateStats();
+updateDashboard();
 
 }
 
 /*=========================================
-UPDATE STATS
+LOAD MACHINE PLANS
 =========================================*/
 
-function updateStats() {
+async function loadMachinePlans(){
 
-    totalUsers.textContent = users.length;
+const { data, error } = await supabase
 
-    activeUsers.textContent = users.filter(
+.from("machines")
 
-        user => !user.is_frozen
+.select("*")
 
-    ).length;
+.eq("status",true)
+
+.order("display_order");
+
+if(error){
+
+throw error;
+
+}
+
+machinePlans = data || [];
+
+}
+
+/*=========================================
+UPDATE DASHBOARD
+=========================================*/
+
+function updateDashboard(){
+
+totalUsers.textContent = users.length;
+
+activeUsers.textContent = users.filter(
+
+user=>!user.is_frozen
+
+).length;
+
+vipMachines.textContent = users.filter(
+
+user=>user.membership==="VIP"
+
+).length;
 
 }
