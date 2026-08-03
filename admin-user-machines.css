@@ -1,6 +1,6 @@
-/*====================================
+/*==================================
 RESET
-====================================*/
+==================================*/
 
 *{
 margin:0;
@@ -9,74 +9,71 @@ box-sizing:border-box;
 }
 
 html{
-
 scroll-behavior:smooth;
-
 }
 
 body{
-
 font-family:Arial,Helvetica,sans-serif;
-
-background:#081321;
-
+background:#081420;
 color:#ffffff;
-
 }
 
-/*====================================
-ROOT
-====================================*/
+/*==================================
+ROOT COLORS
+==================================*/
 
 :root{
 
 --primary:#00d26a;
+--primary-dark:#00b85d;
 
---primary-dark:#00b95d;
+--secondary:#2b8cff;
 
 --danger:#ff4d4f;
 
 --warning:#ffb300;
 
---blue:#2d8cff;
+--bg:#081420;
 
---card:#101d31;
+--card:#112235;
 
---card2:#16263d;
+--card2:#172d45;
 
---border:#223754;
+--border:#27415d;
 
 --text:#ffffff;
 
 --text2:#9fb2c8;
 
---shadow:0 12px 30px rgba(0,0,0,.35);
-
 --radius:18px;
+
+--shadow:0 12px 35px rgba(0,0,0,.35);
 
 }
 
-/*====================================
-APP
-====================================*/
+/*==================================
+CONTAINER
+==================================*/
 
-.app{
+.container{
 
-max-width:650px;
+max-width:700px;
 
 margin:auto;
 
 padding:18px;
 
+padding-bottom:120px;
+
 min-height:100vh;
 
 }
 
-/*====================================
+/*==================================
 HEADER
-====================================*/
+==================================*/
 
-.header{
+.topBar{
 
 display:flex;
 
@@ -88,27 +85,17 @@ margin-bottom:20px;
 
 }
 
-.headerLeft{
+.leftHeader h1{
 
-display:flex;
-
-align-items:center;
-
-gap:15px;
-
-}
-
-.headerLeft h1{
-
-font-size:24px;
+font-size:28px;
 
 font-weight:700;
 
+margin-bottom:5px;
+
 }
 
-.headerLeft p{
-
-margin-top:4px;
+.leftHeader p{
 
 font-size:13px;
 
@@ -116,7 +103,7 @@ color:var(--text2);
 
 }
 
-.headerRight{
+.rightHeader{
 
 display:flex;
 
@@ -124,11 +111,11 @@ gap:10px;
 
 }
 
-/*====================================
-ICON BUTTON
-====================================*/
+/*==================================
+ICON BUTTONS
+==================================*/
 
-.iconButton{
+.iconBtn{
 
 width:46px;
 
@@ -138,7 +125,7 @@ border:none;
 
 border-radius:14px;
 
-background:var(--card);
+background:linear-gradient(145deg,var(--card),var(--card2));
 
 color:#fff;
 
@@ -146,23 +133,47 @@ font-size:20px;
 
 cursor:pointer;
 
-transition:.25s;
+transition:.3s;
 
 box-shadow:var(--shadow);
 
 }
 
-.iconButton:hover{
+.iconBtn:hover{
 
 background:var(--primary);
 
-transform:translateY(-2px);
+transform:translateY(-3px);
 
 }
 
-/*====================================
-SEARCH
-====================================*/
+/*==================================
+SECTION TITLES
+==================================*/
+
+.sectionTitle{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin:25px 0 15px;
+
+}
+
+.sectionTitle h2{
+
+font-size:21px;
+
+font-weight:700;
+
+    }
+
+/*==================================
+SEARCH SECTION
+==================================*/
 
 .searchSection{
 
@@ -176,13 +187,15 @@ display:flex;
 
 align-items:center;
 
-background:var(--card);
+gap:10px;
 
-border:1px solid var(--border);
+background:linear-gradient(145deg,var(--card),var(--card2));
+
+padding:10px;
 
 border-radius:16px;
 
-overflow:hidden;
+border:1px solid var(--border);
 
 box-shadow:var(--shadow);
 
@@ -192,17 +205,17 @@ box-shadow:var(--shadow);
 
 flex:1;
 
-padding:16px;
-
-background:transparent;
-
 border:none;
 
 outline:none;
 
+background:transparent;
+
 color:var(--text);
 
 font-size:15px;
+
+padding:10px;
 
 }
 
@@ -214,21 +227,23 @@ color:var(--text2);
 
 .searchBox button{
 
-width:60px;
+width:48px;
 
-height:55px;
+height:48px;
 
 border:none;
+
+border-radius:12px;
 
 background:var(--primary);
 
 color:#fff;
 
-font-size:20px;
+font-size:18px;
 
 cursor:pointer;
 
-transition:.25s;
+transition:.3s;
 
 }
 
@@ -236,11 +251,13 @@ transition:.25s;
 
 background:var(--primary-dark);
 
+transform:scale(1.05);
+
 }
 
-/*====================================
-STATISTICS
-====================================*/
+/*==================================
+STATISTICS GRID
+==================================*/
 
 .statsGrid{
 
@@ -266,19 +283,19 @@ padding:18px;
 
 box-shadow:var(--shadow);
 
-transition:.25s;
+transition:.3s;
 
 }
 
 .statCard:hover{
 
-transform:translateY(-3px);
-
-border-color:var(--primary);
+transform:translateY(-4px);
 
 }
 
-.statCard p{
+.statCard span{
+
+display:block;
 
 font-size:13px;
 
@@ -298,51 +315,17 @@ color:var(--primary);
 
 }
 
-/*====================================
-SECTION HEADER
-====================================*/
-
-.sectionHeader{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin:25px 0 15px;
-
-}
-
-.sectionHeader h2{
-
-font-size:20px;
-
-font-weight:700;
-
-color:var(--text);
-
-}
-
-.sectionHeader span{
-
-font-size:13px;
-
-color:var(--text2);
-
-    }
-
-/*====================================
-USERS SECTION
-====================================*/
+/*==================================
+USERS LIST
+==================================*/
 
 .usersSection{
 
-margin-bottom:25px;
+margin-top:15px;
 
 }
 
-.usersContainer{
+#usersList{
 
 display:flex;
 
@@ -352,17 +335,17 @@ gap:15px;
 
 }
 
-/*====================================
+/*==================================
 USER CARD
-====================================*/
+==================================*/
 
 .userCard{
 
 display:flex;
 
-align-items:center;
-
 justify-content:space-between;
+
+align-items:center;
 
 padding:16px;
 
@@ -374,7 +357,7 @@ border-radius:18px;
 
 cursor:pointer;
 
-transition:.25s;
+transition:.3s;
 
 box-shadow:var(--shadow);
 
@@ -384,7 +367,7 @@ box-shadow:var(--shadow);
 
 border-color:var(--primary);
 
-transform:translateY(-2px);
+transform:translateY(-3px);
 
 }
 
@@ -400,7 +383,9 @@ display:flex;
 
 align-items:center;
 
-gap:15px;
+gap:14px;
+
+flex:1;
 
 }
 
@@ -416,7 +401,7 @@ object-fit:cover;
 
 border:3px solid var(--primary);
 
-background:#0b1627;
+background:#1b2d42;
 
 }
 
@@ -424,7 +409,7 @@ background:#0b1627;
 
 font-size:17px;
 
-margin-bottom:4px;
+margin-bottom:5px;
 
 }
 
@@ -436,73 +421,29 @@ color:var(--text2);
 
 margin-top:2px;
 
+word-break:break-word;
+
 }
 
 .userRight{
 
 display:flex;
 
-flex-direction:column;
+align-items:center;
 
-align-items:flex-end;
-
-gap:8px;
+justify-content:center;
 
 }
 
-/*====================================
-BADGES
-====================================*/
+/*==================================
+USER PROFILE
+==================================*/
 
-.badge{
+#userProfileSection{
 
-padding:6px 12px;
-
-border-radius:30px;
-
-font-size:12px;
-
-font-weight:700;
-
-text-align:center;
+margin-top:25px;
 
 }
-
-.membership{
-
-background:rgba(0,210,106,.15);
-
-color:var(--primary);
-
-}
-
-.active{
-
-background:rgba(0,210,106,.18);
-
-color:var(--primary);
-
-}
-
-.kyc{
-
-background:rgba(255,179,0,.15);
-
-color:var(--warning);
-
-}
-
-.frozen{
-
-background:rgba(255,77,79,.18);
-
-color:var(--danger);
-
-}
-
-/*====================================
-PROFILE CARD
-====================================*/
 
 .profileCard{
 
@@ -510,17 +451,17 @@ background:linear-gradient(145deg,var(--card),var(--card2));
 
 border:1px solid var(--border);
 
-border-radius:22px;
+border-radius:20px;
 
-padding:22px;
-
-margin:25px 0;
+padding:20px;
 
 box-shadow:var(--shadow);
 
+margin-bottom:20px;
+
 }
 
-.profileTop{
+.profileHeader{
 
 display:flex;
 
@@ -528,15 +469,35 @@ align-items:center;
 
 gap:18px;
 
-margin-bottom:20px;
+}
+
+.profileAvatar{
+
+width:90px;
+
+height:90px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+border:4px solid var(--primary);
+
+background:#1b2d42;
+
+}
+
+.profileInfo{
+
+flex:1;
 
 }
 
 .profileInfo h2{
 
-font-size:22px;
+font-size:24px;
 
-margin-bottom:6px;
+margin-bottom:8px;
 
 }
 
@@ -550,7 +511,11 @@ margin-top:4px;
 
 }
 
-.badgeRow{
+/*==================================
+BADGES
+==================================*/
+
+.badgeContainer{
 
 display:flex;
 
@@ -560,73 +525,191 @@ gap:10px;
 
 margin-top:15px;
 
-    }
-
-/*====================================
-MACHINE OVERVIEW
-====================================*/
-
-.machineOverview{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:15px;
-
-margin:25px 0;
-
 }
 
-.overviewCard{
+.badge{
 
-background:linear-gradient(145deg,var(--card),var(--card2));
+padding:8px 14px;
 
-border:1px solid var(--border);
+border-radius:50px;
 
-border-radius:18px;
-
-padding:18px;
-
-box-shadow:var(--shadow);
-
-transition:.25s;
-
-}
-
-.overviewCard:hover{
-
-transform:translateY(-3px);
-
-border-color:var(--primary);
-
-}
-
-.overviewCard p{
-
-font-size:13px;
-
-color:var(--text2);
-
-margin-bottom:8px;
-
-}
-
-.overviewCard h2{
-
-font-size:26px;
+font-size:12px;
 
 font-weight:700;
 
-color:var(--primary);
+color:#fff;
 
 }
 
-/*====================================
-FILTER BUTTONS
-====================================*/
+.membershipBadge{
 
-.filterRow{
+background:#00d26a;
+
+}
+
+.activeBadge{
+
+background:#2b8cff;
+
+}
+
+.kycBadge{
+
+background:#ff9800;
+
+}
+
+.warningBadge{
+
+background:#ff4d4f;
+
+}
+
+/*==================================
+ACTION BUTTONS
+==================================*/
+
+.actionButtons{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:12px;
+
+margin-top:20px;
+
+}
+
+.primaryBtn,
+
+.secondaryBtn,
+
+.warningBtn,
+
+.dangerBtn{
+
+border:none;
+
+border-radius:14px;
+
+padding:14px;
+
+font-size:14px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.primaryBtn{
+
+background:var(--primary);
+
+color:#fff;
+
+}
+
+.primaryBtn:hover{
+
+background:var(--primary-dark);
+
+}
+
+.secondaryBtn{
+
+background:#2b8cff;
+
+color:#fff;
+
+}
+
+.secondaryBtn:hover{
+
+background:#1976d2;
+
+}
+
+.warningBtn{
+
+background:#ff9800;
+
+color:#fff;
+
+}
+
+.warningBtn:hover{
+
+background:#f57c00;
+
+}
+
+.dangerBtn{
+
+background:#ff4d4f;
+
+color:#fff;
+
+}
+
+.dangerBtn:hover{
+
+background:#e53935;
+
+    }
+
+/*==================================
+MACHINES SECTION
+==================================*/
+
+#machinesSection{
+
+margin-top:30px;
+
+}
+
+.sectionHeader{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:10px;
+
+margin-bottom:20px;
+
+flex-wrap:wrap;
+
+}
+
+.sectionHeader h2{
+
+font-size:22px;
+
+font-weight:700;
+
+}
+
+.headerActions{
+
+display:flex;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+}
+
+/*==================================
+MACHINE FILTERS
+==================================*/
+
+.machineFilters{
 
 display:flex;
 
@@ -640,13 +723,13 @@ margin-bottom:20px;
 
 }
 
-.filterRow::-webkit-scrollbar{
+.machineFilters::-webkit-scrollbar{
 
 display:none;
 
 }
 
-.filterButton{
+.filterBtn{
 
 padding:10px 18px;
 
@@ -654,29 +737,29 @@ border:none;
 
 border-radius:30px;
 
-background:var(--card);
-
-border:1px solid var(--border);
+background:var(--card2);
 
 color:var(--text);
+
+font-size:13px;
+
+font-weight:600;
 
 cursor:pointer;
 
 white-space:nowrap;
 
-transition:.25s;
-
-font-weight:600;
+transition:.3s;
 
 }
 
-.filterButton:hover{
+.filterBtn:hover{
 
 background:var(--primary);
 
 }
 
-.filterButton.active{
+.filterBtn.active{
 
 background:var(--primary);
 
@@ -684,11 +767,11 @@ color:#fff;
 
 }
 
-/*====================================
-MACHINE LIST
-====================================*/
+/*==================================
+MACHINES LIST
+==================================*/
 
-.machineList{
+.machinesList{
 
 display:flex;
 
@@ -696,15 +779,17 @@ flex-direction:column;
 
 gap:18px;
 
-margin-bottom:25px;
-
 }
+
+/*==================================
+MACHINE CARD
+==================================*/
 
 .machineCard{
 
 display:flex;
 
-gap:15px;
+gap:16px;
 
 background:linear-gradient(145deg,var(--card),var(--card2));
 
@@ -716,15 +801,13 @@ padding:16px;
 
 box-shadow:var(--shadow);
 
-transition:.25s;
-
-cursor:pointer;
+transition:.3s;
 
 }
 
 .machineCard:hover{
 
-transform:translateY(-3px);
+transform:translateY(-4px);
 
 border-color:var(--primary);
 
@@ -732,15 +815,17 @@ border-color:var(--primary);
 
 .machineImage{
 
-width:90px;
+width:95px;
 
-height:90px;
+height:95px;
 
 border-radius:16px;
 
 object-fit:cover;
 
-background:#0c1729;
+background:#1b2d42;
+
+flex-shrink:0;
 
 }
 
@@ -748,13 +833,17 @@ background:#0c1729;
 
 flex:1;
 
+display:flex;
+
+flex-direction:column;
+
 }
 
 .machineContent h3{
 
 font-size:18px;
 
-margin-bottom:6px;
+margin-bottom:8px;
 
 }
 
@@ -764,7 +853,7 @@ font-size:13px;
 
 color:var(--text2);
 
-margin-top:4px;
+margin:4px 0;
 
 }
 
@@ -776,77 +865,61 @@ gap:8px;
 
 flex-wrap:wrap;
 
-margin-top:12px;
+margin-top:10px;
+
+margin-bottom:14px;
 
 }
 
-/*====================================
-ACTION BUTTONS
-====================================*/
+/*==================================
+MACHINE ACTION BUTTONS
+==================================*/
 
-.actionGrid{
+.machineActions{
 
 display:grid;
 
 grid-template-columns:repeat(2,1fr);
 
-gap:15px;
+gap:10px;
 
-margin-top:20px;
+margin-top:auto;
 
 }
 
-.primaryButton,
-.secondaryButton,
-.dangerButton{
-
-padding:14px;
+.machineActions button{
 
 border:none;
 
-border-radius:14px;
+border-radius:12px;
 
-font-size:15px;
+padding:12px;
+
+font-size:13px;
 
 font-weight:700;
 
 cursor:pointer;
 
-transition:.25s;
+transition:.3s;
 
 }
 
-.primaryButton{
+.machineActions .editBtn{
 
-background:var(--primary);
+background:var(--secondary);
 
 color:#fff;
 
 }
 
-.primaryButton:hover{
+.machineActions .editBtn:hover{
 
-background:var(--primary-dark);
-
-}
-
-.secondaryButton{
-
-background:var(--card);
-
-color:#fff;
-
-border:1px solid var(--border);
+background:#1976d2;
 
 }
 
-.secondaryButton:hover{
-
-border-color:var(--primary);
-
-}
-
-.dangerButton{
+.machineActions .deleteBtn{
 
 background:var(--danger);
 
@@ -854,15 +927,43 @@ color:#fff;
 
 }
 
-.dangerButton:hover{
+.machineActions .deleteBtn:hover{
 
-opacity:.9;
+background:#d32f2f;
+
+}
+
+.machineActions .daysBtn{
+
+background:var(--warning);
+
+color:#fff;
+
+}
+
+.machineActions .daysBtn:hover{
+
+background:#f57c00;
+
+}
+
+.machineActions .pauseBtn{
+
+background:var(--primary);
+
+color:#fff;
+
+}
+
+.machineActions .pauseBtn:hover{
+
+background:var(--primary-dark);
 
     }
 
-/*====================================
+/*==================================
 MODALS
-====================================*/
+==================================*/
 
 .modal{
 
@@ -886,11 +987,7 @@ justify-content:center;
 
 padding:20px;
 
-z-index:999;
-
-opacity:1;
-
-transition:.3s;
+z-index:1000;
 
 }
 
@@ -904,7 +1001,7 @@ display:none;
 
 width:100%;
 
-max-width:600px;
+max-width:650px;
 
 max-height:90vh;
 
@@ -918,13 +1015,33 @@ border-radius:22px;
 
 box-shadow:var(--shadow);
 
-}
-
-.modalContent.large{
-
-max-width:750px;
+animation:popup .25s ease;
 
 }
+
+@keyframes popup{
+
+from{
+
+opacity:0;
+
+transform:scale(.92);
+
+}
+
+to{
+
+opacity:1;
+
+transform:scale(1);
+
+}
+
+}
+
+/*==================================
+MODAL HEADER
+==================================*/
 
 .modalHeader{
 
@@ -934,7 +1051,7 @@ justify-content:space-between;
 
 align-items:center;
 
-padding:20px;
+padding:18px 20px;
 
 border-bottom:1px solid var(--border);
 
@@ -942,11 +1059,43 @@ border-bottom:1px solid var(--border);
 
 .modalHeader h2{
 
-font-size:22px;
+font-size:21px;
 
 font-weight:700;
 
 }
+
+.closeBtn{
+
+width:42px;
+
+height:42px;
+
+border:none;
+
+border-radius:12px;
+
+background:var(--danger);
+
+color:#fff;
+
+font-size:18px;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.closeBtn:hover{
+
+transform:rotate(90deg);
+
+}
+
+/*==================================
+MODAL BODY
+==================================*/
 
 .modalBody{
 
@@ -954,79 +1103,83 @@ padding:20px;
 
 }
 
-/*====================================
-FORM
-====================================*/
+/*==================================
+FORMS
+==================================*/
 
-.formGrid{
-
-display:grid;
-
-grid-template-columns:1fr;
-
-gap:18px;
-
-}
-
-.inputGroup{
+.formGroup{
 
 display:flex;
 
 flex-direction:column;
 
-gap:8px;
+margin-bottom:18px;
 
 }
 
-.inputGroup label{
+.formGroup label{
 
-font-size:14px;
+font-size:13px;
 
-font-weight:600;
+font-weight:700;
+
+margin-bottom:8px;
 
 color:var(--text2);
 
 }
 
-.inputGroup input,
+.formRow{
 
-.inputGroup select,
+display:grid;
 
-.inputGroup textarea{
+grid-template-columns:repeat(2,1fr);
+
+gap:15px;
+
+margin-bottom:18px;
+
+}
+
+.formGroup input,
+
+.formGroup select,
+
+.formGroup textarea{
 
 width:100%;
 
 padding:14px;
 
-background:#0d1a2d;
+border-radius:14px;
 
 border:1px solid var(--border);
 
-border-radius:14px;
+background:#0d1f33;
 
 color:#fff;
 
-font-size:15px;
+font-size:14px;
 
 outline:none;
 
-transition:.25s;
+transition:.3s;
 
 }
 
-.inputGroup textarea{
+.formGroup textarea{
 
 resize:vertical;
 
-min-height:110px;
+min-height:100px;
 
 }
 
-.inputGroup input:focus,
+.formGroup input:focus,
 
-.inputGroup select:focus,
+.formGroup select:focus,
 
-.inputGroup textarea:focus{
+.formGroup textarea:focus{
 
 border-color:var(--primary);
 
@@ -1034,135 +1187,29 @@ box-shadow:0 0 0 3px rgba(0,210,106,.15);
 
 }
 
-.inputGroup input::placeholder,
+/*==================================
+MODAL FOOTER
+==================================*/
 
-.inputGroup textarea::placeholder{
-
-color:var(--text2);
-
-}
-
-/*====================================
-MODAL BUTTONS
-====================================*/
-
-.modalButtons{
+.modalFooter{
 
 display:flex;
 
 gap:12px;
 
-flex-wrap:wrap;
-
-margin-top:25px;
+margin-top:20px;
 
 }
 
-.modalButtons button{
+.modalFooter button{
 
 flex:1;
 
-min-width:150px;
+    }
 
-}
-
-/*====================================
-HISTORY
-====================================*/
-
-.historyList{
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
-margin-top:15px;
-
-}
-
-.historyCard{
-
-background:linear-gradient(145deg,var(--card),var(--card2));
-
-border:1px solid var(--border);
-
-border-radius:18px;
-
-padding:16px;
-
-box-shadow:var(--shadow);
-
-}
-
-.historyCard h3{
-
-font-size:17px;
-
-margin-bottom:8px;
-
-}
-
-.historyCard p{
-
-font-size:13px;
-
-color:var(--text2);
-
-margin-top:4px;
-
-}
-
-/*====================================
-EMPTY STATE
-====================================*/
-
-.emptyState,
-
-.emptyStateSmall{
-
-background:linear-gradient(145deg,var(--card),var(--card2));
-
-border:1px dashed var(--border);
-
-border-radius:20px;
-
-padding:40px 20px;
-
-text-align:center;
-
-margin:20px 0;
-
-}
-
-.emptyIcon{
-
-font-size:50px;
-
-margin-bottom:15px;
-
-}
-
-.emptyState h2,
-
-.emptyStateSmall h3{
-
-margin-bottom:10px;
-
-}
-
-.emptyState p,
-
-.emptyStateSmall p{
-
-color:var(--text2);
-
-}
-
-/*====================================
-LOADING
-====================================*/
+/*==================================
+LOADING SCREEN
+==================================*/
 
 .loadingScreen{
 
@@ -1176,7 +1223,7 @@ width:100%;
 
 height:100%;
 
-background:rgba(8,19,33,.92);
+background:rgba(8,20,32,.96);
 
 display:flex;
 
@@ -1198,19 +1245,29 @@ display:none;
 
 .loader{
 
-width:60px;
+width:65px;
 
-height:60px;
+height:65px;
 
-border:6px solid rgba(255,255,255,.15);
+border:6px solid rgba(255,255,255,.12);
 
 border-top:6px solid var(--primary);
 
 border-radius:50%;
 
-animation:spin .8s linear infinite;
+animation:spin .9s linear infinite;
 
 margin-bottom:20px;
+
+}
+
+.loadingScreen p{
+
+font-size:15px;
+
+color:#fff;
+
+font-weight:600;
 
 }
 
@@ -1224,17 +1281,17 @@ transform:rotate(360deg);
 
 }
 
-/*====================================
+/*==================================
 TOAST
-====================================*/
+==================================*/
 
 .toast{
 
 position:fixed;
 
-bottom:30px;
-
 left:50%;
+
+bottom:95px;
 
 transform:translateX(-50%);
 
@@ -1246,17 +1303,19 @@ padding:14px 22px;
 
 border-radius:14px;
 
+font-size:14px;
+
 font-weight:700;
 
 box-shadow:var(--shadow);
-
-z-index:9999;
 
 opacity:0;
 
 pointer-events:none;
 
 transition:.3s;
+
+z-index:9998;
 
 }
 
@@ -1268,9 +1327,9 @@ pointer-events:auto;
 
 }
 
-/*====================================
+/*==================================
 OVERLAY
-====================================*/
+==================================*/
 
 .overlay{
 
@@ -1296,11 +1355,11 @@ display:none;
 
 }
 
-/*====================================
-BOTTOM SHEET
-====================================*/
+/*==================================
+BOTTOM BAR
+==================================*/
 
-.bottomSheet{
+.bottomBar{
 
 position:fixed;
 
@@ -1310,71 +1369,109 @@ right:0;
 
 bottom:0;
 
-background:var(--card);
+display:flex;
+
+justify-content:space-around;
+
+align-items:center;
+
+padding:10px;
+
+background:linear-gradient(145deg,var(--card),var(--card2));
 
 border-top:1px solid var(--border);
 
-padding:15px;
+box-shadow:0 -6px 20px rgba(0,0,0,.3);
 
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:12px;
-
-z-index:950;
+z-index:999;
 
 }
 
-.bottomSheet button{
+.bottomBtn{
 
-padding:14px;
+flex:1;
 
 border:none;
 
-border-radius:14px;
+background:transparent;
 
-background:var(--card2);
+color:var(--text2);
 
-color:#fff;
+display:flex;
 
-font-size:14px;
+flex-direction:column;
 
-font-weight:600;
+align-items:center;
+
+gap:5px;
+
+padding:8px;
+
+font-size:12px;
 
 cursor:pointer;
 
-transition:.25s;
+transition:.3s;
 
 }
 
-.bottomSheet button:hover{
+.bottomBtn span{
 
-background:var(--primary);
+font-size:11px;
+
+font-weight:600;
 
 }
 
-/*====================================
+.bottomBtn.active{
+
+color:var(--primary);
+
+}
+
+.bottomBtn:hover{
+
+color:var(--primary);
+
+}
+
+/*==================================
+UTILITY
+==================================*/
+
+.hidden{
+
+display:none !important;
+
+}
+
+/*==================================
 RESPONSIVE
-====================================*/
+==================================*/
 
-@media (max-width:600px){
+@media(max-width:768px){
 
-.statsGrid,
-
-.machineOverview,
-
-.actionGrid{
+.formRow{
 
 grid-template-columns:1fr;
 
 }
 
-.profileTop{
+.statsGrid{
 
-flex-direction:column;
+grid-template-columns:1fr;
 
-align-items:flex-start;
+}
+
+.actionButtons{
+
+grid-template-columns:1fr;
+
+}
+
+.machineActions{
+
+grid-template-columns:1fr;
 
 }
 
@@ -1392,16 +1489,57 @@ height:180px;
 
 }
 
-.modalButtons{
+.profileHeader{
+
+flex-direction:column;
+
+text-align:center;
+
+}
+
+.profileAvatar{
+
+margin:auto;
+
+}
+
+.modalContent{
+
+max-height:95vh;
+
+}
+
+.modalFooter{
 
 flex-direction:column;
 
 }
 
-.bottomSheet{
+.headerActions{
 
-grid-template-columns:1fr;
+width:100%;
 
 }
 
+.headerActions button{
+
+flex:1;
+
+}
+
+}
+
+@media(min-width:769px){
+
+.bottomBar{
+
+max-width:700px;
+
+left:50%;
+
+transform:translateX(-50%);
+
+border-radius:20px 20px 0 0;
+
+}
     }
