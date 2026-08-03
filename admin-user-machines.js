@@ -321,3 +321,112 @@ loadUserProfile();
 loadUserMachines();
 
 }
+
+/*=========================================
+LOAD USER PROFILE
+=========================================*/
+
+function loadUserProfile(){
+
+if(!selectedUser) return;
+
+document.getElementById("profileAvatar").src =
+selectedUser.avatar_url || "images/default-avatar.png";
+
+document.getElementById("profileName").textContent =
+selectedUser.fullname || "Unknown User";
+
+document.getElementById("profilePhone").textContent =
+selectedUser.phone || "No Phone";
+
+document.getElementById("profileEmail").textContent =
+selectedUser.email || "No Email";
+
+document.getElementById("membershipBadge").textContent =
+selectedUser.membership || "Standard";
+
+document.getElementById("statusBadge").textContent =
+selectedUser.account_status || "Active";
+
+document.getElementById("kycBadge").textContent =
+selectedUser.kyc_status || "Not Verified";
+
+document.getElementById("profileInvested").textContent =
+"UGX " + Number(selectedUser.total_invested || 0).toLocaleString();
+
+document.getElementById("profileProfit").textContent =
+"UGX " + Number(selectedUser.total_profit || 0).toLocaleString();
+
+document.getElementById("profileReferralBonus").textContent =
+"UGX " + Number(selectedUser.total_referral_bonus || 0).toLocaleString();
+
+}
+
+/*=========================================
+LOAD USER MACHINES
+=========================================*/
+
+async function loadUserMachines(){
+
+if(!selectedUser) return;
+
+const { data, error } = await db
+
+.from("user_machines")
+
+.select("*")
+
+.eq("user_id", selectedUser.id)
+
+.order("purchase_date",{ascending:false});
+
+if(error){
+
+console.error(error);
+
+alert(error.message);
+
+return;
+
+}
+
+userMachines = data || [];
+
+document.getElementById("profileMachineCount").textContent =
+userMachines.length;
+
+updateMachineStats();
+
+renderMachines();
+
+}
+
+/*=========================================
+UPDATE MACHINE STATS
+=========================================*/
+
+function updateMachineStats(){
+
+document.getElementById("activeMachineCount").textContent =
+userMachines.filter(
+m => m.status === "active"
+).length;
+
+document.getElementById("completedMachineCount").textContent =
+userMachines.filter(
+m => m.completed === true
+).length;
+
+document.getElementById("expiredMachineCount").textContent =
+userMachines.filter(
+m => new Date(m.expiry_date) < new Date()
+).length;
+
+document.getElementById("pausedMachineCount").textContent =
+userMachines.filter(
+m => m.status === "paused"
+).length;
+
+totalMachines.textContent = userMachines.length;
+
+}
