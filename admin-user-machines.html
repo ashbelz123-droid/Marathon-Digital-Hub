@@ -792,240 +792,247 @@ class="dangerBtn">
 
 </div>
 
-   <!--=========================
+   <!--=========================================
 EDIT USER MODAL
-==========================-->
+==========================================-->
 
-<div
-id="editUserModal"
-class="modal hidden">
+<div id="editUserModal" class="modal hidden">
 
-<div class="modalContent">
+    <div class="modalCard">
 
-<div class="modalHeader">
+        <div class="modalHeader">
 
-<h2>
+            <h2>Edit User</h2>
 
-Edit User
+            <button id="closeEditUserModal" class="closeBtn">
+                ✕
+            </button>
 
-</h2>
+        </div>
 
-<button
-id="closeEditUserModal"
-class="closeBtn">
+        <div class="modalBody">
 
-✕
+            <div class="profilePreview">
 
-</button>
+                <img
+                    id="editUserAvatar"
+                    src="images/default-avatar.png"
+                    class="profileAvatar">
 
-</div>
+                <div>
 
-<div class="modalBody">
+                    <h3 id="editPreviewName">
+                        User Name
+                    </h3>
 
-<div class="formGroup">
+                    <p id="editPreviewPhone">
+                        +256...
+                    </p>
 
-<label>
+                </div>
 
-Full Name
+            </div>
 
-</label>
+            <div class="formGroup">
 
-<input
-type="text"
-id="editFullname">
+                <label>
+                    Full Name
+                </label>
 
-</div>
+                <input
+                    id="editFullname"
+                    type="text"
+                    placeholder="Full Name">
 
-<div class="formGroup">
+            </div>
 
-<label>
+            <div class="formGroup">
 
-Phone Number
+                <label>
+                    Phone Number
+                </label>
 
-</label>
+                <input
+                    id="editPhone"
+                    type="text"
+                    placeholder="+256...">
 
-<input
-type="text"
-id="editPhone">
+            </div>
 
-</div>
+            <div class="formGroup">
 
-<div class="formGroup">
+                <label>
+                    Email Address
+                </label>
 
-<label>
+                <input
+                    id="editEmail"
+                    type="email"
+                    placeholder="Email">
 
-Email Address
+            </div>
 
-</label>
+            <div class="twoGrid">
 
-<input
-type="email"
-id="editEmail">
+                <div class="formGroup">
 
-</div>
+                    <label>
+                        Country
+                    </label>
 
-<div class="formRow">
+                    <input
+                        id="editCountry"
+                        type="text"
+                        placeholder="Uganda">
 
-<div class="formGroup">
+                </div>
 
-<label>
+                <div class="formGroup">
 
-Country
+                    <label>
+                        Gender
+                    </label>
 
-</label>
+                    <select id="editGender">
 
-<input
-type="text"
-id="editCountry">
+                        <option value="">
+                            Select
+                        </option>
 
-</div>
+                        <option value="Male">
+                            Male
+                        </option>
 
-<div class="formGroup">
+                        <option value="Female">
+                            Female
+                        </option>
 
-<label>
+                    </select>
 
-Membership
+                </div>
 
-</label>
+            </div>
 
-<select id="editMembership">
+            <div class="twoGrid">
 
-<option value="Standard">
+                <div class="formGroup">
 
-Standard
+                    <label>
+                        Membership
+                    </label>
 
-</option>
+                    <select id="editMembership">
 
-<option value="VIP">
+                        <option value="Standard">
+                            Standard
+                        </option>
 
-VIP
+                        <option value="VIP">
+                            VIP
+                        </option>
 
-</option>
+                    </select>
 
-</select>
+                </div>
 
-</div>
+                <div class="formGroup">
 
-</div>
+                    <label>
+                        Level
+                    </label>
 
-<div class="formRow">
+                    <input
+                        id="editLevel"
+                        type="number"
+                        min="1">
 
-<div class="formGroup">
+                </div>
 
-<label>
+            </div>
 
-KYC Status
+            <div class="twoGrid">
 
-</label>
+                <div class="formGroup">
 
-<select id="editKycStatus">
+                    <label>
+                        Account Status
+                    </label>
 
-<option value="Not Verified">
+                    <select id="editAccountStatus">
 
-Not Verified
+                        <option value="active">
+                            Active
+                        </option>
 
-</option>
+                        <option value="suspended">
+                            Suspended
+                        </option>
 
-<option value="Pending">
+                    </select>
 
-Pending
+                </div>
 
-</option>
+                <div class="formGroup">
 
-<option value="Verified">
+                    <label>
+                        KYC Status
+                    </label>
 
-Verified
+                    <select id="editKycStatus">
 
-</option>
+                        <option value="Not Verified">
+                            Not Verified
+                        </option>
 
-</select>
+                        <option value="Pending">
+                            Pending
+                        </option>
 
-</div>
+                        <option value="Verified">
+                            Verified
+                        </option>
 
-<div class="formGroup">
+                    </select>
 
-<label>
+                </div>
 
-Account Status
+            </div>
 
-</label>
+            <div class="formGroup">
 
-<select id="editAccountStatus">
+                <label>
+                    Referral Code
+                </label>
 
-<option value="active">
+                <input
+                    id="editReferralCode"
+                    type="text">
 
-Active
+            </div>
 
-</option>
+        </div>
 
-<option value="suspended">
+        <div class="modalFooter">
 
-Suspended
+            <button
+                id="cancelEditUserBtn"
+                class="secondaryBtn">
 
-</option>
+                Cancel
 
-</select>
+            </button>
 
-</div>
+            <button
+                id="saveUserBtn"
+                class="primaryBtn">
 
-</div>
+                💾 Save Changes
 
-<div class="formRow">
+            </button>
 
-<div class="formGroup">
+        </div>
 
-<label>
-
-Level
-
-</label>
-
-<input
-type="number"
-id="editLevel"
-min="1">
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-Referral Code
-
-</label>
-
-<input
-type="text"
-id="editReferralCode">
-
-</div>
-
-</div>
-
-<div class="modalFooter">
-
-<button
-id="saveUserBtn"
-class="primaryBtn">
-
-💾 Save User
-
-</button>
-
-<button
-id="freezeAccountBtn"
-class="warningBtn">
-
-❄ Freeze Account
-
-</button>
-
-</div>
-
-</div>
-
-</div>
+    </div>
 
 </div>
 
