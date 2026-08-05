@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AI Settings | Marathon Admin</title>
+    <link rel="stylesheet" href="assets/css/v2.css" />
+  </head>
+  <body>
+    <canvas id="network"></canvas>
+    <main class="app-shell">
+      <nav class="app-bar">
+        <a class="brand" href="admin-dashboard.html">
+          <span class="brand-mark">🛡</span>
+          <span><small>Admin</small><strong>AI Settings</strong></span>
+        </a>
+        <span class="pill">Gemini-ready Level 1 controls</span>
+      </nav>
+      <section class="admin-layout">
+        <aside class="glass-card admin-menu" aria-label="Admin modules">
+          <a href="admin-users.html">User management</a>
+          <a href="admin-machines.html">Machine management</a>
+          <a href="admin-deposits.html">Deposits</a>
+          <a href="admin-withdrawals.html">Withdrawals</a>
+          <a href="admin-support.html">Support tickets</a>
+          <a href="admin-ai-settings.html">AI settings</a>
+        </aside>
+        <section class="glass-card">
+          <span class="eyebrow">Marathon AI controls</span>
+          <h1 class="page-heading">Tune Level 1 support.</h1>
+          <p class="lead">
+            Configure welcome messages, FAQ coverage, escalation language, and
+            Gemini API behavior for the Marathon AI assistant. These controls
+            are functional locally today and are structured for a future
+            Supabase settings table.
+          </p>
+          <form class="form-stack" id="aiSettingsForm">
+            <label>
+              New user greeting
+              <input id="newUserGreeting" required />
+            </label>
+            <label>
+              Returning user greeting
+              <input id="returningUserGreeting" required />
+            </label>
+            <label>
+              Escalation route
+              <select id="escalationRoute">
+                <option value="support_tickets">Support tickets</option>
+                <option value="admin_chat">Admin chat</option>
+              </select>
+            </label>
+            <label>
+              FAQ knowledge
+              <textarea id="faqKnowledge" rows="5" required></textarea>
+            </label>
+            <button class="btn" type="submit">Save AI settings</button>
+            <p class="form-status" id="aiSettingsStatus" role="status"></p>
+          </form>
+        </section>
+      </section>
+    </main>
+    <nav class="bottom-nav">
+      <a href="admin-dashboard.html">⌂<span>Admin</span></a>
+      <a href="admin-users.html">👥<span>Users</span></a>
+      <a href="admin-machines.html">⚙<span>Machines</span></a>
+      <a href="admin-support.html">💬<span>Support</span></a>
+      <a class="active" href="admin-ai-settings.html">🤖<span>AI</span></a>
+    </nav>
+    <script src="assets/js/network.js"></script>
+    <script src="admin-ai-settings.js"></script>
+  </body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Marathon AI | Marathon Digital Hub</title>
+    <link rel="stylesheet" href="assets/css/v2.css" />
+  </head>
+  <body>
+    <canvas id="network"></canvas>
+    <main class="app-shell">
+      <nav class="app-bar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">AI</span
+          ><span
+            ><small>Marathon AI</small><strong>Investor Assistant</strong></span
+          ></a
+        ><a class="pill" href="support.html">Escalate support</a>
+      </nav>
+      <section class="hero">
+        <span class="eyebrow">Level 1 AI support</span>
+        <h1>Hello, <span data-user-name>Investor</span>.</h1>
+        <p class="lead" data-ai-greeting>
+          Welcome to Marathon Digital Hub. I can guide you.
+        </p>
+        <form class="form-stack" data-set-name>
+          <input name="name" placeholder="Tell Marathon AI your name" /><button
+            class="btn"
+          >
+            Save name
+          </button>
+        </form>
+      </section>
+      <section class="ai-panel ai-card">
+        <div class="robot">
+          <span class="robot-face"></span>
+          <div>
+            <h2>How can I help?</h2>
+            <p class="chat-bubble" data-ai-answer>
+              Choose a prompt below for instant guidance. Gemini API can replace
+              these Level 1 answers in production.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="quick-prompts">
+            <button data-prompt="faq">FAQs</button
+            ><button data-prompt="guide">Onboarding guide</button
+            ><button data-prompt="support">Support</button>
+          </div>
+          <div class="list" style="margin-top: 14px">
+            <div class="list-row">
+              <span>Deposits</span><span class="status">Guide</span>
+            </div>
+            <div class="list-row">
+              <span>Withdrawals</span><span class="status">Guide</span>
+            </div>
+            <div class="list-row">
+              <span>Machine selection</span><span class="status">Guide</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <nav class="bottom-nav">
+      <a href="index.html">⌂<span>Home</span></a
+      ><a href="dashboard.html">◇<span>Dash</span></a
+      ><a href="wallet.html">◉<span>Wallet</span></a
+      ><a class="active" href="marathon-ai.html">🤖<span>AI</span></a
+      ><a href="settings.html">⚙<span>Settings</span></a>
+    </nav>
+    <script src="assets/js/network.js"></script>
+    <script src="assets/js/v2.js"></script>
+  </body>
+</html>

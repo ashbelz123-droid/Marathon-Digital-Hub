@@ -1,61 +1,137 @@
-<!DOCTYPE html><html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Marathon Digital Hub</title><link rel="stylesheet" href="assets/css/style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></head>
-<body><canvas id="network"></canvas>
-
-<div class="welcome-container"><div class="form-box"><div class="logo">
-MDH
-</div><h1 class="title">
-Marathon Digital Hub
-</h1><p class="subtitle">
-AI Mining & Digital Investment Platform
-</p><div class="banner" style="margin:0 0 20px 0;height:220px;"><img
-id="slider"
-src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200"
-alt="Mining">
-
-</div><a href="register.html"
-class="btn"
-style="display:block;text-align:center;margin-bottom:15px;">
-Create Account
-</a>
-
-<a href="login.html"
-class="btn"
-style="display:block;text-align:center;">
-Login
-</a>
-
-</div></div><script>
-
-const images = [
-
-"https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=1200",
-
-"https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=1200",
-
-"https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=1200",
-
-"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200"
-
-];
-
-let current = 0;
-
-setInterval(() => {
-
-current++;
-
-if(current >= images.length){
-current = 0;
-}
-
-document.getElementById("slider").src =
-images[current];
-
-},3000);
-
-</script><script src="assets/js/network.js"></script></body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Marathon Digital Hub v2</title>
+    <link rel="stylesheet" href="assets/css/v2.css" />
+  </head>
+  <body>
+    <canvas id="network"></canvas>
+    <main class="app-shell">
+      <nav class="app-bar">
+        <a class="brand" href="index.html"
+          ><span class="brand-mark">MDH</span
+          ><span
+            ><small>Marathon v2</small><strong>Digital Hub</strong></span
+          ></a
+        >
+        <span class="pill">Mobile-first investment OS</span>
+      </nav>
+      <section class="hero fade-up">
+        <span class="eyebrow">Premium Android-style web app</span>
+        <h1>Invest, mine, earn, and get guided by Marathon AI.</h1>
+        <p class="lead">
+          A glassmorphism platform with a live network background, Marathon
+          green theme, smooth feature pages, Supabase-ready workflows,
+          Gemini-ready AI support, and admin operations for every critical
+          investment action.
+        </p>
+        <div class="actions">
+          <a class="btn" href="register.html">Create account</a
+          ><a class="btn secondary" href="login.html">Login</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>16</strong><span>Feature pages</span></div>
+          <div class="stat"><strong>6</strong><span>Admin modules</span></div>
+          <div class="stat">
+            <strong>AI</strong><span>Level 1 assistant</span>
+          </div>
+          <div class="stat">
+            <strong>PWA</strong><span>Install-ready path</span>
+          </div>
+        </div>
+      </section>
+      <section class="ai-panel ai-card fade-up">
+        <div>
+          <span class="eyebrow">Marathon AI</span>
+          <h2 data-ai-greeting>
+            Welcome to Marathon Digital Hub. I can guide you.
+          </h2>
+          <p class="lead">
+            Level 1 support welcomes new and returning users, answers FAQs,
+            guides onboarding, and escalates complex account requests to
+            support.
+          </p>
+          <div class="quick-prompts">
+            <button data-prompt="faq">Answer FAQs</button
+            ><button data-prompt="guide">Guide me</button
+            ><button data-prompt="support">Support help</button>
+          </div>
+          <p class="chat-bubble" data-ai-answer>
+            Ask about deposits, withdrawals, machines, referrals, wallet
+            activity, security, or app installation.
+          </p>
+        </div>
+        <div class="robot">
+          <span class="robot-face"></span>
+          <div>
+            <h3>Premium animated robot avatar</h3>
+            <p>Friendly, responsive, and ready for Gemini API wiring.</p>
+          </div>
+        </div>
+      </section>
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Pages</span>
+          <h2>One page per feature</h2>
+        </div>
+      </div>
+      <section class="grid" id="features"></section>
+    </main>
+    <nav class="bottom-nav">
+      <a class="active" href="index.html">⌂<span>Home</span></a
+      ><a href="dashboard.html">◇<span>Dash</span></a
+      ><a href="wallet.html">◉<span>Wallet</span></a
+      ><a href="marathon-ai.html">🤖<span>AI</span></a
+      ><a href="settings.html">⚙<span>Settings</span></a>
+    </nav>
+    <script src="assets/js/network.js"></script>
+    <script src="assets/js/v2.js"></script>
+    <script>
+      const pages = [
+        ["Login", "Secure returning-user access", "login.html", "🔐"],
+        ["Register", "Create profile and referral path", "register.html", "📝"],
+        [
+          "Dashboard",
+          "Portfolio, ROI, and mining overview",
+          "dashboard.html",
+          "📊",
+        ],
+        ["Wallet", "Balances and transaction history", "wallet.html", "👛"],
+        ["Deposit", "Fund your investment wallet", "deposit.html", "⬇️"],
+        ["Withdraw", "Request payouts safely", "withdraw.html", "⬆️"],
+        ["Machines", "Browse mining packages", "machines.html", "⚙️"],
+        ["Team", "Referral team growth", "team.html", "👥"],
+        ["Profile", "Personal identity and KYC center", "profile.html", "🙋"],
+        [
+          "Community",
+          "Announcements and investor updates",
+          "community.html",
+          "🌐",
+        ],
+        ["Support", "AI-assisted human support", "support.html", "💬"],
+        ["Marathon AI", "Guided assistant workspace", "marathon-ai.html", "🤖"],
+        [
+          "Notifications",
+          "Activity and security alerts",
+          "notifications.html",
+          "🔔",
+        ],
+        [
+          "Install App",
+          "Android-style install guide",
+          "install-app.html",
+          "📲",
+        ],
+        ["Admin", "Operations command center", "admin-dashboard.html", "🛡️"],
+      ];
+      document.getElementById("features").innerHTML = pages
+        .map(
+          ([t, p, h, i]) =>
+            `<a class="feature-tile" href="${h}"><div class="icon">${i}</div><h3>${t}</h3><p>${p}</p></a>`,
+        )
+        .join("");
+    </script>
+  </body>
 </html>
