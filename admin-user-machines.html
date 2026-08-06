@@ -3,1222 +3,1655 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
-<title>Admin • User Machines</title>
+    <title>Admin • User Machines</title>
 
-<link rel="stylesheet"
-href="admin-user-machines.css">
+    <link rel="stylesheet"
+          href="admin-user-machines.css">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<script src="supabase-config.js"></script>
+    <script src="supabase-config.js"></script>
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-<!--=========================
-HEADER
-==========================-->
+    <!--=================================
+    TOP NAVIGATION
+    =================================-->
 
-<header class="topBar">
+    <header class="topHeader">
 
-<div class="leftHeader">
+        <div class="headerLeft">
 
-<h1>
+            <div class="pageIcon">
 
-User Machines
+                👥
 
-</h1>
+            </div>
 
-<p>
+            <div class="headerText">
 
-Manage every user's purchased machines
+                <span class="pageTag">
 
-</p>
+                    ADMIN PANEL
 
-</div>
+                </span>
 
-<div class="rightHeader">
+                <h1>
 
-<button
-id="refreshBtn"
-class="iconBtn">
+                    User Machines
 
-🔄
+                </h1>
 
-</button>
+                <p>
 
-<button
-id="logoutBtn"
-class="iconBtn">
+                    Manage users and purchased mining machines
 
-🚪
+                </p>
 
-</button>
+            </div>
 
-</div>
+        </div>
 
-</header>
+        <div class="headerRight">
 
-<!--=========================
-SEARCH
-==========================-->
+            <button
+                id="refreshBtn"
+                class="iconButton">
 
-<section class="searchSection">
+                🔄
 
-<div class="searchBox">
+            </button>
 
-<input
+            <button
+                id="logoutBtn"
+                class="iconButton logoutButton">
 
-type="text"
+                🚪
 
-id="searchInput"
-
-placeholder="Search by name, phone or email...">
-
-<button id="searchBtn">
-
-🔍
-
-</button>
-
-</div>
-
-</section>
-
-<!--=========================
-DASHBOARD STATS
-==========================-->
-
-<section class="statsGrid">
-
-<div class="statCard">
-
-<span>Total Users</span>
-
-<h2 id="totalUsers">
-
-0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Active Users</span>
-
-<h2 id="activeUsers">
-
-0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Total Machines</span>
-
-<h2 id="totalMachines">
-
-0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>VIP Machines</span>
-
-<h2 id="vipMachines">
-
-0
-
-</h2>
-
-</div>
-
-</section>
-
-<!--=========================
-USERS LIST
-==========================-->
-
-<section class="usersSection">
-
-<div class="sectionTitle">
-
-<h2>
-
-Users
-
-</h2>
-
-</div>
-
-<div id="usersList">
-
-<!-- Loaded by JavaScript -->
-
-</div>
-
-</section>
-
-   <!--=========================
-USER PROFILE
-==========================-->
-
-<section
-id="userProfileSection"
-class="hidden">
-
-<div class="profileCard">
-
-<div class="profileHeader">
-
-<img
-id="profileAvatar"
-class="profileAvatar"
-src="images/default-avatar.png"
-alt="Avatar">
-
-<div class="profileInfo">
-
-<h2 id="profileName">
-
-Select a User
-
-</h2>
-
-<p id="profilePhone">
-
-Phone Number
-
-</p>
-
-<p id="profileEmail">
-
-Email Address
-
-</p>
-
-<div class="badgeContainer">
-
-<span
-id="membershipBadge"
-class="badge membershipBadge">
-
-Standard
-
-</span>
-
-<span
-id="statusBadge"
-class="badge activeBadge">
-
-Active
-
-</span>
-
-<span
-id="kycBadge"
-class="badge kycBadge">
-
-Not Verified
-
-</span>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!--=========================
-USER STATISTICS
-==========================-->
-
-<div class="statsGrid">
-
-<div class="statCard">
-
-<span>Total Invested</span>
-
-<h2 id="profileInvested">
-
-UGX 0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Total Profit</span>
-
-<h2 id="profileProfit">
-
-UGX 0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Referral Bonus</span>
-
-<h2 id="profileReferralBonus">
-
-UGX 0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Purchased Machines</span>
-
-<h2 id="profileMachineCount">
-
-0
-
-</h2>
-
-</div>
-
-</div>
-
-<!--=========================
-ADMIN ACTIONS
-==========================-->
-
-<div class="actionButtons">
-
-<button
-id="editUserBtn"
-class="primaryBtn">
-
-✏ Edit User
-
-</button>
-
-<button
-id="freezeUserBtn"
-class="warningBtn">
-
-❄ Freeze
-
-</button>
-
-<button
-id="resetPasswordBtn"
-class="secondaryBtn">
-
-🔑 Reset Password
-
-</button>
-
-</div>
-
-    </section>
-
-   <!--=========================
-PURCHASED MACHINES
-==========================-->
-
-<section
-id="machinesSection"
-class="hidden">
-
-<div class="sectionHeader">
-
-<h2>
-
-Purchased Machines
-
-</h2>
-
-<div class="headerActions">
-
-<button
-id="assignMachineBtn"
-class="primaryBtn">
-
-➕ Assign Machine
-
-</button>
-
-<button
-id="refreshMachinesBtn"
-class="secondaryBtn">
-
-🔄 Refresh
-
-</button>
-
-</div>
-
-</div>
-
-<!--=========================
-MACHINE SUMMARY
-==========================-->
-
-<div class="statsGrid">
-
-<div class="statCard">
-
-<span>Active</span>
-
-<h2 id="activeMachineCount">
-
-0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Completed</span>
-
-<h2 id="completedMachineCount">
-
-0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Expired</span>
-
-<h2 id="expiredMachineCount">
-
-0
-
-</h2>
-
-</div>
-
-<div class="statCard">
-
-<span>Paused</span>
-
-<h2 id="pausedMachineCount">
-
-0
-
-</h2>
-
-</div>
-
-</div>
-
-<!--=========================
-MACHINE FILTERS
-==========================-->
-
-<div class="machineFilters">
-
-<button
-class="filterBtn active"
-data-filter="all">
-
-All
-
-</button>
-
-<button
-class="filterBtn"
-data-filter="active">
-
-Active
-
-</button>
-
-<button
-class="filterBtn"
-data-filter="vip">
-
-VIP
-
-</button>
-
-<button
-class="filterBtn"
-data-filter="completed">
-
-Completed
-
-</button>
-
-<button
-class="filterBtn"
-data-filter="paused">
-
-Paused
-
-</button>
-
-</div>
-
-<!--=========================
-MACHINE LIST
-==========================-->
-
-<div
-id="machinesList"
-class="machinesList">
-
-<!-- JavaScript loads machine cards here -->
-
-</div>
-
-</section>
-
-    <!--=========================
-EDIT / ASSIGN MACHINE MODAL
-==========================-->
-
-<div
-id="machineModal"
-class="modal hidden">
-
-<div class="modalContent">
-
-<div class="modalHeader">
-
-<h2 id="machineModalTitle">
-
-Edit Machine
-
-</h2>
-
-<button
-id="closeMachineModal"
-class="closeBtn">
-
-✕
-
-</button>
-
-</div>
-
-<div class="modalBody">
-
-<div class="formGroup">
-
-<label>
-
-Machine Plan
-
-</label>
-
-<select id="machineSelect">
-
-<option value="">
-
-Select Machine
-
-</option>
-
-</select>
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-Purchase Amount (UGX)
-
-</label>
-
-<input
-type="number"
-id="machineAmountPaid">
-
-</div>
-
-<div class="formRow">
-
-<div class="formGroup">
-
-<label>
-
-Purchase Date
-
-</label>
-
-<input
-type="date"
-id="machinePurchaseDate">
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-Expiry Date
-
-</label>
-
-<input
-type="date"
-id="machineExpiryDate">
-
-</div>
-
-</div>
-
-<div class="formRow">
-
-<div class="formGroup">
-
-<label>
-
-Duration (Days)
-
-</label>
-
-<input
-type="number"
-id="machineDurationDays">
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-Remaining Days
-
-</label>
-
-<input
-type="number"
-id="machineRemainingDays">
-
-</div>
-
-</div>
-
-<div class="formRow">
-
-<div class="formGroup">
-
-<label>
-
-Daily Income
-
-</label>
-
-<input
-type="number"
-id="machineDailyIncome">
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-Total Return
-
-</label>
-
-<input
-type="number"
-id="machineTotalReturn">
-
-</div>
-
-</div>
-
-<div class="formRow">
-
-<div class="formGroup">
-
-<label>
-
-Earned Amount
-
-</label>
-
-<input
-type="number"
-id="machineEarnedAmount">
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-Current Day
-
-</label>
-
-<input
-type="number"
-id="machineCurrentDay">
-
-</div>
-
-</div>
-
-<div class="formRow">
-
-<div class="formGroup">
-
-<label>
-
-Machine Status
-
-</label>
-
-<select id="machineStatus">
-
-<option value="active">
-
-Active
-
-</option>
-
-<option value="paused">
-
-Paused
-
-</option>
-
-<option value="completed">
-
-Completed
-
-</option>
-
-<option value="expired">
-
-Expired
-
-</option>
-
-</select>
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-VIP Machine
-
-</label>
-
-<select id="machineVip">
-
-<option value="false">
-
-No
-
-</option>
-
-<option value="true">
-
-Yes
-
-</option>
-
-</select>
-
-</div>
-
-</div>
-
-<div class="formGroup">
-
-<label>
-
-Admin Notes
-
-</label>
-
-<textarea
-id="machineNotes"
-rows="4"
-placeholder="Write notes about this machine..."></textarea>
-
-</div>
-
-<div class="modalFooter">
-
-<button
-id="saveMachineBtn"
-class="primaryBtn">
-
-💾 Save Machine
-
-</button>
-
-<button
-id="deleteMachineBtn"
-class="dangerBtn">
-
-🗑 Delete
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-   <!--=========================================
-EDIT USER MODAL
-==========================================-->
-
-<div id="editUserModal" class="modal hidden">
-
-    <div class="modalCard">
-
-        <div class="modalHeader">
-
-            <h2>Edit User</h2>
-
-            <button id="closeEditUserModal" class="closeBtn">
-                ✕
             </button>
 
         </div>
 
-        <div class="modalBody">
+    </header>
 
-            <div class="profilePreview">
+       <!--=================================
+    ADMIN OVERVIEW
+    =================================-->
 
-                <img
-                    id="editUserAvatar"
-                    src="images/default-avatar.png"
-                    class="profileAvatar">
+    <section class="overviewSection">
+
+        <div class="overviewCard">
+
+            <div class="overviewIcon">
+                👤
+            </div>
+
+            <div class="overviewInfo">
+
+                <span>Total Users</span>
+
+                <h2 id="totalUsers">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="overviewCard">
+
+            <div class="overviewIcon">
+
+                ✅
+
+            </div>
+
+            <div class="overviewInfo">
+
+                <span>Active Users</span>
+
+                <h2 id="activeUsers">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="overviewCard">
+
+            <div class="overviewIcon">
+
+                ⛏️
+
+            </div>
+
+            <div class="overviewInfo">
+
+                <span>Total Machines</span>
+
+                <h2 id="totalMachines">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="overviewCard">
+
+            <div class="overviewIcon">
+
+                ⭐
+
+            </div>
+
+            <div class="overviewInfo">
+
+                <span>VIP Machines</span>
+
+                <h2 id="vipMachines">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--=================================
+    SEARCH
+    =================================-->
+
+    <section class="searchSection">
+
+        <div class="searchCard">
+
+            <span class="searchIcon">
+
+                🔍
+
+            </span>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search user by name, phone or email...">
+
+            <button
+                id="searchBtn">
+
+                Search
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!--=================================
+    USERS SECTION
+    =================================-->
+
+    <section class="usersSection">
+
+        <div class="sectionHeader">
+
+            <div>
+
+                <h2>
+
+                    Users
+
+                </h2>
+
+                <p>
+
+                    Select a user to manage their machines
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <div id="usersList">
+
+            <!-- JavaScript Loads Users Here -->
+
+        </div>
+
+    </section>
+
+       <!--=================================
+    USER PROFILE
+    =================================-->
+
+    <section
+        id="userProfileSection"
+        class="hidden">
+
+        <div class="profileCard">
+
+            <div class="profileTop">
+
+                <div class="profileLeft">
+
+                    <img
+                        id="profileAvatar"
+                        src="images/default-avatar.png"
+                        class="profileAvatar"
+                        alt="Profile">
+
+                    <div class="profileDetails">
+
+                        <h2 id="profileName">
+
+                            Select a User
+
+                        </h2>
+
+                        <p id="profilePhone">
+
+                            +256...
+
+                        </p>
+
+                        <p id="profileEmail">
+
+                            example@email.com
+
+                        </p>
+
+                        <div class="badgeRow">
+
+                            <span
+                                id="membershipBadge"
+                                class="badge membershipBadge">
+
+                                Standard
+
+                            </span>
+
+                            <span
+                                id="statusBadge"
+                                class="badge activeBadge">
+
+                                Active
+
+                            </span>
+
+                            <span
+                                id="kycBadge"
+                                class="badge kycBadge">
+
+                                Not Verified
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="profileRight">
+
+                    <button
+                        id="editUserBtn"
+                        class="primaryBtn">
+
+                        ✏ Edit User
+
+                    </button>
+
+                    <button
+                        id="freezeUserBtn"
+                        class="warningBtn">
+
+                        ❄ Freeze
+
+                    </button>
+
+                    <button
+                        id="resetPasswordBtn"
+                        class="secondaryBtn">
+
+                        🔑 Password
+
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!--=========================
+            USER STATISTICS
+            ==========================-->
+
+            <div class="profileStats">
+
+                <div class="profileStat">
+
+                    <span>
+
+                        Wallet
+
+                    </span>
+
+                    <h3 id="profileWallet">
+
+                        UGX 0
+
+                    </h3>
+
+                </div>
+
+                <div class="profileStat">
+
+                    <span>
+
+                        Total Invested
+
+                    </span>
+
+                    <h3 id="profileInvested">
+
+                        UGX 0
+
+                    </h3>
+
+                </div>
+
+                <div class="profileStat">
+
+                    <span>
+
+                        Total Profit
+
+                    </span>
+
+                    <h3 id="profileProfit">
+
+                        UGX 0
+
+                    </h3>
+
+                </div>
+
+                <div class="profileStat">
+
+                    <span>
+
+                        Referral Bonus
+
+                    </span>
+
+                    <h3 id="profileReferralBonus">
+
+                        UGX 0
+
+                    </h3>
+
+                </div>
+
+                <div class="profileStat">
+
+                    <span>
+
+                        Purchased Machines
+
+                    </span>
+
+                    <h3 id="profileMachineCount">
+
+                        0
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </div>
+
+               </section>
+
+       <!--=================================
+    PURCHASED MACHINES
+    =================================-->
+
+    <section
+        id="machinesSection"
+        class="hidden">
+
+        <div class="sectionHeader">
+
+            <div>
+
+                <h2>
+
+                    Purchased Machines
+
+                </h2>
+
+                <p>
+
+                    Manage all machines owned by this user
+
+                </p>
+
+            </div>
+
+            <div class="sectionActions">
+
+                <button
+                    id="assignMachineBtn"
+                    class="primaryBtn">
+
+                    ➕ Assign Machine
+
+                </button>
+
+                <button
+                    id="refreshMachinesBtn"
+                    class="secondaryBtn">
+
+                    🔄 Refresh
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <!--=========================
+        MACHINE SUMMARY
+        ==========================-->
+
+        <div class="machineSummary">
+
+            <div class="summaryCard">
+
+                <span>
+
+                    Active
+
+                </span>
+
+                <h2 id="activeMachineCount">
+
+                    0
+
+                </h2>
+
+            </div>
+
+            <div class="summaryCard">
+
+                <span>
+
+                    Completed
+
+                </span>
+
+                <h2 id="completedMachineCount">
+
+                    0
+
+                </h2>
+
+            </div>
+
+            <div class="summaryCard">
+
+                <span>
+
+                    Expired
+
+                </span>
+
+                <h2 id="expiredMachineCount">
+
+                    0
+
+                </h2>
+
+            </div>
+
+            <div class="summaryCard">
+
+                <span>
+
+                    Paused
+
+                </span>
+
+                <h2 id="pausedMachineCount">
+
+                    0
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <!--=========================
+        FILTERS
+        ==========================-->
+
+        <div class="machineFilters">
+
+            <button
+                class="filterBtn active"
+                data-filter="all">
+
+                All
+
+            </button>
+
+            <button
+                class="filterBtn"
+                data-filter="active">
+
+                Active
+
+            </button>
+
+            <button
+                class="filterBtn"
+                data-filter="vip">
+
+                VIP
+
+            </button>
+
+            <button
+                class="filterBtn"
+                data-filter="paused">
+
+                Paused
+
+            </button>
+
+            <button
+                class="filterBtn"
+                data-filter="completed">
+
+                Completed
+
+            </button>
+
+        </div>
+
+        <!--=========================
+        MACHINE LIST
+        ==========================-->
+
+        <div
+            id="machinesList"
+            class="machinesGrid">
+
+            <!-- JavaScript will load machine cards here -->
+
+        </div>
+
+    </section>
+
+       <!--=================================
+    ASSIGN / EDIT MACHINE MODAL
+    =================================-->
+
+    <div
+        id="machineModal"
+        class="modal hidden">
+
+        <div class="modalCard">
+
+            <div class="modalHeader">
 
                 <div>
 
-                    <h3 id="editPreviewName">
-                        User Name
-                    </h3>
+                    <h2 id="machineModalTitle">
 
-                    <p id="editPreviewPhone">
-                        +256...
+                        Assign Machine
+
+                    </h2>
+
+                    <p>
+
+                        Create or edit a user's purchased machine
+
                     </p>
 
                 </div>
 
-            </div>
+                <button
+                    id="closeMachineModal"
+                    class="closeBtn">
 
-            <div class="formGroup">
+                    ✕
 
-                <label>
-                    Full Name
-                </label>
-
-                <input
-                    id="editFullname"
-                    type="text"
-                    placeholder="Full Name">
+                </button>
 
             </div>
 
-            <div class="formGroup">
+            <div class="modalBody">
 
-                <label>
-                    Phone Number
-                </label>
+                <!--=========================
+                MACHINE INFORMATION
+                ==========================-->
 
-                <input
-                    id="editPhone"
-                    type="text"
-                    placeholder="+256...">
+                <div class="formSection">
 
-            </div>
+                    <h3>
 
-            <div class="formGroup">
+                        Machine Information
 
-                <label>
-                    Email Address
-                </label>
+                    </h3>
 
-                <input
-                    id="editEmail"
-                    type="email"
-                    placeholder="Email">
+                    <div class="formGroup">
 
-            </div>
+                        <label>
 
-            <div class="twoGrid">
+                            Machine Plan
 
-                <div class="formGroup">
+                        </label>
 
-                    <label>
-                        Country
-                    </label>
+                        <select id="machineSelect">
 
-                    <input
-                        id="editCountry"
-                        type="text"
-                        placeholder="Uganda">
+                            <option value="">
+
+                                Select Machine
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Status
+
+                            </label>
+
+                            <select id="machineStatus">
+
+                                <option value="active">
+
+                                    Active
+
+                                </option>
+
+                                <option value="paused">
+
+                                    Paused
+
+                                </option>
+
+                                <option value="completed">
+
+                                    Completed
+
+                                </option>
+
+                                <option value="expired">
+
+                                    Expired
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                VIP
+
+                            </label>
+
+                            <select id="machineVip">
+
+                                <option value="false">
+
+                                    No
+
+                                </option>
+
+                                <option value="true">
+
+                                    Yes
+
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
-                <div class="formGroup">
+                <!--=========================
+                FINANCIAL INFORMATION
+                ==========================-->
 
-                    <label>
-                        Gender
-                    </label>
+                <div class="formSection">
 
-                    <select id="editGender">
+                    <h3>
 
-                        <option value="">
-                            Select
-                        </option>
+                        Financial Information
 
-                        <option value="Male">
-                            Male
-                        </option>
+                    </h3>
 
-                        <option value="Female">
-                            Female
-                        </option>
+                    <div class="twoGrid">
 
-                    </select>
+                        <div class="formGroup">
+
+                            <label>
+
+                                Amount Paid
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="machineAmountPaid">
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Daily Income
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="machineDailyIncome">
+
+                        </div>
+
+                    </div>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Total Return
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="machineTotalReturn">
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Earned Amount
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="machineEarnedAmount">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--=========================
+                TIME MANAGEMENT
+                ==========================-->
+
+                <div class="formSection">
+
+                    <h3>
+
+                        Machine Duration
+
+                    </h3>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Purchase Date
+
+                            </label>
+
+                            <input
+                                type="date"
+                                id="machinePurchaseDate">
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Expiry Date
+
+                            </label>
+
+                            <input
+                                type="date"
+                                id="machineExpiryDate">
+
+                        </div>
+
+                    </div>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Duration (Days)
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="machineDurationDays">
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Remaining Days
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="machineRemainingDays">
+
+                        </div>
+
+                    </div>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Current Day
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="machineCurrentDay">
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Progress
+
+                            </label>
+
+                            <progress
+                                id="machineProgress"
+                                value="0"
+                                max="100">
+
+                            </progress>
+
+                        </div>
+
+                    </div>
+
+                               </div>
+
+                               <!--=========================
+                QUICK DAY MANAGEMENT
+                ==========================-->
+
+                <div class="formSection">
+
+                    <h3>
+
+                        Manage Remaining Days
+
+                    </h3>
+
+                    <p class="sectionHint">
+
+                        Quickly extend or reduce this user's machine duration.
+
+                    </p>
+
+                    <div class="quickDaysGrid">
+
+                        <button
+                            type="button"
+                            class="dayActionBtn addDay"
+                            data-days="1">
+
+                            +1 Day
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="dayActionBtn addDay"
+                            data-days="7">
+
+                            +7 Days
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="dayActionBtn addDay"
+                            data-days="15">
+
+                            +15 Days
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="dayActionBtn addDay"
+                            data-days="30">
+
+                            +30 Days
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="dayActionBtn removeDay"
+                            data-days="-1">
+
+                            -1 Day
+
+                        </button>
+
+                        <button
+                            type="button"
+                            class="dayActionBtn removeDay"
+                            data-days="-7">
+
+                            -7 Days
+
+                        </button>
+
+                    </div>
+
+                    <div class="customDaysBox">
+
+                        <input
+                            type="number"
+                            id="customDays"
+                            placeholder="Custom days">
+
+                        <button
+                            type="button"
+                            id="applyCustomDays"
+                            class="primaryBtn">
+
+                            Apply
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <!--=========================
+                ADMIN NOTES
+                ==========================-->
+
+                <div class="formSection">
+
+                    <h3>
+
+                        Admin Notes
+
+                    </h3>
+
+                    <div class="formGroup">
+
+                        <textarea
+                            id="machineNotes"
+                            rows="5"
+                            placeholder="Private notes about this machine...">
+
+                        </textarea>
+
+                    </div>
 
                 </div>
 
             </div>
 
-            <div class="twoGrid">
+            <div class="modalFooter">
 
-                <div class="formGroup">
+                <button
+                    id="deleteMachineBtn"
+                    class="dangerBtn">
 
-                    <label>
-                        Membership
-                    </label>
+                    🗑 Delete Machine
 
-                    <select id="editMembership">
+                </button>
 
-                        <option value="Standard">
-                            Standard
-                        </option>
+                <button
+                    id="saveMachineBtn"
+                    class="primaryBtn">
 
-                        <option value="VIP">
-                            VIP
-                        </option>
+                    💾 Save Machine
 
-                    </select>
-
-                </div>
-
-                <div class="formGroup">
-
-                    <label>
-                        Level
-                    </label>
-
-                    <input
-                        id="editLevel"
-                        type="number"
-                        min="1">
-
-                </div>
-
-            </div>
-
-            <div class="twoGrid">
-
-                <div class="formGroup">
-
-                    <label>
-                        Account Status
-                    </label>
-
-                    <select id="editAccountStatus">
-
-                        <option value="active">
-                            Active
-                        </option>
-
-                        <option value="suspended">
-                            Suspended
-                        </option>
-
-                    </select>
-
-                </div>
-
-                <div class="formGroup">
-
-                    <label>
-                        KYC Status
-                    </label>
-
-                    <select id="editKycStatus">
-
-                        <option value="Not Verified">
-                            Not Verified
-                        </option>
-
-                        <option value="Pending">
-                            Pending
-                        </option>
-
-                        <option value="Verified">
-                            Verified
-                        </option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-            <div class="formGroup">
-
-                <label>
-                    Referral Code
-                </label>
-
-                <input
-                    id="editReferralCode"
-                    type="text">
+                </button>
 
             </div>
 
         </div>
 
-        <div class="modalFooter">
+   </div>
 
-            <button
-                id="cancelEditUserBtn"
-                class="secondaryBtn">
+       <!--=================================
+    EDIT USER MODAL
+    =================================-->
 
-                Cancel
+    <div
+        id="editUserModal"
+        class="modal hidden">
 
-            </button>
+        <div class="modalCard">
 
-            <button
-                id="saveUserBtn"
-                class="primaryBtn">
+            <div class="modalHeader">
 
-                💾 Save Changes
+                <div>
 
-            </button>
+                    <h2>
+
+                        Edit User
+
+                    </h2>
+
+                    <p>
+
+                        Update user information and account settings
+
+                    </p>
+
+                </div>
+
+                <button
+                    id="closeEditUserModal"
+                    class="closeBtn">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+            <div class="modalBody">
+
+                <!--=========================
+                USER PREVIEW
+                ==========================-->
+
+                <div class="userPreview">
+
+                    <img
+                        id="editUserAvatar"
+                        class="profileAvatar"
+                        src="images/default-avatar.png"
+                        alt="User">
+
+                    <div>
+
+                        <h3 id="editPreviewName">
+
+                            User Name
+
+                        </h3>
+
+                        <p id="editPreviewPhone">
+
+                            +256...
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!--=========================
+                BASIC INFORMATION
+                ==========================-->
+
+                <div class="formSection">
+
+                    <h3>
+
+                        Basic Information
+
+                    </h3>
+
+                    <div class="formGroup">
+
+                        <label>
+
+                            Full Name
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editFullname">
+
+                    </div>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Phone Number
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="editPhone">
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Email Address
+
+                            </label>
+
+                            <input
+                                type="email"
+                                id="editEmail">
+
+                        </div>
+
+                    </div>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Country
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="editCountry">
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Gender
+
+                            </label>
+
+                            <select id="editGender">
+
+                                <option value="">
+                                    Select
+                                </option>
+
+                                <option value="Male">
+                                    Male
+                                </option>
+
+                                <option value="Female">
+                                    Female
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--=========================
+                ACCOUNT SETTINGS
+                ==========================-->
+
+                <div class="formSection">
+
+                    <h3>
+
+                        Account Settings
+
+                    </h3>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Membership
+
+                            </label>
+
+                            <select id="editMembership">
+
+                                <option value="Standard">
+                                    Standard
+                                </option>
+
+                                <option value="VIP">
+                                    VIP
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Level
+
+                            </label>
+
+                            <input
+                                type="number"
+                                id="editLevel">
+
+                        </div>
+
+                    </div>
+
+                    <div class="twoGrid">
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                Account Status
+
+                            </label>
+
+                            <select id="editAccountStatus">
+
+                                <option value="active">
+                                    Active
+                                </option>
+
+                                <option value="suspended">
+                                    Suspended
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                        <div class="formGroup">
+
+                            <label>
+
+                                KYC Status
+
+                            </label>
+
+                            <select id="editKycStatus">
+
+                                <option value="Not Verified">
+                                    Not Verified
+                                </option>
+
+                                <option value="Pending">
+                                    Pending
+                                </option>
+
+                                <option value="Verified">
+                                    Verified
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="formGroup">
+
+                        <label>
+
+                            Referral Code
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="editReferralCode">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modalFooter">
+
+                <button
+                    id="cancelEditUserBtn"
+                    class="secondaryBtn">
+
+                    Cancel
+
+                </button>
+
+                <button
+                    id="saveUserBtn"
+                    class="primaryBtn">
+
+                    💾 Save Changes
+
+                </button>
+
+            </div>
+
+        </div>
+
+                           </div>
+
+       <!--=================================
+    RESET PASSWORD MODAL
+    =================================-->
+
+    <div
+        id="resetPasswordModal"
+        class="modal hidden">
+
+        <div class="modalCard">
+
+            <div class="modalHeader">
+
+                <div>
+
+                    <h2>
+
+                        Reset Password
+
+                    </h2>
+
+                    <p>
+
+                        Create a new password for this account
+
+                    </p>
+
+                </div>
+
+                <button
+                    id="closeResetPasswordModal"
+                    class="closeBtn">
+
+                    ✕
+
+                </button>
+
+            </div>
+
+            <div class="modalBody">
+
+                <div class="formGroup">
+
+                    <label>
+
+                        New Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        placeholder="Enter new password">
+
+                </div>
+
+                <div class="formGroup">
+
+                    <label>
+
+                        Confirm Password
+
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        placeholder="Confirm password">
+
+                </div>
+
+            </div>
+
+            <div class="modalFooter">
+
+                <button
+                    id="confirmResetPasswordBtn"
+                    class="primaryBtn">
+
+                    🔑 Reset Password
+
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
-</div>
+    <!--=================================
+    LOADING SCREEN
+    =================================-->
 
-<!--=========================
-RESET PASSWORD MODAL
-==========================-->
+    <div
+        id="loadingScreen"
+        class="loadingScreen hidden">
 
-<div
-id="resetPasswordModal"
-class="modal hidden">
+        <div class="loader"></div>
 
-<div class="modalContent">
+        <h3>
 
-<div class="modalHeader">
+            Marathon Digital Hub
 
-<h2>
+        </h3>
 
-Reset Password
+        <p>
 
-</h2>
+            Loading data...
 
-<button
-id="closeResetPasswordModal"
-class="closeBtn">
+        </p>
 
-✕
+    </div>
 
-</button>
+    <!--=================================
+    TOAST
+    =================================-->
 
-</div>
+    <div
+        id="toast"
+        class="toast">
 
-<div class="modalBody">
+        <span id="toastText">
 
-<p>
+            Success
 
-Create a new password for this user.
+        </span>
 
-</p>
+    </div>
 
-<div class="formGroup">
+    <!--=================================
+    PAGE OVERLAY
+    =================================-->
 
-<label>
+    <div
+        id="overlay"
+        class="overlay hidden">
 
-New Password
+    </div>
 
-</label>
+    <!--=================================
+    BOTTOM NAVIGATION
+    =================================-->
 
-<input
-type="password"
-id="newPassword">
+    <nav class="bottomBar">
 
-</div>
+        <button
+            id="homeBtn"
+            class="bottomBtn">
 
-<div class="formGroup">
+            <span class="bottomIcon">
 
-<label>
+                🏠
 
-Confirm Password
+            </span>
 
-</label>
+            <span>
 
-<input
-type="password"
-id="confirmPassword">
+                Dashboard
 
-</div>
+            </span>
 
-<div class="modalFooter">
+        </button>
 
-<button
-id="confirmResetPasswordBtn"
-class="primaryBtn">
+        <button
+            id="usersBtn"
+            class="bottomBtn active">
 
-🔑 Reset Password
+            <span class="bottomIcon">
 
-</button>
+                👥
 
-</div>
+            </span>
 
-</div>
+            <span>
 
-</div>
+                Users
 
-</div>
+            </span>
 
-   <!--=========================
-LOADING SCREEN
-==========================-->
+        </button>
 
-<div
-id="loadingScreen"
-class="loadingScreen hidden">
+        <button
+            id="machinesBtn"
+            class="bottomBtn">
 
-<div class="loader"></div>
+            <span class="bottomIcon">
 
-<p>
+                ⛏️
 
-Loading...
+            </span>
 
-</p>
+            <span>
 
-</div>
+                Machines
 
-<!--=========================
-TOAST MESSAGE
-==========================-->
+            </span>
 
-<div
-id="toast"
-class="toast">
+        </button>
 
-<span id="toastText">
+        <button
+            id="supportBtn"
+            class="bottomBtn">
 
-Success
+            <span class="bottomIcon">
 
-</span>
+                💬
 
-</div>
+            </span>
 
-<!--=========================
-PAGE OVERLAY
-==========================-->
+            <span>
 
-<div
-id="overlay"
-class="overlay hidden">
+                Support
 
-</div>
+            </span>
 
-<!--=========================
-BOTTOM ACTION BAR
-==========================-->
+        </button>
 
-<nav class="bottomBar">
+        <button
+            id="settingsBtn"
+            class="bottomBtn">
 
-<button
-id="homeBtn"
-class="bottomBtn">
+            <span class="bottomIcon">
 
-🏠
+                ⚙️
 
-<span>Dashboard</span>
+            </span>
 
-</button>
+            <span>
 
-<button
-id="usersBtn"
-class="bottomBtn active">
+                Settings
 
-👥
+            </span>
 
-<span>Users</span>
+        </button>
 
-</button>
-
-<button
-id="machinesBtn"
-class="bottomBtn">
-
-🖥️
-
-<span>Machines</span>
-
-</button>
-
-<button
-id="supportBtn"
-class="bottomBtn">
-
-💬
-
-<span>Support</span>
-
-</button>
-
-<button
-id="settingsBtn"
-class="bottomBtn">
-
-⚙️
-
-<span>Settings</span>
-
-</button>
-
-</nav>
+    </nav>
 
 </div>
 
@@ -1226,4 +1659,4 @@ class="bottomBtn">
 
 </body>
 
-</html> 
+   </html>
