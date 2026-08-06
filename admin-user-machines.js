@@ -197,3 +197,168 @@ console.log("================================");
 console.log("ADMIN USER MACHINES");
 console.log("PART 1 INITIALIZED");
 console.log("================================");
+
+/*=========================================
+PART 2
+LOAD DATA
+=========================================*/
+
+/*=========================================
+LOAD EVERYTHING
+=========================================*/
+
+async function loadSystem(){
+
+await Promise.all([
+
+loadUsers(),
+
+loadMachinePlans()
+
+]);
+
+}
+
+/*=========================================
+LOAD USERS
+=========================================*/
+
+async function loadUsers(){
+
+const { data, error } = await db
+
+.from("profiles")
+
+.select("*")
+
+.order("created_at",{ascending:false});
+
+if(error){
+
+console.error(error);
+
+showToast(error.message,"error");
+
+return;
+
+}
+
+users = data || [];
+
+updateDashboard();
+
+renderUsers();
+
+}
+
+/*=========================================
+LOAD MACHINE PLANS
+=========================================*/
+
+async function loadMachinePlans(){
+
+const { data, error } = await db
+
+.from("machines")
+
+.select("*")
+
+.order("display_order",{ascending:true});
+
+if(error){
+
+console.error(error);
+
+showToast(error.message,"error");
+
+return;
+
+}
+
+machinePlans = data || [];
+
+}
+
+/*=========================================
+UPDATE DASHBOARD
+=========================================*/
+
+function updateDashboard(){
+
+totalUsers.textContent =
+users.length;
+
+activeUsers.textContent =
+users.filter(user=>
+
+!user.is_frozen
+
+).length;
+
+vipMachines.textContent =
+users.filter(user=>
+
+user.membership==="VIP"
+
+).length;
+
+totalMachines.textContent =
+machinePlans.length;
+
+}
+
+/*=========================================
+REFRESH PAGE
+=========================================*/
+
+document
+
+.getElementById("refreshBtn")
+
+.addEventListener(
+
+"click",
+
+async()=>{
+
+showLoading();
+
+await loadSystem();
+
+hideLoading();
+
+showToast("Data refreshed.");
+
+}
+
+);
+
+/*=========================================
+INITIALIZE
+=========================================*/
+
+async function initializePage(){
+
+showLoading();
+
+try{
+
+resetPage();
+
+await loadSystem();
+
+}
+catch(error){
+
+console.error(error);
+
+showToast(error.message,"error");
+
+}
+finally{
+
+hideLoading();
+
+}
+
+}
