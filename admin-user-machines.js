@@ -202,17 +202,23 @@ LOAD USERS
 
 async function loadUsers(){
 
+console.log("Loading users...");
+
 const { data, error } = await db
-
 .from("profiles")
+.select("*");
 
-.select("*")
+if(error){
 
-.order("created_at",{
-ascending:false
-});
+console.error("Profiles Error:", error);
 
-if(error) throw error;
+showToast(error.message);
+
+return;
+
+}
+
+console.log("Users:", data);
 
 users = data || [];
 
