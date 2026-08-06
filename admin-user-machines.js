@@ -1384,3 +1384,154 @@ function renderMachineCards(list = userMachines) {
     });
 
     }
+
+/*=========================================
+PART 6C
+EDIT MACHINE
+=========================================*/
+
+let editingMachine = null;
+
+window.editMachine = editMachine;
+
+function editMachine(machineId){
+
+editingMachine = userMachines.find(
+
+m => m.id === machineId
+
+);
+
+if(!editingMachine){
+
+showToast("Machine not found.","error");
+
+return;
+
+}
+
+document
+
+.getElementById("machineModal")
+
+.classList.remove("hidden");
+
+document
+
+.getElementById("machineModalTitle")
+
+.textContent="Edit Machine";
+
+/* Machine */
+
+document.getElementById("machineSelect").value=
+
+editingMachine.machine_id || "";
+
+/* Amount */
+
+document.getElementById("machineAmountPaid").value=
+
+editingMachine.amount_paid || 0;
+
+/* Dates */
+
+document.getElementById("machinePurchaseDate").value=
+
+editingMachine.purchase_date
+
+?
+
+editingMachine.purchase_date.substring(0,10)
+
+:
+
+"";
+
+document.getElementById("machineExpiryDate").value=
+
+editingMachine.expiry_date
+
+?
+
+editingMachine.expiry_date.substring(0,10)
+
+:
+
+"";
+
+/* Days */
+
+document.getElementById("machineDurationDays").value=
+
+editingMachine.duration_days || 0;
+
+document.getElementById("machineRemainingDays").value=
+
+editingMachine.remaining_days || 0;
+
+document.getElementById("machineCurrentDay").value=
+
+editingMachine.current_day || 0;
+
+/* Income */
+
+document.getElementById("machineDailyIncome").value=
+
+editingMachine.daily_income || 0;
+
+document.getElementById("machineTotalReturn").value=
+
+editingMachine.total_return || 0;
+
+document.getElementById("machineEarnedAmount").value=
+
+editingMachine.earned_amount || 0;
+
+/* Status */
+
+document.getElementById("machineStatus").value=
+
+editingMachine.status || "active";
+
+/* VIP */
+
+document.getElementById("machineVip").value=
+
+editingMachine.is_vip
+
+?
+
+"true"
+
+:
+
+"false";
+
+/* Notes */
+
+document.getElementById("machineNotes").value=
+
+editingMachine.admin_notes || "";
+
+}
+
+/*=========================================
+CLOSE MACHINE MODAL
+=========================================*/
+
+document
+
+.getElementById("closeMachineModal")
+
+.onclick=()=>{
+
+editingMachine=null;
+
+document
+
+.getElementById("machineModal")
+
+.classList.add("hidden");
+
+};
