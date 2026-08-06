@@ -1199,3 +1199,188 @@ document
 loadUserMachines
 
 );
+
+/*=========================================
+PART 6B
+LOAD USER MACHINES + RENDER MACHINE CARDS
+=========================================*/
+
+async function loadUserMachines() {
+
+    if (!selectedUser) return;
+
+    showLoading();
+
+    const { data, error } = await db
+        .from("user_machines")
+        .select("*")
+        .eq("user_id", selectedUser.id)
+        .order("purchase_date", { ascending: false });
+
+    hideLoading();
+
+    if (error) {
+        showToast(error.message);
+        return;
+    }
+
+    userMachines = data || [];
+
+    document.getElementById("profileMachineCount").textContent =
+        userMachines.length;
+
+    updateMachineStats();
+
+    renderMachineCards();
+}
+
+/*=========================================
+RENDER MACHINE CARDS
+=========================================*/
+
+function renderMachineCards(list = userMachines) {
+
+    const container =
+        document.getElementById("machinesList");
+
+    container.innerHTML = "";
+
+    if (!list.length) {
+
+        container.innerHTML = `
+        <div class="emptyCard">
+            <h3>No Purchased Machines</h3>
+            <p>This user has not purchased any mining machine.</p>
+        </div>
+        `;
+
+        return;
+    }
+
+    list.forEach(machine => {
+
+        const card = document.createElement("div");
+
+        card.className = "machineCard";
+
+        const statusColor =
+            machine.status === "active"
+                ? "activeBadge"
+                : machine.status === "paused"
+                ? "warningBadge"
+                : "dangerBadge";
+
+        card.innerHTML = `
+
+        <img
+            class="machineImage"
+            src="${machine.machine_image || "images/default-machine.png"}">
+
+        <div class="machineContent">
+
+            <h3>${machine.machine_name}</h3>
+
+            <div class="machineBadges">
+
+                <span class="badge ${statusColor}">
+                    ${machine.status}
+                </span>
+
+                ${
+                    machine.is_vip
+                        ? `<span class="badge membershipBadge">VIP</span>`
+                        : ""
+                }
+
+            </div>
+
+            <p>
+                <strong>Series:</strong>
+                ${machine.machine_series || "--"}
+            </p>
+
+            <p>
+                <strong>Paid:</strong>
+                UGX ${Number(machine.amount_paid || 0).toLocaleString()}
+            </p>
+
+            <p>
+                <strong>Daily Income:</strong>
+                UGX ${Number(machine.daily_income || 0).toLocaleString()}
+            </p>
+
+            <p>
+                <strong>Earned:</strong>
+                UGX ${Number(machine.earned_amount || 0).toLocaleString()}
+            </p>
+
+            <p>
+                <strong>Current Day:</strong>
+                ${machine.current_day || 0}
+                /
+                ${machine.duration_days || 0}
+            </p>
+
+            <p>
+                <strong>Remaining:</strong>
+                ${machine.remaining_days || 0} Days
+            </p>
+
+            <p>
+                <strong>Purchase:</strong>
+                ${formatDate(machine.purchase_date)}
+            </p>
+
+            <p>
+                <strong>Expiry:</strong>
+                ${formatDate(machine.expiry_date)}
+            </p>
+
+            <div class="machineActions">
+
+                <button
+                    class="editBtn"
+                    onclick="editMachine('${machine.id}')">
+
+                    ✏ Edit
+
+                </button>
+
+                <button
+                    class="pauseBtn"
+                    onclick="toggleMachine('${machine.id}')">
+
+                    ${
+                        machine.status === "paused"
+                            ? "▶ Resume"
+                            : "⏸ Pause"
+                    }
+
+                </button>
+
+                <button
+                    class="daysBtn"
+                    onclick="addMachineDay('${machine.id}')">
+
+                    ➕ Day
+
+                </button>
+
+                <button
+                    class="deleteBtn"
+                    onclick="deleteMachine('${machine.id}')">
+
+                    🗑 Delete
+
+                </button>
+
+            </div>
+
+        </div>
+        `;
+
+        container.appendChild(card);
+
+    });
+
+    }
