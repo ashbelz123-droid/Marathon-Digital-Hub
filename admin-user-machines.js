@@ -742,3 +742,225 @@ document.getElementById("editReferralCode").value=
 selectedUser.referral_code || "";
 
     }
+
+/*=========================================
+PART 5
+SAVE USER
+=========================================*/
+
+document
+
+.getElementById("saveUserBtn")
+
+.addEventListener("click",saveUser);
+
+async function saveUser(){
+
+if(!selectedUser){
+
+showToast("No user selected.","error");
+
+return;
+
+}
+
+const updates={
+
+fullname:
+document.getElementById("editFullname").value.trim(),
+
+phone:
+document.getElementById("editPhone").value.trim(),
+
+email:
+document.getElementById("editEmail").value.trim(),
+
+country:
+document.getElementById("editCountry").value.trim(),
+
+gender:
+document.getElementById("editGender").value,
+
+membership:
+document.getElementById("editMembership").value,
+
+level:Number(
+document.getElementById("editLevel").value
+),
+
+account_status:
+document.getElementById("editAccountStatus").value,
+
+kyc_status:
+document.getElementById("editKycStatus").value,
+
+referral_code:
+document.getElementById("editReferralCode").value.trim(),
+
+updated_at:
+new Date().toISOString()
+
+};
+
+showLoading();
+
+const {error}=await db
+
+.from("profiles")
+
+.update(updates)
+
+.eq("id",selectedUser.id);
+
+hideLoading();
+
+if(error){
+
+console.error(error);
+
+showToast(error.message,"error");
+
+return;
+
+}
+
+Object.assign(selectedUser,updates);
+
+loadUserProfile();
+
+renderUsers();
+
+document
+
+.getElementById("editUserModal")
+
+.classList.add("hidden");
+
+showToast("User updated successfully.");
+
+}
+
+/*=========================================
+FREEZE / UNFREEZE USER
+=========================================*/
+
+document
+
+.getElementById("freezeUserBtn")
+
+.addEventListener("click",toggleFreezeUser);
+
+async function toggleFreezeUser(){
+
+if(!selectedUser){
+
+showToast("Select a user.","error");
+
+return;
+
+}
+
+const freeze=
+
+!selectedUser.is_frozen;
+
+showLoading();
+
+const {error}=await db
+
+.from("profiles")
+
+.update({
+
+is_frozen:freeze,
+
+updated_at:
+new Date().toISOString()
+
+})
+
+.eq("id",selectedUser.id);
+
+hideLoading();
+
+if(error){
+
+console.error(error);
+
+showToast(error.message,"error");
+
+return;
+
+}
+
+selectedUser.is_frozen=freeze;
+
+loadUserProfile();
+
+updateDashboard();
+
+renderUsers();
+
+document
+
+.getElementById("freezeUserBtn")
+
+.innerHTML=
+
+freeze
+
+?
+
+"✅ Unfreeze"
+
+:
+
+"❄ Freeze";
+
+showToast(
+
+freeze
+
+?
+
+"Account frozen."
+
+:
+
+"Account activated."
+
+);
+
+}
+
+/*=========================================
+CLOSE EDIT MODAL
+=========================================*/
+
+document
+
+.getElementById("cancelEditUserBtn")
+
+.onclick=()=>{
+
+document
+
+.getElementById("editUserModal")
+
+.classList.add("hidden");
+
+};
+
+document
+
+.getElementById("closeEditUserModal")
+
+.onclick=()=>{
+
+document
+
+.getElementById("editUserModal")
+
+.classList.add("hidden");
+
+};
