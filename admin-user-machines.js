@@ -362,3 +362,168 @@ hideLoading();
 }
 
 }
+
+/*=========================================
+PART 3
+RENDER USERS
+=========================================*/
+
+function renderUsers(list = users){
+
+usersList.innerHTML="";
+
+if(list.length===0){
+
+usersList.innerHTML=`
+
+<div class="emptyCard">
+
+<h3>No Users Found</h3>
+
+<p>No matching users.</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+list.forEach(user=>{
+
+const card=document.createElement("div");
+
+card.className="userCard";
+
+if(selectedUser && selectedUser.id===user.id){
+
+card.classList.add("active");
+
+}
+
+card.innerHTML=`
+
+<div class="userLeft">
+
+<img
+class="userAvatar"
+src="${user.avatar_url || 'images/default-avatar.png'}">
+
+<div class="userInfo">
+
+<h3>${user.fullname}</h3>
+
+<p>${user.phone || "No Phone"}</p>
+
+<p>${user.email || "No Email"}</p>
+
+</div>
+
+</div>
+
+<div class="userRight">
+
+<span class="badge membershipBadge">
+
+${user.membership || "Standard"}
+
+</span>
+
+</div>
+
+`;
+
+card.onclick=()=>{
+
+selectUser(user);
+
+};
+
+usersList.appendChild(card);
+
+});
+
+}
+
+/*=========================================
+SEARCH USERS
+=========================================*/
+
+searchInput.addEventListener("input",()=>{
+
+const keyword=
+
+searchInput.value
+
+.toLowerCase()
+
+.trim();
+
+const filtered=
+
+users.filter(user=>{
+
+return(
+
+(user.fullname || "")
+
+.toLowerCase()
+
+.includes(keyword)
+
+||
+
+(user.phone || "")
+
+.toLowerCase()
+
+.includes(keyword)
+
+||
+
+(user.email || "")
+
+.toLowerCase()
+
+.includes(keyword)
+
+);
+
+});
+
+renderUsers(filtered);
+
+});
+
+/*=========================================
+SELECT USER
+=========================================*/
+
+function selectUser(user){
+
+selectedUser=user;
+
+renderUsers();
+
+document
+
+.getElementById("userProfileSection")
+
+.classList.remove("hidden");
+
+document
+
+.getElementById("machinesSection")
+
+.classList.remove("hidden");
+
+/* Part 4 */
+
+loadUserProfile();
+
+/* Part 5 */
+
+loadUserMachines();
+
+}
