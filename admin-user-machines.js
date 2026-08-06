@@ -527,3 +527,218 @@ loadUserProfile();
 loadUserMachines();
 
 }
+
+/*=========================================
+PART 4
+LOAD USER PROFILE
+=========================================*/
+
+function loadUserProfile(){
+
+if(!selectedUser) return;
+
+/* Avatar */
+
+document.getElementById("profileAvatar").src=
+
+selectedUser.avatar_url ||
+
+"images/default-avatar.png";
+
+/* Basic Info */
+
+document.getElementById("profileName").textContent=
+
+selectedUser.fullname ||
+
+"Unknown User";
+
+document.getElementById("profilePhone").textContent=
+
+selectedUser.phone ||
+
+"No Phone Number";
+
+document.getElementById("profileEmail").textContent=
+
+selectedUser.email ||
+
+"No Email";
+
+/* Membership */
+
+const membershipBadge=
+
+document.getElementById("membershipBadge");
+
+membershipBadge.textContent=
+
+selectedUser.membership ||
+
+"Standard";
+
+/* Account Status */
+
+const statusBadge=
+
+document.getElementById("statusBadge");
+
+statusBadge.textContent=
+
+selectedUser.account_status ||
+
+"Active";
+
+statusBadge.className="badge";
+
+if(selectedUser.is_frozen){
+
+statusBadge.classList.add("warningBadge");
+
+statusBadge.textContent="Frozen";
+
+}else{
+
+statusBadge.classList.add("activeBadge");
+
+}
+
+/* KYC */
+
+const kycBadge=
+
+document.getElementById("kycBadge");
+
+kycBadge.textContent=
+
+selectedUser.kyc_status ||
+
+"Not Verified";
+
+/* Statistics */
+
+document.getElementById("profileInvested").textContent=
+
+"UGX "+
+
+Number(
+
+selectedUser.total_invested||0
+
+).toLocaleString();
+
+document.getElementById("profileProfit").textContent=
+
+"UGX "+
+
+Number(
+
+selectedUser.total_profit||0
+
+).toLocaleString();
+
+document.getElementById("profileReferralBonus").textContent=
+
+"UGX "+
+
+Number(
+
+selectedUser.total_referral_bonus||0
+
+).toLocaleString();
+
+document.getElementById("profileMachineCount").textContent="0";
+
+}
+
+/*=========================================
+OPEN EDIT USER
+=========================================*/
+
+document
+
+.getElementById("editUserBtn")
+
+.addEventListener(
+
+"click",
+
+openEditUser
+
+);
+
+function openEditUser(){
+
+if(!selectedUser){
+
+showToast("Select a user first.","error");
+
+return;
+
+}
+
+document
+
+.getElementById("editUserModal")
+
+.classList.remove("hidden");
+
+/* Preview */
+
+document.getElementById("editUserAvatar").src=
+
+selectedUser.avatar_url ||
+
+"images/default-avatar.png";
+
+document.getElementById("editPreviewName").textContent=
+
+selectedUser.fullname;
+
+document.getElementById("editPreviewPhone").textContent=
+
+selectedUser.phone || "";
+
+/* Form */
+
+document.getElementById("editFullname").value=
+
+selectedUser.fullname || "";
+
+document.getElementById("editPhone").value=
+
+selectedUser.phone || "";
+
+document.getElementById("editEmail").value=
+
+selectedUser.email || "";
+
+document.getElementById("editCountry").value=
+
+selectedUser.country || "";
+
+document.getElementById("editGender").value=
+
+selectedUser.gender || "";
+
+document.getElementById("editMembership").value=
+
+selectedUser.membership || "Standard";
+
+document.getElementById("editLevel").value=
+
+selectedUser.level || 1;
+
+document.getElementById("editAccountStatus").value=
+
+selectedUser.account_status || "active";
+
+document.getElementById("editKycStatus").value=
+
+selectedUser.kyc_status || "Not Verified";
+
+document.getElementById("editReferralCode").value=
+
+selectedUser.referral_code || "";
+
+    }
