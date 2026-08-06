@@ -964,3 +964,238 @@ document
 .classList.add("hidden");
 
 };
+
+/*=========================================
+PART 6A
+LOAD USER MACHINES
+=========================================*/
+
+async function loadUserMachines(){
+
+if(!selectedUser) return;
+
+showLoading();
+
+const {data,error}=await db
+
+.from("user_machines")
+
+.select("*")
+
+.eq("user_id",selectedUser.id)
+
+.order("purchase_date",{ascending:false});
+
+hideLoading();
+
+if(error){
+
+console.error(error);
+
+showToast(error.message,"error");
+
+return;
+
+}
+
+userMachines=data || [];
+
+updateMachineStats();
+
+renderMachines();
+
+}
+
+/*=========================================
+UPDATE MACHINE STATS
+=========================================*/
+
+function updateMachineStats(){
+
+document.getElementById("profileMachineCount").textContent=
+
+userMachines.length;
+
+document.getElementById("activeMachineCount").textContent=
+
+userMachines.filter(
+
+m=>m.status==="active"
+
+).length;
+
+document.getElementById("completedMachineCount").textContent=
+
+userMachines.filter(
+
+m=>m.completed===true
+
+).length;
+
+document.getElementById("pausedMachineCount").textContent=
+
+userMachines.filter(
+
+m=>m.status==="paused"
+
+).length;
+
+document.getElementById("expiredMachineCount").textContent=
+
+userMachines.filter(m=>{
+
+if(!m.expiry_date) return false;
+
+return new Date(m.expiry_date)<new Date();
+
+}).length;
+
+}
+
+/*=========================================
+RENDER MACHINE CARDS
+=========================================*/
+
+function renderMachines(){
+
+machinesList.innerHTML="";
+
+if(userMachines.length===0){
+
+machinesList.innerHTML=`
+
+<div class="emptyCard">
+
+<h3>No Machines</h3>
+
+<p>This user has not purchased any machines.</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+userMachines.forEach(machine=>{
+
+const card=document.createElement("div");
+
+card.className="machineCard";
+
+card.innerHTML=`
+
+<img
+class="machineImage"
+src="${machine.machine_image || "images/default-machine.png"}">
+
+<div class="machineContent">
+
+<h3>${machine.machine_name}</h3>
+
+<p><b>Series:</b> ${machine.machine_series || "-"}</p>
+
+<p><b>Paid:</b> UGX ${Number(machine.amount_paid||0).toLocaleString()}</p>
+
+<p><b>Profit:</b> UGX ${Number(machine.earned_amount||0).toLocaleString()}</p>
+
+<p><b>Daily:</b> UGX ${Number(machine.daily_income||0).toLocaleString()}</p>
+
+<p><b>Remaining:</b> ${machine.remaining_days||0} Days</p>
+
+<div class="machineBadges">
+
+<span class="badge activeBadge">
+
+${machine.status}
+
+</span>
+
+${machine.is_vip ?
+
+'<span class="badge membershipBadge">VIP</span>'
+
+:
+
+''}
+
+</div>
+
+<div class="machineActions">
+
+<button
+
+class="editBtn"
+
+onclick="editMachine('${machine.id}')">
+
+✏ Edit
+
+</button>
+
+<button
+
+class="daysBtn"
+
+onclick="changeDays('${machine.id}')">
+
+📅 Days
+
+</button>
+
+<button
+
+class="pauseBtn"
+
+onclick="toggleMachine('${machine.id}')">
+
+${machine.status==="paused"
+
+?
+
+"▶ Resume"
+
+:
+
+"⏸ Pause"}
+
+</button>
+
+<button
+
+class="deleteBtn"
+
+onclick="deleteMachine('${machine.id}')">
+
+🗑 Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+machinesList.appendChild(card);
+
+});
+
+}
+
+/*=========================================
+REFRESH MACHINES
+=========================================*/
+
+document
+
+.getElementById("refreshMachinesBtn")
+
+.addEventListener(
+
+"click",
+
+loadUserMachines
+
+);
