@@ -1,0 +1,20 @@
+{
+  "name": "Marathon Digital Hub",
+  "short_name": "MDH",
+  "description": "Marathon Digital Hub mobile application",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#06131f",
+  "theme_color": "#0b6b46",
+  "lang": "en",
+  "icons": [
+    { "src": "/assets/icons/mdh.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Dashboard", "url": "/dashboard.html", "icons": [{ "src": "/assets/icons/mdh.svg", "sizes": "any" }] },
+    { "name": "Machines", "url": "/machines.html", "icons": [{ "src": "/assets/icons/mdh.svg", "sizes": "any" }] },
+    { "name": "Deposit", "url": "/deposit.html", "icons": [{ "src": "/assets/icons/mdh.svg", "sizes": "any" }] }
+  ]
+}
