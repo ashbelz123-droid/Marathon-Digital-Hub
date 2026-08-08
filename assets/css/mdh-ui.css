@@ -1,0 +1,13 @@
+/* MDH shared UI layer — additive only. Existing page styles remain untouched. */
+:root{--mdh-bg:#06131f;--mdh-surface:rgba(10,29,39,.82);--mdh-green:#19e889;--mdh-green-soft:rgba(25,232,137,.12);--mdh-border:rgba(25,232,137,.16);--mdh-text:#f4fff9;--mdh-muted:#8fa7b4;--mdh-radius:18px}
+.mdh-glass{background:var(--mdh-surface);border:1px solid var(--mdh-border);border-radius:var(--mdh-radius);box-shadow:0 12px 35px rgba(0,0,0,.22);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.mdh-btn{min-height:44px;padding:11px 16px;border:1px solid var(--mdh-border);border-radius:13px;background:linear-gradient(135deg,var(--mdh-green),#0ebc6d);color:#03130b;font-weight:800;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;touch-action:manipulation}
+.mdh-btn.secondary{background:rgba(255,255,255,.04);color:var(--mdh-text)}
+.mdh-status{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border-radius:999px;background:var(--mdh-green-soft);color:var(--mdh-green);font-size:11px;font-weight:800}
+.mdh-muted{color:var(--mdh-muted)}
+.mdh-install-card{display:flex;align-items:center;gap:12px;margin:12px 16px;padding:14px;border-radius:18px;background:linear-gradient(135deg,rgba(25,232,137,.11),rgba(8,24,35,.9));border:1px solid var(--mdh-border)}
+.mdh-install-card[hidden]{display:none}
+.mdh-install-icon{width:44px;height:44px;flex:0 0 44px;border-radius:13px;background:var(--mdh-green);color:#03130b;display:grid;place-items:center;font-size:12px;font-weight:900}
+.mdh-install-copy{min-width:0;flex:1}.mdh-install-copy strong{display:block;font-size:14px;color:var(--mdh-text)}.mdh-install-copy span{display:block;margin-top:3px;font-size:11px;line-height:1.4;color:var(--mdh-muted)}
+.mdh-install-card button{border:0;border-radius:11px;padding:10px 12px;background:var(--mdh-green);color:#03130b;font-weight:800;white-space:nowrap}
+@media(prefers-reduced-motion:reduce){.mdh-glass,.mdh-btn{scroll-behavior:auto}}
