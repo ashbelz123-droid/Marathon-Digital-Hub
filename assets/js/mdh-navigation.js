@@ -1,43 +1,9 @@
-/* MDH shared navigation + floating Mara + real dashboard data. */
+/* MDH shared navigation + notification indicators. */
 (function(){
-  function buildNavigation(){
-    // Remove legacy navigation components so old pages cannot render a second/old nav.
-    document.querySelectorAll('.bottom-nav,.bottom-navigation,.mobile-bottom-nav,.mobile-nav,nav.bottom-nav').forEach(el=>el.remove());
-    const existing=document.querySelector('.mdh-bottom-nav');
-    if(existing) existing.remove();
-    const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();
-    const items=[['dashboard.html','⌂','Home'],['machines.html','◈','Machines'],['deposit.html','＋','Deposit'],['support.html','♡','Support'],['profile.html','◎','Profile']];
-    const nav=document.createElement('nav');
-    nav.className='mdh-bottom-nav';
-    nav.setAttribute('aria-label','MDH main navigation');
-    items.forEach(([href,icon,label])=>{
-      const a=document.createElement('a');
-      a.className='mdh-nav-item'+(path===href?' active':'');
-      a.href=href;
-      a.innerHTML='<span class="mdh-nav-icon" aria-hidden="true">'+icon+'</span><span>'+label+'</span>';
-      nav.appendChild(a);
-    });
-    document.body.appendChild(nav);
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',buildNavigation,{once:true});else buildNavigation();
-
-  function loadMara(){if(document.querySelector('.mara-float'))return;const s=document.createElement('script');s.src='assets/js/mara-floating.js?v=3';s.dataset.maraFloating='1';document.body.appendChild(s)}
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadMara,{once:true});else loadMara();
-
-  async function loadRealDashboard(){
-    if(!document.getElementById('walletBalance')&&!document.getElementById('activeMachines'))return;
-    try{
-      if(!window.supabaseClient)return;
-      const {data:{user}}=await window.supabaseClient.auth.getUser();if(!user)return;
-      const db=window.supabaseClient;
-      const {data:p,error}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();if(error)throw error;
-      const money=v=>'UGX '+Number(v||0).toLocaleString();const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-      set('walletBalance',money(p?.wallet_balance));set('totalInvested',money(p?.total_invested));set('totalProfit',money(p?.total_profit));set('referralBonus',money(p?.total_referral_bonus));set('userName',p?.fullname||user.email||'User');set('fullName',p?.fullname||'User');
-      const active=await db.from('user_machines').select('id',{count:'exact',head:true}).eq('user_id',user.id).eq('status','active');if(!active.error)set('activeMachines',active.count||0);
-      const notifTable=await db.from('user_notifications').select('id',{count:'exact',head:true}).eq('user_id',user.id).eq('is_read',false);
-      const n=notifTable.error?0:(notifTable.count||0);const b=document.getElementById('notificationBadge');if(b){b.textContent=n;b.style.display=n>0?'grid':'none'}set('notificationCount',n);
-      if(p?.referral_code){const team=await db.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',p.referral_code);if(!team.error)set('totalTeam',team.count||0)}
-    }catch(e){console.warn('MDH dashboard data error',e)}
-  }
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadRealDashboard,{once:true});else loadRealDashboard();
+ function buildNavigation(){document.querySelectorAll('.bottom-nav,.bottom-navigation,.mobile-bottom-nav,.mobile-nav,nav.bottom-nav').forEach(el=>el.remove());const old=document.querySelector('.mdh-bottom-nav');if(old)old.remove();const path=(location.pathname.split('/').pop()||'index.html').toLowerCase();const items=[['dashboard.html','⌂','Home'],['machines.html','◈','Machines'],['deposit.html','＋','Deposit'],['support.html','♡','Support'],['profile.html','◎','Profile']];const nav=document.createElement('nav');nav.className='mdh-bottom-nav';nav.setAttribute('aria-label','MDH main navigation');items.forEach(([href,icon,label])=>{const a=document.createElement('a');a.className='mdh-nav-item'+(path===href?' active':'');a.href=href;a.innerHTML='<span class="mdh-nav-icon" aria-hidden="true">'+icon+'</span><span>'+label+'</span>';nav.appendChild(a)});document.body.appendChild(nav)}
+ function loadMara(){if(document.querySelector('.mara-float'))return;const s=document.createElement('script');s.src='assets/js/mara-floating.js?v=4';document.body.appendChild(s)}
+ async function loadNotificationCount(){try{const db=window.supabaseClient;if(!db)return;const{data:{user}}=await db.auth.getUser();if(!user)return;let count=0;const r=await db.from('user_notifications').select('id',{count:'exact',head:true}).eq('user_id',user.id).eq('is_read',false);if(!r.error)count=r.count||0;const badges=document.querySelectorAll('#notificationBadge,#notificationCount');badges.forEach(b=>{b.textContent=count;b.style.display=count>0?'grid':'none';b.classList.toggle('has-unread',count>0)});const bells=document.querySelectorAll('.notification-bell,.bell');bells.forEach(b=>{b.classList.toggle('has-unread',count>0);if(count>0&&!b.querySelector('.mdh-unread-dot')){const d=document.createElement('i');d.className='mdh-unread-dot';d.textContent=count>99?'99+':String(count);b.appendChild(d)}})}catch(e){console.warn('MDH notification badge:',e)}}
+ function loadRealDashboard(){if(!document.getElementById('walletBalance')&&!document.getElementById('activeMachines'))return;try{const db=window.supabaseClient;if(!db)return;db.auth.getUser().then(async({data:{user}})=>{if(!user)return;const{data:p}=await db.from('profiles').select('*').eq('id',user.id).maybeSingle();if(!p)return;const money=v=>'UGX '+Number(v||0).toLocaleString();const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};set('walletBalance',money(p.wallet_balance));set('totalInvested',money(p.total_invested));set('totalProfit',money(p.total_profit));set('referralBonus',money(p.total_referral_bonus));set('userName',p.fullname||user.email||'User');set('fullName',p.fullname||'User')}).catch(()=>{})}catch(e){}}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>{buildNavigation();loadMara();loadNotificationCount();loadRealDashboard()},{once:true});else{buildNavigation();loadMara();loadNotificationCount();loadRealDashboard()}
+ setInterval(loadNotificationCount,15000);
 })();
