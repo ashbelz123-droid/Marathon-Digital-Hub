@@ -3,135 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Marathon Digital Hub v2</title>
+    <meta name="theme-color" content="#0b6b46" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <title>Marathon Digital Hub</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="assets/icons/mdh.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/v2.css" />
   </head>
   <body>
-    <canvas id="network"></canvas>
+    <canvas id="network" aria-hidden="true"></canvas>
     <main class="app-shell">
       <nav class="app-bar">
-        <a class="brand" href="index.html"
-          ><span class="brand-mark">MDH</span
-          ><span
-            ><small>Marathon v2</small><strong>Digital Hub</strong></span
-          ></a
-        >
-        <span class="pill">Mobile-first investment OS</span>
+        <a class="brand" href="index.html"><span class="brand-mark">MDH</span><span><small>Marathon</small><strong>Digital Hub</strong></span></a>
+        <a class="pill" href="install-app.html">Install App</a>
       </nav>
       <section class="hero fade-up">
-        <span class="eyebrow">Premium Android-style web app</span>
-        <h1>Invest, mine, earn, and get guided by Marathon AI.</h1>
-        <p class="lead">
-          A glassmorphism platform with a live network background, Marathon
-          green theme, smooth feature pages, Supabase-ready workflows,
-          Gemini-ready AI support, and admin operations for every critical
-          investment action.
-        </p>
-        <div class="actions">
-          <a class="btn" href="register.html">Create account</a
-          ><a class="btn secondary" href="login.html">Login</a>
-        </div>
-        <div class="stats">
-          <div class="stat"><strong>16</strong><span>Feature pages</span></div>
-          <div class="stat"><strong>6</strong><span>Admin modules</span></div>
-          <div class="stat">
-            <strong>AI</strong><span>Level 1 assistant</span>
-          </div>
-          <div class="stat">
-            <strong>PWA</strong><span>Install-ready path</span>
-          </div>
-        </div>
+        <span class="eyebrow">Your MDH mobile platform</span>
+        <h1>Invest, mine, earn and manage everything from one place.</h1>
+        <p class="lead">A premium mobile-first MDH experience built around your account, wallet, machines, income, referrals and support.</p>
+        <div class="actions"><a class="btn" href="register.html">Create account</a><a class="btn secondary" href="login.html">Login</a></div>
+        <div class="stats"><div class="stat"><strong>Secure</strong><span>Account access</span></div><div class="stat"><strong>24/7</strong><span>Platform access</span></div><div class="stat"><strong>AI</strong><span>Mara assistance</span></div><div class="stat"><strong>APP</strong><span>Installable</span></div></div>
       </section>
       <section class="ai-panel ai-card fade-up">
-        <div>
-          <span class="eyebrow">Marathon AI</span>
-          <h2 data-ai-greeting>
-            Welcome to Marathon Digital Hub. I can guide you.
-          </h2>
-          <p class="lead">
-            Level 1 support welcomes new and returning users, answers FAQs,
-            guides onboarding, and escalates complex account requests to
-            support.
-          </p>
-          <div class="quick-prompts">
-            <button data-prompt="faq">Answer FAQs</button
-            ><button data-prompt="guide">Guide me</button
-            ><button data-prompt="support">Support help</button>
-          </div>
-          <p class="chat-bubble" data-ai-answer>
-            Ask about deposits, withdrawals, machines, referrals, wallet
-            activity, security, or app installation.
-          </p>
-        </div>
-        <div class="robot">
-          <span class="robot-face"></span>
-          <div>
-            <h3>Premium animated robot avatar</h3>
-            <p>Friendly, responsive, and ready for Gemini API wiring.</p>
-          </div>
-        </div>
+        <div><span class="eyebrow">Mara AI</span><h2>Need help with MDH?</h2><p class="lead">Get guided through deposits, withdrawals, machines, wallet activity, referrals, security and account settings.</p><div class="quick-prompts"><button data-prompt="faq">FAQs</button><button data-prompt="guide">Guide me</button><button data-prompt="support">Support</button></div><p class="chat-bubble" data-ai-answer>Choose a topic and Mara will guide you.</p></div>
+        <div class="robot"><span class="robot-face"></span><div><h3>Mara AI</h3><p>MDH's digital guide.</p></div></div>
       </section>
-      <div class="section-title">
-        <div>
-          <span class="eyebrow">Pages</span>
-          <h2>One page per feature</h2>
-        </div>
-      </div>
+      <div class="section-title"><div><span class="eyebrow">Explore MDH</span><h2>Everything has its own page</h2></div></div>
       <section class="grid" id="features"></section>
     </main>
-    <nav class="bottom-nav">
-      <a class="active" href="index.html">⌂<span>Home</span></a
-      ><a href="dashboard.html">◇<span>Dash</span></a
-      ><a href="wallet.html">◉<span>Wallet</span></a
-      ><a href="marathon-ai.html">🤖<span>AI</span></a
-      ><a href="settings.html">⚙<span>Settings</span></a>
-    </nav>
-    <script src="assets/js/network.js"></script>
-    <script src="assets/js/v2.js"></script>
+    <nav class="bottom-nav"><a class="active" href="index.html">⌂<span>Home</span></a><a href="dashboard.html">◇<span>Dashboard</span></a><a href="machines.html">◈<span>Machines</span></a><a href="deposit.html">＋<span>Deposit</span></a><a href="profile.html">◎<span>Profile</span></a></nav>
+    <script src="assets/js/network.js"></script><script src="assets/js/v2.js"></script>
     <script>
-      const pages = [
-        ["Login", "Secure returning-user access", "login.html", "🔐"],
-        ["Register", "Create profile and referral path", "register.html", "📝"],
-        [
-          "Dashboard",
-          "Portfolio, ROI, and mining overview",
-          "dashboard.html",
-          "📊",
-        ],
-        ["Wallet", "Balances and transaction history", "wallet.html", "👛"],
-        ["Deposit", "Fund your investment wallet", "deposit.html", "⬇️"],
-        ["Withdraw", "Request payouts safely", "withdraw.html", "⬆️"],
-        ["Machines", "Browse mining packages", "machines.html", "⚙️"],
-        ["Team", "Referral team growth", "team.html", "👥"],
-        ["Profile", "Personal identity and KYC center", "profile.html", "🙋"],
-        [
-          "Community",
-          "Announcements and investor updates",
-          "community.html",
-          "🌐",
-        ],
-        ["Support", "AI-assisted human support", "support.html", "💬"],
-        ["Marathon AI", "Guided assistant workspace", "marathon-ai.html", "🤖"],
-        [
-          "Notifications",
-          "Activity and security alerts",
-          "notifications.html",
-          "🔔",
-        ],
-        [
-          "Install App",
-          "Android-style install guide",
-          "install-app.html",
-          "📲",
-        ],
-        ["Admin", "Operations command center", "admin-dashboard.html", "🛡️"],
-      ];
-      document.getElementById("features").innerHTML = pages
-        .map(
-          ([t, p, h, i]) =>
-            `<a class="feature-tile" href="${h}"><div class="icon">${i}</div><h3>${t}</h3><p>${p}</p></a>`,
-        )
-        .join("");
+      const pages=[["Dashboard","Your portfolio and wallet overview","dashboard.html","📊"],["Machines","Browse available mining machines","machines.html","⚙️"],["Deposit","Fund your MDH wallet","deposit.html","⬇️"],["Withdraw","Request a Mobile Money payout","withdraw.html","⬆️"],["Income","Track your earnings","income.html","💰"],["Referral","Manage your referral team","referral.html","👥"],["Notifications","Account and platform alerts","notifications.html","🔔"],["Profile","Account, KYC and membership","profile.html","🙋"],["Settings","Security and preferences","settings.html","⚙️"],["Mara AI","MDH assistance","mara-ai.html","🤖"],["Support","Get help when needed","support.html","💬"],["Install App","Install MDH on Android","install-app.html","📲"],["Admin","Authorized operations center","admin-dashboard.html","🛡️"]];
+      document.getElementById("features").innerHTML=pages.map(([t,p,h,i])=>`<a class="feature-tile" href="${h}"><div class="icon">${i}</div><h3>${t}</h3><p>${p}</p></a>`).join("");
+      if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(()=>{});
     </script>
   </body>
 </html>
