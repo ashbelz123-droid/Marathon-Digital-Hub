@@ -1,76 +1,61 @@
 const canvas = document.getElementById("network");
 if (canvas) {
-  const ctx = canvas.getContext("2d");
+  const ctx = canvas.getContext("2d", { alpha: true });
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const mobile = window.matchMedia("(max-width: 600px)").matches;
+  let particles = [];
+  let width = 0;
+  let height = 0;
+  let raf = 0;
 
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  let particlesArray = [];
+    const count = reduceMotion ? 0 : mobile ? 18 : Math.min(34, Math.floor((width * height) / 28000));
+    particles = Array.from({ length: count }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.16,
+      vy: (Math.random() - 0.5) * 0.16,
+      r: Math.random() * 1.1 + 0.5
+    }));
+  }
 
-  class Particle {
-    constructor(x, y, directionX, directionY, size) {
-      this.x = x;
-      this.y = y;
-      this.directionX = directionX;
-      this.directionY = directionY;
-      this.size = size;
-    }
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+    if (!particles.length) return;
 
-    draw() {
+    for (const p of particles) {
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > width) p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-      ctx.fillStyle = "#19ff8f";
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(25,255,143,.35)";
       ctx.fill();
     }
 
-    update() {
-      if (this.x > canvas.width || this.x < 0) {
-        this.directionX = -this.directionX;
-      }
-      if (this.y > canvas.height || this.y < 0) {
-        this.directionY = -this.directionY;
-      }
-
-      this.x += this.directionX;
-      this.y += this.directionY;
-
-      this.draw();
-    }
-  }
-
-  function init() {
-    particlesArray = [];
-    let numberOfParticles = (canvas.height * canvas.width) / 9000;
-
-    for (let i = 0; i < numberOfParticles; i++) {
-      let size = Math.random() * 2 + 1;
-      let x = Math.random() * canvas.width;
-      let y = Math.random() * canvas.height;
-      let directionX = Math.random() * 0.4 - 0.2;
-      let directionY = Math.random() * 0.4 - 0.2;
-
-      particlesArray.push(new Particle(x, y, directionX, directionY, size));
-    }
-  }
-
-  function connect() {
-    let opacityValue = 1;
-
-    for (let a = 0; a < particlesArray.length; a++) {
-      for (let b = a; b < particlesArray.length; b++) {
-        let distance =
-          (particlesArray[a].x - particlesArray[b].x) *
-            (particlesArray[a].x - particlesArray[b].x) +
-          (particlesArray[a].y - particlesArray[b].y) *
-            (particlesArray[a].y - particlesArray[b].y);
-
-        if (distance < (canvas.width / 7) * (canvas.height / 7)) {
-          opacityValue = 1 - distance / 20000;
-          ctx.strokeStyle = "rgba(25,255,143," + opacityValue + ")";
-          ctx.lineWidth = 1;
+    const maxDistance = mobile ? 125 : 155;
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const a = particles[i], b = particles[j];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < maxDistance) {
+          ctx.strokeStyle = `rgba(25,255,143,${(1 - distance / maxDistance) * 0.12})`;
+          ctx.lineWidth = 0.7;
           ctx.beginPath();
-          ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-          ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
           ctx.stroke();
         }
       }
@@ -78,22 +63,13 @@ if (canvas) {
   }
 
   function animate() {
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = 0; i < particlesArray.length; i++) {
-      particlesArray[i].update();
-    }
-
-    connect();
+    draw();
+    if (!reduceMotion) raf = requestAnimationFrame(animate);
   }
 
-  window.addEventListener("resize", function () {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    init();
-  });
+  resize();
+  window.addEventListener("resize", resize, { passive: true });
+  if (!reduceMotion) animate();
 
-  init();
-  animate();
+  window.addEventListener("pagehide", () => cancelAnimationFrame(raf), { once: true });
 }
