@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#06131a">
+  <title>Machine Details | Marathon Digital Hub</title>
+  <link rel="stylesheet" href="assets/css/v2.css">
+</head>
+<body>
+  <canvas id="network"></canvas>
+  <main class="app-shell">
+    <nav class="app-bar">
+      <a class="brand" href="machines.html"><span class="brand-mark">MDH</span><span><small>Marathon Digital Hub</small><strong>Machine Details</strong></span></a>
+      <a class="pill" href="machines.html">← Machines</a>
+    </nav>
+    <section class="hero fade-up">
+      <span class="eyebrow">Mining machine</span>
+      <h1 data-machine-name>Machine details</h1>
+      <p class="lead" data-machine-message>Choose a machine from the Machines page to view its configured details.</p>
+    </section>
+    <section class="ai-panel ai-card fade-up" id="machineCard">
+      <div class="list">
+        <div class="list-row"><span>Series</span><strong data-machine-series>—</strong></div>
+        <div class="list-row"><span>Price</span><strong data-machine-price>—</strong></div>
+        <div class="list-row"><span>Total return</span><strong data-machine-return>—</strong></div>
+        <div class="list-row"><span>Duration</span><strong data-machine-duration>—</strong></div>
+        <div class="list-row"><span>Status</span><span class="status" data-machine-status>—</span></div>
+      </div>
+      <div class="actions" style="margin-top:16px">
+        <a class="btn secondary" href="deposit.html">Fund wallet</a>
+        <button class="btn" type="button" data-purchase disabled>Purchase machine</button>
+      </div>
+      <p class="chat-bubble" data-purchase-message>Purchase availability and account restrictions will be validated by the application/backend.</p>
+    </section>
+  </main>
+  <nav class="bottom-nav">
+    <a href="dashboard.html">⌂<span>Home</span></a>
+    <a class="active" href="machines.html">◇<span>Machines</span></a>
+    <a href="deposit.html">◉<span>Deposit</span></a>
+    <a href="income.html">↗<span>Income</span></a>
+    <a href="profile.html">♙<span>Profile</span></a>
+  </nav>
+  <script src="assets/js/network.js"></script>
+  <script>
+    // Details-only shell. Purchase logic belongs to the authenticated machine workflow;
+    // this page deliberately does not mutate wallet or ownership data client-side.
+    const params = new URLSearchParams(location.search);
+    const id = params.get('id');
+    if (!id) {
+      document.querySelector('[data-machine-message]').textContent = 'No machine was selected. Return to Machines and choose a package.';
+    }
+  </script>
+</body>
+</html>
