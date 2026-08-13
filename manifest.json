@@ -1,0 +1,14 @@
+{
+  "name": "Marathon Digital Hub",
+  "short_name": "MDH",
+  "description": "Marathon Digital Hub mobile app",
+  "start_url": "/dashboard.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#020d12",
+  "theme_color": "#031017",
+  "lang": "en",
+  "categories": ["finance", "business"],
+  "icons": []
+}
