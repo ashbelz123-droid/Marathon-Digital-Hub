@@ -1,5 +1,5 @@
 const db = window.supabaseClient;
-const BRIDGE = 'admin-users-bridge';
+const BRIDGE_URL = `${SUPABASE_URL}/functions/v1/admin-users-bridge`;
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -7,36 +7,52 @@ async function bridgeLogin(email, password) {
   let lastError;
 
   for (let attempt = 1; attempt <= 3; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+
     try {
-      const { data, error } = await db.functions.invoke(BRIDGE, {
-        body: { action: 'login', email, password }
+      const response = await fetch(BRIDGE_URL, {
+        method: 'POST',
+        mode: 'cors',
+        cache: 'no-store',
+        signal: controller.signal,
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`
+        },
+        body: JSON.stringify({ action: 'login', email, password })
       });
 
-      if (error) {
-        lastError = error;
-        if (attempt < 3) {
-          await sleep(700 * attempt);
-          continue;
-        }
-        throw new Error(error.message || 'Unable to reach admin authentication service');
+      const text = await response.text();
+      let data = {};
+      try { data = text ? JSON.parse(text) : {}; } catch (_) {}
+
+      if (!response.ok) {
+        throw new Error(data?.error || `Admin service returned HTTP ${response.status}`);
       }
 
-      if (!data?.ok) {
-        throw new Error(data?.error || 'Invalid login credentials');
+      if (!data?.ok || !data?.token) {
+        throw new Error(data?.error || 'Admin service returned an invalid response');
       }
 
       return data;
     } catch (err) {
-      lastError = err;
-      if (attempt < 3 && (err?.name === 'TypeError' || /fetch|network|timeout/i.test(err?.message || ''))) {
-        await sleep(700 * attempt);
+      lastError = err?.name === 'AbortError'
+        ? new Error('Admin service timed out. Please try again.')
+        : err;
+
+      if (attempt < 3 && /fetch|network|timeout|failed to send|load failed/i.test(lastError?.message || '')) {
+        await sleep(800 * attempt);
         continue;
       }
-      throw err;
+      throw lastError;
+    } finally {
+      clearTimeout(timeout);
     }
   }
 
-  throw lastError || new Error('Unable to reach admin authentication service');
+  throw lastError || new Error('Unable to reach admin service');
 }
 
 document.getElementById('loginForm').addEventListener('submit', async e => {
@@ -57,9 +73,9 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
 
     localStorage.setItem('admin_logged_in', 'true');
     localStorage.setItem('admin_bridge_token', data.token);
-    localStorage.setItem('admin_name', data.admin.fullname || email);
-    localStorage.setItem('admin_role', data.admin.role);
-    localStorage.setItem('admin_id', data.admin.id);
+    localStorage.setItem('admin_name', data.admin?.fullname || email);
+    localStorage.setItem('admin_role', data.admin?.role || 'admin');
+    localStorage.setItem('admin_id', data.admin?.id || '');
 
     msg.className = 'message success';
     msg.innerHTML = 'Login successful...';
@@ -71,5 +87,6 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
     btn.innerHTML = 'Login';
     msg.className = 'message error';
     msg.innerHTML = err?.message || 'Unable to connect to admin service';
+    console.error('MDH admin login:', err);
   }
 });
