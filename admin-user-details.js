@@ -1,5 +1,4 @@
-const SUPABASE_ORIGIN=(window.supabaseClient&&window.supabaseClient.supabaseUrl)||'https://sfimuvisljmezpajxxpf.supabase.co';
-const BRIDGE=SUPABASE_ORIGIN+'/functions/v1/admin-users-bridge';
+const db=window.supabaseClient;
 const userId=new URLSearchParams(location.search).get('id');
 const $=id=>document.getElementById(id);
 const money=v=>'UGX '+Number(v||0).toLocaleString();
@@ -7,7 +6,18 @@ const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const date=v=>v?new Date(v).toLocaleString():'-';
 function setValue(id,v){if($(id))$(id).value=v??''}
 function empty(t){return '<div class="empty">'+esc(t)+'</div>'}
-async function bridge(action,extra={}){const token=localStorage.getItem('admin_bridge_token');if(!token){location.href='admin-login.html';throw new Error('Unauthorized')}const r=await fetch(BRIDGE,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({action,userId,...extra})});const text=await r.text();let data;try{data=text?JSON.parse(text):{}}catch(_){throw new Error('Admin service returned an invalid response. Please refresh and try again.')}if(r.status===401){localStorage.removeItem('admin_bridge_token');localStorage.removeItem('admin_logged_in');location.href='admin-login.html';throw new Error('Unauthorized')}if(!r.ok||!data.ok)throw new Error(data.error||'Admin service request failed');return data}
+async function bridge(action,extra={}){
+ const token=localStorage.getItem('admin_bridge_token');
+ if(!token){location.href='admin-login.html';throw new Error('Unauthorized')}
+ const {data,error}=await db.functions.invoke('admin-users-bridge',{body:{action,userId,...extra},headers:{Authorization:'Bearer '+token}});
+ if(error){
+   const status=error.context?.status;
+   if(status===401){localStorage.removeItem('admin_bridge_token');localStorage.removeItem('admin_logged_in');location.href='admin-login.html';throw new Error('Unauthorized')}
+   throw new Error(error.message||'Admin service request failed');
+ }
+ if(!data?.ok)throw new Error(data?.error||'Admin service request failed');
+ return data;
+}
 function renderMachines(r){$('machines').innerHTML=r.length?r.map(x=>'<div class="msg"><b>'+esc(x.machine_name||x.machine_name_snapshot||x.name||x.machine_id||'Machine')+'</b><small>'+esc(x.status||'active')+' • Paid '+money(x.amount_paid||x.purchase_price||x.price)+' • Earned '+money(x.earned_amount||x.total_earned||x.profit)+'</small><small>Started '+date(x.created_at||x.started_at)+' • Duration '+esc(x.duration_days||x.duration||'-')+'</small></div>').join(''):empty('No machines found for this user.')}
 function renderWallet(r){$('walletHistory').innerHTML=r.length?r.map(x=>'<div class="msg"><b>'+esc(x.type||x.transaction_type||x.category||'Wallet transaction')+' — '+money(x.amount||x.value)+'</b><small>'+esc(x.description||x.note||'')+' • '+date(x.created_at||x.date)+'</small><small>Balance: '+money(x.balance_after||x.wallet_balance||x.running_balance)+'</small></div>').join(''):empty('No wallet history found.')}
 function renderFinance(d,w){const r=[...d.map(x=>({...x,_type:'Deposit'})),...w.map(x=>({...x,_type:'Withdrawal'}))].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));$('financeHistory').innerHTML=r.length?r.map(x=>'<div class="msg"><b>'+x._type+' — '+money(x.amount)+'</b><small>'+esc(x.method||x.payment_method||x.network||'')+' • '+esc(x.status||'')+' • '+date(x.created_at)+'</small><small>'+esc(x.reference||x.transaction_id||'')+'</small></div>').join(''):empty('No deposit or withdrawal records.')}
