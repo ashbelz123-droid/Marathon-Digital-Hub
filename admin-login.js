@@ -6,9 +6,11 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function bridgeLogin(email, password) {
   let lastError;
 
+  // Edge Functions can take longer on a cold start. Give the service
+  // enough time before treating the request as failed.
   for (let attempt = 1; attempt <= 3; attempt++) {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 12000);
+    const timeout = setTimeout(() => controller.abort(), 30000);
 
     try {
       const response = await fetch(BRIDGE_URL, {
@@ -38,14 +40,23 @@ async function bridgeLogin(email, password) {
 
       return data;
     } catch (err) {
-      lastError = err?.name === 'AbortError'
-        ? new Error('Admin service timed out. Please try again.')
-        : err;
+      if (err?.name === 'AbortError') {
+        lastError = new Error('Admin service timed out. Please try again.');
+      } else {
+        lastError = err;
+      }
 
-      if (attempt < 3 && /fetch|network|timeout|failed to send|load failed/i.test(lastError?.message || '')) {
-        await sleep(800 * attempt);
+      const message = String(lastError?.message || '').toLowerCase();
+      const retryable =
+        err?.name === 'AbortError' ||
+        /fetch|network|timeout|timed out|failed to send|load failed|connection/i.test(message);
+
+      if (attempt < 3 && retryable) {
+        msg && (msg.innerHTML = `Connecting to secure admin service... (retry ${attempt}/2)`);
+        await sleep(1000 * attempt);
         continue;
       }
+
       throw lastError;
     } finally {
       clearTimeout(timeout);
@@ -79,7 +90,7 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
 
     msg.className = 'message success';
     msg.innerHTML = 'Login successful...';
-    setTimeout(() => window.location.href = 'admin-users.html', 250);
+    setTimeout(() => window.location.replace('admin-users.html'), 150);
   } catch (err) {
     localStorage.removeItem('admin_bridge_token');
     localStorage.removeItem('admin_logged_in');
