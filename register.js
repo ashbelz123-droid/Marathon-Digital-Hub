@@ -180,18 +180,12 @@ form.addEventListener("submit", async (e) => {
         const user = authData.user;
         if (!user) throw new Error("Unable to create account.");
 
-        /*==============================
-        GENERATE USER REFERRAL CODE
-        ==============================*/
         const myReferral =
             "MDH" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
         /*==============================
         CREATE PROFILE THROUGH SECURE RPC
         ==============================*/
-        // Direct INSERT into profiles is blocked by RLS for new signups.
-        // The RPC performs the insert with SECURITY DEFINER and verifies
-        // that the supplied user id belongs to the email just registered.
         const { error: profileError } = await db.rpc("create_profile_for_signup", {
             p_user_id: user.id,
             p_fullname: fullnameValue,
@@ -206,15 +200,39 @@ form.addEventListener("submit", async (e) => {
             throw new Error(profileError.message || "Unable to create your profile.");
         }
 
-        hideLoading();
-        showMessage(
-            "Account created successfully. Please check your email before logging in.",
-            true
-        );
+        /*==============================
+        IMMEDIATE DASHBOARD LOGIN
+        ==============================*/
+        // If Supabase returned a session, the user is already signed in.
+        if (authData.session) {
+            location.replace("dashboard.html");
+            return;
+        }
 
-        setTimeout(() => {
-            location.href = "login.html";
-        }, 2000);
+        // If signup did not return a session, try signing in immediately.
+        // This supports projects where email confirmation is disabled.
+        const { data: loginData, error: loginError } =
+            await db.auth.signInWithPassword({
+                email: emailValue,
+                password: passwordValue
+            });
+
+        if (loginError) {
+            console.error("Automatic login after registration failed:", loginError);
+            hideLoading();
+            showMessage(
+                "Account created, but email confirmation is required before you can enter the dashboard."
+            );
+            return;
+        }
+
+        if (loginData?.session) {
+            location.replace("dashboard.html");
+            return;
+        }
+
+        hideLoading();
+        showMessage("Account created. Please log in to continue.");
 
     } catch (err) {
         hideLoading();
