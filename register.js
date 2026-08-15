@@ -1,14 +1,9 @@
 /*=========================================
 MARATHON DIGITAL HUB
 REGISTER.JS
-PART 1
 =========================================*/
 
 const db = window.supabaseClient;
-
-/*==============================
-ELEMENTS
-==============================*/
 
 const form = document.getElementById("registerForm");
 const fullName = document.getElementById("fullname");
@@ -21,19 +16,11 @@ const registerBtn = document.getElementById("registerBtn");
 const messageBox = document.getElementById("messageBox");
 const loadingScreen = document.getElementById("loadingScreen");
 
-/*==============================
-AUTO REFERRAL
-==============================*/
-
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const ref = params.get("ref");
     if (ref) referral.value = ref.trim().toUpperCase();
 });
-
-/*==============================
-MESSAGE BOX
-==============================*/
 
 function showMessage(message, success = false) {
     messageBox.style.display = "block";
@@ -47,28 +34,14 @@ function showMessage(message, success = false) {
     }
 }
 
-/*==============================
-LOADING
-==============================*/
-
 function showLoading() { loadingScreen.style.display = "flex"; }
 function hideLoading() { loadingScreen.style.display = "none"; }
-
-/*==============================
-PASSWORD VISIBILITY
-==============================*/
 
 document.getElementById("showPassword").addEventListener("change", function () {
     const type = this.checked ? "text" : "password";
     password.type = type;
     confirmPassword.type = type;
 });
-
-/*=========================================
-REGISTER.JS
-PART 2
-Password Strength + Validation
-=========================================*/
 
 const strengthBar = document.getElementById("strengthBar");
 const strengthText = document.getElementById("strengthText");
@@ -133,22 +106,12 @@ function updateRule(id, valid) {
     rule.style.color = valid ? "#00ff88" : "#ff5b5b";
 }
 
-/*==============================
-PASSWORD MATCH
-==============================*/
-
 confirmPassword.addEventListener("input", () => {
     confirmPassword.style.borderColor =
         confirmPassword.value && confirmPassword.value !== password.value
             ? "#ff4d4f"
             : "#00C8FF";
 });
-
-/*=========================================
-REGISTER.JS
-PART 3
-Registration
-=========================================*/
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -160,10 +123,6 @@ form.addEventListener("submit", async (e) => {
     const passwordValue = password.value;
     const confirmValue = confirmPassword.value;
     const referralValue = referral.value.trim().toUpperCase();
-
-    /*==============================
-    BASIC VALIDATION
-    ==============================*/
 
     if (!fullnameValue || !phoneValue || !emailValue ||
         !passwordValue || !confirmValue || !referralValue) {
@@ -192,12 +151,8 @@ form.addEventListener("submit", async (e) => {
 
     try {
         /*==============================
-        CHECK REFERRAL SECURELY
+        VALIDATE REFERRAL
         ==============================*/
-
-        // profiles has RLS enabled, so a direct anonymous SELECT cannot
-        // reliably validate referral codes. Use the restricted SECURITY
-        // DEFINER RPC instead. It only returns true/false.
         const { data: referralValid, error: referralError } =
             await db.rpc("validate_referral_code", { code: referralValue });
 
@@ -213,51 +168,8 @@ form.addEventListener("submit", async (e) => {
         }
 
         /*==============================
-        CHECK EMAIL
-        ==============================*/
-
-        const { data: emailExists, error: emailCheckError } = await db
-            .from("profiles")
-            .select("id")
-            .eq("email", emailValue)
-            .maybeSingle();
-
-        if (emailCheckError) {
-            console.error("Email check error:", emailCheckError);
-            throw new Error("Unable to verify email. Please try again.");
-        }
-
-        if (emailExists) {
-            hideLoading();
-            showMessage("Email already exists.");
-            return;
-        }
-
-        /*==============================
-        CHECK PHONE
-        ==============================*/
-
-        const { data: phoneExists, error: phoneCheckError } = await db
-            .from("profiles")
-            .select("id")
-            .eq("phone", phoneValue)
-            .maybeSingle();
-
-        if (phoneCheckError) {
-            console.error("Phone check error:", phoneCheckError);
-            throw new Error("Unable to verify phone number. Please try again.");
-        }
-
-        if (phoneExists) {
-            hideLoading();
-            showMessage("Phone number already exists.");
-            return;
-        }
-
-        /*==============================
         CREATE AUTH USER
         ==============================*/
-
         const { data: authData, error: authError } = await db.auth.signUp({
             email: emailValue,
             password: passwordValue
@@ -271,30 +183,28 @@ form.addEventListener("submit", async (e) => {
         /*==============================
         GENERATE USER REFERRAL CODE
         ==============================*/
-
         const myReferral =
             "MDH" + Math.random().toString(36).substring(2, 8).toUpperCase();
 
         /*==============================
-        CREATE PROFILE
+        CREATE PROFILE THROUGH SECURE RPC
         ==============================*/
+        // Direct INSERT into profiles is blocked by RLS for new signups.
+        // The RPC performs the insert with SECURITY DEFINER and verifies
+        // that the supplied user id belongs to the email just registered.
+        const { error: profileError } = await db.rpc("create_profile_for_signup", {
+            p_user_id: user.id,
+            p_fullname: fullnameValue,
+            p_phone: phoneValue,
+            p_email: emailValue,
+            p_referral_code: referralValue,
+            p_my_referral_code: myReferral
+        });
 
-        const { error: profileError } = await db
-            .from("profiles")
-            .insert({
-                id: user.id,
-                fullname: fullnameValue,
-                phone: phoneValue,
-                email: emailValue,
-                wallet_balance: 0,
-                membership: "Standard",
-                account_status: "active",
-                level: 1,
-                referred_by: referralValue,
-                referral_code: myReferral
-            });
-
-        if (profileError) throw profileError;
+        if (profileError) {
+            console.error("Profile creation error:", profileError);
+            throw new Error(profileError.message || "Unable to create your profile.");
+        }
 
         hideLoading();
         showMessage(
