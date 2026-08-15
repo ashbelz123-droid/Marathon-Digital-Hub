@@ -1,395 +1,64 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Withdrawal Management</title>
-
-<link rel="stylesheet"
-href="admin-withdrawals.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="supabase-config.js"></script>
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MDH Admin — Withdrawals</title>
+<link rel="stylesheet" href="admin-withdrawals.css">
 </head>
-
 <body>
-
-<div class="bg-animation"></div>
-
-<div class="container">
-
-<!-- HEADER -->
-
-<header class="page-header">
-
-<div>
-
-<h1>
-
-<i class="fas fa-money-check-dollar"></i>
-
-Withdrawal Management
-
-</h1>
-
-<p>
-
-Approve, reject and manage all withdrawal requests.
-
-</p>
-
-</div>
-
-<a href="admin-dashboard.html"
-class="dashboard-btn">
-
-<i class="fas fa-arrow-left"></i>
-
-Dashboard
-
-</a>
-
+<main class="shell">
+<header class="topbar">
+  <div>
+    <div class="brand">MARATHON <span>DIGITAL HUB</span></div>
+    <div class="crumb">ADMIN CONTROL CENTER / WITHDRAWALS</div>
+  </div>
+  <a class="back" href="admin.html">← Dashboard</a>
 </header>
 
-<!-- SUMMARY -->
-
-<section class="summary-grid">
-
-<div class="summary-card pending">
-
-<i class="fas fa-hourglass-half"></i>
-
-<h2 id="pendingCount">0</h2>
-
-<p>Pending</p>
-
-<small id="pendingAmount">UGX 0</small>
-
-</div>
-
-<div class="summary-card approved">
-
-<i class="fas fa-circle-check"></i>
-
-<h2 id="approvedCount">0</h2>
-
-<p>Approved</p>
-
-<small id="approvedAmount">UGX 0</small>
-
-</div>
-
-<div class="summary-card rejected">
-
-<i class="fas fa-circle-xmark"></i>
-
-<h2 id="rejectedCount">0</h2>
-
-<p>Rejected</p>
-
-<small id="rejectedAmount">UGX 0</small>
-
-</div>
-
-<div class="summary-card total">
-
-<i class="fas fa-wallet"></i>
-
-<h2 id="totalCount">0</h2>
-
-<p>Total Requests</p>
-
-<small id="totalAmount">UGX 0</small>
-
-</div>
-
+<section class="hero">
+  <div>
+    <div class="eyebrow">FINANCIAL OPERATIONS</div>
+    <h1>Withdrawals</h1>
+    <p>Review payout requests, verify recipient details and process requests directly.</p>
+  </div>
+  <button id="refreshBtn" class="refresh" type="button">↻ Refresh</button>
 </section>
 
-<!-- SEARCH -->
-
-<div class="search-box">
-
-<i class="fas fa-search"></i>
-
-<input
-type="text"
-id="searchInput"
-placeholder="Search by name, email or phone...">
-
-</div>
-
-<!-- FILTER -->
-
-<div class="toolbar">
-
-<select id="statusFilter">
-
-<option value="all">All Withdrawals</option>
-
-<option value="pending">Pending</option>
-
-<option value="approved">Approved</option>
-
-<option value="rejected">Rejected</option>
-
-<option value="cancelled">Cancelled</option>
-
-</select>
-
-<button id="refreshBtn">
-
-<i class="fas fa-rotate"></i>
-
-Refresh
-
-</button>
-
-</div>
-
-  <!-- ==========================
-WITHDRAWAL LIST
-(JS WILL GENERATE ALL CARDS)
-========================== -->
-
-<div id="withdrawalsContainer">
-
-</div>
-
-<!-- ==========================
-EMPTY STATE
-========================== -->
-
-<div id="emptyState"
-class="empty-state"
-style="display:none;">
-
-<i class="fas fa-wallet"></i>
-
-<h2>
-
-No Withdrawal Requests
-
-</h2>
-
-<p>
-
-There are currently no withdrawal requests matching your search or filter.
-
-</p>
-
-</div>
-
-<!-- ==========================
-APPROVE POPUP
-========================== -->
-
-<div id="approvePopup"
-class="popup">
-
-<div class="popup-card">
-
-<h2>
-
-Approve Withdrawal
-
-</h2>
-
-<p>
-
-Please confirm this withdrawal request.
-
-</p>
-
-<div class="popup-summary">
-
-<div>
-
-<span>User</span>
-
-<strong id="popupUser">-</strong>
-
-</div>
-
-<div>
-
-<span>Requested</span>
-
-<strong id="popupAmount">UGX 0</strong>
-
-</div>
-
-<div>
-
-<span>Fee (9.5%)</span>
-
-<strong id="popupFee">UGX 0</strong>
-
-</div>
-
-<div>
-
-<span>Amount To Send</span>
-
-<strong id="popupReceive">UGX 0</strong>
-
-</div>
-
-</div>
-
-<p class="warning">
-
-Approving this withdrawal will deduct the user's wallet balance and mark this request as completed.
-
-</p>
-
-<div class="popup-buttons">
-
-<button id="closeApprove">
-
-Cancel
-
-</button>
-
-<button id="confirmApprove">
-
-Approve Withdrawal
-
-</button>
-
-</div>
-
-</div>
-
-                           </div>
-
-  <!-- ==========================
-REJECT POPUP
-========================== -->
-
-<div id="rejectPopup" class="popup">
-
-<div class="popup-card">
-
-<h2>
-
-Reject Withdrawal
-
-</h2>
-
-<p>
-
-Optionally enter a reason that will be sent to the user.
-
-</p>
-
-<textarea
-
-id="rejectReason"
-
-rows="5"
-
-placeholder="Example: Incorrect phone number or suspicious activity.">
-
-</textarea>
-
-<div class="popup-buttons">
-
-<button id="closeReject">
-
-Cancel
-
-</button>
-
-<button id="confirmReject">
-
-Reject Withdrawal
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ==========================
-SUCCESS POPUP
-========================== -->
-
-<div id="successPopup" class="popup">
-
-<div class="popup-card success">
-
-<div class="success-icon">
-
-<i class="fas fa-circle-check"></i>
-
-</div>
-
-<h2>
-
-Success
-
-</h2>
-
-<p id="successMessage">
-
-Request processed successfully.
-
-</p>
-
-<div class="popup-buttons">
-
-<button id="closeSuccess">
-
-OK
-
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ==========================
-LOADING SCREEN
-========================== -->
-
-<div id="loadingScreen"
-
-class="loading-screen">
-
-<div class="loader"></div>
-
-<h3>
-
-Processing Request...
-
-</h3>
-
-<p>
-
-Please wait while Marathon Digital Hub updates the withdrawal request.
-
-</p>
-
-</div>
-
-</div>
-
+<div id="notice" class="notice" hidden></div>
+
+<section class="summary">
+  <article class="metric pending"><span>Pending</span><strong id="pendingCount">0</strong><small id="pendingAmount">UGX 0</small></article>
+  <article class="metric approved"><span>Approved</span><strong id="approvedCount">0</strong><small id="approvedAmount">UGX 0</small></article>
+  <article class="metric rejected"><span>Rejected</span><strong id="rejectedCount">0</strong><small id="rejectedAmount">UGX 0</small></article>
+  <article class="metric total"><span>Total requests</span><strong id="totalCount">0</strong><small id="totalAmount">UGX 0</small></article>
+</section>
+
+<section class="tools">
+  <label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Search name, email, phone or withdrawal ID"></label>
+  <select id="statusFilter" aria-label="Filter withdrawals">
+    <option value="all">All withdrawals</option>
+    <option value="pending">Pending</option>
+    <option value="approved">Approved</option>
+    <option value="rejected">Rejected</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+</section>
+
+<section class="list-head"><div><h2>Withdrawal requests</h2><p id="resultCount">0 requests</p></div><span class="live">● LIVE DATA</span></section>
+<section id="withdrawalsContainer" class="list"></section>
+<section id="emptyState" class="empty" hidden>
+  <div class="empty-icon">₵</div><h2>No withdrawals found</h2><p>There are no requests matching the current search or filter.</p>
+</section>
+</main>
+
+<nav class="bottom-nav">
+  <a href="admin.html"><span>⌂</span>Home</a>
+  <a href="admin-users.html"><span>♙</span>Users</a>
+  <a href="admin-machines.html"><span>⛏</span>Machines</a>
+  <a href="admin-deposits-new.html"><span>＋</span>Deposits</a>
+  <a class="active" href="admin-withdrawals.html"><span>↗</span>Withdraw</a>
+</nav>
 <script src="admin-withdrawals.js"></script>
-
 </body>
-
-  </html>
+</html>
