@@ -1,4 +1,5 @@
-const CACHE_NAME = "mdh-shell-v4";
+const CACHE_NAME = "mdh-shell-v5";
+const VERSION_URL = "/version.json";
 const APP_SHELL = [
   "/",
   "/index.html",
@@ -15,7 +16,8 @@ const APP_SHELL = [
   "/notifications.html",
   "/manifest.webmanifest",
   "/assets/js/mdh-navigation.js",
-  "/assets/css/mdh-navigation.css"
+  "/assets/css/mdh-navigation.css",
+  VERSION_URL
 ];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
@@ -34,6 +36,10 @@ self.addEventListener("fetch", event => {
   if (request.method !== "GET") return;
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+  if (url.pathname === VERSION_URL) {
+    event.respondWith(fetch(request, {cache:"no-store"}));
+    return;
+  }
   if (request.mode === "navigate") {
     event.respondWith(caches.match(request).then(cached => cached || networkFirst(request)));
     return;
