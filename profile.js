@@ -1,9 +1,28 @@
 const db=window.supabaseClient;let currentUser=null,profile=null;
 document.addEventListener('DOMContentLoaded',async()=>{try{if(!db)throw new Error('Supabase client not initialized');const{data:{user},error}=await db.auth.getUser();if(error)throw error;if(!user){location.href='login.html';return}currentUser=user;await loadProfile()}catch(e){console.error('Profile init:',e);document.getElementById('userName')&&(document.getElementById('userName').textContent='Unable to load profile')}});
 const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
-async function loadProfile(){const{data,error}=await db.from('profiles').select('*').eq('id',currentUser.id).maybeSingle();if(error)throw error;profile=data||{};set('userName','Welcome, '+(profile.fullname||'User'));set('fullName',profile.fullname||'User');set('email',profile.email||currentUser.email||'No Email');set('walletBalance','UGX '+Number(profile.wallet_balance||0).toLocaleString());set('membership',profile.membership||'Standard');set('kycStatus',profile.kyc_status||'Not Verified');set('accountStatus',profile.account_status||'Active');if(profile.avatar_url){const a=document.getElementById('avatar');if(a)a.src=profile.avatar_url}const code=String(profile.referral_code||'').trim();const codeEl=document.getElementById('referralCode'),linkEl=document.getElementById('referralLink');if(codeEl)codeEl.value=code||'No referral code yet';if(linkEl)linkEl.value=code?new URL('register.html?ref='+encodeURIComponent(code),location.href).href:'Referral link unavailable';await loadStats(code)}
+async function loadProfile(){
+  // Use the authenticated RPC for referral/account data so the Referral Centre
+  // still works even when direct profiles SELECT policies are restrictive.
+  const{data:rpcData,error:rpcError}=await db.rpc('get_my_referral_info');
+  if(rpcError)throw rpcError;
+  profile=rpcData||{};
+  set('userName','Welcome, '+(profile.fullname||'User'));
+  set('fullName',profile.fullname||'User');
+  set('email',profile.email||currentUser.email||'No Email');
+  set('walletBalance','UGX '+Number(profile.wallet_balance||0).toLocaleString());
+  set('membership',profile.membership||'Standard');
+  set('kycStatus',profile.kyc_status||'Not Verified');
+  set('accountStatus',profile.account_status||'Active');
+  if(profile.avatar_url){const a=document.getElementById('avatar');if(a)a.src=profile.avatar_url}
+  const code=String(profile.referral_code||'').trim();
+  const codeEl=document.getElementById('referralCode'),linkEl=document.getElementById('referralLink');
+  if(codeEl){codeEl.value=code||'Referral code unavailable'}
+  if(linkEl){linkEl.value=code?new URL('register.html?ref='+encodeURIComponent(code),location.href).href:'Referral link unavailable'}
+  await loadStats(code)
+}
 async function loadStats(code){const machine=await db.from('user_machines').select('id,status').eq('user_id',currentUser.id);if(machine.error)console.warn('Machines:',machine.error);const active=(machine.data||[]).filter(x=>String(x.status||'').toLowerCase()==='active').length;set('activeMachines',active);set('referralBonus','UGX '+Number(profile.total_referral_bonus||0).toLocaleString());if(code){const team=await db.from('profiles').select('id').eq('referred_by',code);if(team.error)console.warn('Referral team:',team.error);set('teamMembers',(team.data||[]).length)}else set('teamMembers',0);try{const n=await db.from('user_notifications').select('id').eq('user_id',currentUser.id).eq('is_read',false);const count=n.data?.length||0;['notifyCount','notificationCount'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=count})}catch(e){console.warn('Notifications:',e)}}
-async function copyText(v,msg){if(!v||v.startsWith('No referral'))return;try{await navigator.clipboard.writeText(v);toast(msg)}catch(e){toast('Copy unavailable')}}function toast(msg){const t=document.createElement('div');t.className='mdh-toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
+async function copyText(v,msg){if(!v||v.startsWith('No referral')||v.includes('unavailable'))return;try{await navigator.clipboard.writeText(v);toast(msg)}catch(e){toast('Copy unavailable')}}function toast(msg){const t=document.createElement('div');t.className='mdh-toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),1800)}
 document.getElementById('copyReferral')?.addEventListener('click',()=>copyText(document.getElementById('referralCode')?.value,'Referral code copied'));
 document.getElementById('shareReferral')?.addEventListener('click',async()=>{const link=document.getElementById('referralLink')?.value||'';if(!link||link.startsWith('Referral'))return;if(navigator.share)try{await navigator.share({title:'Marathon Digital Hub',text:'Join my Marathon Digital Hub team.',url:link})}catch(e){}else copyText(link,'Referral link copied')});
 document.getElementById('changePhoto')?.addEventListener('click',()=>document.getElementById('photoInput')?.click());document.getElementById('photoInput')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file||!currentUser)return;const path=currentUser.id+'-'+Date.now();const{error}=await db.storage.from('machine-images').upload(path,file,{upsert:true});if(error){toast('Photo upload failed');return}const{data}=db.storage.from('machine-images').getPublicUrl(path);const{error:u}=await db.from('profiles').update({avatar_url:data.publicUrl}).eq('id',currentUser.id);if(u){toast('Photo save failed');return}document.getElementById('avatar').src=data.publicUrl;toast('Profile photo updated')});
