@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MDH Admin Control Center</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<style>
+:root{--bg:#06100f;--panel:#0d1b19;--panel2:#10231f;--line:rgba(94,255,190,.13);--text:#f1fff9;--muted:#8daaa1;--green:#19e889;--green2:#0db96b;--danger:#ff6677;--warn:#ffc857;--radius:20px}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#06110f,#071513 55%,#06100f);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif}a{text-decoration:none;color:inherit}.shell{width:min(1180px,100%);margin:auto;padding:18px 15px 100px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.brand{font-weight:950;letter-spacing:.3px}.brand span{color:var(--green)}.admin-chip{font-size:10px;font-weight:900;color:#9effd2;border:1px solid var(--line);padding:8px 11px;border-radius:999px;background:#0b211c}.hero{border:1px solid var(--line);border-radius:26px;padding:22px;background:linear-gradient(135deg,rgba(25,232,137,.12),rgba(13,27,25,.9));box-shadow:0 20px 60px rgba(0,0,0,.25);margin-bottom:16px}.eyebrow{font-size:10px;color:#72aa98;font-weight:900;letter-spacing:1.2px}.hero h1{font-size:29px;margin:7px 0 5px}.hero p{margin:0;color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{padding:17px;border:1px solid var(--line);border-radius:18px;background:rgba(13,27,25,.86);box-shadow:0 12px 35px rgba(0,0,0,.18)}.stat small{display:block;color:var(--muted);font-size:10px}.stat strong{display:block;margin-top:7px;font-size:22px;color:#baffdf}.stat em{display:block;margin-top:4px;font-size:9px;color:#6f958a;font-style:normal}.section{margin-top:22px}.section-head{display:flex;align-items:end;justify-content:space-between;margin:0 2px 10px}.section-head h2{font-size:15px;margin:0}.section-head span{font-size:9px;color:#6f958a}.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.action{display:flex;align-items:center;gap:12px;padding:16px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#10231f,#0b1917);transition:.2s}.action:hover{border-color:rgba(25,232,137,.42);transform:translateY(-1px)}.icon{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;background:rgba(25,232,137,.1);color:var(--green);font-size:19px}.action b{font-size:12px}.action small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.activity{border:1px solid var(--line);border-radius:20px;background:#0b1917;overflow:hidden}.row{display:flex;align-items:center;justify-content:space-between;padding:14px 15px;border-bottom:1px solid rgba(94,255,190,.08)}.row:last-child{border:0}.row span{font-size:10px;color:var(--muted)}.row strong{font-size:11px}.status{color:var(--green)!important}.logout{display:block;width:100%;margin-top:16px;padding:14px;border:1px solid rgba(255,102,119,.2);border-radius:16px;background:rgba(255,102,119,.06);color:#ff9aa5;font-weight:900}.loading{text-align:center;color:var(--muted);font-size:11px;padding:25px}.error{color:#ff9aa5}.bottom{position:fixed;left:50%;bottom:max(12px,env(safe-area-inset-bottom));transform:translateX(-50%);z-index:20;width:min(94vw,620px);display:flex;gap:5px;padding:8px;border:1px solid var(--line);border-radius:23px;background:rgba(5,17,15,.96);backdrop-filter:blur(18px);box-shadow:0 18px 55px rgba(0,0,0,.55)}.bottom a{flex:1;text-align:center;padding:10px 4px;border-radius:15px;color:#78938b;font-size:9px;font-weight:800}.bottom a.active{background:rgba(25,232,137,.1);color:var(--green)}@media(min-width:720px){.grid{grid-template-columns:repeat(4,1fr)}.actions{grid-template-columns:repeat(3,1fr)}.shell{padding-top:28px}.hero{padding:28px}.hero h1{font-size:34px}}
+</style>
+</head><body>
+<main class="shell">
+<header class="top"><div class="brand">MARATHON <span>DIGITAL HUB</span></div><div class="admin-chip">ADMIN CONTROL</div></header>
+<section class="hero"><div class="eyebrow">CENTRAL OPERATIONS</div><h1>Control Center</h1><p id="welcome">Loading administrator session…</p></section>
+<section class="grid">
+<div class="stat"><small>Registered Users</small><strong id="users">—</strong><em>profiles</em></div>
+<div class="stat"><small>Mining Machines</small><strong id="machines">—</strong><em>configured</em></div>
+<div class="stat"><small>Active Machines</small><strong id="activeMachines">—</strong><em>available</em></div>
+<div class="stat"><small>System Status</small><strong class="status">ONLINE</strong><em>Supabase connected</em></div>
+</section>
+<section class="section"><div class="section-head"><h2>Management</h2><span>SELECT A WORKSPACE</span></div>
+<div class="actions">
+<a class="action" href="admin-users.html"><div class="icon">👥</div><div><b>Users</b><small>Accounts, profiles & status</small></div></a>
+<a class="action" href="admin-machines.html"><div class="icon">⛏</div><div><b>Machines</b><small>Products, pricing & availability</small></div></a>
+<a class="action" href="admin-user-machines.html"><div class="icon">⚙</div><div><b>User Machines</b><small>Assignments & mining activity</small></div></a>
+<a class="action" href="admin-deposits-new.html"><div class="icon">＋</div><div><b>Deposits</b><small>Review incoming funds</small></div></a>
+<a class="action" href="admin-withdrawals.html"><div class="icon">↗</div><div><b>Withdrawals</b><small>Review payout requests</small></div></a>
+<a class="action" href="admin-referrals.html"><div class="icon">↗</div><div><b>Referrals</b><small>Referral activity & rewards</small></div></a>
+<a class="action" href="admin-notifications.html"><div class="icon">🔔</div><div><b>Notifications</b><small>Platform announcements</small></div></a>
+<a class="action" href="admin-chat.html"><div class="icon">💬</div><div><b>Support</b><small>User conversations</small></div></a>
+<a class="action" href="admin-reports.html"><div class="icon">▥</div><div><b>Reports</b><small>Platform performance</small></div></a>
+</div></section>
+<section class="section"><div class="section-head"><h2>System Overview</h2><span>LIVE CHECK</span></div><div class="activity"><div class="row"><span>Authentication</span><strong class="status">Protected</strong></div><div class="row"><span>Database</span><strong id="dbStatus">Checking…</strong></div><div class="row"><span>Administrator</span><strong id="adminEmail">—</strong></div></div></section>
+<button class="logout" id="logout">Sign out of admin</button><div id="loading" class="loading"></div>
+</main>
+<nav class="bottom"><a class="active" href="admin.html">⌂<br>Home</a><a href="admin-users.html">♙<br>Users</a><a href="admin-machines.html">⛏<br>Machines</a><a href="admin-deposits-new.html">＋<br>Deposits</a><a href="admin-withdrawals.html">↗<br>Withdraw</a></nav>
+<script>
+const sb=window.supabaseClient;const $=id=>document.getElementById(id);
+async function guard(){if(!sb){$('welcome').textContent='Supabase client unavailable.';return false}const {data,error}=await sb.auth.getUser();if(error||!data.user){location.replace('login.html?redirect=admin.html');return false}$('adminEmail').textContent=data.user.email||'Authenticated';$('welcome').textContent='Authenticated administrator workspace';return true}
+async function count(table,filter){try{let q=sb.from(table).select('*',{count:'exact',head:true});if(filter)q=q.eq(filter[0],filter[1]);const r=await q;if(r.error)throw r.error;return r.count??0}catch(e){return null}}
+async function load(){if(!await guard())return;const u=await count('profiles');$('users').textContent=u==null?'—':u;const m=await count('machines');$('machines').textContent=m==null?'—':m;const a=await count('machines',['status',true]);$('activeMachines').textContent=a==null?'—':a;try{const r=await sb.from('profiles').select('id').limit(1);$('dbStatus').textContent=r.error?'Limited':'Connected';$('dbStatus').className=r.error?'':'status'}catch(e){$('dbStatus').textContent='Unavailable'}$('loading').textContent='Last checked '+new Date().toLocaleTimeString()}
+$('logout').onclick=async()=>{await sb.auth.signOut();location.replace('login.html')};load();
+</script></body></html>
