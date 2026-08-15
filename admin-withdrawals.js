@@ -1,4 +1,4 @@
-const BRIDGE_URL=`${window.SUPABASE_URL}/functions/v1/admin-users-bridge`;
+const BRIDGE_URL='https://sfimuvisljmezpajxxpf.supabase.co/functions/v1/admin-users-bridge';
 const container=document.getElementById('withdrawalsContainer');
 const search=document.getElementById('searchInput');
 const filter=document.getElementById('statusFilter');
