@@ -6,22 +6,21 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function bridgeLogin(email, password) {
   let lastError;
 
-  // Edge Functions can take longer on a cold start. Give the service
-  // enough time before treating the request as failed.
   for (let attempt = 1; attempt <= 3; attempt++) {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 30000);
 
     try {
+      // Login does not require an authenticated bridge session. Use a
+      // CORS-simple POST so the browser does not send a failing OPTIONS
+      // preflight to the Edge Function.
       const response = await fetch(BRIDGE_URL, {
         method: 'POST',
         mode: 'cors',
         cache: 'no-store',
         signal: controller.signal,
         headers: {
-          'Content-Type': 'application/json',
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`
+          'Content-Type': 'text/plain;charset=UTF-8'
         },
         body: JSON.stringify({ action: 'login', email, password })
       });
@@ -40,11 +39,9 @@ async function bridgeLogin(email, password) {
 
       return data;
     } catch (err) {
-      if (err?.name === 'AbortError') {
-        lastError = new Error('Admin service timed out. Please try again.');
-      } else {
-        lastError = err;
-      }
+      lastError = err?.name === 'AbortError'
+        ? new Error('Admin service timed out. Please try again.')
+        : err;
 
       const message = String(lastError?.message || '').toLowerCase();
       const retryable =
@@ -52,11 +49,11 @@ async function bridgeLogin(email, password) {
         /fetch|network|timeout|timed out|failed to send|load failed|connection/i.test(message);
 
       if (attempt < 3 && retryable) {
-        msg && (msg.innerHTML = `Connecting to secure admin service... (retry ${attempt}/2)`);
+        const status = document.getElementById('message');
+        if (status) status.innerHTML = `Connecting to secure admin service... (retry ${attempt}/2)`;
         await sleep(1000 * attempt);
         continue;
       }
-
       throw lastError;
     } finally {
       clearTimeout(timeout);
