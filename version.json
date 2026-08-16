@@ -1,1 +1,1 @@
-{"version":"1.0.1","name":"Marathon Digital Hub","updated":"2026-08-16","notes":"Fix stale PWA navigation cache and HTML page loading"}
+{"version":"1.0.2","name":"Marathon Digital Hub","updated":"2026-08-16","notes":"Rebuild PWA shell; never cache or intercept HTML navigation"}
