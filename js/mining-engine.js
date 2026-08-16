@@ -1,10 +1,14 @@
-/* MARATHON DIGITAL HUB - MINING ENGINE V3 */
+/* MARATHON DIGITAL HUB - MINING ENGINE V3.1 */
 const db = window.supabaseClient;
 let currentUser = null;
 let currentProfile = null;
 let siteSettings = null;
 let userMachines = [];
 let miningEngineRunning = false;
+
+function kampalaNow(){return new Date(new Date().toLocaleString('en-US',{timeZone:'Africa/Kampala'}));}
+function isWeekendKampala(){const d=kampalaNow().getDay();return d===0||d===6;}
+function machineIsVip(machineRecord,machine){return Boolean(machine?.is_vip||machineRecord?.is_vip);}
 
 async function initializeMiningEngine(){
   const {data,error}=await db.auth.getUser();
@@ -34,14 +38,20 @@ async function loadUserMachines(){
 
 async function processAllMachines(){
   if(!currentProfile)return;
+  const weekendBlocked=Boolean(siteSettings?.weekend_enabled)!==false&&isWeekendKampala();
   for(const machineRecord of userMachines){
-    try{await processSingleMachine(machineRecord);}catch(error){console.error('Machine Processing Error:',machineRecord.id,error);}
+    try{
+      const machine=machineRecord.machines;
+      if(weekendBlocked&&!machineIsVip(machineRecord,machine))continue;
+      await processSingleMachine(machineRecord);
+    }catch(error){console.error('Machine Processing Error:',machineRecord.id,error);}
   }
 }
 
 async function processSingleMachine(machineRecord){
   const machine=machineRecord.machines;
-  if(!machine||machineRecord.completed===true||machineRecord.status!=='active')return;
+  if(!machine||machineRecord.completed===true||String(machineRecord.status||'').toLowerCase()!=='active')return;
+  if(machineRecord.paused===true)return;
   if(machineRecord.expiry_date&&Date.now()>=new Date(machineRecord.expiry_date).getTime()){
     await completeMachine(machineRecord.id);
     return;
@@ -49,9 +59,9 @@ async function processSingleMachine(machineRecord){
   await processMachineIncome(machineRecord,machine);
 }
 
-/* The database RPC is the single authority for payout calculation.
-   It enforces the Africa/Kampala weekend rule, VIP exception, daily lock,
-   wallet update, transaction record and machine progress atomically. */
+/* The database RPC is the final authority for payout calculation.
+   It enforces Africa/Kampala time, the weekend rule, VIP exception,
+   one payout per day, return cap, wallet update and transaction atomically. */
 async function processMachineIncome(machineRecord,machine){
   const {data,error}=await db.rpc('process_mining_income',{p_machine_id:machineRecord.id});
   if(error){console.error('Mining payout RPC error:',machineRecord.id,error);return;}
@@ -92,5 +102,5 @@ db.auth.onAuthStateChange(event=>{
   if(event==='SIGNED_IN')startMiningEngine();
 });
 
-const MINING_ENGINE_VERSION='3.0.0';
-console.log('Marathon Digital Hub Mining Engine',MINING_ENGINE_VERSION,'Ready');
+const MINING_ENGINE_VERSION='3.1.0';
+console.log('Marathon Digital Hub Mining Engine',MINING_ENGINE_VERSION,'Ready — weekend rule: VIP only');
