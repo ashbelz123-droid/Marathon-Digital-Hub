@@ -1,29 +1,17 @@
-const CACHE_NAME = "mdh-shell-v7";
-const VERSION_URL = "/version.json";
-const APP_SHELL = [
-  "/",
-  "/index.html",
-  "/login.html",
-  "/register.html",
-  "/dashboard.html",
-  "/machines.html",
-  "/deposit.html",
-  "/withdraw.html",
-  "/income.html",
-  "/profile.html",
-  "/settings.html",
-  "/referral.html",
-  "/notifications.html",
-  "/manifest.webmanifest",
-  "/assets/js/mdh-navigation.js",
-  "/assets/css/mdh-navigation.css",
-  VERSION_URL
-];
+/* MDH service worker - asset cache only.
+   IMPORTANT: HTML/navigation is intentionally NOT intercepted.
+   This prevents stale PWA caches from breaking pages such as profile.html. */
+const CACHE_NAME = "mdh-assets-v10";
 
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL))
+      .then(cache => cache.addAll([
+        "/assets/js/mdh-navigation.js",
+        "/assets/css/mdh-navigation.css",
+        "/assets/css/mdh-ui.css",
+        "/assets/icons/mdh.svg"
+      ]).catch(() => {}))
       .then(() => self.skipWaiting())
   );
 });
@@ -38,21 +26,6 @@ self.addEventListener("activate", event => {
   );
 });
 
-async function networkFirst(request) {
-  try {
-    const response = await fetch(request, { cache: "no-store" });
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      await cache.put(request, response.clone());
-    }
-    return response;
-  } catch (error) {
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    throw error;
-  }
-}
-
 self.addEventListener("fetch", event => {
   const request = event.request;
   if (request.method !== "GET") return;
@@ -60,19 +33,24 @@ self.addEventListener("fetch", event => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
-  if (url.pathname === VERSION_URL) {
-    event.respondWith(fetch(request, { cache: "no-store" }));
-    return;
-  }
+  // NEVER intercept document/navigation requests.
+  // Let Vercel/browser fetch the current HTML directly.
+  if (request.mode === "navigate" || request.destination === "document") return;
 
-  if (request.mode === "navigate" || request.destination === "document") {
-    event.respondWith(networkFirst(request));
-    return;
+  // Static assets: network first, cache fallback.
+  if (["style", "script", "image", "font"].includes(request.destination)) {
+    event.respondWith(
+      fetch(request, { cache: "no-store" })
+        .then(response => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match(request).then(cached => cached || Response.error()))
+    );
   }
-
-  event.respondWith(
-    caches.match(request).then(cached => cached || networkFirst(request))
-  );
 });
 
 self.addEventListener("message", event => {
