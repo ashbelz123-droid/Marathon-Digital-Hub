@@ -1,4 +1,4 @@
-const CACHE_NAME = "mdh-shell-v6";
+const CACHE_NAME = "mdh-shell-v7";
 const VERSION_URL = "/version.json";
 const APP_SHELL = [
   "/",
@@ -65,14 +65,11 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  // Always prefer the live deployment for HTML/navigation requests.
-  // This prevents an old PWA cache from serving broken/stale .html pages.
   if (request.mode === "navigate" || request.destination === "document") {
     event.respondWith(networkFirst(request));
     return;
   }
 
-  // Static assets can remain cache-first for speed, with network fallback.
   event.respondWith(
     caches.match(request).then(cached => cached || networkFirst(request))
   );
