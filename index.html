@@ -7,7 +7,7 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <title>Marathon Digital Hub</title>
-    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="manifest" href="manifest.webmanifest?v=1.0.1" />
     <link rel="icon" href="assets/icons/mdh.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="assets/css/v2.css" />
     <link rel="stylesheet" href="assets/css/mdh-ui.css" />
@@ -36,9 +36,9 @@
     <nav class="bottom-nav"><a class="active" href="index.html">⌂<span>Home</span></a><a href="dashboard.html">◇<span>Dashboard</span></a><a href="machines.html">◈<span>Machines</span></a><a href="deposit.html">＋<span>Deposit</span></a><a href="profile.html">◎<span>Profile</span></a></nav>
     <script src="assets/js/network.js"></script><script src="assets/js/v2.js"></script>
     <script>
-      const pages=[["Dashboard","Your portfolio and wallet overview","dashboard.html","📊"],["Machines","Browse available mining machines","machines.html","⚙️"],["Deposit","Fund your MDH wallet","deposit.html","⬇️"],["Withdraw","Request a Mobile Money payout","withdraw.html","⬆️"],["Income","Track your earnings","income.html","💰"],["Referral","Manage your referral team","referral.html","👥"],["Notifications","Account and platform alerts","notifications.html","🔔"],["Profile","Account, KYC and membership","profile.html","🙋"],["Settings","Security and preferences","settings.html","⚙️"],["Mara AI","MDH assistance","mara-ai.html","🤖"],["Support","Get help when needed","support.html","💬"],["Install App","Install MDH on Android","install-app.html","📲"],["Admin","Authorized operations center","admin-dashboard.html","🛡️"]];
+      const pages=[["Dashboard","Your portfolio and wallet overview","dashboard.html","📊"],["Machines","Browse available mining machines","machines.html","⚙️"],["Deposit","Fund your MDH wallet","deposit.html","⬇️"],["Withdraw","Request a Mobile Money payout","withdraw.html","⬆️"],["Income","Track your earnings","income.html","💰"],["Referral","Manage your referral team","referral.html","👥"],["Notifications","Account and platform alerts","notifications.html","🔔"],["Profile","Account, KYC and membership","profile.html","🙋"],["Settings","Security and preferences","settings.html","⚙️"],["Mara AI","MDH assistance","mara-ai.html","🤖"],["Support","Get help when needed","support.html","💬"],["Install App","Install MDH on Android","install-app.html","📲"],["Admin","Authorized operations center","admin-control.html","🛡️"]];
       document.getElementById("features").innerHTML=pages.map(([t,p,h,i])=>`<a class="feature-tile" href="${h}"><div class="icon">${i}</div><h3>${t}</h3><p>${p}</p></a>`).join("");
-      if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(()=>{});
+      if("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js?v=1.0.1").catch(()=>{});
     </script>
   </body>
 </html>
