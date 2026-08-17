@@ -2,43 +2,80 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Admin Notifications</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Notifications | MDH Admin</title>
 <link rel="stylesheet" href="admin-notifications.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 </head>
 <body>
-<header class="header">
-<button class="backBtn" onclick="history.back()">←</button>
-<h2>Notifications</h2>
-</header>
+<main class="page">
+  <header class="mobileNav">
+    <div class="brandBlock">
+      <div class="brandMark">MDH</div>
+      <div><strong>Marathon</strong><span>Admin Center</span></div>
+    </div>
+    <div class="adminChip">ADMIN CONTROL CENTER</div>
+  </header>
 
-<div class="container">
-<div class="card">
-<h3>Create Notification</h3>
-<label>Title</label>
-<input type="text" id="title" placeholder="Notification title">
-<label>Message</label>
-<textarea id="message" rows="6" placeholder="Write notification..."></textarea>
-<label>Type</label>
-<select id="type">
-<option value="info">Information</option>
-<option value="deposit">Deposit</option>
-<option value="withdrawal">Withdrawal</option>
-<option value="promotion">Promotion</option>
-</select>
-<div class="switchBox">
-<span>Active</span>
-<input type="checkbox" id="isActive" checked>
-</div>
-<button id="sendBtn">Publish Notification</button>
-<div id="statusMessage"></div>
-</div>
+  <section class="topBar">
+    <div>
+      <p class="eyebrow">Control Center / Communications</p>
+      <h1>Notifications</h1>
+      <p>Publish clean platform announcements and manage active notifications from one control page.</p>
+    </div>
+  </section>
 
-<h3 class="listTitle">Published Notifications</h3>
-<div id="notificationList"></div>
-</div>
+  <section class="card createCard">
+    <div class="sectionHead">
+      <div><p class="eyebrow">Broadcast</p><h2>Create Notification</h2></div>
+      <div class="sectionIcon">🔔</div>
+    </div>
+
+    <div class="formGrid">
+      <div class="field full">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Notification title">
+      </div>
+      <div class="field full">
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" placeholder="Write notification..."></textarea>
+      </div>
+      <div class="field">
+        <label for="type">Type</label>
+        <select id="type">
+          <option value="info">Information</option>
+          <option value="deposit">Deposit</option>
+          <option value="withdrawal">Withdrawal</option>
+          <option value="promotion">Promotion</option>
+        </select>
+      </div>
+      <div class="field activeField">
+        <label>Visibility</label>
+        <label class="switchBox"><span>Active notification</span><input type="checkbox" id="isActive" checked><i></i></label>
+      </div>
+    </div>
+
+    <button id="sendBtn" class="publishBtn" type="button"><span>＋</span> Publish Notification</button>
+    <div id="statusMessage" aria-live="polite"></div>
+  </section>
+
+  <section class="listSection">
+    <div class="listTitleRow">
+      <div><p class="eyebrow">Live Data</p><h2>Published Notifications</h2></div>
+      <span class="liveBadge">● LIVE</span>
+    </div>
+    <div id="notificationList"></div>
+  </section>
+</main>
+
+<nav class="bottomNav" aria-label="Admin navigation">
+  <a href="admin.html" class="navItem"><span>⌂</span><small>Home</small></a>
+  <a href="admin-users.html" class="navItem"><span>♙</span><small>Users</small></a>
+  <a href="admin-machines.html" class="navItem"><span>⛏</span><small>Machines</small></a>
+  <a href="admin-deposits.html" class="navItem"><span>＋</span><small>Deposits</small></a>
+  <a href="admin-withdrawals.html" class="navItem"><span>↗</span><small>Withdraw</small></a>
+</nav>
 
 <script src="admin-notifications.js"></script>
 </body>
