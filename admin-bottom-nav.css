@@ -1,0 +1,8 @@
+/* Shared MDH mobile admin bottom navigation — matches the Control Center mobile UI */
+.mdh-bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:100;display:flex;align-items:stretch;justify-content:space-between;gap:3px;padding:7px 8px calc(7px + env(safe-area-inset-bottom));background:rgba(3,15,13,.97);border-top:1px solid rgba(94,255,190,.10);box-shadow:0 -8px 28px rgba(0,0,0,.16);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.mdh-bottom-nav .mdh-nav-item{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:60px;padding:7px 4px;border-radius:22px;color:#718d86;text-decoration:none;font-size:10px;font-weight:800;line-height:1;transition:background .18s ease,color .18s ease,transform .18s ease}
+.mdh-bottom-nav .mdh-nav-item svg{width:21px;height:21px;display:block;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;opacity:.96}
+.mdh-bottom-nav .mdh-nav-item.active{color:#19e889;background:rgba(25,232,137,.10);box-shadow:inset 0 0 0 1px rgba(25,232,137,.035)}
+.mdh-bottom-nav .mdh-nav-item:active{transform:scale(.96)}
+@media(max-width:420px){.mdh-bottom-nav{padding-left:6px;padding-right:6px}.mdh-bottom-nav .mdh-nav-item{min-height:58px;font-size:9.5px;border-radius:20px}.mdh-bottom-nav .mdh-nav-item svg{width:20px;height:20px}}
+@media(min-width:720px){.mdh-bottom-nav{max-width:720px;left:50%;right:auto;transform:translateX(-50%);width:100%;border:1px solid rgba(94,255,190,.10);border-bottom:0;border-radius:24px 24px 0 0}}
