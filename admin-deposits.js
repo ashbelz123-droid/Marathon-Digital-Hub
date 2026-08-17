@@ -1,14 +1,14 @@
-const BRIDGE_URL='https://sfimuvisljmezpajxxpf.supabase.co/functions/v1/admin-users-bridge';
+const BRIDGE_URL='https://sfimuvisljmezpajxxpf.supabase.co/functions/v1/admin-deposits-bridge';
 const $=id=>document.getElementById(id);let deposits=[];let actionState=null;
 const money=v=>'UGX '+Number(v||0).toLocaleString(undefined,{maximumFractionDigits:2});
-const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const esc=v=>String(v??'').replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[c]));
 function showNotice(msg,error=true){const n=$('notice');n.hidden=false;n.textContent=msg;n.className='notice '+(error?'error':'ok');clearTimeout(showNotice.t);showNotice.t=setTimeout(()=>n.hidden=true,5000)}
 async function bridge(action,extra={}){
  const token=localStorage.getItem('admin_bridge_token')||'';
  if(!token){location.replace('admin-login.html');throw Error('Admin session expired. Please sign in again.')}
- const r=await fetch(BRIDGE_URL,{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','Cache-Control':'no-cache','Pragma':'no-cache'},body:JSON.stringify({action,adminToken:token,...extra})});
+ const r=await fetch(BRIDGE_URL,{method:'POST',cache:'no-store',headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`,'Cache-Control':'no-cache','Pragma':'no-cache'},body:JSON.stringify({action,...extra})});
  const text=await r.text();let d={};try{d=text?JSON.parse(text):{}}catch(_){d={}}
- if(r.status===401){localStorage.removeItem('admin_bridge_token');localStorage.removeItem('admin_logged_in');location.replace('admin-login.html');throw Error('Admin session expired. Please sign in again.')}
+ if(r.status===401){localStorage.removeItem('admin_bridge_token');localStorage.removeItem('admin_logged_in');location.replace('admin-login.html');throw Error(d.error||'Admin session expired. Please sign in again.')}
  if(!r.ok||!d.ok)throw Error(d.error||`Request failed (${r.status})`);return d
 }
 async function load(){
