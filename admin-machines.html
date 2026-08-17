@@ -1,340 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Machine Management</title>
-
+<title>Machine Management | MDH Admin</title>
 <link rel="stylesheet" href="admin-machines.css">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-
 </head>
-
 <body>
 
-<div class="page">
+<div class="adminShell">
+  <aside class="adminNav" aria-label="Admin navigation">
+    <div class="brandBlock">
+      <div class="brandMark">MDH</div>
+      <div><strong>Marathon</strong><span>Admin Center</span></div>
+    </div>
+    <nav class="navLinks">
+      <a href="admin.html"><span>⌂</span> Overview</a>
+      <a href="admin-users.html"><span>◉</span> Users</a>
+      <a href="admin-machines.html" class="active"><span>◆</span> Machines</a>
+      <a href="admin-deposits.html"><span>＋</span> Deposits</a>
+      <a href="admin-withdrawals.html"><span>↗</span> Withdrawals</a>
+      <a href="admin-income.html"><span>◒</span> Income</a>
+      <a href="admin-notifications.html"><span>●</span> Notifications</a>
+      <a href="admin-settings.html"><span>⚙</span> Settings</a>
+    </nav>
+    <div class="navFooter"><span class="liveDot"></span> Control Center</div>
+  </aside>
 
-    <!-- HEADER -->
+  <main class="page">
+    <div class="mobileNav">
+      <div class="brandBlock"><div class="brandMark">MDH</div><div><strong>Marathon</strong><span>Admin Center</span></div></div>
+      <button id="mobileNavBtn" class="navToggle" type="button" aria-label="Open admin navigation">☰</button>
+    </div>
 
     <div class="topBar">
-
-        <div>
-
-            <h1>Machine Management</h1>
-
-            <p>Manage all mining investment machines</p>
-
-        </div>
-
-        <button id="addMachineBtn" class="primaryBtn">
-
-            + Add Machine
-
-        </button>
-
+      <div><p class="eyebrow">Control Center / Inventory</p><h1>Machine Management</h1><p>Manage every mining machine from one clean control page.</p></div>
+      <button id="addMachineBtn" class="primaryBtn">+ Add Machine</button>
     </div>
-
-    <!-- STATISTICS -->
 
     <div class="statsGrid">
-
-        <div class="statCard">
-
-            <span>Total Machines</span>
-
-            <h2 id="totalMachines">0</h2>
-
-        </div>
-
-        <div class="statCard">
-
-            <span>Active</span>
-
-            <h2 id="activeMachines">0</h2>
-
-        </div>
-
-        <div class="statCard">
-
-            <span>Disabled</span>
-
-            <h2 id="disabledMachines">0</h2>
-
-        </div>
-
-        <div class="statCard">
-
-            <span>VIP</span>
-
-            <h2 id="vipMachines">0</h2>
-
-        </div>
-
+      <div class="statCard"><span>Total Machines</span><h2 id="totalMachines">0</h2></div>
+      <div class="statCard"><span>Active</span><h2 id="activeMachines">0</h2></div>
+      <div class="statCard"><span>Disabled</span><h2 id="disabledMachines">0</h2></div>
+      <div class="statCard"><span>VIP</span><h2 id="vipMachines">0</h2></div>
     </div>
 
-    <!-- SEARCH -->
-
-    <div class="searchBox">
-
-        <input
-
-            type="text"
-
-            id="searchInput"
-
-            placeholder="Search machine by name or series...">
-
-    </div>
-
-        <!-- MACHINE FORM -->
+    <div class="searchBox"><input type="text" id="searchInput" placeholder="Search machine by name or series..."></div>
 
     <div id="machineForm" class="machineForm hidden">
-
-        <div class="formHeader">
-
-            <h2 id="formTitle">Add New Machine</h2>
-
-            <button id="closeFormBtn" class="closeBtn">
-
-                ✕
-
-            </button>
-
+      <div class="formHeader"><div><p class="eyebrow">Inventory</p><h2 id="formTitle">Add New Machine</h2></div><button id="closeFormBtn" class="closeBtn" type="button">✕</button></div>
+      <form id="machineFormElement">
+        <div class="formGrid">
+          <div class="inputGroup"><label>Machine Name</label><input type="text" id="machineName" required></div>
+          <div class="inputGroup"><label>Series</label><input type="text" id="machineSeries"></div>
+          <div class="inputGroup"><label>Price (UGX)</label><input type="number" id="machinePrice" required></div>
+          <div class="inputGroup"><label>Total Return (UGX)</label><input type="number" id="machineReturn" required></div>
+          <div class="inputGroup"><label>Duration (Days)</label><input type="number" id="machineDuration" required></div>
+          <div class="inputGroup"><label>Status</label><select id="machineStatus"><option value="true">Active</option><option value="false">Disabled</option></select></div>
         </div>
-
-        <form id="machineFormElement">
-
-            <div class="formGrid">
-
-                <div class="inputGroup">
-
-                    <label>Machine Name</label>
-
-                    <input
-                        type="text"
-                        id="machineName"
-                        required>
-
-                </div>
-
-                <div class="inputGroup">
-
-                    <label>Series</label>
-
-                    <input
-                        type="text"
-                        id="machineSeries">
-
-                </div>
-
-                <div class="inputGroup">
-
-                    <label>Price (UGX)</label>
-
-                    <input
-                        type="number"
-                        id="machinePrice"
-                        required>
-
-                </div>
-
-                <div class="inputGroup">
-
-                    <label>Total Return (UGX)</label>
-
-                    <input
-                        type="number"
-                        id="machineReturn"
-                        required>
-
-                </div>
-
-                <div class="inputGroup">
-
-                    <label>Duration (Days)</label>
-
-                    <input
-                        type="number"
-                        id="machineDuration"
-                        required>
-
-                </div>
-
-                <div class="inputGroup">
-
-                    <label>Status</label>
-
-                    <select id="machineStatus">
-
-                        <option value="true">
-
-                            Active
-
-                        </option>
-
-                        <option value="false">
-
-                            Disabled
-
-                        </option>
-
-                    </select>
-
-                </div>
-
-            </div>
-
-            <!-- IMAGE -->
-
-            <div class="uploadArea">
-
-                <label for="machineImage" class="uploadButton">
-
-                    📷 Select Machine Image
-
-                </label>
-
-                <input
-                    type="file"
-                    id="machineImage"
-                    accept="image/*"
-                    hidden>
-
-                <img
-                    id="previewImage"
-                    class="previewImage"
-                    alt="Preview">
-
-            </div>
-
-            <!-- VIP -->
-
-            <div class="vipRow">
-
-                <input
-                    type="checkbox"
-                    id="machineVIP">
-
-                <label for="machineVIP">
-
-                    VIP Machine
-
-                </label>
-
-            </div>
-
-            <!-- BUTTONS -->
-
-            <div class="formButtons">
-
-                <button
-                    type="submit"
-                    class="saveBtn">
-
-                    Save Machine
-
-                </button>
-
-                <button
-                    type="button"
-                    id="cancelBtn"
-                    class="cancelBtn">
-
-                    Cancel
-
-                </button>
-
-            </div>
-
-        </form>
-
+        <div class="uploadArea"><label for="machineImage" class="uploadButton">📷 Select Machine Image</label><input type="file" id="machineImage" accept="image/*" hidden><img id="previewImage" class="previewImage" alt="Preview"></div>
+        <div class="vipRow"><input type="checkbox" id="machineVIP"><label for="machineVIP">VIP Machine</label></div>
+        <div class="formButtons"><button type="submit" class="saveBtn">Save Machine</button><button type="button" id="cancelBtn" class="cancelBtn">Cancel</button></div>
+      </form>
     </div>
 
-        <!-- MACHINE LIST -->
-
-    <div class="listHeader">
-
-        <h2>Mining Machines</h2>
-
-        <span id="machineCount">0 Machines</span>
-
-    </div>
-
-    <div id="machinesContainer" class="machinesGrid">
-
-        <!-- Machine cards loaded by JavaScript -->
-
-    </div>
-
+    <div class="listHeader"><div><p class="eyebrow">Inventory</p><h2>Mining Machines</h2></div><span id="machineCount">0 Machines</span></div>
+    <div id="machinesContainer" class="machinesGrid"></div>
+  </main>
 </div>
 
-<!-- DELETE MODAL -->
+<div id="mobileNavOverlay" class="mobileNavOverlay hidden"></div>
+<div id="deleteModal" class="modal hidden"><div class="modalBox"><h2>Delete Machine</h2><p>Are you sure you want to permanently delete this machine?</p><div class="modalButtons"><button id="confirmDeleteBtn" class="deleteBtn">Delete</button><button id="cancelDeleteBtn" class="cancelBtn">Cancel</button></div></div></div>
+<div id="loadingScreen" class="loading hidden"><div class="loader"></div><p>Loading...</p></div>
+<div id="toast" class="toast"><span id="toastMessage">Success</span></div>
 
-<div id="deleteModal" class="modal hidden">
-
-    <div class="modalBox">
-
-        <h2>Delete Machine</h2>
-
-        <p>
-
-            Are you sure you want to permanently delete this machine?
-
-        </p>
-
-        <div class="modalButtons">
-
-            <button
-                id="confirmDeleteBtn"
-                class="deleteBtn">
-
-                Delete
-
-            </button>
-
-            <button
-                id="cancelDeleteBtn"
-                class="cancelBtn">
-
-                Cancel
-
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- LOADING -->
-
-<div id="loadingScreen" class="loading hidden">
-
-    <div class="loader"></div>
-
-    <p>Loading...</p>
-
-</div>
-
-<!-- TOAST -->
-
-<div id="toast" class="toast">
-
-    <span id="toastMessage">
-
-        Success
-
-    </span>
-
-</div>
-
+<script>
+(function(){
+  const btn=document.getElementById('mobileNavBtn'),nav=document.querySelector('.adminNav'),overlay=document.getElementById('mobileNavOverlay');
+  function close(){nav.classList.remove('open');overlay.classList.add('hidden')}
+  btn?.addEventListener('click',()=>{nav.classList.add('open');overlay.classList.remove('hidden')});overlay?.addEventListener('click',close);nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+})();
+</script>
 <script src="admin-machines.js"></script>
-
 </body>
-
 </html>
