@@ -11,30 +11,20 @@
 <body>
 <main class="page">
   <header class="mobileNav">
-    <div class="brandBlock">
-      <div class="brandMark">MDH</div>
-      <div><strong>Marathon</strong><span>Admin Center</span></div>
-    </div>
+    <div class="brandBlock"><div class="brandMark">MDH</div><div><strong>Marathon</strong><span>Admin Center</span></div></div>
   </header>
-
   <section class="topBar">
-    <div>
-      <p class="eyebrow">Control Center / Inventory</p>
-      <h1>Machine Management</h1>
-      <p>Manage every mining machine from one clean control page.</p>
-    </div>
+    <div><p class="eyebrow">Control Center / Inventory</p><h1>Machine Management</h1><p>Manage every mining machine from one clean control page.</p></div>
     <button id="addMachineBtn" class="primaryBtn">+ Add Machine</button>
   </section>
-
   <section class="statsGrid">
-    <div class="statCard"><span>Total Machines</span><h2 id="totalMachines">0</h2><small>configured</small></div>
+    <div class="statCard"><span>Configured Machines</span><h2 id="totalMachines">0</h2><small>catalog inventory</small></div>
     <div class="statCard"><span>Active Machines</span><h2 id="activeMachines">0</h2><small>available</small></div>
     <div class="statCard"><span>Disabled Machines</span><h2 id="disabledMachines">0</h2><small>still listed</small></div>
     <div class="statCard"><span>VIP Machines</span><h2 id="vipMachines">0</h2><small>VIP inventory</small></div>
+    <div class="statCard"><span>User Machine Assignments</span><h2 id="userMachineAssignments">0</h2><small>assigned records</small></div>
   </section>
-
   <div class="searchBox"><input type="text" id="searchInput" placeholder="Search machine by name or series..."></div>
-
   <div id="machineForm" class="machineForm hidden">
     <div class="formHeader"><div><p class="eyebrow">Inventory</p><h2 id="formTitle">Add New Machine</h2></div><button id="closeFormBtn" class="closeBtn" type="button">✕</button></div>
     <form id="machineFormElement">
@@ -51,11 +41,9 @@
       <div class="formButtons"><button type="submit" class="saveBtn">Save Machine</button><button type="button" id="cancelBtn" class="cancelBtn">Cancel</button></div>
     </form>
   </div>
-
   <div class="listHeader"><div><p class="eyebrow">Inventory</p><h2>Mining Machines</h2></div><span id="machineCount">0 Machines</span></div>
   <div id="machinesContainer" class="machinesGrid"></div>
 </main>
-
 <nav class="bottomNav" aria-label="Admin navigation">
   <a href="admin.html" class="navItem"><span>⌂</span><small>Home</small></a>
   <a href="admin-users.html" class="navItem"><span>♙</span><small>Users</small></a>
@@ -63,7 +51,6 @@
   <a href="admin-deposits.html" class="navItem"><span>＋</span><small>Deposits</small></a>
   <a href="admin-withdrawals.html" class="navItem"><span>↗</span><small>Withdraw</small></a>
 </nav>
-
 <div id="deleteModal" class="modal hidden"><div class="modalBox"><h2>Delete Machine</h2><p>Are you sure you want to permanently delete this machine?</p><div class="modalButtons"><button id="confirmDeleteBtn" class="deleteBtn">Delete</button><button id="cancelDeleteBtn" class="cancelBtn">Cancel</button></div></div></div>
 <div id="loadingScreen" class="loading hidden"><div class="loader"></div><p>Loading...</p></div>
 <div id="toast" class="toast"><span id="toastMessage">Success</span></div>
