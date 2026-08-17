@@ -1,5 +1,6 @@
 const db = supabaseClient;
 const DEPOSIT_LIMIT = 20000;
+const MIN_DEPOSIT = 10000;
 let currentUser = null;
 let selectedMethod = "MTN";
 let currentWalletBalance = 0;
@@ -73,9 +74,8 @@ async function submitDeposit(){
     const sender=document.getElementById("senderNumber").value.trim();
     const transaction=document.getElementById("transactionId").value.trim().toUpperCase();
     const message=document.getElementById("depositMessage").value.trim();
-    if(amount<=0){alert("Enter a valid deposit amount.");return}
-    if(amount<10000){alert("Minimum deposit is UGX 10,000.");return}
-    if(amount>50000000){alert("Maximum deposit is UGX 50,000,000.");return}
+    if(!Number.isFinite(amount)||amount<MIN_DEPOSIT){alert("Minimum deposit is UGX 10,000.");return}
+    if(amount>DEPOSIT_LIMIT){alert("Maximum deposit is UGX 20,000.");return}
     if(balance+amount>DEPOSIT_LIMIT){alert("This deposit would take your wallet above UGX 20,000. Maximum additional deposit allowed: UGX "+Math.max(0,DEPOSIT_LIMIT-balance).toLocaleString()+".");return}
     if(sender===""){alert("Sender phone number is required.");return}
     if(!/^(\+256|0)7\d{8}$/.test(sender)){alert("Enter a valid Uganda mobile number.");return}
