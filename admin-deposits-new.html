@@ -7,133 +7,28 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
 <style>
-:root{--bg:#06100e;--panel:#0b1d19;--panel2:#0d241f;--line:#5effbe1f;--text:#f1fff9;--muted:#87a79d;--green:#19e889;--soft:#b9ffe0;--warn:#ffc857;--danger:#ff7080}
-*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:linear-gradient(180deg,#06100e 0%,#071512 55%,#06100e 100%);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}a{text-decoration:none;color:inherit}button,input,select{font:inherit}
-.shell{width:min(1180px,100%);margin:auto;padding:18px 15px 105px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{font-size:17px;font-weight:950;letter-spacing:-.4px}.brand span{color:var(--green)}.admin-chip{font-size:9px;font-weight:900;color:#9effd2;border:1px solid var(--line);padding:9px 12px;border-radius:999px;background:#0a211c;white-space:nowrap}
-.hero{border:1px solid var(--line);border-radius:27px;padding:24px;background:linear-gradient(135deg,#0c2921,#0c1d1a 70%);margin-bottom:14px}.eyebrow{font-size:10px;color:#72aa98;font-weight:950;letter-spacing:1.3px}.hero h1{font-size:31px;line-height:1;margin:9px 0 8px;letter-spacing:-1px}.hero p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}.hero-tools{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}.refresh{border:1px solid #19e88935;background:#19e88910;color:#9fffd1;border-radius:14px;padding:11px 15px;font-size:10px;font-weight:900;cursor:pointer}.sync{color:#6f958a;font-size:9px;display:flex;align-items:center;gap:6px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #19e88988}
-.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{min-height:112px;padding:17px;border:1px solid var(--line);border-radius:20px;background:#0b1d19}.stat small{display:block;color:var(--muted);font-size:9px}.stat strong{display:block;margin-top:8px;font-size:25px;letter-spacing:-.5px;color:var(--soft)}.stat em{display:block;margin-top:5px;font-size:9px;color:#64877d;font-style:normal}.stat.received strong{font-size:20px;line-height:1.15}.section{margin-top:24px}.section-head{display:flex;align-items:end;justify-content:space-between;margin:0 3px 10px}.section-head h2{font-size:16px;margin:0;letter-spacing:-.2px}.section-head span{font-size:9px;color:#6f958a}
-.toolbar{display:flex;gap:9px;margin-bottom:12px}.field{flex:1;min-width:0;background:#091916;color:var(--text);border:1px solid var(--line);border-radius:15px;padding:13px 14px;outline:none;font-size:10px}.field:focus{border-color:#19e88966;box-shadow:0 0 0 3px #19e8890b}.filter{max-width:155px}.panel{border:1px solid var(--line);border-radius:22px;background:#0a1a17;overflow:hidden}.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px;border-bottom:1px solid #5effbe12}.row:last-child{border-bottom:0}.identity{min-width:0;flex:1}.identity h3{margin:0;font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.identity p{margin:5px 0 0;color:var(--muted);font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.identity .phone{color:#6f958a}.right{text-align:right;min-width:105px}.amount{font-size:12px;font-weight:950;color:#c0ffe3}.badge{display:inline-flex;align-items:center;margin-top:6px;padding:5px 9px;border-radius:999px;font-size:7.5px;font-weight:950;letter-spacing:.4px;background:#19e88912;color:var(--green)}.badge.pending{color:var(--warn);background:#ffc85712}.badge.rejected,.badge.failed,.badge.cancelled{color:var(--danger);background:#ff667712}.empty{padding:34px 18px;text-align:center;color:var(--muted);font-size:10px}.error{margin-top:12px;padding:12px;border-radius:14px;background:#ff66770c;border:1px solid #ff667733;color:#ff9aa5;font-size:10px;display:none}.loading{opacity:.65}
-.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:3px;padding:10px 5px calc(10px + env(safe-area-inset-bottom));background:#06110ff5;border-top:1px solid var(--line);backdrop-filter:blur(18px);z-index:50}.bottom a{flex:1;max-width:125px;text-align:center;color:#78938b;font-size:9px;font-weight:800;padding:7px 2px;border-radius:13px;line-height:1.35}.bottom a.active{color:var(--green);background:#19e88910}.navicon{display:block;font-size:17px;line-height:16px;margin-bottom:3px}
-@media(min-width:720px){.shell{padding:28px 22px 110px}.stats{grid-template-columns:repeat(4,1fr)}.hero{padding:28px}.hero h1{font-size:35px}.row{padding:17px 20px}}
-@media(max-width:430px){.brand{font-size:15px}.admin-chip{font-size:8px;padding:8px 10px}.hero{padding:22px}.hero h1{font-size:30px}.toolbar{display:grid;grid-template-columns:1fr}.filter{max-width:none}.row{padding:15px 13px}.right{min-width:88px}.amount{font-size:11px}.bottom a{font-size:8.5px}}
+:root{--bg:#06100e;--panel:#0b1d19;--line:#5effbe1f;--text:#f1fff9;--muted:#87a79d;--green:#19e889;--soft:#b9ffe0;--warn:#ffc857;--danger:#ff7080}*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:linear-gradient(180deg,#06100e,#071512 55%,#06100e);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}a{text-decoration:none;color:inherit}button,input,select{font:inherit}.shell{width:min(1180px,100%);margin:auto;padding:18px 15px 105px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}.brand{font-size:17px;font-weight:950}.brand span{color:var(--green)}.admin-chip{font-size:9px;font-weight:900;color:#9effd2;border:1px solid var(--line);padding:9px 12px;border-radius:999px;background:#0a211c}.hero{border:1px solid var(--line);border-radius:27px;padding:24px;background:linear-gradient(135deg,#0c2921,#0c1d1a 70%);margin-bottom:14px}.eyebrow{font-size:10px;color:#72aa98;font-weight:950;letter-spacing:1.3px}.hero h1{font-size:31px;line-height:1;margin:9px 0 8px}.hero p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}.hero-tools{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}.refresh{border:1px solid #19e88935;background:#19e88910;color:#9fffd1;border-radius:14px;padding:11px 15px;font-size:10px;font-weight:900}.sync{color:#6f958a;font-size:9px;display:flex;align-items:center;gap:6px}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px #19e88988}.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.stat{min-height:112px;padding:17px;border:1px solid var(--line);border-radius:20px;background:#0b1d19}.stat small{display:block;color:var(--muted);font-size:9px}.stat strong{display:block;margin-top:8px;font-size:25px;color:var(--soft)}.stat em{display:block;margin-top:5px;font-size:9px;color:#64877d;font-style:normal}.stat.received strong{font-size:20px}.section{margin-top:24px}.section-head{display:flex;align-items:end;justify-content:space-between;margin:0 3px 10px}.section-head h2{font-size:16px;margin:0}.section-head span{font-size:9px;color:#6f958a}.toolbar{display:flex;gap:9px;margin-bottom:12px}.field{flex:1;min-width:0;background:#091916;color:var(--text);border:1px solid var(--line);border-radius:15px;padding:13px 14px;outline:none;font-size:10px}.filter{max-width:155px}.panel{border:1px solid var(--line);border-radius:22px;background:#0a1a17;overflow:hidden}.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px;border-bottom:1px solid #5effbe12}.row:last-child{border-bottom:0}.identity{min-width:0;flex:1}.identity h3{margin:0;font-size:11px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.identity p{margin:5px 0 0;color:var(--muted);font-size:8.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.right{text-align:right;min-width:105px}.amount{font-size:12px;font-weight:950;color:#c0ffe3}.badge{display:inline-flex;margin-top:6px;padding:5px 9px;border-radius:999px;font-size:7.5px;font-weight:950;background:#19e88912;color:var(--green)}.badge.pending{color:var(--warn);background:#ffc85712}.badge.rejected,.badge.failed,.badge.cancelled{color:var(--danger);background:#ff667712}.empty{padding:34px 18px;text-align:center;color:var(--muted);font-size:10px}.error{margin-top:12px;padding:12px;border-radius:14px;background:#ff66770c;border:1px solid #ff667733;color:#ff9aa5;font-size:10px;display:none}.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:3px;padding:10px 5px calc(10px + env(safe-area-inset-bottom));background:#06110ff5;border-top:1px solid var(--line);backdrop-filter:blur(18px);z-index:50}.bottom a{flex:1;max-width:125px;text-align:center;color:#78938b;font-size:9px;font-weight:800;padding:7px 2px;border-radius:13px;line-height:1.35}.bottom a.active{color:var(--green);background:#19e88910}.navicon{display:block;font-size:17px;line-height:16px;margin-bottom:3px}@media(min-width:720px){.shell{padding:28px 22px 110px}.stats{grid-template-columns:repeat(4,1fr)}}@media(max-width:430px){.brand{font-size:15px}.hero{padding:22px}.hero h1{font-size:30px}.toolbar{display:grid;grid-template-columns:1fr}.filter{max-width:none}.row{padding:15px 13px}.right{min-width:88px}.bottom a{font-size:8.5px}}
 </style>
 </head>
 <body>
 <main class="shell">
-<header class="top">
-  <div class="brand">MARATHON <span>DIGITAL HUB</span></div>
-  <div class="admin-chip">ADMIN CONTROL CENTER</div>
-</header>
-
-<section class="hero">
-  <div class="eyebrow">FINANCE OPERATIONS</div>
-  <h1>Deposits</h1>
-  <p>Review real incoming funding records directly from the Marathon Digital Hub database.</p>
-  <div class="hero-tools">
-    <button id="refresh" class="refresh" type="button">↻ Refresh data</button>
-    <span class="sync"><i class="dot"></i><span id="syncText">LIVE SUPABASE DATA</span></span>
-  </div>
-  <div id="error" class="error"></div>
-</section>
-
-<section class="stats">
-  <div class="stat"><small>Total Records</small><strong id="total">0</strong><em id="totalSub">all deposits</em></div>
-  <div class="stat"><small>Pending</small><strong id="pending">0</strong><em>awaiting review</em></div>
-  <div class="stat"><small>Approved</small><strong id="approved">0</strong><em>successful deposits</em></div>
-  <div class="stat received"><small>Total Received</small><strong id="received">UGX 0</strong><em>approved deposits</em></div>
-</section>
-
-<section class="section">
-  <div class="section-head"><h2>Deposit records</h2><span id="countLabel">0 RECORDS</span></div>
-  <div class="toolbar">
-    <input id="search" class="field" type="search" placeholder="Search user, phone, reference or transaction ID…" autocomplete="off">
-    <select id="filter" class="field filter">
-      <option value="all">All statuses</option>
-      <option value="pending">Pending</option>
-      <option value="approved">Approved</option>
-      <option value="rejected">Rejected</option>
-      <option value="cancelled">Cancelled</option>
-      <option value="failed">Failed</option>
-    </select>
-  </div>
-  <section class="panel"><div id="list" class="empty">Loading deposits…</div></section>
-</section>
+<header class="top"><div class="brand">MARATHON <span>DIGITAL HUB</span></div><div class="admin-chip">ADMIN CONTROL CENTER</div></header>
+<section class="hero"><div class="eyebrow">FINANCE OPERATIONS</div><h1>Deposits</h1><p>Review real incoming funding records directly from the Marathon Digital Hub database.</p><div class="hero-tools"><button id="refresh" class="refresh" type="button">↻ Refresh data</button><span class="sync"><i class="dot"></i><span id="syncText">CONNECTING TO SUPABASE…</span></span></div><div id="error" class="error"></div></section>
+<section class="stats"><div class="stat"><small>Total Records</small><strong id="total">0</strong><em id="totalSub">database records</em></div><div class="stat"><small>Pending</small><strong id="pending">0</strong><em>awaiting review</em></div><div class="stat"><small>Approved</small><strong id="approved">0</strong><em>successful deposits</em></div><div class="stat received"><small>Total Received</small><strong id="received">UGX 0</strong><em>approved deposits</em></div></section>
+<section class="section"><div class="section-head"><h2>Deposit records</h2><span id="countLabel">0 RECORDS</span></div><div class="toolbar"><input id="search" class="field" type="search" placeholder="Search user, phone, reference or transaction ID…" autocomplete="off"><select id="filter" class="field filter"><option value="all">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option><option value="failed">Failed</option></select></div><section class="panel"><div id="list" class="empty">Loading deposits…</div></section></section>
 </main>
-
-<nav class="bottom" aria-label="Admin navigation">
-  <a href="admin.html"><span class="navicon">⌂</span>Home</a>
-  <a href="admin-users.html"><span class="navicon">♙</span>Users</a>
-  <a href="admin-machines.html"><span class="navicon">⛏</span>Machines</a>
-  <a class="active" href="admin-deposits-new.html"><span class="navicon">＋</span>Deposits</a>
-  <a href="admin-withdrawals.html"><span class="navicon">↗</span>Withdraw</a>
-</nav>
-
+<nav class="bottom" aria-label="Admin navigation"><a href="admin.html"><span class="navicon">⌂</span>Home</a><a href="admin-users.html"><span class="navicon">♙</span>Users</a><a href="admin-machines.html"><span class="navicon">⛏</span>Machines</a><a class="active" href="admin-deposits-new.html"><span class="navicon">＋</span>Deposits</a><a href="admin-withdrawals.html"><span class="navicon">↗</span>Withdraw</a></nav>
 <script>
-const db=window.supabaseClient;
-const $=id=>document.getElementById(id);
-let rows=[];
-let loading=false;
-
+const db=window.supabaseClient,$=id=>document.getElementById(id);let rows=[],loading=false;
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function money(v){return 'UGX '+Number(v||0).toLocaleString(undefined,{maximumFractionDigits:2});}
-function statusOf(x){return String(x.status||x.state||'pending').trim().toLowerCase();}
-function referenceOf(x){return x.reference||x.transaction_id||x.txn_id||x.payment_reference||x.id||'No reference';}
-function userOf(x){return x.fullname||x.full_name||x.name||x.email||x.phone||x.user_id||'Deposit';}
-function phoneOf(x){return x.phone||x.phone_number||x.mobile||'';}
-function dateOf(x){if(!x.created_at&&!x.createdAt)return '';const d=new Date(x.created_at||x.createdAt);return isNaN(d)?'':d.toLocaleString();}
-
-function render(){
-  const q=$('search').value.trim().toLowerCase();
-  const f=$('filter').value;
-  const data=rows.filter(x=>{
-    const s=statusOf(x);
-    const hay=JSON.stringify(x).toLowerCase();
-    return (!q||hay.includes(q))&&(f==='all'||s===f);
-  });
-  $('countLabel').textContent=data.length+' RECORD'+(data.length===1?'':'S');
-  if(!data.length){$('list').innerHTML='<div class="empty">No deposit records match your search.</div>';return;}
-  $('list').innerHTML=data.map(x=>{
-    const s=statusOf(x);const cls=['pending','rejected','cancelled','failed'].includes(s)?' '+s:'';
-    const user=userOf(x);const phone=phoneOf(x);const ref=referenceOf(x);
-    return '<div class="row">'+
-      '<div class="identity"><h3>'+esc(user)+'</h3><p>'+esc(ref)+' · '+esc(dateOf(x))+(phone?' · <span class="phone">'+esc(phone)+'</span>':'')+'</p></div>'+
-      '<div class="right"><div class="amount">'+money(x.amount)+'</div><span class="badge'+cls+'">'+esc(s.toUpperCase())+'</span></div>'+
-    '</div>';
-  }).join('');
-}
-
-async function load(){
-  if(loading)return;
-  loading=true;$('refresh').disabled=true;$('refresh').classList.add('loading');$('syncText').textContent='SYNCING…';$('error').style.display='none';
-  try{
-    if(!db)throw new Error('Supabase client is not available.');
-    const r=await db.from('deposits').select('*',{count:'exact'}).order('created_at',{ascending:false}).limit(500);
-    if(r.error)throw r.error;
-    rows=r.data||[];
-    const pending=rows.filter(x=>statusOf(x)==='pending');
-    const approved=rows.filter(x=>statusOf(x)==='approved');
-    const received=approved.reduce((sum,x)=>sum+Number(x.amount||0),0);
-    $('total').textContent=r.count??rows.length;
-    $('totalSub').textContent=(r.count??rows.length)+' deposit'+((r.count??rows.length)===1?'':'s')+' in database';
-    $('pending').textContent=pending.length;
-    $('approved').textContent=approved.length;
-    $('received').textContent=money(received);
-    render();
-    $('syncText').textContent='LIVE SUPABASE DATA · '+new Date().toLocaleTimeString();
-  }catch(e){
-    console.error('Deposits load error:',e);
-    $('error').style.display='block';
-    $('error').textContent='Unable to load deposits from Supabase: '+(e.message||'Unknown database error');
-    $('list').innerHTML='<div class="empty">The database request failed. Refresh and check Supabase access policies.</div>';
-    $('syncText').textContent='DATABASE ERROR';
-  }finally{loading=false;$('refresh').disabled=false;$('refresh').classList.remove('loading');}
-}
-
-$('search').addEventListener('input',render);
-$('filter').addEventListener('change',render);
-$('refresh').addEventListener('click',load);
-load();
-setInterval(load,30000);
+function statusOf(x){return String(x.status||'pending').trim().toLowerCase();}
+function userOf(x){return x.profiles?.fullname||x.profiles?.email||x.user_id||'Deposit';}
+function dateOf(x){const d=new Date(x.created_at);return isNaN(d)?'':d.toLocaleString();}
+function render(){const q=$('search').value.trim().toLowerCase(),f=$('filter').value,data=rows.filter(x=>{const s=statusOf(x),hay=JSON.stringify(x).toLowerCase();return(!q||hay.includes(q))&&(f==='all'||s===f)});$('countLabel').textContent=data.length+' RECORD'+(data.length===1?'':'S');if(!data.length){$('list').innerHTML='<div class="empty">No deposit records match your search.</div>';return}$('list').innerHTML=data.map(x=>{const s=statusOf(x),cls=['pending','rejected','cancelled','failed'].includes(s)?' '+s:'',user=userOf(x),phone=x.phone_number||x.profiles?.phone||'',tx=x.transaction_id||x.id;return `<div class="row"><div class="identity"><h3>${esc(user)}</h3><p>${esc(tx)} · ${esc(dateOf(x))}${phone?' · '+esc(phone):''}${x.method?' · '+esc(x.method):''}</p></div><div class="right"><div class="amount">${money(x.amount)}</div><span class="badge${cls}">${esc(s.toUpperCase())}</span></div></div>`}).join('')}
+function stats(summary){$('total').textContent=summary.total??rows.length;$('totalSub').textContent=(summary.total??rows.length)+' deposits in database';$('pending').textContent=summary.pending??0;$('approved').textContent=summary.approved??0;$('received').textContent=money(summary.totalAmount??summary.approvedAmount??0)}
+async function load(){if(loading)return;loading=true;$('refresh').disabled=true;$('syncText').textContent='SYNCING…';$('error').style.display='none';try{if(!db)throw new Error('Supabase client is not available.');const {data:{session}}=await db.auth.getSession();if(!session)throw new Error('Admin session not found. Please sign in again.');const {data,error}=await db.functions.invoke('admin-deposits-bridge',{body:{}});if(error)throw new Error(error.message||'Deposit bridge request failed');if(!data?.ok)throw new Error(data?.error||'Deposit bridge rejected the request');rows=data.deposits||[];stats(data.summary||{});render();$('syncText').textContent='LIVE SUPABASE DATA · '+new Date().toLocaleTimeString()}catch(e){console.error(e);$('error').style.display='block';$('error').textContent='Unable to load full admin deposits: '+(e.message||'Unknown error');$('list').innerHTML='<div class="empty">The secure admin database request failed. Sign in again if your admin session has expired.</div>';$('syncText').textContent='DATABASE CONNECTION ERROR'}finally{loading=false;$('refresh').disabled=false}}
+$('search').addEventListener('input',render);$('filter').addEventListener('change',render);$('refresh').addEventListener('click',load);load();setInterval(load,30000);
 </script>
 </body>
 </html>
