@@ -9,3 +9,46 @@ if(canvas){
  function animate(){draw();if(!reduce)raf=requestAnimationFrame(animate)}
  resize();addEventListener('resize',resize,{passive:true});if(!reduce)animate();addEventListener('pagehide',()=>cancelAnimationFrame(raf),{once:true});
 }
+
+/* MDH financial display guard: pages may READ wallet state, but never create income here. */
+(async function loadAuthoritativeDashboardData(){
+ const wallet=document.getElementById('walletBalance');
+ const invested=document.getElementById('totalInvested');
+ const profit=document.getElementById('totalProfit');
+ const machinesEl=document.getElementById('activeMachines');
+ const teamEl=document.getElementById('totalTeam');
+ if(!wallet&&!invested&&!profit&&!machinesEl&&!teamEl)return;
+ const db=window.supabaseClient;
+ if(!db)return;
+ const money=v=>'UGX '+Number(v||0).toLocaleString();
+ const set=(el,v)=>{if(el)el.textContent=v};
+ async function load(){
+  try{
+   const {data:{user},error:authError}=await db.auth.getUser();
+   if(authError||!user)return;
+   const {data:p,error:pe}=await db.from('profiles').select('wallet_balance,total_invested,total_profit,referral_code').eq('id',user.id).maybeSingle();
+   if(pe||!p)return;
+   set(wallet,money(p.wallet_balance));
+   set(invested,money(p.total_invested));
+   set(profit,money(p.total_profit));
+
+   const {data:ms,error:me}=await db.from('user_machines').select('id,status,completed,is_vip,machine_id').eq('user_id',user.id);
+   if(!me){
+    const ids=[...(ms||[])].map(m=>m.machine_id).filter(Boolean);
+    let vipIds=new Set();
+    if(ids.length){const {data:masters}=await db.from('machines').select('id,is_vip').in('id',ids);(masters||[]).forEach(m=>{if(m.is_vip)vipIds.add(m.id)})}
+    const kampala=new Date(new Date().toLocaleString('en-US',{timeZone:'Africa/Kampala'}));
+    const weekend=[0,6].includes(kampala.getDay());
+    const active=(ms||[]).filter(m=>String(m.status||'').toLowerCase()==='active'&&!m.completed&&(!weekend||(Boolean(m.is_vip)||vipIds.has(m.machine_id)))).length;
+    set(machinesEl,active);
+   }
+
+   if(teamEl&&p.referral_code){
+    const {count}=await db.from('profiles').select('id',{count:'exact',head:true}).eq('referred_by',p.referral_code);
+    set(teamEl,count||0);
+   }else set(teamEl,0);
+  }catch(e){console.warn('Authoritative dashboard data unavailable:',e)}
+ }
+ await load();
+ setInterval(load,30000);
+})();
