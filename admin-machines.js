@@ -21,9 +21,11 @@ const loadingScreen = document.getElementById("loadingScreen");
 const toast = document.getElementById("toast");
 const toastMessage = document.getElementById("toastMessage");
 
-function showLoading(){ loadingScreen.classList.remove("hidden"); }
-function hideLoading(){ loadingScreen.classList.add("hidden"); }
+// Loading overlay intentionally disabled for a clean instant UI.
+function showLoading(){ return; }
+function hideLoading(){ if(loadingScreen) loadingScreen.classList.add("hidden"); }
 function showToast(message){
+  if(!toast || !toastMessage) return;
   toastMessage.textContent = message;
   toast.classList.add("show");
   setTimeout(()=>toast.classList.remove("show"),3000);
@@ -44,12 +46,10 @@ async function loadAssignmentCount(){
 }
 
 async function loadMachines(){
-  showLoading();
   const { data, error } = await db
     .from("machines")
     .select("*")
     .order("created_at", { ascending:false });
-  hideLoading();
   if(error){ console.error(error); showToast(error.message); return; }
   machines = data || [];
   updateStats();
@@ -58,6 +58,7 @@ async function loadMachines(){
 }
 
 function updateStats(){
+  // Total Machines is the real machines table count — currently 33.
   document.getElementById("totalMachines").textContent = machines.length;
   document.getElementById("activeMachines").textContent = machines.filter(m=>m.status).length;
   document.getElementById("disabledMachines").textContent = machines.filter(m=>!m.status).length;
@@ -135,9 +136,7 @@ searchInput.addEventListener("input",()=>{
 async function uploadImage(){
   if(!selectedImage)return null;
   const fileName=`machine-${Date.now()}-${selectedImage.name.replace(/\s+/g,"-")}`;
-  showLoading();
   const {error}=await db.storage.from("machine-images").upload(fileName,selectedImage,{upsert:true});
-  hideLoading();
   if(error){showToast(error.message);return null;}
   return db.storage.from("machine-images").getPublicUrl(fileName).data.publicUrl;
 }
@@ -157,11 +156,9 @@ async function saveMachine(e){
     is_vip:document.getElementById("machineVIP").checked
   };
   if(imageUrl)machine.image_url=imageUrl;
-  showLoading();
   const result=editingId
     ? await db.from("machines").update(machine).eq("id",editingId)
     : await db.from("machines").insert([machine]);
-  hideLoading();
   if(result.error){showToast(result.error.message);return;}
   editingId=null;
   hideForm();
@@ -194,9 +191,7 @@ window.openDelete=function(id){deleteId=id;deleteModal.classList.remove("hidden"
 cancelDeleteBtn.addEventListener("click",()=>{deleteId=null;deleteModal.classList.add("hidden");});
 confirmDeleteBtn.addEventListener("click",async()=>{
   if(!deleteId)return;
-  showLoading();
   const {error}=await db.from("machines").delete().eq("id",deleteId);
-  hideLoading();
   deleteModal.classList.add("hidden");
   if(error){showToast(error.message);return;}
   deleteId=null;
@@ -206,16 +201,15 @@ confirmDeleteBtn.addEventListener("click",async()=>{
 
 deleteModal.addEventListener("click",e=>{if(e.target===deleteModal){deleteModal.classList.add("hidden");deleteId=null;}});
 window.changeStatus=async function(id,status){
-  showLoading();
   const {error}=await db.from("machines").update({status}).eq("id",id);
-  hideLoading();
   if(error){showToast(error.message);return;}
   showToast(status?"Machine enabled.":"Machine disabled.");
   loadMachines();
 };
 
 document.addEventListener("DOMContentLoaded",()=>{
-  machineForm.classList.add("hidden");
+  if(machineForm) machineForm.classList.add("hidden");
+  // Always load the real machines table; no artificial loading screen.
   loadMachines();
 });
 
