@@ -9,10 +9,12 @@
 <link rel="stylesheet" href="register.css">
 <style>
 .community{margin:16px 0 0;padding:14px;border:1px solid rgba(0,255,136,.14);border-radius:16px;background:rgba(0,255,136,.04);text-align:center}.community p{margin:0 0 9px;color:#9db1bc;font-size:11px}.community a{display:block;padding:11px 12px;border-radius:12px;background:#00ff88;color:#03130b;text-decoration:none;font-size:12px;font-weight:900}.community .login-link{margin-top:8px;background:transparent;color:#00ff88;border:1px solid rgba(0,255,136,.18)}
+#waveNetwork{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:.72}
 </style>
 </head>
 <body>
 <div class="background"></div>
+<canvas id="waveNetwork" aria-hidden="true"></canvas>
 <div class="container">
 <div class="logo"><h1>MARATHON</h1><p>Digital Hub</p></div>
 <h2>Create Account</h2>
@@ -35,4 +37,35 @@
 </form></div>
 <div id="loadingScreen" class="loading-screen"><div class="loader"></div><p>Creating your account...</p></div>
 <script src="register.js"></script>
+<script>
+(function(){
+  const c=document.getElementById('waveNetwork'),x=c.getContext('2d');
+  let w=0,h=0,dpr=1,t=0,raf;
+  function resize(){dpr=Math.min(window.devicePixelRatio||1,1.5);w=innerWidth;h=innerHeight;c.width=w*dpr;c.height=h*dpr;c.style.width=w+'px';c.style.height=h+'px';x.setTransform(dpr,0,0,dpr,0,0)}
+  function draw(){
+    t+=0.012;x.clearRect(0,0,w,h);
+    const gap=w<600?22:27, rows=Math.ceil(h/gap)+2, cols=Math.ceil(w/gap)+2;
+    const points=[];
+    for(let r=0;r<rows;r++)for(let col=0;col<cols;col++){
+      const px=col*gap-10, base=r*gap-10;
+      const wave=Math.sin(col*.38+t*1.8+r*.16)*13+Math.sin(col*.13-t*1.1)*7;
+      points.push([px,base+wave]);
+    }
+    x.lineWidth=.45;x.strokeStyle='rgba(25,232,137,.10)';
+    for(let r=0;r<rows-1;r++)for(let col=0;col<cols-1;col++){
+      const i=r*cols+col,a=points[i],b=points[i+1],q=points[i+cols];
+      x.beginPath();x.moveTo(a[0],a[1]);x.lineTo(b[0],b[1]);x.lineTo(q[0],q[1]);x.stroke();
+    }
+    for(const p of points){
+      const pulse=(Math.sin(p[0]*.025+t*3)+1)*.35+.3;
+      x.beginPath();x.arc(p[0],p[1],w<600?1.05:1.25,0,Math.PI*2);x.fillStyle='rgba(25,232,137,'+(0.18+pulse*.28)+')';x.fill();
+    }
+    raf=requestAnimationFrame(draw);
+  }
+  resize();addEventListener('resize',resize,{passive:true});
+  if(!matchMedia('(prefers-reduced-motion: reduce)').matches) draw();
+  else {x.fillStyle='rgba(25,232,137,.32)';for(let y=15;y<h;y+=25)for(let z=15;z<w;z+=25){x.beginPath();x.arc(z,y,1,0,Math.PI*2);x.fill()}}
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelAnimationFrame(raf);else if(!matchMedia('(prefers-reduced-motion: reduce)').matches)draw()});
+})();
+</script>
 </body></html>
