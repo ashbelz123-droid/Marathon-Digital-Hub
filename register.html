@@ -1,263 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Create Account | Marathon Digital Hub</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-config.js"></script>
-
 <link rel="stylesheet" href="register.css">
-
+<style>
+.community{margin:16px 0 0;padding:14px;border:1px solid rgba(0,255,136,.14);border-radius:16px;background:rgba(0,255,136,.04);text-align:center}.community p{margin:0 0 9px;color:#9db1bc;font-size:11px}.community a{display:block;padding:11px 12px;border-radius:12px;background:#00ff88;color:#03130b;text-decoration:none;font-size:12px;font-weight:900}.community .login-link{margin-top:8px;background:transparent;color:#00ff88;border:1px solid rgba(0,255,136,.18)}
+</style>
 </head>
-
 <body>
-
 <div class="background"></div>
-
 <div class="container">
-
-<div class="logo">
-
-<h1>MARATHON</h1>
-
-<p>Digital Hub</p>
-
-</div>
-
+<div class="logo"><h1>MARATHON</h1><p>Digital Hub</p></div>
 <h2>Create Account</h2>
-
-<p class="subtitle">
-
-Join the world's fastest growing crypto mining community.
-
-</p>
-
+<p class="subtitle">Join the world's fastest growing crypto mining community.</p>
 <div id="messageBox"></div>
-
 <form id="registerForm">
-
-<div class="input-group">
-
-<label>Full Name</label>
-
-<input
-type="text"
-id="fullname"
-placeholder="Enter your full name"
-required>
-
-</div>
-
-<div class="input-group">
-
-<label>Phone Number</label>
-
-<input
-type="tel"
-id="phone"
-placeholder="+256700000000"
-required>
-
-</div>
-
-<div class="input-group">
-
-<label>Email Address</label>
-
-<input
-type="email"
-id="email"
-placeholder="example@email.com"
-required>
-
-</div>
-
-<div class="input-group">
-
-<label>Referral Code</label>
-
-<input
-type="text"
-id="referral"
-placeholder="Referral Code"
-required>
-
-<small class="hint">
-
-A valid referral code is required to create an account.
-
-</small>
-
-</div>
-
-  <!-- PASSWORD -->
-
-<div class="input-group">
-
-<label>Password</label>
-
-<input
-type="password"
-id="password"
-placeholder="Create a strong password"
-required>
-
-<div class="strength">
-
-<div id="strengthBar"></div>
-
-</div>
-
-<small id="strengthText">
-
-Password Strength
-
-</small>
-
-</div>
-
-<!-- CONFIRM PASSWORD -->
-
-<div class="input-group">
-
-<label>Confirm Password</label>
-
-<input
-type="password"
-id="confirmPassword"
-placeholder="Confirm your password"
-required>
-
-</div>
-
-<!-- SHOW PASSWORD -->
-
-<div class="checkbox">
-
-<label>
-
-<input
-type="checkbox"
-id="showPassword">
-
-Show Passwords
-
-</label>
-
-</div>
-
-<!-- PASSWORD REQUIREMENTS -->
-
-<div class="requirements">
-
-<p id="ruleLength">❌ At least 8 characters</p>
-
-<p id="ruleUpper">❌ One uppercase letter</p>
-
-<p id="ruleLower">❌ One lowercase letter</p>
-
-<p id="ruleNumber">❌ One number</p>
-
-<p id="ruleSpecial">❌ One special character</p>
-
-</div>
-
-<!-- TERMS -->
-
-<div class="checkbox">
-
-<label>
-
-<input
-type="checkbox"
-id="agreeTerms"
-required>
-
-I agree to the Terms & Conditions and Privacy Policy.
-
-</label>
-
-</div>
-
-<!-- REGISTER BUTTON -->
-
-<button
-type="submit"
-id="registerBtn">
-
-Create Account
-
-  </button>
-
-  <!-- LOGIN -->
-
-<div class="login-box">
-
-<p>
-
-Already have an account?
-
-<a href="login.html">
-
-Login
-
-</a>
-
-</p>
-
-</div>
-
-<!-- SECURITY NOTICE -->
-
-<div class="security-box">
-
-<div class="security-item">
-
-🛡️ Your information is protected with secure encryption.
-
-</div>
-
-<div class="security-item">
-
-🔗 Registration requires a valid Marathon Digital Hub referral code.
-
-</div>
-
-<div class="security-item">
-
-⚡ Strong passwords help keep your account safe.
-
-</div>
-
-</div>
-
-</form>
-
-</div>
-
-<!-- LOADING -->
-
-<div id="loadingScreen" class="loading-screen">
-
-<div class="loader"></div>
-
-<p>
-
-Creating your account...
-
-</p>
-
-</div>
-
-<!-- JAVASCRIPT -->
-
+<div class="input-group"><label>Full Name</label><input type="text" id="fullname" placeholder="Enter your full name" required></div>
+<div class="input-group"><label>Phone Number</label><input type="tel" id="phone" placeholder="+256700000000" required></div>
+<div class="input-group"><label>Email Address</label><input type="email" id="email" placeholder="example@email.com" required></div>
+<div class="input-group"><label>Referral Code</label><input type="text" id="referral" placeholder="Referral Code" required><small class="hint">A valid referral code is required to create an account.</small></div>
+<div class="input-group"><label>Password</label><input type="password" id="password" placeholder="Create a strong password" required><div class="strength"><div id="strengthBar"></div></div><small id="strengthText">Password Strength</small></div>
+<div class="input-group"><label>Confirm Password</label><input type="password" id="confirmPassword" placeholder="Confirm your password" required></div>
+<div class="checkbox"><label><input type="checkbox" id="showPassword"> Show Passwords</label></div>
+<div class="requirements"><p id="ruleLength">❌ At least 8 characters</p><p id="ruleUpper">❌ One uppercase letter</p><p id="ruleLower">❌ One lowercase letter</p><p id="ruleNumber">❌ One number</p><p id="ruleSpecial">❌ One special character</p></div>
+<div class="checkbox"><label><input type="checkbox" id="agreeTerms" required> I agree to the Terms & Conditions and Privacy Policy.</label></div>
+<button type="submit" id="registerBtn">Create Account</button>
+<div class="community"><p>Join the official Marathon community</p><a href="https://chat.whatsapp.com/LovtdxW60jKFI8VrzpN3S6?s=cl&p=a&ilr=1" target="_blank" rel="noopener noreferrer">JOIN MARATHON GROUP</a><a class="login-link" href="login.html">Already have an account? LOGIN</a></div>
+<div class="login-box" style="display:none"><p>Already have an account? <a href="login.html">Login</a></p></div>
+<div class="security-box"><div class="security-item">🛡️ Your information is protected with secure encryption.</div><div class="security-item">🔗 Registration requires a valid Marathon Digital Hub referral code.</div><div class="security-item">⚡ Strong passwords help keep your account safe.</div></div>
+</form></div>
+<div id="loadingScreen" class="loading-screen"><div class="loader"></div><p>Creating your account...</p></div>
 <script src="register.js"></script>
-
-</body>
-
-</html>
+</body></html>
