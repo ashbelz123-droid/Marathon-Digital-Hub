@@ -4,3 +4,7 @@
 .profile-card,.wallet-card,.stat-card,.section-card,.menu-item,.notification{background:rgba(8,55,48,.36)!important;box-shadow:0 6px 18px rgba(0,0,0,.13)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .wallet-card{background:rgba(8,85,59,.46)!important}
 @media(max-width:520px){.profile-card,.wallet-card,.stat-card,.section-card,.menu-item,.notification{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 5px 14px rgba(0,0,0,.11)!important}}
+/* Final subtle transparency tuning */
+.profile-card,.wallet-card,.stat-card,.section-card,.menu-item,.notification{background:rgba(8,55,48,.31)!important;box-shadow:0 5px 14px rgba(0,0,0,.10)!important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.wallet-card{background:rgba(8,85,59,.40)!important}
+@media(max-width:520px){.profile-card,.wallet-card,.stat-card,.section-card,.menu-item,.notification{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 4px 11px rgba(0,0,0,.08)!important}}
