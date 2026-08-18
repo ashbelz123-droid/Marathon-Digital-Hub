@@ -12,3 +12,6 @@ body.mdh-upgraded .market-float{background:rgba(5,20,25,.82)!important;border-co
 /* Lightweight glass pass: visual-only, no logic/selectors removed. */
 body.mdh-upgraded .glass,body.mdh-upgraded .card,body.mdh-upgraded .quick,body.mdh-upgraded .announcement-card{background:rgba(8,52,46,.38)!important;box-shadow:0 7px 20px rgba(0,0,0,.13)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 @media(max-width:520px){body.mdh-upgraded .glass,body.mdh-upgraded .card,body.mdh-upgraded .quick,body.mdh-upgraded .announcement-card{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 5px 16px rgba(0,0,0,.12)!important}}
+/* Final subtle transparency tuning */
+body.mdh-upgraded .glass,body.mdh-upgraded .card,body.mdh-upgraded .quick,body.mdh-upgraded .announcement-card{background:rgba(8,52,46,.32)!important;box-shadow:0 5px 14px rgba(0,0,0,.10)!important;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+@media(max-width:520px){body.mdh-upgraded .glass,body.mdh-upgraded .card,body.mdh-upgraded .quick,body.mdh-upgraded .announcement-card{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 4px 11px rgba(0,0,0,.08)!important}}
