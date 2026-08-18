@@ -19,3 +19,8 @@ body{margin:0!important;min-height:100vh;padding-bottom:112px!important;backgrou
 .header,.page-title,.machine-card,.empty-state{background:rgba(7,62,52,.34)!important;backdrop-filter:blur(6px)!important;-webkit-backdrop-filter:blur(6px)!important}
 .series-tabs button{background:rgba(4,53,44,.34)!important;backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important}
 @media(max-width:520px){.header,.page-title,.series-tabs button,.machine-card,.empty-state{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}.header,.page-title,.machine-card,.empty-state{box-shadow:0 5px 14px rgba(0,0,0,.11)!important}}
+/* Final subtle transparency tuning */
+.header,.page-title,.series-tabs button,.machine-card,.empty-state{box-shadow:0 5px 14px rgba(0,0,0,.10)!important}
+.header,.page-title,.machine-card,.empty-state{background:rgba(7,62,52,.29)!important;backdrop-filter:blur(4px)!important;-webkit-backdrop-filter:blur(4px)!important}
+.series-tabs button{background:rgba(4,53,44,.29)!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important}
+@media(max-width:520px){.header,.page-title,.series-tabs button,.machine-card,.empty-state{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:0 4px 11px rgba(0,0,0,.08)!important}}
