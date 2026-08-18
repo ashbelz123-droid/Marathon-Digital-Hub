@@ -1,5 +1,5 @@
 const db = supabaseClient;
-const DEPOSIT_LIMIT = 20000;
+const DEPOSIT_LIMIT = 20000; // Maximum single deposit request
 const MIN_DEPOSIT = 10000;
 let currentUser = null;
 let selectedMethod = "MTN";
@@ -21,20 +21,6 @@ async function loadProfile(){
   if(error){ console.warn(error); return; }
   currentWalletBalance=Number(data.wallet_balance||0);
   document.getElementById("walletBalance").textContent="UGX "+currentWalletBalance.toLocaleString();
-  enforceDepositLimit(currentWalletBalance);
-}
-
-function enforceDepositLimit(balance){
-  const locked=Number(balance||0)>=DEPOSIT_LIMIT;
-  const noticeId='depositLimitNotice';
-  document.getElementById(noticeId)?.remove();
-  if(!locked)return;
-  const box=document.createElement('section');box.id=noticeId;box.className='card';
-  box.innerHTML='<h3>🔒 Deposit Limit Reached</h3><p>Your wallet has reached the maximum deposit balance of <strong>UGX 20,000</strong>. New deposit requests are disabled until your balance falls below UGX 20,000.</p>';
-  const container=document.querySelector('.container');
-  const firstCard=container?.querySelector('.security-box');
-  if(container) container.insertBefore(box,firstCard||container.firstChild);
-  document.querySelectorAll('.card').forEach(card=>{const title=card.querySelector('h3')?.textContent?.trim().toLowerCase()||'';if(title.includes('official payment accounts')||title.includes('how to deposit')||title.includes('submit deposit request'))card.style.display='none';});
 }
 
 async function refreshWalletBeforeDeposit(){
@@ -42,7 +28,6 @@ async function refreshWalletBeforeDeposit(){
   if(error)throw error;
   currentWalletBalance=Number(data.wallet_balance||0);
   document.getElementById("walletBalance").textContent="UGX "+currentWalletBalance.toLocaleString();
-  enforceDepositLimit(currentWalletBalance);
   return currentWalletBalance;
 }
 
@@ -56,15 +41,13 @@ document.getElementById("submitDeposit").onclick=submitDeposit;
 async function submitDeposit(){
  const btn=document.getElementById("submitDeposit");btn.disabled=true;btn.textContent="Checking wallet...";
  try{
-  const balance=await refreshWalletBeforeDeposit();
-  if(balance>=DEPOSIT_LIMIT){alert("Your wallet has reached UGX 20,000. New deposits are disabled.");return;}
+  await refreshWalletBeforeDeposit();
   const amount=Number(document.getElementById("depositAmount").value);
   const sender=document.getElementById("senderNumber").value.trim();
   const transaction=document.getElementById("transactionId").value.trim().toUpperCase();
   const message=document.getElementById("depositMessage").value.trim();
   if(!Number.isFinite(amount)||amount<MIN_DEPOSIT){alert("Minimum deposit is UGX 10,000.");return}
-  if(amount>DEPOSIT_LIMIT){alert("Maximum deposit is UGX 20,000.");return}
-  if(balance+amount>DEPOSIT_LIMIT){alert("This deposit would take your wallet above UGX 20,000. Maximum additional deposit allowed: UGX "+Math.max(0,DEPOSIT_LIMIT-balance).toLocaleString()+".");return}
+  if(amount>DEPOSIT_LIMIT){alert("Maximum single deposit is UGX 20,000.");return}
   if(sender===""){alert("Sender phone number is required.");return}
   if(!/^(\+256|0)7\d{8}$/.test(sender)){alert("Enter a valid Uganda mobile number.");return}
   if(transaction===""||transaction.length<6){alert("Enter a valid transaction ID.");return}
