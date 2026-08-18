@@ -8,3 +8,7 @@ body.mdh-upgraded .card h2,body.mdh-upgraded .announcement-title,body.mdh-upgrad
 body.mdh-upgraded .notification{background:rgba(17,71,65,.42)!important;border-color:var(--mdh-line)!important}
 body.mdh-upgraded .support-float{background:linear-gradient(145deg,#19e889,#0ba967)!important;color:#03130b}
 body.mdh-upgraded .market-float{background:rgba(5,20,25,.82)!important;border-color:var(--mdh-line)!important}
+
+/* Lightweight glass pass: visual-only, no logic/selectors removed. */
+body.mdh-upgraded .glass,body.mdh-upgraded .card,body.mdh-upgraded .quick,body.mdh-upgraded .announcement-card{background:rgba(8,52,46,.38)!important;box-shadow:0 7px 20px rgba(0,0,0,.13)!important;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+@media(max-width:520px){body.mdh-upgraded .glass,body.mdh-upgraded .card,body.mdh-upgraded .quick,body.mdh-upgraded .announcement-card{backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 5px 16px rgba(0,0,0,.12)!important}}
