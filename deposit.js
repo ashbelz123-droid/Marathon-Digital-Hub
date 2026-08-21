@@ -1,5 +1,5 @@
 const db = supabaseClient;
-const DEPOSIT_LIMIT = 20000; // Maximum single deposit request
+const DEPOSIT_LIMIT = 500000000; // Maximum single deposit request: UGX 500M
 const MIN_DEPOSIT = 10000;
 let currentUser = null;
 let selectedMethod = "MTN";
@@ -47,7 +47,7 @@ async function submitDeposit(){
   const transaction=document.getElementById("transactionId").value.trim().toUpperCase();
   const message=document.getElementById("depositMessage").value.trim();
   if(!Number.isFinite(amount)||amount<MIN_DEPOSIT){alert("Minimum deposit is UGX 10,000.");return}
-  if(amount>DEPOSIT_LIMIT){alert("Maximum single deposit is UGX 20,000.");return}
+  if(amount>DEPOSIT_LIMIT){alert("Maximum single deposit is UGX 500,000,000.");return}
   if(sender===""){alert("Sender phone number is required.");return}
   if(!/^(\+256|0)7\d{8}$/.test(sender)){alert("Enter a valid Uganda mobile number.");return}
   if(transaction===""||transaction.length<6){alert("Enter a valid transaction ID.");return}
