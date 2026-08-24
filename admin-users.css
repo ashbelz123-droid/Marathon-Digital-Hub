@@ -1,7 +1,7 @@
 /* Marathon Digital Hub — Admin Users */
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;overflow-x:hidden}
-body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#03110e;color:#ecfff8}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#03110e;color:#ecfff8;padding-bottom:78px}
 .admin-wrap{width:100%;max-width:1100px;margin:0 auto;padding:24px 16px 48px}
 .admin-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:22px}
 .admin-head h1{margin:4px 0 6px;font-size:clamp(24px,6vw,38px);line-height:1.05;font-weight:850}
@@ -40,5 +40,12 @@ select.search{appearance:auto}
 .actions .activateBtn{color:#19e889}
 .emptyState,.empty{text-align:center;color:#8aa9a0;padding:30px 12px;font-size:11px}
 .hidden{display:none!important}
+
+/* Exact Admin Dashboard bottom navigation */
+.bottom{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;padding:12px 5px calc(12px + env(safe-area-inset-bottom));background:#07100ff5;border-top:1px solid #5effbe21;z-index:100}
+.bottom a{font-size:9px;text-align:center;color:#8daaa1;text-decoration:none;line-height:1.35;min-width:54px;padding:0 5px}
+.bottom .active{color:#19e889}
+.bottom a:active{transform:scale(.96)}
+
 @media(max-width:800px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}#usersContainer{grid-template-columns:1fr}.admin-head{align-items:flex-start}}
 @media(max-width:520px){.admin-wrap{padding:20px 12px 36px}.admin-head{display:block}.back{display:inline-block;margin-top:12px}.toolbar{grid-template-columns:1fr 1fr}.toolbar .search{grid-column:1/-1}.toolbar .btn{width:100%}.metric{padding:14px}.userCard{padding:14px}}
