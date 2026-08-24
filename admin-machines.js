@@ -21,8 +21,7 @@ const loadingScreen = document.getElementById("loadingScreen");
 const toast = document.getElementById("toast");
 const toastMessage = document.getElementById("toastMessage");
 
-// Loading overlay intentionally disabled for a clean instant UI.
-function showLoading(){ return; }
+function showLoading(){ if(loadingScreen) loadingScreen.classList.remove("hidden"); }
 function hideLoading(){ if(loadingScreen) loadingScreen.classList.add("hidden"); }
 function showToast(message){
   if(!toast || !toastMessage) return;
@@ -31,187 +30,84 @@ function showToast(message){
   setTimeout(()=>toast.classList.remove("show"),3000);
 }
 
-async function loadAssignmentCount(){
-  const el = document.getElementById("userMachineAssignments");
-  if(!el) return;
-  const { count, error } = await db
-    .from("user_machines")
-    .select("id", { count:"exact", head:true });
-  if(error){
-    console.error("Could not load user machine assignments:", error);
-    el.textContent = "—";
-    return;
+async function requireAdmin(){
+  if(!db) throw new Error("Supabase client is not available.");
+  const {data:{session},error:sessionError}=await db.auth.getSession();
+  if(sessionError) throw sessionError;
+  if(!session?.user){
+    location.href="login.html";
+    throw new Error("Admin session required.");
   }
-  el.textContent = count ?? 0;
+  const {data:profile,error}=await db.from("profiles").select("is_admin").eq("id",session.user.id).single();
+  if(error) throw error;
+  if(!profile?.is_admin){
+    location.href="dashboard.html";
+    throw new Error("Admin access required.");
+  }
+  return session.user;
+}
+
+async function loadAssignmentCount(){
+  const el=document.getElementById("userMachineAssignments");
+  if(!el)return;
+  const {count,error}=await db.from("user_machines").select("id",{count:"exact",head:true});
+  if(error){console.error("Could not load user machine assignments:",error);el.textContent="—";return;}
+  el.textContent=count??0;
 }
 
 async function loadMachines(){
-  const { data, error } = await db
-    .from("machines")
-    .select("*")
-    .order("created_at", { ascending:false });
-  if(error){ console.error(error); showToast(error.message); return; }
-  machines = data || [];
-  updateStats();
-  renderMachines(machines);
-  loadAssignmentCount();
+  if(!machinesContainer)return;
+  showLoading();
+  try{
+    await requireAdmin();
+    const {data,error}=await db.from("machines").select("*").order("created_at",{ascending:false});
+    if(error)throw error;
+    machines=Array.isArray(data)?data:[];
+    updateStats();
+    renderMachines(machines);
+    await loadAssignmentCount();
+  }catch(error){
+    console.error("Admin machines load failed:",error);
+    machines=[];
+    updateStats();
+    machinesContainer.innerHTML='<div class="emptyState"><h2>Unable to Load Machines</h2><p>'+String(error?.message||"Database request failed.").replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))+'</p><button onclick="loadMachines()">Retry</button></div>';
+    showToast(error?.message||"Unable to load machines.");
+  }finally{hideLoading();}
 }
 
 function updateStats(){
-  // Total Machines is the real machines table count — currently 33.
-  document.getElementById("totalMachines").textContent = machines.length;
-  document.getElementById("activeMachines").textContent = machines.filter(m=>m.status).length;
-  document.getElementById("disabledMachines").textContent = machines.filter(m=>!m.status).length;
-  document.getElementById("vipMachines").textContent = machines.filter(m=>m.is_vip).length;
-  document.getElementById("machineCount").textContent = machines.length + " Machines";
+  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value;};
+  set("totalMachines",machines.length);
+  set("activeMachines",machines.filter(m=>m.status).length);
+  set("disabledMachines",machines.filter(m=>!m.status).length);
+  set("vipMachines",machines.filter(m=>m.is_vip).length);
+  set("machineCount",machines.length+" Machines");
 }
 
+function escapeHtml(value){return String(value??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 function renderMachines(list){
-  if(!list.length){
-    machinesContainer.innerHTML='<div class="emptyState"><h2>No Machines Found</h2><p>There are no configured machines matching this search.</p></div>';
-    return;
-  }
-  machinesContainer.innerHTML="";
-  list.forEach(machine=>{
-    const dailyIncome = Math.floor(Number(machine.total_return||0)/Math.max(Number(machine.duration_days||1),1));
-    const image = machine.image_url || "https://placehold.co/600x400/10253F/FFFFFF?text=Machine";
-    machinesContainer.innerHTML += `
-      <article class="machineCard">
-        <img src="${image}" alt="${machine.name||"Machine"}">
-        <div class="machineContent">
-          <h3>${machine.name||"Unnamed Machine"}</h3>
-          <div class="machineInfo"><span>Series</span><strong>${machine.series||"-"}</strong></div>
-          <div class="machineInfo"><span>Price</span><strong>UGX ${Number(machine.price||0).toLocaleString()}</strong></div>
-          <div class="machineInfo"><span>Total Return</span><strong>UGX ${Number(machine.total_return||0).toLocaleString()}</strong></div>
-          <div class="machineInfo"><span>Daily Income</span><strong>UGX ${dailyIncome.toLocaleString()}</strong></div>
-          <div class="machineInfo"><span>Duration</span><strong>${machine.duration_days||0} Days</strong></div>
-          <div class="badgeRow">
-            <span class="badge ${machine.status?"active":"disabled"}">${machine.status?"ACTIVE":"DISABLED"}</span>
-            ${machine.is_vip?'<span class="badge vip">VIP</span>':""}
-          </div>
-          <div class="cardActions">
-            <button class="editBtn" onclick="editMachine('${machine.id}')">Edit</button>
-            <button class="deleteBtn" onclick="openDelete('${machine.id}')">Delete</button>
-            <button class="${machine.status?"disableBtn":"enableBtn"}" onclick="changeStatus('${machine.id}', ${!machine.status})">${machine.status?"Disable":"Enable"}</button>
-          </div>
-        </div>
-      </article>`;
-  });
+  if(!list.length){machinesContainer.innerHTML='<div class="emptyState"><h2>No Machines Found</h2><p>There are no configured machines matching this search.</p></div>';return;}
+  machinesContainer.innerHTML=list.map(machine=>{
+    const dailyIncome=Math.floor(Number(machine.total_return||0)/Math.max(Number(machine.duration_days||1),1));
+    const image=machine.image_url||"https://placehold.co/600x400/10253F/FFFFFF?text=Machine";
+    return `<article class="machineCard"><img src="${escapeHtml(image)}" alt="${escapeHtml(machine.name||"Machine")}"><div class="machineContent"><h3>${escapeHtml(machine.name||"Unnamed Machine")}</h3><div class="machineInfo"><span>Series</span><strong>${escapeHtml(machine.series||"-")}</strong></div><div class="machineInfo"><span>Price</span><strong>UGX ${Number(machine.price||0).toLocaleString()}</strong></div><div class="machineInfo"><span>Total Return</span><strong>UGX ${Number(machine.total_return||0).toLocaleString()}</strong></div><div class="machineInfo"><span>Daily Income</span><strong>UGX ${dailyIncome.toLocaleString()}</strong></div><div class="machineInfo"><span>Duration</span><strong>${Number(machine.duration_days||0)} Days</strong></div><div class="badgeRow"><span class="badge ${machine.status?"active":"disabled"}">${machine.status?"ACTIVE":"DISABLED"}</span>${machine.is_vip?'<span class="badge vip">VIP</span>':""}</div><div class="cardActions"><button class="editBtn" onclick="editMachine('${machine.id}')">Edit</button><button class="deleteBtn" onclick="openDelete('${machine.id}')">Delete</button><button class="${machine.status?"disableBtn":"enableBtn"}" onclick="changeStatus('${machine.id}', ${!machine.status})">${machine.status?"Disable":"Enable"}</button></div></div></article>`;
+  }).join("");
 }
 
-addMachineBtn.addEventListener("click",()=>{
-  editingId=null;
-  machineFormElement.reset();
-  previewImage.src="";
-  previewImage.style.display="none";
-  selectedImage=null;
-  document.getElementById("formTitle").textContent="Add New Machine";
-  machineForm.classList.remove("hidden");
-  window.scrollTo({top:0,behavior:"smooth"});
-});
+addMachineBtn?.addEventListener("click",()=>{editingId=null;machineFormElement.reset();previewImage.src="";previewImage.style.display="none";selectedImage=null;document.getElementById("formTitle").textContent="Add New Machine";machineForm.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});});
+function hideForm(){machineForm.classList.add("hidden");machineFormElement.reset();previewImage.src="";previewImage.style.display="none";selectedImage=null;}
+closeFormBtn?.addEventListener("click",hideForm);cancelBtn?.addEventListener("click",hideForm);
+machineImage?.addEventListener("change",e=>{const file=e.target.files[0];if(!file)return;selectedImage=file;previewImage.src=URL.createObjectURL(file);previewImage.style.display="block";});
+searchInput?.addEventListener("input",()=>{const value=searchInput.value.trim().toLowerCase();renderMachines(machines.filter(machine=>(machine.name||"").toLowerCase().includes(value)||(machine.series||"").toLowerCase().includes(value)));});
 
-function hideForm(){
-  machineForm.classList.add("hidden");
-  machineFormElement.reset();
-  previewImage.src="";
-  previewImage.style.display="none";
-  selectedImage=null;
-}
-closeFormBtn.addEventListener("click",hideForm);
-cancelBtn.addEventListener("click",hideForm);
+async function uploadImage(){if(!selectedImage)return null;const fileName=`machine-${Date.now()}-${selectedImage.name.replace(/\s+/g,"-")}`;const {error}=await db.storage.from("machine-images").upload(fileName,selectedImage,{upsert:true});if(error){showToast(error.message);return null;}return db.storage.from("machine-images").getPublicUrl(fileName).data.publicUrl;}
+machineFormElement?.addEventListener("submit",saveMachine);
+async function saveMachine(e){e.preventDefault();try{await requireAdmin();let imageUrl="";if(selectedImage){imageUrl=await uploadImage();if(!imageUrl)return;}const machine={name:document.getElementById("machineName").value.trim(),series:document.getElementById("machineSeries").value.trim(),price:Number(document.getElementById("machinePrice").value),total_return:Number(document.getElementById("machineReturn").value),duration_days:Number(document.getElementById("machineDuration").value),status:document.getElementById("machineStatus").value==="true",is_vip:document.getElementById("machineVIP").checked};if(imageUrl)machine.image_url=imageUrl;const result=editingId?await db.from("machines").update(machine).eq("id",editingId):await db.from("machines").insert([machine]);if(result.error)throw result.error;editingId=null;hideForm();showToast("Machine saved successfully.");await loadMachines();}catch(error){console.error(error);showToast(error?.message||"Unable to save machine.");}}
+window.editMachine=function(id){const machine=machines.find(m=>m.id===id);if(!machine)return;editingId=id;document.getElementById("formTitle").textContent="Edit Machine";document.getElementById("machineName").value=machine.name||"";document.getElementById("machineSeries").value=machine.series||"";document.getElementById("machinePrice").value=machine.price||0;document.getElementById("machineReturn").value=machine.total_return||0;document.getElementById("machineDuration").value=machine.duration_days||0;document.getElementById("machineStatus").value=machine.status?"true":"false";document.getElementById("machineVIP").checked=!!machine.is_vip;if(machine.image_url){previewImage.src=machine.image_url;previewImage.style.display="block";}else previewImage.style.display="none";selectedImage=null;machineForm.classList.remove("hidden");window.scrollTo({top:0,behavior:"smooth"});};
 
-machineImage.addEventListener("change",e=>{
-  const file=e.target.files[0];
-  if(!file)return;
-  selectedImage=file;
-  previewImage.src=URL.createObjectURL(file);
-  previewImage.style.display="block";
-});
+const deleteModal=document.getElementById("deleteModal");const confirmDeleteBtn=document.getElementById("confirmDeleteBtn");const cancelDeleteBtn=document.getElementById("cancelDeleteBtn");window.openDelete=function(id){deleteId=id;deleteModal.classList.remove("hidden");};cancelDeleteBtn?.addEventListener("click",()=>{deleteId=null;deleteModal.classList.add("hidden");});confirmDeleteBtn?.addEventListener("click",async()=>{if(!deleteId)return;try{await requireAdmin();const {error}=await db.from("machines").delete().eq("id",deleteId);if(error)throw error;deleteModal.classList.add("hidden");deleteId=null;showToast("Machine deleted successfully.");await loadMachines();}catch(error){showToast(error?.message||"Unable to delete machine.");}});deleteModal?.addEventListener("click",e=>{if(e.target===deleteModal){deleteModal.classList.add("hidden");deleteId=null;}});
+window.changeStatus=async function(id,status){try{await requireAdmin();const {error}=await db.from("machines").update({status}).eq("id",id);if(error)throw error;showToast(status?"Machine enabled.":"Machine disabled.");await loadMachines();}catch(error){showToast(error?.message||"Unable to change machine status.");}};
 
-searchInput.addEventListener("input",()=>{
-  const value=searchInput.value.trim().toLowerCase();
-  renderMachines(machines.filter(machine=>(machine.name||"").toLowerCase().includes(value)||(machine.series||"").toLowerCase().includes(value)));
-});
-
-async function uploadImage(){
-  if(!selectedImage)return null;
-  const fileName=`machine-${Date.now()}-${selectedImage.name.replace(/\s+/g,"-")}`;
-  const {error}=await db.storage.from("machine-images").upload(fileName,selectedImage,{upsert:true});
-  if(error){showToast(error.message);return null;}
-  return db.storage.from("machine-images").getPublicUrl(fileName).data.publicUrl;
-}
-
-machineFormElement.addEventListener("submit",saveMachine);
-async function saveMachine(e){
-  e.preventDefault();
-  let imageUrl="";
-  if(selectedImage){ imageUrl=await uploadImage(); if(!imageUrl)return; }
-  const machine={
-    name:document.getElementById("machineName").value.trim(),
-    series:document.getElementById("machineSeries").value.trim(),
-    price:Number(document.getElementById("machinePrice").value),
-    total_return:Number(document.getElementById("machineReturn").value),
-    duration_days:Number(document.getElementById("machineDuration").value),
-    status:document.getElementById("machineStatus").value==="true",
-    is_vip:document.getElementById("machineVIP").checked
-  };
-  if(imageUrl)machine.image_url=imageUrl;
-  const result=editingId
-    ? await db.from("machines").update(machine).eq("id",editingId)
-    : await db.from("machines").insert([machine]);
-  if(result.error){showToast(result.error.message);return;}
-  editingId=null;
-  hideForm();
-  showToast("Machine saved successfully.");
-  loadMachines();
-}
-
-window.editMachine=function(id){
-  const machine=machines.find(m=>m.id===id);
-  if(!machine)return;
-  editingId=id;
-  document.getElementById("formTitle").textContent="Edit Machine";
-  document.getElementById("machineName").value=machine.name||"";
-  document.getElementById("machineSeries").value=machine.series||"";
-  document.getElementById("machinePrice").value=machine.price||0;
-  document.getElementById("machineReturn").value=machine.total_return||0;
-  document.getElementById("machineDuration").value=machine.duration_days||0;
-  document.getElementById("machineStatus").value=machine.status?"true":"false";
-  document.getElementById("machineVIP").checked=!!machine.is_vip;
-  if(machine.image_url){previewImage.src=machine.image_url;previewImage.style.display="block";}else{previewImage.style.display="none";}
-  selectedImage=null;
-  machineForm.classList.remove("hidden");
-  window.scrollTo({top:0,behavior:"smooth"});
-};
-
-const deleteModal=document.getElementById("deleteModal");
-const confirmDeleteBtn=document.getElementById("confirmDeleteBtn");
-const cancelDeleteBtn=document.getElementById("cancelDeleteBtn");
-window.openDelete=function(id){deleteId=id;deleteModal.classList.remove("hidden");};
-cancelDeleteBtn.addEventListener("click",()=>{deleteId=null;deleteModal.classList.add("hidden");});
-confirmDeleteBtn.addEventListener("click",async()=>{
-  if(!deleteId)return;
-  const {error}=await db.from("machines").delete().eq("id",deleteId);
-  deleteModal.classList.add("hidden");
-  if(error){showToast(error.message);return;}
-  deleteId=null;
-  showToast("Machine deleted successfully.");
-  loadMachines();
-});
-
-deleteModal.addEventListener("click",e=>{if(e.target===deleteModal){deleteModal.classList.add("hidden");deleteId=null;}});
-window.changeStatus=async function(id,status){
-  const {error}=await db.from("machines").update({status}).eq("id",id);
-  if(error){showToast(error.message);return;}
-  showToast(status?"Machine enabled.":"Machine disabled.");
-  loadMachines();
-};
-
-document.addEventListener("DOMContentLoaded",()=>{
-  if(machineForm) machineForm.classList.add("hidden");
-  // Always load the real machines table; no artificial loading screen.
-  loadMachines();
-});
-
-window.addEventListener("error",e=>{console.error(e.error);showToast("JavaScript Error. Check console.");});
+document.addEventListener("DOMContentLoaded",()=>{if(machineForm)machineForm.classList.add("hidden");loadMachines();});
+window.addEventListener("error",e=>console.error(e.error));
 console.log("✅ Marathon Digital Hub Admin Machines Ready");
