@@ -3,7 +3,7 @@ const $=id=>document.getElementById(id);
 const money=v=>'UGX '+Number(v||0).toLocaleString();
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const date=v=>v?new Date(v).toLocaleString():'-';
-const BRIDGE_URL=window.SUPABASE_URL?`${SUPABASE_URL}/functions/v1/admin-users-bridge`:'';
+const BRIDGE_URL=typeof SUPABASE_URL!=='undefined'&&SUPABASE_URL?`${SUPABASE_URL}/functions/v1/admin-users-bridge`:'';
 function setValue(id,v){if($(id))$(id).value=v??''}
 function empty(t){return '<div class="empty">'+esc(t)+'</div>'}
 async function bridge(action,extra={}){
